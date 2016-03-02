@@ -10,7 +10,8 @@ class BatchBinding(models.AbstractModel):
 
     sync_state = fields.Selection([
         ('to_update', 'To update'),
-        ('ok', 'OK'),
+        ('scheduled', 'Scheduled'),
+        ('done', 'Done'),
         ], default='to_update',
         readonly=True)
     date_modified = fields.Date(readonly=True)
