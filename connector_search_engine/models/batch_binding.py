@@ -6,7 +6,7 @@ from openerp import fields, models
 
 
 class BatchBinding(models.AbstractModel):
-    _name= "batch.binding"
+    _name = "batch.binding"
 
     sync_state = fields.Selection([
         ('to_update', 'To update'),

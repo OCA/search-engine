@@ -5,7 +5,6 @@
 
 
 import logging
-from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import Exporter
 from openerp.exceptions import UserError
 
