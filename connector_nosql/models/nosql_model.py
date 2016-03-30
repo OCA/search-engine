@@ -31,11 +31,10 @@ class NosqlBackend(models.Model):
     location = fields.Char(required=True)
     username = fields.Char()
     password = fields.Char()
-    default_lang_id = fields.Many2one(
-        'res.lang',
-        'Default Language',
-        help="If a default language is selected, the records "
-             "will be imported in the translation of this language.")
+    index_ids = fields.One2many(
+        'nosql.index',
+        'backend_id',
+        string='Index')
 
     def output_recorder(self):
         """ Utility method to output a file containing all the recorded
@@ -51,6 +50,29 @@ class NosqlBackend(models.Model):
         path = os.path.join(tempfile.gettempdir(), filename)
         output_recorder(path)
         return path
+
+
+class NosqlIndex(models.Model):
+    _name = 'nosql.index'
+    _description = 'Nosql Index'
+
+    name = fields.Char(required=True)
+    backend_id = fields.Many2one(
+        'nosql.backend',
+        string='Backend',
+        required=True)
+    lang_id = fields.Many2one(
+        'res.lang',
+        string='Lang',
+        required=True)
+    model_id = fields.Many2one(
+        'ir.model',
+        string='Model',
+        required=True)
+    exporter_id = fields.Many2one(
+        'ir.exports',
+        string='Exporter',
+        required=True)
 
 
 class NosqlBinding(models.AbstractModel):

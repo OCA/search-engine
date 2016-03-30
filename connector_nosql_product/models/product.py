@@ -9,6 +9,7 @@ from openerp import fields, models
 class NosqlProductTemplate(models.Model):
     _inherit = 'nosql.binding'
     _name = 'nosql.product.template'
+    _description = 'Nosql Product Template Binding'
 
     record_id = fields.Many2one('product.template')
 
