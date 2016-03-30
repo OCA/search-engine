@@ -3,5 +3,5 @@
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-
-from . import batch_binding
+from . import product
+from . import nosql_backend

@@ -7,11 +7,14 @@
 import logging
 from openerp.addons.connector.unit.synchronizer import Exporter
 from openerp.exceptions import UserError
+from ..connector import get_environment
+from ..backend import nosql
 
 _logger = logging.getLogger(__name__)
 
 
-class SearchEngineExporter(Exporter):
+@nosql
+class NosqlExporter(Exporter):
 
     @classmethod
     def match(cls, session, model):
@@ -22,7 +25,7 @@ class SearchEngineExporter(Exporter):
         :param environment: current environment (backend, session, ...)
         :type environment: :py:class:`connector.connector.Environment`
         """
-        super(SearchEngineExporter, self).__init__(environment)
+        super(NosqlExporter, self).__init__(environment)
         self.bindings = None
 
     def _add(self, data):
@@ -43,7 +46,7 @@ class SearchEngineExporter(Exporter):
         return self._add(datas)
 
 
-def export_record_search_engine(get_env, session, model_name, binding_ids):
+def export_record_nosql(session, model_name, binding_ids):
     # check that all binding believe to the same backend
     res = session.env[model_name].read_group(
         [('id', 'in', binding_ids)],
@@ -51,6 +54,6 @@ def export_record_search_engine(get_env, session, model_name, binding_ids):
         ['backend_id'])
     if len(res) > 1:
         raise UserError('Binding do not believe to the same backend')
-    env = get_env(session, model_name, res[0]['backend_id'][0])
-    exporter = env.get_connector_unit(SearchEngineExporter)
+    env = get_environment(session, model_name, res[0]['backend_id'][0])
+    exporter = env.get_connector_unit(NosqlExporter)
     return exporter.run(binding_ids)

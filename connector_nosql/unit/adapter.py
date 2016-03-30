@@ -5,9 +5,11 @@
 
 
 from openerp.addons.connector.unit.backend_adapter import BackendAdapter
+from ..backend import nosql
 
 
-class SearchEngineAdapter(BackendAdapter):
+@nosql
+class NosqlAdapter(BackendAdapter):
     _model_name = None
 
     @classmethod

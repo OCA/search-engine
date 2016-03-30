@@ -3,17 +3,20 @@
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-{'name': 'Connector Search Engine',
+{'name': 'NoSQL Catalog Indexer',
  'version': '0.0.1',
  'author': 'Akretion',
  'website': 'www.akretion.com',
  'license': 'AGPL-3',
  'category': 'Generic Modules',
  'depends': [
-     'connector',
+     'connector_nosql',
+     'connector_base_product',
  ],
  'data': [
+     'views/product_view.xml',
+     'datas/cron_data.xml',
  ],
  'installable': True,
- 'application': True,
+ 'application': False,
  }
