@@ -1,0 +1,9 @@
+id,export_id/id,name
+name,ir_exp_nosql_product_template,name
+price,ir_exp_nosql_product_template,price
+categ,ir_exp_nosql_product_template,categ_id/.id
+default_code,ir_exp_nosql_product_template,default_code
+description,ir_exp_nosql_product_template,description
+barcode,ir_exp_nosql_product_template,product_variant_ids/barcode
+color,ir_exp_nosql_product_template,product_variant_ids/color
+list_price,ir_exp_nosql_product_template,product_variant_ids/list_price

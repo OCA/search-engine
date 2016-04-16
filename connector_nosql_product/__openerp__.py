@@ -17,6 +17,10 @@
      'views/product_view.xml',
      'datas/cron_data.xml',
  ],
+ 'demo': [
+     'demo/backend_demo.xml',
+     'demo/ir.exports.line.csv',
+ ],
  'installable': True,
  'application': False,
  }
