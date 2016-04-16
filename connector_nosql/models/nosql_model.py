@@ -78,7 +78,13 @@ class NosqlIndex(models.Model):
 class NosqlBinding(models.AbstractModel):
     _name = 'nosql.binding'
 
-    backend_id = fields.Many2one('nosql.backend')
+    backend_id = fields.Many2one(
+        'nosql.backend',
+        related="index_id.backend_id")
+    index_id = fields.Many2one(
+        'nosql.index',
+        string="Index",
+        required=True)
     sync_state = fields.Selection([
         ('to_update', 'To update'),
         ('scheduled', 'Scheduled'),

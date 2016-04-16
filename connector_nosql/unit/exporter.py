@@ -32,9 +32,11 @@ class NosqlExporter(Exporter):
         """ Create the SolR record """
         return self.backend_adapter.add(data)
 
+    def _export_data(self):
+        return NotImplemented
+
     def run(self, binding_ids):
         """ Run the synchronization
-
         :param binding_id: identifier of the binding record to export
         """
         self.bindings = self.model.browse(binding_ids)
@@ -47,13 +49,14 @@ class NosqlExporter(Exporter):
 
 
 def export_record_nosql(session, model_name, binding_ids):
-    # check that all binding believe to the same backend
+    # check that all binding believe to the same index
     res = session.env[model_name].read_group(
         [('id', 'in', binding_ids)],
-        ['id', 'backend_id'],
-        ['backend_id'])
+        ['id', 'index_id'],
+        ['index_id'])
     if len(res) > 1:
-        raise UserError('Binding do not believe to the same backend')
-    env = get_environment(session, model_name, res[0]['backend_id'][0])
+        raise UserError('Binding do not believe to the same index')
+    index_id = res[0]['index_id'][0]
+    env = get_environment(session, model_name, index_id)
     exporter = env.get_connector_unit(NosqlExporter)
     return exporter.run(binding_ids)

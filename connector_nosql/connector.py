@@ -22,8 +22,16 @@
 from openerp.addons.connector.connector import ConnectorEnvironment
 
 
-def get_environment(session, model_name, backend_id):
+class ConnectorNosqlEnvironment(ConnectorEnvironment):
+
+    def __init__(self, index_record, session, model_name):
+        self.index_record = index_record
+        super(ConnectorNosqlEnvironment, self).__init__(
+            index_record.backend_id, session, model_name)
+
+
+def get_environment(session, model_name, index_id):
     """ Create an environment to work with. """
-    backend_record = session.env['nosql.backend'].browse(backend_id)
-    env = ConnectorEnvironment(backend_record, session, model_name)
+    index_record = session.env['nosql.index'].browse(index_id)
+    env = ConnectorNosqlEnvironment(index_record, session, model_name)
     return env
