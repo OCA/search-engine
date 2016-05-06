@@ -15,7 +15,6 @@
  ],
  'data': [
      'views/product_view.xml',
-     'datas/cron_data.xml',
  ],
  'demo': [
      'demo/backend_demo.xml',
