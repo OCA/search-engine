@@ -28,7 +28,7 @@ class NosqlBackend(models.Model):
     version = fields.Selection(
         '_select_versions',
         required=True)
-    location = fields.Char(required=True)
+    location = fields.Char()
     username = fields.Char()
     password = fields.Char()
     index_ids = fields.One2many(
