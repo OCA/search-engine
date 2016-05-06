@@ -7,7 +7,10 @@
 
 import logging
 from datetime import datetime
-from openerp import fields, models
+from openerp import api, fields, models
+from openerp.addons.connector.session import ConnectorSession
+from ..connector import get_environment
+from ..unit.exporter import NosqlExporter
 
 _logger = logging.getLogger(__name__)
 
@@ -93,3 +96,28 @@ class NosqlBinding(models.AbstractModel):
         readonly=True)
     date_modified = fields.Date(readonly=True)
     date_syncronized = fields.Date(readonly=True)
+
+    @api.model
+    def _scheduler_export(self, batch_size=5000, domain=None):
+        if domain is None:
+            domain = []
+        domain.append(('sync_state', '=', 'to_update'))
+        return self.search(domain).export_with_delay(batch_size)
+
+    @api.multi
+    def export_with_delay(self, batch_size=5000):
+        session = ConnectorSession(self._cr, self._uid, self._context)
+        datas = self.read_group(
+            [('id', 'in', self.ids)], ['index_id'], ['index_id'])
+        for data in datas:
+            bindings = self.search(data['__domain'])
+            while bindings:
+                processing = bindings[0:batch_size]
+                bindings = bindings[batch_size:]
+                env = get_environment(session, self._name, data['index_id'][0])
+                exporter = env.get_connector_unit(NosqlExporter)
+                export_func = exporter.get_export_func()
+                export_func.delay(session, self._name, processing.ids)
+                processing.with_context(connector_no_export=True).write({
+                    'sync_state': 'scheduled',
+                    })

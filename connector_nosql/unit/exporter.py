@@ -16,10 +16,6 @@ _logger = logging.getLogger(__name__)
 @nosql
 class NosqlExporter(Exporter):
 
-    @classmethod
-    def match(cls, session, model):
-        return True  # We are a generic exporter; how cool is that?
-
     def __init__(self, environment):
         """
         :param environment: current environment (backend, session, ...)
@@ -27,6 +23,10 @@ class NosqlExporter(Exporter):
         """
         super(NosqlExporter, self).__init__(environment)
         self.bindings = None
+
+    def get_export_func(self):
+        """ Should return the delay export func of the binding """
+        return NotImplemented
 
     def _add(self, data):
         """ Create the SolR record """
