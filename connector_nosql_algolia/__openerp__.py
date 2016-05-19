@@ -21,6 +21,9 @@
     ],
     'test': [
     ],
+    'external_dependencies': {
+        'python': ['algoliasearch'],
+        },
     'installable': True,
     'auto_install': False,
     'application': False,

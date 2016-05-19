@@ -6,7 +6,10 @@
 
 from openerp.addons.connector_nosql.unit.adapter import NosqlAdapter
 from ..backend import algolia
-import algoliasearch
+try:
+    import algoliasearch
+except ImportError:
+    _logger.debug('Can not import algoliasearch')
 
 
 @algolia
