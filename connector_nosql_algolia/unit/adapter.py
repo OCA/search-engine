@@ -6,7 +6,7 @@
 
 from openerp.addons.connector_nosql.unit.adapter import NosqlAdapter
 from ..backend import algolia
-from algoliasearch import algoliasearch
+import algoliasearch
 
 
 @algolia
@@ -20,7 +20,7 @@ class AlgoliaAdapter(NosqlAdapter):
         api_key = connector_env.backend_record.password
         rec_index = connector_env.index_record
         if not self.__pool.get(rec_index.id):
-            client = algoliasearch.Client(application, api_key)
+            client = algoliasearch.client.Client(application, api_key)
             client_index = client.initIndex(rec_index.name)
             self.__pool[rec_index.id] = client_index
         self.index = self.__pool[rec_index.id]
@@ -29,5 +29,4 @@ class AlgoliaAdapter(NosqlAdapter):
         self.index.add_objects(datas)
 
     def delete(self, binding_ids):
-        for binding_id in binding_ids:
-            self.index.delete_object(binding_id)
+        self.index.delete_objects(binding_ids)
