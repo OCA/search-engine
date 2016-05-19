@@ -6,3 +6,4 @@
 
 from . import exporter
 from . import adapter
+from . import mapper

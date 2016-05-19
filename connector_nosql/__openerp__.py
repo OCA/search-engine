@@ -11,6 +11,7 @@
  'category': 'Generic Modules',
  'depends': [
      'connector',
+     'base_jsonify',
  ],
  'data': [
      'views/nosql_view.xml',

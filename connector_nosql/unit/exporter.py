@@ -42,7 +42,6 @@ class NosqlExporter(Exporter):
         self.bindings = self.model.browse(binding_ids)
         datas = []
         for binding in self.bindings:
-            self.binding = binding
             map_record = self.mapper.map_record(binding)
             datas.append(map_record.values())
         return self._add(datas)
