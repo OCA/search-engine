@@ -20,6 +20,7 @@ class AlgoliaIndexMock(object):
         self._calls.append(('delete_objects', binding_ids))
         return True
 
+
 class AlgoliaClientMock(object):
 
     def __init__(self):

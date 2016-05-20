@@ -4,12 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from openerp import tools
-from openerp.tools.translate import _
-from openerp.addons.connector.unit.mapper import (
-    mapping,
-    ExportMapper
-)
+from openerp.addons.connector.unit.mapper import ExportMapper
 from ..backend import nosql
 
 import logging
@@ -36,7 +31,7 @@ class JsonExportMapper(ExportMapper):
         super(JsonExportMapper, self).__init__(connector_env)
         exporter = self.connector_env.index_record.exporter_id
         self._json_parser = exporter.get_json_parser()
-        if not 'id' in self._json_parser:
+        if 'id' not in self._json_parser:
             self._json_parser.append('id')
 
     def _apply(self, map_record, options=None):

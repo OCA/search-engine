@@ -1,3 +1,0 @@
-slugify #all to ascii
-Sunburnt #solR
-httplib2
