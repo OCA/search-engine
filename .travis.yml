@@ -34,6 +34,7 @@ install:
   - git clone https://github.com/akretion/akretion-quality-tools ${HOME}/akretion-quality-tools
   - export PATH=${HOME}/akretion-quality-tools/travis:${PATH}
   - travis_configure
+  - pip install algoliasearch
 
 script:
   - travis_run_tests
