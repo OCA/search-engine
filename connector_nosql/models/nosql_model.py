@@ -6,7 +6,6 @@
 
 
 import logging
-from datetime import datetime
 from openerp import api, fields, models
 from openerp.addons.connector.session import ConnectorSession
 from ..connector import get_environment
