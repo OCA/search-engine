@@ -77,6 +77,15 @@ class NosqlIndex(models.Model):
         string='Exporter',
         required=True)
 
+    @api.multi
+    def refresh(self):
+        for record in self:
+            binding_obj = self.env[record.model_id.model]
+            bindings = binding_obj.search([('index_id', '=', record.id)])
+            bindings.write({'sync_state': 'to_update'})
+            binding_obj._scheduler_export(
+                domain=[('index_id', '=', record.id)])
+
 
 class NosqlBinding(models.AbstractModel):
     _name = 'nosql.binding'

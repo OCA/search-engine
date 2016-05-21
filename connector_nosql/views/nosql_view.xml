@@ -27,6 +27,9 @@
                             <field name="lang_id"/>
                             <field name="model_id"/>
                             <field name="exporter_id"/>
+                            <button name="refresh"
+                                    icon="gtk-refresh"
+                                    type="object"/>
                         </tree>
                     </field>
                 </group>

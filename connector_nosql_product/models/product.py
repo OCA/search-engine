@@ -12,7 +12,10 @@ class NosqlProductTemplate(models.Model):
     _description = 'Nosql Product Template Binding'
     _inherits = {'product.template': 'record_id'}
 
-    record_id = fields.Many2one('product.template')
+    record_id = fields.Many2one(
+        'product.template',
+        required=True,
+        ondelete='cascade')
 
 
 class ProductTemplate(models.Model):
