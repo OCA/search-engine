@@ -2,9 +2,9 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===============
+=======================
 Product NOSQL Connector
-===============
+=======================
 
 This module is a base module for synchronizing the odoo product with nosql database or seach-engine.
 
@@ -34,7 +34,7 @@ Usage
 Known issues / Roadmap
 ======================
 
-* ...
+* Nothing yet
 
 Bug Tracker
 ===========

@@ -32,7 +32,7 @@ Usage
 Known issues / Roadmap
 ======================
 
-* ...
+* Nothing yet
 
 Bug Tracker
 ===========
