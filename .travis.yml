@@ -31,6 +31,9 @@ install:
   - travis_install_nightly
   - printf '[options]\n\nrunning_env = dev\n' > ${HOME}/.openerp_serverrc
   - git clone https://github.com/akretion/server-tools -b 9.0-jsonify $HOME/dependencies/server-tools
+  - git clone https://github.com/akretion/akretion-quality-tools ${HOME}/akretion-quality-tools
+  - export PATH=${HOME}/akretion-quality-tools/travis:${PATH}
+  - travis_configure
 
 script:
   - travis_run_tests
