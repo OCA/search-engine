@@ -9,6 +9,7 @@ from openerp.addons.connector.unit.synchronizer import Exporter
 from openerp.exceptions import UserError
 from ..connector import get_environment
 from ..backend import nosql
+from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
@@ -54,7 +55,7 @@ def export_record_nosql(session, model_name, binding_ids):
         ['id', 'index_id'],
         ['index_id'])
     if len(res) > 1:
-        raise UserError('Binding do not believe to the same index')
+        raise UserError(_('Binding do not believe to the same index'))
     index_id = res[0]['index_id'][0]
     env = get_environment(session, model_name, index_id)
     exporter = env.get_connector_unit(NosqlExporter)

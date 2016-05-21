@@ -10,6 +10,7 @@
     'summary': 'Connector For Algolia Search Engine',
     'author': 'Akretion',
     'website': 'http://www.akretion.com',
+    'license': 'AGPL-3',
     'images': [],
     'depends': [
         'connector_nosql',
