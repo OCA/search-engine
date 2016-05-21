@@ -39,21 +39,6 @@ class NosqlBackend(models.Model):
         'backend_id',
         string='Index')
 
-    def output_recorder(self):
-        """ Utility method to output a file containing all the recorded
-        requests / responses with Solr.  Used to generate test data.
-        Should be called with ``erppeek`` for instance.
-        """
-        from .unit.backend_adapter import output_recorder
-        import os
-        import tempfile
-        fmt = '%Y-%m-%d-%H-%M-%S'
-        timestamp = datetime.now().strftime(fmt)
-        filename = 'output_%s_%s' % (self._cr.dbname, timestamp)
-        path = os.path.join(tempfile.gettempdir(), filename)
-        output_recorder(path)
-        return path
-
 
 class NosqlIndex(models.Model):
     _name = 'nosql.index'
