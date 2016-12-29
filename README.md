@@ -8,6 +8,11 @@ Nosql Connector for Odoo
 This project include a generic nosql connector and also a specific connector for Algolia.
 
 
+Note
+=====
+
+This project is fully compatible with odoo 8.0
+
 Roadmap
 ========
 
