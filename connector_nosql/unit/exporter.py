@@ -11,6 +11,13 @@ from ..connector import get_environment
 from ..backend import nosql
 from openerp.tools.translate import _
 
+# 8.0/9.0 compatibility
+try:
+    from openerp.exceptions import UserError
+except:
+    from openerp.exceptions import Warning as UserError
+
+
 _logger = logging.getLogger(__name__)
 
 
