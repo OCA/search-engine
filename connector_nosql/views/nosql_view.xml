@@ -59,17 +59,19 @@
 <record id="view_nosql_exports_form" model="ir.ui.view">
     <field name="model">ir.exports</field>
     <field name="arch" type="xml">
-        <form string="Export" version="7.0">
+        <form string="Exporter Configuration" version="7.0">
             <sheet>
                 <label for="name" class="oe_edit_only"/>
                 <h1>
                     <field name="name" class="oe_inline" />
                 </h1>
-                <group name="nosql" string="Export Configuration">
-                    <group colspan="4" col="4">
-                        <field name="resource" colspan="4"/>
-                        <field name="export_fields" colspan="4"/>
-                    </group>
+                <group name="nosql" col="4">
+                    <field name="resource" colspan="4"/>
+                    <field name="export_fields" colspan="4" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                        </tree>
+                    </field>
                 </group>
             </sheet>
         </form>
