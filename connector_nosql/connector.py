@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.addons.connector.connector import ConnectorEnvironment
+from openerp.addons.connector.session import ConnectorSession
 
 
 class ConnectorNosqlEnvironment(ConnectorEnvironment):
@@ -33,5 +34,13 @@ class ConnectorNosqlEnvironment(ConnectorEnvironment):
 def get_environment(session, model_name, index_id):
     """ Create an environment to work with. """
     index_record = session.env['nosql.index'].browse(index_id)
+    lang_code = index_record.lang_id.code
+    # TODO failed to make it work with magento exemple
+    # using session.change_context
+    # should be refactored in 10
+    if lang_code != session.context.get('lang'):
+        ctx = session.env.context.copy()
+        ctx['lang'] = lang_code
+        session = ConnectorSession.from_env(session.env(context=ctx))
     env = ConnectorNosqlEnvironment(index_record, session, model_name)
     return env
