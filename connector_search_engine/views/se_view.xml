@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+<record id="view_se_backend_form" model="ir.ui.view">
+    <field name="model">se.backend</field>
+    <field name="arch" type="xml">
+        <form string="NoSQL Backend">
+           <sheet>
+                <label for="name" class="oe_edit_only"/>
+                <h1>
+                    <field name="name" class="oe_inline" />
+                </h1>
+                <group name="se" string="Configuration">
+                    <group colspan="4" col="4">
+                        <field name="version" colspan="4"/>
+                        <field name="location" placeholder="e.g. http://my.se.com"
+                            colspan="2"/>
+                        <field name="username" colspan="2"/>
+                        <field name="password" colspan="2"/>
+                    </group>
+                </group>
+                <group name="index" string="Index">
+                    <field name="index_ids" nolabel="1">
+                        <tree string="Index" editable="bottom">
+                            <field name="name"/>
+                            <field name="lang_id"/>
+                            <field name="model_id"/>
+                            <field name="exporter_id"/>
+                            <button name="refresh"
+                                    icon="gtk-refresh"
+                                    type="object"/>
+                        </tree>
+                    </field>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_se_backend_tree" model="ir.ui.view">
+    <field name="model">se.backend</field>
+    <field name="arch" type="xml">
+        <tree string="NoSQL Backend" version="7.0">
+            <field name="name"/>
+            <field name="location"/>
+        </tree>
+    </field>
+</record>
+
+<record id="action_se_backend" model="ir.actions.act_window">
+    <field name="name">Search Engine Backends</field>
+    <field name="res_model">se.backend</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_se_backend_tree"/>
+</record>
+
+<record id="view_se_exports_form" model="ir.ui.view">
+    <field name="model">ir.exports</field>
+    <field name="arch" type="xml">
+        <form string="Exporter Configuration" version="7.0">
+            <sheet>
+                <label for="name" class="oe_edit_only"/>
+                <h1>
+                    <field name="name" class="oe_inline" />
+                </h1>
+                <group name="search_engine" col="4">
+                    <field name="resource" colspan="4"/>
+                    <field name="export_fields" colspan="4" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+    </data>
+</openerp>
