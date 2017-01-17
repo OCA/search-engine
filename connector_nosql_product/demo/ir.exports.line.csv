@@ -1,9 +1,0 @@
-id,export_id/id,name
-name,ir_exp_nosql_product_product,name
-price,ir_exp_nosql_product_product,price
-categ,ir_exp_nosql_product_product,categ_id/.id
-default_code,ir_exp_nosql_product_product,default_code
-description,ir_exp_nosql_product_product,description
-ean13,ir_exp_nosql_product_product,ean13
-color,ir_exp_nosql_product_product,color
-list_price,ir_exp_nosql_product_product,list_price
