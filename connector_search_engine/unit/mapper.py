@@ -12,17 +12,17 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-@se
+#@se
 class JsonExportMapper(ExportMapper):
 
-    @classmethod
-    def match(cls, session, model):
-        """ Generic json mapper """
-        if cls._model_name is None:
-            return True
-        else:
-            return super(JsonExportMapper, cls).match(session, model)
-
+#    @classmethod
+#    def match(cls, session, model):
+#        """ Generic json mapper """
+#        if cls._model_name is None:
+#            return True
+#        else:
+#            return super(JsonExportMapper, cls).match(session, model)
+#
     def __init__(self, connector_env):
         """
         :param connector_env: current environment (backend, session, ...)
