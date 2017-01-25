@@ -4,11 +4,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from openerp.addons.connector_se.unit.mapper import JsonExportMapper
+from openerp.addons.connector_search_engine.unit.mapper import JsonExportMapper
 from ..backend import algolia
 
 
-@algolia
+#@algolia
 class JsonExportMapper(JsonExportMapper):
 
     def _apply(self, map_record, options=None):

@@ -4,7 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from openerp.addons.connector_se.unit.adapter import SeAdapter
+from openerp.addons.connector_search_engine.unit.adapter import SeAdapter
 from ..backend import algolia
 import logging
 _logger = logging.getLogger(__name__)

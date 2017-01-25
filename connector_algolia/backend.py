@@ -5,7 +5,7 @@
 
 
 from openerp.addons.connector.backend import Backend
-from openerp.addons.connector_se.backend import se
+from openerp.addons.connector_search_engine.backend import se
 
 
 algolia = Backend(parent=se)
