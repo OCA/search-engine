@@ -61,6 +61,11 @@ class NosqlIndex(models.Model):
         string='Exporter',
         required=True)
 
+    _sql_constraints = [
+        ('lang_model_uniq', 'unique(backend_id, lang_id, model_id)',
+         'Lang and model of index must be uniq per backend.'),
+    ]
+
     @api.multi
     def refresh(self):
         for record in self:
