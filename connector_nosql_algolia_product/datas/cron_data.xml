@@ -9,9 +9,9 @@
     <field name="interval_type">days</field>
     <field name="numbercall">-1</field>
     <field eval="False" name="doall"/>
-    <field name="model">nosql.product.template</field>
+    <field name="model">nosql.product.product</field>
     <field name="function">_scheduler_export</field>
     <field name="args">(5000, [('backend_id.version', '=', 'algolia_v1')])</field>
-</record> 
+</record>
     </data>
 </openerp>
