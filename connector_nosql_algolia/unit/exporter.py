@@ -18,7 +18,7 @@ def export_record(session, model_name, binding_ids):
 
 @algolia
 class AlgoliaExporter(NosqlExporter):
-    _model_name = 'nosql.product.template'
+    _model_name = 'nosql.product.product'
 
     def get_export_func(self):
         """ Should return the delay export func of the binding """
