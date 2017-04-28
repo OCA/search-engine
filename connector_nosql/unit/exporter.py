@@ -6,7 +6,7 @@
 
 import logging
 from openerp.addons.connector.unit.synchronizer import Exporter
-from openerp.exceptions import UserError
+from openerp.exceptions import Warning as UserError
 from ..connector import get_environment
 from ..backend import nosql
 from openerp.tools.translate import _
