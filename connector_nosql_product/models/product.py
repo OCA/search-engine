@@ -6,22 +6,22 @@
 from openerp import fields, models
 
 
-class NosqlProductTemplate(models.Model):
+class NosqlProductProduct(models.Model):
     _inherit = 'nosql.binding'
-    _name = 'nosql.product.template'
-    _description = 'Nosql Product Template Binding'
-    _inherits = {'product.template': 'record_id'}
+    _name = 'nosql.product.product'
+    _description = 'Nosql Product Product Binding'
+    _inherits = {'product.product': 'record_id'}
 
     record_id = fields.Many2one(
-        'product.template',
+        'product.product',
         required=True,
         ondelete='cascade')
 
 
-class ProductTemplate(models.Model):
-    _inherit = 'product.template'
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
 
     nosql_bind_ids = fields.One2many(
-        'nosql.product.template',
+        'nosql.product.product',
         'record_id',
         string='Nosql Binding')

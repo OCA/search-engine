@@ -6,8 +6,8 @@
     <field name="backend_id" ref="connector_nosql_algolia.backend_1"/>
     <field name="name">algolia-product</field>
     <field name="lang_id" ref="base.lang_en"/>
-    <field name="model_id" ref="connector_nosql_product.model_nosql_product_template"/>
-    <field name="exporter_id" ref="connector_nosql_product.ir_exp_nosql_product_template"/>
+    <field name="model_id" ref="connector_nosql_product.model_nosql_product_product"/>
+    <field name="exporter_id" ref="connector_nosql_product.ir_exp_nosql_product_product"/>
 </record>
 
     </data>

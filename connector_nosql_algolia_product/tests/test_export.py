@@ -22,16 +22,16 @@ class ExportProduct(SetUpAlgoliaBase):
             'unit.exporter.export_record')
         expected_ids = []
         for xml_id in (3, 4):
-            tmpl = self.env.ref(
-                'product.product_product_%s_product_template' % xml_id)
-            binding = self.env['nosql.product.template'].create({
+            product = self.env.ref(
+                'product.product_product_%s' % xml_id)
+            binding = self.env['nosql.product.product'].create({
                 'backend_id': self.backend.id,
-                'record_id': tmpl.id,
+                'record_id': product.id,
                 'index_id': self.index.id,
                 })
             expected_ids.append(binding.id)
         with mock_job_delay_to_direct(path), mock_api() as API:
-            self.env['nosql.product.template']._scheduler_export()
+            self.env['nosql.product.product']._scheduler_export()
 
             # Check that only one index have been call
             self.assertEqual(len(API.index), 1)

@@ -2,9 +2,9 @@
 <openerp>
     <data>
 
-<record id="ir_exp_nosql_product_template" model="ir.exports">
+<record id="ir_exp_nosql_product_product" model="ir.exports">
     <field name="name">Nosql Product Export</field>
-    <field name="resource">nosql.product.template</field>
+    <field name="resource">nosql.product.product</field>
 </record>
 
     </data>

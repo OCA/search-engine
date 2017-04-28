@@ -2,9 +2,9 @@
 <openerp>
     <data>
 
-<record id="view_product_template_form" model="ir.ui.view">
-    <field name="model">product.template</field>
-    <field name="inherit_id" ref="connector_base_product.product_template_common_form"/>
+<record id="product_normal_form_view" model="ir.ui.view">
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="connector_base_product.product_normal_form_view"/>
     <field name="arch" type="xml">
         <page name="connector" position="attributes">
             <attribute name="invisible">0</attribute>
@@ -22,10 +22,10 @@
     </field>
 </record>
 
-<record id="view_nosql_product_template_tree" model="ir.ui.view">
-    <field name="model">nosql.product.template</field>
+<record id="view_nosql_product_product_tree" model="ir.ui.view">
+    <field name="model">nosql.product.product</field>
     <field name="arch" type="xml">
-    <tree string="Nosql Product Template" create="0" edit="0" delete="0">
+    <tree string="Nosql Product" create="0" edit="0" delete="0">
         <field name="name"/>
         <field name="backend_id"/>
         <field name="index_id"/>
@@ -36,10 +36,10 @@
     </field>
 </record>
 
-<record id="view_nosql_product_template_search" model="ir.ui.view">
-    <field name="model">nosql.product.template</field>
+<record id="view_nosql_product_product_search" model="ir.ui.view">
+    <field name="model">nosql.product.product</field>
     <field name="arch" type="xml">
-    <search string="Nosql Product Template">
+    <search string="Nosql Product">
         <field name="name"/>
         <field name="backend_id"/>
         <field name="index_id"/>
@@ -60,20 +60,20 @@
     </field>
 </record>
 
-<record model="ir.actions.act_window" id="act_open_nosql_product_template_view">
+<record model="ir.actions.act_window" id="act_open_nosql_product_product_view">
     <field name="name">Product Binding</field>
     <field name="type">ir.actions.act_window</field>
-    <field name="res_model">nosql.product.template</field>
+    <field name="res_model">nosql.product.product</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree</field>
-    <field name="search_view_id" ref="view_nosql_product_template_search"/>
+    <field name="search_view_id" ref="view_nosql_product_product_search"/>
     <field name="domain">[]</field>
     <field name="context">{'search_default_to_update': 1}</field>
 </record>
 
-<menuitem id="menu_nosql_product_template"
+<menuitem id="menu_nosql_product_product"
     parent="connector_nosql.menu_nosql_root"
     sequence="20"
-    action="act_open_nosql_product_template_view"/>
+    action="act_open_nosql_product_product_view"/>
     </data>
 </openerp>

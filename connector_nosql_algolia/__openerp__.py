@@ -5,7 +5,7 @@
 
 {
     'name': 'Algolia Connector',
-    'version': '9.0.0.0.1',
+    'version': '8.0.0.0.1',
     'category': 'Connector',
     'summary': 'Connector For Algolia Search Engine',
     'author': 'Akretion',

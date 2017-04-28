@@ -6,7 +6,7 @@
 
 import logging
 from openerp.addons.connector.unit.synchronizer import Exporter
-from openerp.exceptions import UserError
+from openerp.exceptions import Warning as UserError
 from ..connector import get_environment
 from ..backend import nosql
 from openerp.tools.translate import _
@@ -49,13 +49,13 @@ class NosqlExporter(Exporter):
 
 
 def export_record_nosql(session, model_name, binding_ids):
-    # check that all binding believe to the same index
+    # check that all bindings belong to the same index
     res = session.env[model_name].read_group(
         [('id', 'in', binding_ids)],
         ['id', 'index_id'],
         ['index_id'])
     if len(res) > 1:
-        raise UserError(_('Binding do not believe to the same index'))
+        raise UserError(_('Bindings do not belong to the same index'))
     index_id = res[0]['index_id'][0]
     env = get_environment(session, model_name, index_id)
     exporter = env.get_connector_unit(NosqlExporter)
