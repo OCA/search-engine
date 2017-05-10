@@ -5,7 +5,7 @@
 <record id="view_se_backend_form" model="ir.ui.view">
     <field name="model">se.backend</field>
     <field name="arch" type="xml">
-        <form string="NoSQL Backend">
+        <form string="Search Engine Backend">
            <sheet>
                 <label for="name" class="oe_edit_only"/>
                 <h1>
@@ -41,7 +41,7 @@
 <record id="view_se_backend_tree" model="ir.ui.view">
     <field name="model">se.backend</field>
     <field name="arch" type="xml">
-        <tree string="NoSQL Backend" version="7.0">
+        <tree string="Search Engine Backend" version="7.0">
             <field name="name"/>
             <field name="location"/>
         </tree>

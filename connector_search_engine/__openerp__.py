@@ -3,7 +3,7 @@
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-{'name': 'Connector NoSQL',
+{'name': 'Connector Search Engine',
  'version': '8.0.0.0.1',
  'author': 'Akretion',
  'website': 'www.akretion.com',
