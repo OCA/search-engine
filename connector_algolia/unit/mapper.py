@@ -8,7 +8,7 @@ from openerp.addons.connector_search_engine.unit.mapper import JsonExportMapper
 from ..backend import algolia
 
 
-#@algolia
+@algolia
 class JsonExportMapper(JsonExportMapper):
 
     def _apply(self, map_record, options=None):
