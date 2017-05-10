@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_nosql_backend,nosql_backend connector manager,model_nosql_backend,connector.group_connector_manager,1,1,1,1
-access_nosql_index,nosql_index connector manager,model_nosql_index,connector.group_connector_manager,1,1,1,1
