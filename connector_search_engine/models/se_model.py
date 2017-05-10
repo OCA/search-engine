@@ -20,16 +20,7 @@ class SeBackend(models.Model):
     _inherit = 'connector.backend'
     _backend_type = 'se'
 
-    def _select_versions(self):
-        """ Available versions
-
-        Can be inherited to add custom versions.
-        """
-        return []
-
-    version = fields.Selection(
-        '_select_versions',
-        required=True)
+    version = fields.Selection([], required=True)
     location = fields.Char()
     username = fields.Char()
     password = fields.Char()
@@ -61,7 +52,7 @@ class SeIndex(models.Model):
         string='Exporter')
 
     _sql_constraints = [
-        ('lang_model_uniq', 'unique(backend_id, lang_id, model_id)',
+        ('lang_model_uniq', 'unique(se_backend_id, lang_id, model_id)',
          'Lang and model of index must be uniq per backend.'),
     ]
 
@@ -78,7 +69,7 @@ class SeIndex(models.Model):
 class SeBinding(models.AbstractModel):
     _name = 'se.binding'
 
-    backend_id = fields.Many2one(
+    se_backend_id = fields.Many2one(
         'se.backend',
         related="index_id.backend_id")
     index_id = fields.Many2one(

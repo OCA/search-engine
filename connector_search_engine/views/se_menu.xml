@@ -4,7 +4,7 @@
 
     <menuitem id="menu_se_root"
         parent="connector.menu_connector_root"
-        name="NoSql Connector"
+        name="Search Engine Connector"
         sequence="10"
         groups="connector.group_connector_manager"/>
 

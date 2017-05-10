@@ -5,13 +5,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from openerp import models
+from openerp import fields, models
 
 
 class SeBackend(models.Model):
     _inherit = 'se.backend'
 
-    def _select_versions(self):
-        res = super(SeBackend, self)._select_versions()
-        res.append(('algolia_v1', 'Algolia V1'))
-        return res
+    version = fields.Selection(selection_add=[('algolia_v1', 'Algolia V1')])
