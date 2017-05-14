@@ -57,7 +57,7 @@ class SeIndex(models.Model):
     ]
 
     @api.multi
-    def refresh(self):
+    def export_all(self):
         for record in self:
             binding_obj = self.env[record.model_id.model]
             bindings = binding_obj.search([('index_id', '=', record.id)])
