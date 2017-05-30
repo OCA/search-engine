@@ -52,7 +52,7 @@ class SeIndex(models.Model):
         string='Exporter')
 
     _sql_constraints = [
-        ('lang_model_uniq', 'unique(se_backend_id, lang_id, model_id)',
+        ('lang_model_uniq', 'unique(backend_id, lang_id, model_id)',
          'Lang and model of index must be uniq per backend.'),
     ]
 
