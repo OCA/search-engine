@@ -20,20 +20,16 @@ except ImportError:
 class AlgoliaAdapter(SeAdapter):
     _model_name = None
 
-    __pool = {}  # pool of connection
-
-    def __init__(self, connector_env):
-        application = connector_env.backend_record.username
-        api_key = connector_env.backend_record.password
-        rec_index = connector_env.index_record
-        if not self.__pool.get(rec_index.id):
-            client = algoliasearch.client.Client(application, api_key)
-            client_index = client.initIndex(rec_index.name)
-            self.__pool[rec_index.id] = client_index
-        self.index = self.__pool[rec_index.id]
+    def _get_index(self):
+        backend = self.backend_record
+        client = algoliasearch.client.Client(
+            backend.username, backend.password)
+        return client.initIndex(self.connector_env.index_record.name)
 
     def add(self, datas):
-        self.index.add_objects(datas)
+        index = self._get_index()
+        index.add_objects(datas)
 
     def delete(self, binding_ids):
-        self.index.delete_objects(binding_ids)
+        index = self._get_index()
+        index.delete_objects(binding_ids)
