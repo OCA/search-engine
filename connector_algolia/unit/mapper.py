@@ -13,11 +13,4 @@ from ..backend import algolia
 class JsonExportMapper(JsonExportMapper):
 
     def _apply(self, map_record, options=None):
-        res = super(JsonExportMapper, self)._apply(map_record, options=None)
-        exporter = self.connector_env.index_record.exporter_id
-        object_id = map_record._source[self.connector_env.index_record.id_key]
-        if isinstance(object_id, models.Model):
-            res['objectID'] = object_id.id
-        else:
-            res['objectID'] = object_id
-        return res
+        return super(JsonExportMapper, self)._apply(map_record, options=None)

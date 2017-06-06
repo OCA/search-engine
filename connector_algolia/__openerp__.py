@@ -16,7 +16,6 @@
         'connector_search_engine',
     ],
     'data': [
-        'views/se_view.xml',
     ],
     'demo': [
         'demo/backend_demo.xml',
