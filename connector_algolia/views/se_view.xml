@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+<record id="view_se_backend_form" model="ir.ui.view">
+    <field name="model">se.backend</field>
+    <field name="inherit_id" ref="connector_search_engine.view_se_backend_form"/>
+    <field name="arch" type="xml">
+        <group name="se-main" position="after">
+            <group name="se-algolia" attrs="{'invisible': [('version', '!=', 'algolia_v1')]}">
+                <field name="algolia_app_id" attrs="{'required': [('version', '=', 'algolia_v1')]}"/>
+                <field name="algolia_api_key" attrs="{'required': [('version', '=', 'algolia_v1')]}"/>
+            </group>
+        </group>
+    </field>
+</record>
+
+    </data>
+</openerp>

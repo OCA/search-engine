@@ -22,8 +22,9 @@ class AlgoliaAdapter(SeAdapter):
 
     def _get_index(self):
         backend = self.backend_record
+        account = backend._get_existing_keychain()
         client = algoliasearch.client.Client(
-            backend.username, backend.password)
+            backend.algolia_app_id, account.get_password())
         return client.initIndex(self.connector_env.index_record.name)
 
     def add(self, datas):

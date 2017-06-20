@@ -12,6 +12,8 @@ class SeBackend(models.Model):
     _inherit = 'se.backend'
 
     version = fields.Selection(selection_add=[('algolia_v1', 'Algolia V1')])
+    algolia_app_id = fields.Char(sparse="data", string="APP ID")
+    algolia_api_key = fields.Char(related='password', string="API KEY")
 
 
 class SeIndex(models.Model):
