@@ -14,16 +14,27 @@ from ..unit.exporter import SeExporter
 _logger = logging.getLogger(__name__)
 
 
+class KeychainAccount(models.Model):
+    _inherit = 'keychain.account'
+
+    namespace = fields.Selection(
+        selection_add=[('search_engine_backend', 'Search Engine Backend')])
+
+    def _search_engine_backend_validate_data(self, data):
+        return True
+
+    def _search_engine_backend_init_data(self):
+        return {}
+
+
 class SeBackend(models.Model):
     _name = 'se.backend'
     _description = 'Se Backend'
-    _inherit = 'connector.backend'
+    _inherit = ['connector.backend', 'keychain.backend']
     _backend_type = 'se'
+    _backend_name = 'search_engine_backend'
 
     version = fields.Selection([], required=True)
-    location = fields.Char()
-    username = fields.Char()
-    password = fields.Char()
     index_ids = fields.One2many(
         'se.index',
         'backend_id',

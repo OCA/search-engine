@@ -12,12 +12,8 @@
                     <field name="name" class="oe_inline" />
                 </h1>
                 <group name="se" string="Configuration">
-                    <group colspan="4" col="4">
+                    <group colspan="4" col="4" name="se-main">
                         <field name="version" colspan="4"/>
-                        <field name="location" placeholder="e.g. http://my.se.com"
-                            colspan="2"/>
-                        <field name="username" colspan="2"/>
-                        <field name="password" colspan="2"/>
                     </group>
                 </group>
                 <group name="index" string="Index">
@@ -43,7 +39,6 @@
     <field name="arch" type="xml">
         <tree string="Search Engine Backend" version="7.0">
             <field name="name"/>
-            <field name="location"/>
         </tree>
     </field>
 </record>
