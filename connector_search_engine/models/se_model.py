@@ -67,6 +67,12 @@ class SeIndex(models.Model):
          'Lang and model of index must be uniq per backend.'),
     ]
 
+    @api.model
+    def export_all_index(self, domain=None):
+        if domain is None:
+            domain = []
+        return self.search(domain).export_all()
+
     @api.multi
     def export_all(self):
         for record in self:
@@ -75,6 +81,7 @@ class SeIndex(models.Model):
             bindings.write({'sync_state': 'to_update'})
             binding_obj._scheduler_export(
                 domain=[('index_id', '=', record.id)])
+        return True
 
 
 class SeBinding(models.AbstractModel):
