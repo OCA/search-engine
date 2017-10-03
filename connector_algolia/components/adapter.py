@@ -4,9 +4,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from openerp.addons.connector_search_engine.unit.adapter import SeAdapter
-from ..backend import algolia
 import logging
+
+from odoo.addons.component.core import Component
+
 _logger = logging.getLogger(__name__)
 
 
@@ -16,16 +17,17 @@ except ImportError:
     _logger.debug('Can not import algoliasearch')
 
 
-@algolia
-class AlgoliaAdapter(SeAdapter):
-    _model_name = None
+class AlgoliaAdapter(Component):
+    _name = "algolia.adapter"
+    _inherit = ['base.backend.adapter', 'algolia.se.connector']
+    _usage = 'se.backend.adapter'
 
     def _get_index(self):
         backend = self.backend_record
         account = backend._get_existing_keychain()
         client = algoliasearch.client.Client(
             backend.algolia_app_id, account.get_password())
-        return client.initIndex(self.connector_env.index_record.name)
+        return client.initIndex(self.work.index.name)
 
     def add(self, datas):
         index = self._get_index()

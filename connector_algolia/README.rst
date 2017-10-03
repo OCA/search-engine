@@ -2,9 +2,9 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===============
+=================
 Algolia Connector
-===============
+=================
 
 This module is a base module to synchronize Algolia with Odoo
 
@@ -55,6 +55,7 @@ Contributors
 ------------
 
 * Sébastien BEAU <sebastien.beau@akretion.com>
+* Laurent Mignon <laurent.mignon@acsone.eu>
 
 Maintainer
 ----------

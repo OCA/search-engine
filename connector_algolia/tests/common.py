@@ -3,10 +3,10 @@
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from contextlib import contextmanager
 
 import mock
-from contextlib import contextmanager
-from openerp.tests.common import TransactionCase
+from odoo.addons.component.tests.common import SavepointComponentCase
 
 
 class AlgoliaIndexMock(object):
@@ -40,7 +40,7 @@ class AlgoliaClientMock(object):
 
 
 @contextmanager
-def mock_api():
+def mock_api(env):
     algolia_mock = AlgoliaClientMock()
 
     def get_mock_interface(api, secret):
@@ -48,12 +48,15 @@ def mock_api():
         algolia_mock.secret = secret
         return algolia_mock
 
-    with mock.patch('algoliasearch.client.Client', get_mock_interface):
+    with mock.patch('algoliasearch.client.Client', get_mock_interface), \
+            mock.patch('odoo.addons.keychain.models.keychain.KeychainAccount'
+                       '.get_password') as mocked_get_password:
+        mocked_get_password.get_password.return_value = 'a'
         yield algolia_mock
 
 
-class SetUpAlgoliaBase(TransactionCase):
+class ConnectorAlgoliaCase(SavepointComponentCase):
 
     def setUp(self):
-        super(SetUpAlgoliaBase, self).setUp()
-        self.backend = self.env.ref('connector_se_algolia.backend_1')
+        super(ConnectorAlgoliaCase, self).setUp()
+        self.backend = self.env.ref('connector_algolia.backend_1')

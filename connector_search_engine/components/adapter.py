@@ -3,14 +3,13 @@
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-
-from openerp.addons.connector.unit.backend_adapter import BackendAdapter
-from ..backend import se
+from odoo.addons.component.core import AbstractComponent
 
 
-@se
-class SeAdapter(BackendAdapter):
-    _model_name = None
+class SeAdapter(AbstractComponent):
+    _name = 'se.backend.adapter'
+    _inherit = ['base.se.connector', 'base.backend.adapter']
+    _usage = 'se.backend.adapter'
 
     @classmethod
     def match(cls, session, model):

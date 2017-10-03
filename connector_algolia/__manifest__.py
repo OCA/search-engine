@@ -5,28 +5,30 @@
 
 {
     'name': 'Algolia Connector',
-    'version': '8.0.0.0.1',
+    'version': '10.0.0.0.1',
     'category': 'Connector',
     'summary': 'Connector For Algolia Search Engine',
-    'author': 'Akretion',
+    'author': 'Akretion,ACSONE SA/NV',
     'website': 'http://www.akretion.com',
     'license': 'AGPL-3',
     'images': [],
     'depends': [
         'connector_search_engine',
+        'connector',
+        'component',
+        'base_jsonify',
     ],
     'data': [
-        'views/se_view.xml',
+        'views/se_backend_algolia.xml',
+        'views/se_menu.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
         'demo/backend_demo.xml',
     ],
-    'test': [
-    ],
     'external_dependencies': {
         'python': ['algoliasearch'],
         },
-    'installable': False,
-    'auto_install': False,
+    'installable': True,
     'application': False,
 }

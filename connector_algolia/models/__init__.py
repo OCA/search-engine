@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import se_backend
+from . import se_backend_algolia

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-  <data>
+<odoo>
 
-    <menuitem id="menu_se_root"
+    <menuitem id="se_root_menu"
         parent="connector.menu_connector_root"
         name="Search Engine Connector"
         sequence="10"
         groups="connector.group_connector_manager"/>
 
-    <menuitem id="menu_se_backend"
+    <menuitem id="se_backend_menu"
         name="Backends"
-        parent="menu_se_root"
-        action="action_se_backend"/>
+        parent="se_root_menu"
+        action="se_backend_act_window"/>
 
-  </data>
-</openerp>
+</odoo>

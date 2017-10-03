@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="se_backend_algolia_form_view">
+        <field name="name">se.backend.spec.abstract.form (in connector_search_engine)</field>
+        <field name="model">se.backend.algolia</field>
+        <field name="arch" type="xml">
+            <form string="Search Engine Backend">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" class="oe_inline"/>
+                    </h1>
+                    <group name="se" string="Configuration">
+                        <group colspan="4" col="4" name="se-main">
+                            <field name="algolia_app_id"/>
+                            <field name="algolia_api_key"/>
+                        </group>
+                    </group>
+                    <group name="index" string="Index">
+                        <field name="index_ids" nolabel="1">
+                            <tree string="Index" editable="bottom">
+                                <field name="name"/>
+                                <field name="lang_id"/>
+                                <field name="model_id"/>
+                                <field name="exporter_id"/>
+                                <button name="export_all"
+                                        icon="gtk-refresh"
+                                        type="object"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="se_backend_algolia_tree_view">
+        <field name="name">se.backend.algolia.tree (in connector_algolia)</field>
+        <field name="model">se.backend.algolia</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="se_backend_algolia_act_window">
+        <field name="name">Search Engine Backend</field>
+        <field name="res_model">se.backend.algolia</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>
