@@ -25,7 +25,7 @@
                                 <field name="model_id"/>
                                 <field name="exporter_id"/>
                                 <button name="export_all"
-                                        icon="gtk-refresh"
+                                        icon="fa-refresh"
                                         type="object"/>
                             </tree>
                         </field>
