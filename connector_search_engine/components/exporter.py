@@ -33,7 +33,8 @@ class SeExporter(Component):
         :param binding_id: identifier of the binding record to export
         """
         datas = []
-        for record in self.work.records:
+        lang = self.work.index.lang_id.code
+        for record in self.work.records.with_context(lang=lang):
             map_record = self.mapper.map_record(record)
             datas.append(map_record.values())
         return self._add(datas)
