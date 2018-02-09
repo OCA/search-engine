@@ -50,7 +50,7 @@ def mock_api(env):
 
     with mock.patch('algoliasearch.client.Client', get_mock_interface), \
             mock.patch('odoo.addons.keychain.models.keychain.KeychainAccount'
-                       '.get_password') as mocked_get_password:
+                       '._get_password') as mocked_get_password:
         mocked_get_password.get_password.return_value = 'a'
         yield algolia_mock
 

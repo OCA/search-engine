@@ -26,7 +26,7 @@ class AlgoliaAdapter(Component):
         backend = self.backend_record
         account = backend._get_existing_keychain()
         client = algoliasearch.client.Client(
-            backend.algolia_app_id, account.get_password())
+            backend.algolia_app_id, account._get_password())
         return client.initIndex(self.work.index.name)
 
     def add(self, datas):
