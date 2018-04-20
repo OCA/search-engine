@@ -38,9 +38,10 @@ class SeBackend(models.Model):
         vals = []
         s = self.with_context(active_test=False)
         for model, descr in spec_backend_selection:
-            records = s.env[model].search([])
-            for record in records:
-                vals.append((model, record.id))
+            if model in s.env:
+                records = s.env[model].search([])
+                for record in records:
+                    vals.append((model, record.id))
         return vals
 
     @api.model
