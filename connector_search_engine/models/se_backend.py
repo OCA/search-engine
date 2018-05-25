@@ -38,7 +38,13 @@ class SeBackend(models.Model):
         vals = []
         s = self.with_context(active_test=False)
         for model, descr in spec_backend_selection:
-            if model in s.env:
+            # We have to check if the table really exist.
+            # Because in the case of the user uninstall a connector_XXX module
+            # with a new se.backend (so who adds a new element into selection
+            # field), no more se.backend will be available (because the
+            # selection field still filled with the previous model and Odoo
+            # try to load the model).
+            if model in s.env and s.env[model]._table_exist():
                 records = s.env[model].search([])
                 for record in records:
                     vals.append((model, record.id))
