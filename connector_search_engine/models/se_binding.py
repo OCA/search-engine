@@ -34,11 +34,12 @@ class SeBinding(models.AbstractModel):
         record._jobify_recompute_json()
         return record
 
-    def _jobify_recompute_json(self):
+    def _jobify_recompute_json(self, force_export=False):
         description = _('Recompute %s json and check if need update'
                         % self._name)
         for record in self:
-            record.with_delay(description=description).recompute_json()
+            record.with_delay(description=description).recompute_json(
+                force_export=force_export)
 
     def _work_by_index(self):
         for backend in self.mapped('se_backend_id'):
@@ -54,13 +55,13 @@ class SeBinding(models.AbstractModel):
 
     # TODO maybe we need to add lock (todo check)
     @job(default_channel='root.search_engine.recompute')
-    def recompute_json(self):
+    def recompute_json(self, force_export=False):
         for work in self._work_by_index():
             mapper = work.component(usage='se.export.mapper')
             lang = work.index.lang_id.code
             for record in work.records.with_context(lang=lang):
                 data = mapper.map_record(record).values()
-                if record.data != data:
+                if record.data != data or force_export:
                     vals = {'data': data}
                     if record.sync_state in ('done', 'new'):
                         vals['sync_state'] = 'to_update'

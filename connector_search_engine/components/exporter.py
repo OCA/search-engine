@@ -13,10 +13,10 @@ class SeExporter(Component):
     _base_mapper_usage = 'se.export.mapper'
     _base_backend_adapter_usage = 'se.backend.adapter'
 
-    def _add(self, data):
+    def _index(self, data):
         """ Index the record """
-        return self.backend_adapter.add(data)
+        return self.backend_adapter.index(data)
 
     def run(self):
         """ Run the synchronization """
-        return self._add([record.data for record in self.work.records])
+        return self._index([record.data for record in self.work.records])
