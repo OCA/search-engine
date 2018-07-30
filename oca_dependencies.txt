@@ -1,3 +1,4 @@
 connector
 server-tools
-ak-incubator-base-jsonify https://github.com/akretion/ak-odoo-incubator 10-base_jsonify
+ak-incubator-base-jsonify https://github.com/akretion/ak-odoo-incubator 10.0
+queue https://github.com/akretion/queue 10.0-add-job-counter-for-test
