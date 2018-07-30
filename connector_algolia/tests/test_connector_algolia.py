@@ -76,7 +76,10 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
     def test_export_jobs(self):
         # Set partner to be updated with fake vals in data
         partners = self.env['res.partner'].search([])
-        partners.write({'sync_state': 'to_update', 'data': {'foo': 'test'}})
+        partners.write({
+            'sync_state': 'to_update',
+            'data': {'objectID': 'foo'},
+            })
         count = len(partners)
 
         # Generate Batch export job
