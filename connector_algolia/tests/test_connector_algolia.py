@@ -72,7 +72,6 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
         data['id'] = partner.id  # the mapper add the id of the record
         self.assertDictEqual(partner.data, data)
 
-
     def test_export_jobs(self):
         # Set partner to be updated with fake vals in data
         partners = self.env['res.partner'].search([])
@@ -88,7 +87,7 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
             [('id', '=', self.se_index.id)])
         self.assertEqual(jobs.count_created, 1)
         self.assertEqual(
-            _('Prepare a batch export of indexes'),
+            _("Prepare a batch export of index '%s'") % self.se_index.name,
             jobs.created.name)
 
         # Run batch export and check that export job have been created

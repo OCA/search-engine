@@ -44,3 +44,7 @@ class AlgoliaAdapter(Component):
     def delete(self, binding_ids):
         index = self._get_index()
         index.delete_objects(binding_ids)
+
+    def clear(self):
+        index = self._get_index()
+        index.clear_index()

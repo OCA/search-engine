@@ -20,3 +20,6 @@ class SeAdapter(AbstractComponent):
 
     def delete(self, binding_ids):
         return NotImplemented
+
+    def clear(self):
+        return NotImplemented
