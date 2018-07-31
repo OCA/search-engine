@@ -58,7 +58,7 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
 
         # check that a job have been created for each binding
         nbr_binding = self.env['res.partner'].search_count([])
-        self.assertEqual(jobs.count_created, nbr_binding)
+        self.assertEqual(jobs.count_created(), nbr_binding)
         self.perform_jobs(jobs)
 
         # check that all binding have been recomputed and set to be updated
@@ -85,19 +85,19 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
         jobs = self.job_counter()
         self.se_index_model.generate_batch_export_per_index(
             [('id', '=', self.se_index.id)])
-        self.assertEqual(jobs.count_created, 1)
+        self.assertEqual(jobs.count_created(), 1)
         self.assertEqual(
             _("Prepare a batch export of index '%s'") % self.se_index.name,
-            jobs.created.name)
+            jobs.search_created().name)
 
         # Run batch export and check that export job have been created
         jobs2 = self.job_counter()
         self.perform_jobs(jobs)
-        self.assertEqual(jobs2.count_created, 1)
+        self.assertEqual(jobs2.count_created(), 1)
         self.assertEqual(
             _("Export %d records of %d for index 'partner index'") % (
                 count, count),
-            jobs2.created.name)
+            jobs2.search_created().name)
 
         # Run export job and check that algolia have been called
         with mock_api(self.env) as mocked_api:

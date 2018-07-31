@@ -54,7 +54,7 @@ class SeBinding(models.AbstractModel):
                     yield work
 
     # TODO maybe we need to add lock (todo check)
-    @job(default_channel='root.search_engine.recompute')
+    @job(default_channel='root.search_engine.recompute_json')
     def recompute_json(self, force_export=False):
         for work in self._work_by_index():
             mapper = work.component(usage='se.export.mapper')
