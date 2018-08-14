@@ -4,15 +4,14 @@
 
 import mock
 from odoo import _
-from odoo.addons.queue_job.job import Job
-
+from odoo.addons.queue_job.tests.common import JobMixin
 
 from .common import ConnectorAlgoliaCase
 from .common import mock_api
 from .models import ResPartner
 
 
-class TestConnectorAlgolia(ConnectorAlgoliaCase):
+class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
 
     def _init_test_model(self, model_cls):
         registry = self.env.registry
@@ -33,14 +32,14 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase):
         ir_model_res_partner = self.env['ir.model'].search(
             [('model', '=', 'res.partner')])
         res_lang = self.env['res.lang'].search([], limit=1)
-        exporter_id = self.env.ref('base_jsonify.ir_exp_partner')
+        self.exporter = self.env.ref('base_jsonify.ir_exp_partner')
         self.se_index_model = self.env['se.index']
         self.se_index = self.se_index_model.create({
             'name': 'partner index',
             'backend_id': self.backend.se_backend_id.id,
             'model_id': ir_model_res_partner.id,
             'lang_id': res_lang.id,
-            'exporter_id': exporter_id.id
+            'exporter_id': self.exporter.id
         })
         # init our test model after the creation of the index since this one
         # will be used as default value
@@ -49,54 +48,59 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase):
         self.cr.commit = mock.MagicMock()
         self._init_test_model(ResPartner)
 
-    def test_export_all_indexes(self):
+    def test_recompute_all_indexes(self):
+        partner = self.env.ref('base.main_partner')
+        self.assertEqual(partner.data, {})
 
-        with mock_api(self.env) as mocked_api:
-            self.assertFalse(self.se_index.name in mocked_api.index)
-            self.se_index_model.export_all_index(delay=False)
-            self.assertTrue(self.se_index.name in mocked_api.index)
-            index = mocked_api.index[self.se_index.name]
-            self.assertEqual(1, len(index._calls))
-            method, values = index._calls[0]
-            self.assertEqual('add_objects', method)
-            self.assertEqual(
-                self.env['res.partner'].search_count([]),
-                len(values)
-            )
+        jobs = self.job_counter()
+        self.se_index_model.recompute_all_index(
+            [('id', '=', self.se_index.id)])
+
+        # check that a job have been created for each binding
+        nbr_binding = self.env['res.partner'].search_count([])
+        self.assertEqual(jobs.count_created(), nbr_binding)
+        self.perform_jobs(jobs)
+
+        # check that all binding have been recomputed and set to be updated
+        nbr_binding_to_update = self.env['res.partner'].search_count(
+            [('sync_state', '=', 'to_update')])
+        self.assertEqual(nbr_binding_to_update, nbr_binding)
+
+        # Check that the json data have been updated
+        parser = self.exporter.get_json_parser()
+        data = partner.jsonify(parser)[0]
+        data['id'] = partner.id  # the mapper add the id of the record
+        self.assertDictEqual(partner.data, data)
 
     def test_export_jobs(self):
-        queue_job_model = self.env['queue.job']
-        existing_jobs = queue_job_model.search([])
-        with mock_api(self.env) as mocked_api:
-            self.assertFalse(self.se_index.name in mocked_api.index)
-            self.se_index_model.export_all_index(delay=True)
-        # by default the export method create 2 jobs
-        # the first one to split the bindings to export into batch
-        # the second one to export each batch
-        new_jobs = queue_job_model.search([])
-        new_job = new_jobs - existing_jobs
-        self.assertEqual(1, len(new_job))
-        job = Job.load(self.env, new_job.uuid)
+        # Set partner to be updated with fake vals in data
+        partners = self.env['res.partner'].search([])
+        partners.write({
+            'sync_state': 'to_update',
+            'data': {'objectID': 'foo'},
+            })
+        count = len(partners)
+
+        # Generate Batch export job
+        jobs = self.job_counter()
+        self.se_index_model.generate_batch_export_per_index(
+            [('id', '=', self.se_index.id)])
+        self.assertEqual(jobs.count_created(), 1)
         self.assertEqual(
-            _('Prepare a batch export of indexes'),
-            job.description)
-        # at this stage the mocked_api is not yet called
-        self.assertFalse(self.se_index.name in mocked_api.index)
-        # perform the job
-        existing_jobs = new_jobs
-        job.perform()
-        new_jobs = queue_job_model.search([])
-        new_job = new_jobs - existing_jobs
-        self.assertEqual(1, len(new_job))
-        job = Job.load(self.env, new_job.uuid)
-        count = self.env['res.partner'].search_count([])
+            _("Prepare a batch export of index '%s'") % self.se_index.name,
+            jobs.search_created().name)
+
+        # Run batch export and check that export job have been created
+        jobs2 = self.job_counter()
+        self.perform_jobs(jobs)
+        self.assertEqual(jobs2.count_created(), 1)
         self.assertEqual(
             _("Export %d records of %d for index 'partner index'") % (
                 count, count),
-            job.description)
-        self.assertFalse(self.se_index.name in mocked_api.index)
-        # the last job is the one performing the export
-        job = Job.load(self.env, new_job.uuid)
+            jobs2.search_created().name)
+
+        # Run export job and check that algolia have been called
         with mock_api(self.env) as mocked_api:
-            job.perform()
-        self.assertTrue(self.se_index.name in mocked_api.index)
+            self.assertFalse(self.se_index.name in mocked_api.index)
+            self.perform_jobs(jobs2)
+            self.assertTrue(self.se_index.name in mocked_api.index)

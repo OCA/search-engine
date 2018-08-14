@@ -26,7 +26,8 @@
                                 <field name="lang_id"/>
                                 <field name="model_id"/>
                                 <field name="exporter_id"/>
-                                <button name="export_all"
+                                <field name="batch_size"/>
+                                <button name="action_synchronize"
                                         icon="fa-refresh"
                                         type="object"/>
                             </tree>
@@ -55,5 +56,6 @@
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
+
 
 </odoo>

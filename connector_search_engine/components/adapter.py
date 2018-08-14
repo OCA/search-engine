@@ -15,8 +15,11 @@ class SeAdapter(AbstractComponent):
     def match(cls, session, model):
         return True  # We are a generic exporter; how cool is that?
 
-    def add(self, datas):
+    def index(self, datas):
         return NotImplemented
 
     def delete(self, binding_ids):
+        return NotImplemented
+
+    def clear(self):
         return NotImplemented

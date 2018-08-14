@@ -16,53 +16,32 @@ class SeBinding(models.AbstractModel):
         'se.index',
         string="Index",
         required=True)
-    sync_state = fields.Selection(
-        [('to_update', 'To update'),
-         ('scheduled', 'Scheduled'),
-         ('done', 'Done')],
-        default='to_update',
+    sync_state = fields.Selection([
+        ('new', 'New'),
+        ('to_update', 'To update'),
+        ('scheduled', 'Scheduled'),
+        ('done', 'Done'),
+        ],
+        default='new',
         readonly=True)
     date_modified = fields.Date(readonly=True)
     date_syncronized = fields.Date(readonly=True)
+    data = fields.Serialized()
 
-    @job(default_channel='root.search_engine')
     @api.model
-    def _scheduler_export(self, batch_size=5000, domain=None, delay=True):
-        if domain is None:
-            domain = []
-        domain.append(('sync_state', '=', 'to_update'))
-        records = self.search(domain)
-        if delay:
-            description = _('Prepare a batch export of indexes')
-            records = records.with_delay(description=description)
-        return records.export_batch(batch_size, delay=delay)
+    def create(self, vals):
+        record = super(SeBinding, self).create(vals)
+        record._jobify_recompute_json()
+        return record
 
-    @job(default_channel='root.search_engine')
-    @api.multi
-    def export_batch(self, batch_size=5000, delay=True):
-        datas = self.read_group(
-            [('id', 'in', self.ids)], ['index_id'], ['index_id'])
-        for data in datas:
-            bindings = self.search(data['__domain'])
-            bindings_count = len(bindings)
-            while bindings:
-                todo = processing = bindings[0:batch_size]
-                bindings = bindings[batch_size:]
-                if delay:
-                    description = _(
-                        "Export %d records of %d for index '%s'") % (
-                            len(processing),
-                            bindings_count,
-                            data['index_id'][1])
-                    todo = processing.with_delay(description=description)
-                todo.export()
-                processing.with_context(connector_no_export=True).write({
-                    'sync_state': 'scheduled',
-                })
+    def _jobify_recompute_json(self, force_export=False):
+        description = _('Recompute %s json and check if need update'
+                        % self._name)
+        for record in self:
+            record.with_delay(description=description).recompute_json(
+                force_export=force_export)
 
-    @job(default_channel='root.search_engine')
-    @api.multi
-    def export(self):
+    def _work_by_index(self):
         for backend in self.mapped('se_backend_id'):
             for index in self.mapped('index_id'):
                 bindings = self.filtered(
@@ -72,5 +51,25 @@ class SeBinding(models.AbstractModel):
                 with specific_backend.work_on(
                     self._name, records=bindings, index=index
                 ) as work:
-                    exporter = work.component(usage='se.record.exporter')
-                    exporter.run()
+                    yield work
+
+    # TODO maybe we need to add lock (todo check)
+    @job(default_channel='root.search_engine.recompute_json')
+    def recompute_json(self, force_export=False):
+        for work in self._work_by_index():
+            mapper = work.component(usage='se.export.mapper')
+            lang = work.index.lang_id.code
+            for record in work.records.with_context(lang=lang):
+                data = mapper.map_record(record).values()
+                if record.data != data or force_export:
+                    vals = {'data': data}
+                    if record.sync_state in ('done', 'new'):
+                        vals['sync_state'] = 'to_update'
+                    record.write(vals)
+
+    @job(default_channel='root.search_engine')
+    @api.multi
+    def export(self):
+        for work in self._work_by_index():
+            exporter = work.component(usage='se.record.exporter')
+            exporter.run()

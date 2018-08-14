@@ -13,28 +13,11 @@ class SeExporter(Component):
     _base_mapper_usage = 'se.export.mapper'
     _base_backend_adapter_usage = 'se.backend.adapter'
 
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(SeExporter, self).__init__(environment)
-        self.bindings = None
-
-    def _add(self, data):
-        """ Create the SolR record """
-        return self.backend_adapter.add(data)
-
-    def _export_data(self):
-        return NotImplemented
+    def _index(self, data):
+        """ Index the record """
+        return self.backend_adapter.index(data)
 
     def run(self):
-        """ Run the synchronization
-        :param binding_id: identifier of the binding record to export
-        """
-        datas = []
-        lang = self.work.index.lang_id.code
-        for record in self.work.records.with_context(lang=lang):
-            map_record = self.mapper.map_record(record)
-            datas.append(map_record.values())
-        return self._add(datas)
+        """ Run the synchronization """
+        self.work.records.write({'sync_state': 'done'})
+        return self._index([record.data for record in self.work.records])

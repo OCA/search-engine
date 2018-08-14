@@ -7,6 +7,8 @@
 import logging
 
 from odoo.addons.component.core import Component
+from odoo import _
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -29,10 +31,20 @@ class AlgoliaAdapter(Component):
             backend.algolia_app_id, account._get_password())
         return client.initIndex(self.work.index.name)
 
-    def add(self, datas):
+    def index(self, datas):
         index = self._get_index()
+        # Ensure that the objectID is set because algolia will use it
+        # for creating or updating the record
+        for data in datas:
+            if not data.get('objectID'):
+                raise UserError(
+                    _('The key objectID is missing in the data %s') % data)
         index.add_objects(datas)
 
     def delete(self, binding_ids):
         index = self._get_index()
         index.delete_objects(binding_ids)
+
+    def clear(self):
+        index = self._get_index()
+        index.clear_index()

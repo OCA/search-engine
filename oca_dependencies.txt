@@ -1,3 +1,3 @@
 connector
 server-tools
-ak-incubator-base-jsonify https://github.com/akretion/ak-odoo-incubator 10-base_jsonify
+ak-incubator-base-jsonify https://github.com/akretion/ak-odoo-incubator 10.0

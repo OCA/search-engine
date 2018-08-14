@@ -23,7 +23,8 @@
                                 <field name="name"/>
                                 <field name="lang_id"/>
                                 <field name="model_id"/>
-                                <field name="exporter_id"/>
+                                <field name="exporter_id" context="{'form_view_ref': 'connector_algolia.view_ir_exports'}"/>
+                                <field name="batch_size"/>
                                 <button name="export_all"
                                         icon="fa-refresh"
                                         type="object"/>
@@ -34,6 +35,8 @@
             </form>
         </field>
     </record>
+
+
 
     <record model="ir.ui.view" id="se_backend_algolia_tree_view">
         <field name="name">se.backend.algolia.tree (in connector_algolia)</field>
