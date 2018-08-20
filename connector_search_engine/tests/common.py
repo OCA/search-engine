@@ -6,6 +6,7 @@
 import mock
 from odoo import models
 from odoo.addons.component.tests.common import SavepointComponentCase
+from odoo.addons.component.core import Component
 
 
 class TestSeBackend(models.Model):
@@ -18,6 +19,23 @@ class TestSeBackend(models.Model):
 
     def _register_hook(self):
         self.env['se.backend'].register_spec_backend(self)
+
+
+class TestSeAdapter(Component):
+    _name = "test.se.adapter"
+    _inherit = 'base.backend.adapter'
+    _usage = 'se.backend.adapter'
+    _collection = 'test.se.backend'
+    _called = []
+
+    def index(self, datas):
+        self._called.append(('index', datas))
+
+    def delete(self, binding_ids):
+        self._called.append(('delete', binding_ids))
+
+    def clear(self):
+        self._called.append(('clear', None))
 
 
 class TestSeBackendCase(SavepointComponentCase):
@@ -51,12 +69,14 @@ class TestSeBackendCase(SavepointComponentCase):
         super(TestSeBackendCase, cls).setUpClass()
         cls.env.cr.commit = mock.MagicMock()
         cls._init_test_model(TestSeBackend)
+        TestSeAdapter._build_component(cls._components_registry)
 
     def setUp(self):
         super(TestSeBackendCase, self).setUp()
         self.se_backend = self.env['test.se.backend'].create({
             'specific_model': 'test.se.backend',
         })
+        self._adapter_called = TestSeAdapter._called = []
 
     @classmethod
     def tearDownClass(cls):
