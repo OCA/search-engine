@@ -80,3 +80,20 @@ class SeBinding(models.AbstractModel):
         for work in self._work_by_index():
             exporter = work.component(usage='se.record.exporter')
             exporter.run()
+
+    @job(default_channel='root.search_engine')
+    @api.multi
+    def unsynchronize(self):
+        """
+        Unsynchronize/delete current recordset from backend
+        :return: bool
+        """
+        for index in self.mapped('index_id'):
+            # Same index means: same backend and same lang
+            bindings = self.filtered(lambda r, i=index: r.index_id == i)
+            specific_backend = index.se_backend_id.specific_backend
+            with specific_backend.work_on(
+                    self._name, records=bindings, index=index) as work:
+                deleter = work.component(usage='record.exporter.deleter')
+                deleter.run()
+        return True
