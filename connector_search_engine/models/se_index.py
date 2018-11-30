@@ -11,6 +11,20 @@ class SeIndex(models.Model):
     _name = 'se.index'
     _description = 'Se Index'
 
+    @api.model
+    def _get_model_domain(self):
+        models = self.env['ir.model'].search([('transient', '=', False)])
+        se_model_ids = []
+        for model in models:
+            if model.model == 'se.binding':
+                continue
+            try:
+                if self.env[model.model]._se_model:
+                    se_model_ids.append(model.id)
+            except AttributeError:
+                continue
+        return [('id', 'in', se_model_ids)]
+
     name = fields.Char(required=True)
     backend_id = fields.Many2one(
         'se.backend',
@@ -23,7 +37,8 @@ class SeIndex(models.Model):
     model_id = fields.Many2one(
         'ir.model',
         string='Model',
-        required=True)
+        required=True,
+        domain=_get_model_domain)
     exporter_id = fields.Many2one(
         'ir.exports',
         string='Exporter')
@@ -35,6 +50,13 @@ class SeIndex(models.Model):
         ('lang_model_uniq', 'unique(backend_id, lang_id, model_id)',
          'Lang and model of index must be uniq per backend.'),
     ]
+
+    @api.onchange('model_id')
+    def onchange_model_id(self):
+        self.exporter_id = False
+        if self.model_id:
+            domain = [('resource', '=', self.model_id.model)]
+            return {'domain': {'exporter_id': domain}}
 
     def action_synchronize(self):
         view = self.env.ref(
