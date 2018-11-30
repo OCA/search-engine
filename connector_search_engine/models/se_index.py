@@ -4,6 +4,17 @@
 
 from odoo import api, fields, models, _
 from odoo.addons.queue_job.job import job
+import logging
+_logger = logging.getLogger(__name__)
+try:
+    from unidecode import unidecode
+except ImportError:
+    _logger.debug('Cannot `import unidecode`.')
+
+
+def sanitize(name):
+    return unidecode(
+        name.replace(' ', '_').replace('.', '_').replace('-', '_').lower())
 
 
 class SeIndex(models.Model):
@@ -64,6 +75,19 @@ class SeIndex(models.Model):
             for bindings in binding_obj.search([('index_id', '=', record.id)]):
                 bindings._jobify_recompute_json(force_export=force_export)
         return True
+
+    @api.onchange('lang_id', 'model_id', 'backend_id.name')
+    def _compute_name(self):
+        ctx = self.env.context
+        for rec in self:
+            backend = rec.backend_id
+            if not backend and ctx.get('model') and ctx.get('backend_id'):
+                backend = rec.env[ctx['model']].browse(ctx['backend_id'])
+            if rec.lang_id and rec.model_id:
+                rec.name = '%s_%s_%s' % (
+                    sanitize(backend and backend.name or ''),
+                    sanitize(rec.model_id.name or ''),
+                    rec.lang_id.code)
 
     def force_batch_export(self):
         self.ensure_one()
