@@ -77,12 +77,15 @@ class SeIndex(models.Model):
         return True
 
     @api.onchange('lang_id', 'model_id', 'backend_id.name')
-    def _compute_name(self):
+    def _onchange_name(self):
         ctx = self.env.context
         for rec in self:
             backend = rec.backend_id
-            if not backend and ctx.get('model') and ctx.get('backend_id'):
-                backend = rec.env[ctx['model']].browse(ctx['backend_id'])
+            if not backend and ctx.get('backend_model') and ctx.get(
+                    'backend_id'):
+                backend = rec.env[ctx['backend_model']].browse(
+                    ctx['backend_id'])
+                rec.backend_id = backend.id
             if rec.lang_id and rec.model_id:
                 rec.name = '%s_%s_%s' % (
                     sanitize(backend and backend.name or ''),

@@ -19,13 +19,13 @@
                     </group>
                     <group name="index" string="Index">
                         <field name="index_ids" nolabel="1" 
-                               context="{'backend_id': active_id, 'model': active_model}">
+                               context="{'backend_id': active_id, 'backend_model': active_model}">
                             <tree string="Index" editable="bottom">
                                 <field name="lang_id"/>
                                 <field name="model_id"/>
                                 <field name="exporter_id" context="{'form_view_ref': 'connector_algolia.view_ir_exports'}"/>
                                 <field name="batch_size"/>
-                                <field name="name"/>
+                                <field name="name" readonly="1"/>
                                 <button name="export_all"
                                         icon="fa-refresh"
                                         type="object"/>
