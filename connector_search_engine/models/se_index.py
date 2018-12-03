@@ -22,25 +22,7 @@ class SeIndex(models.Model):
     _name = 'se.index'
     _description = 'Se Index'
 
-<<<<<<< HEAD
-    @api.model
-    def _get_model_domain(self):
-        models = self.env['ir.model'].search([('transient', '=', False)])
-        se_model_ids = []
-        for model in models:
-            if model.model == 'se.binding':
-                continue
-            try:
-                if self.env[model.model]._se_model:
-                    se_model_ids.append(model.id)
-            except AttributeError:
-                continue
-        return [('id', 'in', se_model_ids)]
-
-    name = fields.Char(required=True)
-=======
     name = fields.Char(compute='_compute_name')
->>>>>>> FIX connector_search: replace onchange by compute
     backend_id = fields.Many2one(
         'se.backend',
         string='Backend',
