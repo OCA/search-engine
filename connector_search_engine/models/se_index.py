@@ -18,11 +18,8 @@ class SeIndex(models.Model):
         for model in models:
             if model.model == 'se.binding':
                 continue
-            try:
-                if self.env[model.model]._se_model:
-                    se_model_ids.append(model.id)
-            except AttributeError:
-                continue
+            if hasattr(self.env[model.model], '_se_model'):
+                se_model_ids.append(model.id)
         return [('id', 'in', se_model_ids)]
 
     name = fields.Char(required=True)
