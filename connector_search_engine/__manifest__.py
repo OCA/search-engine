@@ -17,9 +17,9 @@
     ],
     'data': [
         'views/se_backend.xml',
-        'views/se_index.xml',
         'views/se_menu.xml',
         'data/ir_cron.xml',
+        'security/connector_search_engine_security.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,
