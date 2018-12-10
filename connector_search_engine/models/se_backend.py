@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -9,9 +8,7 @@ class SeBackend(models.Model):
 
     _name = 'se.backend'
     _description = 'Se Backend'
-    _inherit = ['connector.backend', 'keychain.backend']
-    _backend_type = 'se'
-    _backend_name = 'search_engine_backend'
+    _inherit = 'connector.backend'
 
     # We can't leave this field required in database, because of strange
     # behaviors with name field defined already on connector.backend, which is
@@ -21,7 +18,6 @@ class SeBackend(models.Model):
     # remove the related field defined on specific backend which will
     # be useless because it will be takend from se.backend...
     name = fields.Char(required=False)
-
     specific_model = fields.Selection(
         string='Type',
         selection=[],
