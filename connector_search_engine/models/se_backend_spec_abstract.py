@@ -37,5 +37,8 @@ class SeBackendSpecAbstract(models.AbstractModel):
         return res
 
     @api.multi
-    def _get_existing_keychain(self):
-        return self.se_backend_id._get_existing_keychain()
+    def _get_api_credentials(self):
+        # TODO: user self.name to retrieve creds from server env
+        return {
+            # TODO: username password etc
+        }

@@ -25,9 +25,9 @@ class AlgoliaAdapter(Component):
 
     def _get_index(self):
         backend = self.backend_record
-        account = backend._get_existing_keychain()
+        account = backend._get_api_credentials()
         client = algoliasearch.client.Client(
-            backend.algolia_app_id, account._get_password())
+            backend.algolia_app_id, account['password'])
         return client.initIndex(self.work.index.name)
 
     def index(self, datas):
