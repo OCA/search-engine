@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2013 Akretion (http://www.akretion.com)
 # Raphaël Valyi <raphael.valyi@akretion.com>
 # Sébastien BEAU <sebastien.beau@akretion.com>

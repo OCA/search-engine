@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -60,7 +59,7 @@ class SeBinding(models.AbstractModel):
             mapper = work.component(usage='se.export.mapper')
             lang = work.index.lang_id.code
             for record in work.records.with_context(lang=lang):
-                data = mapper.map_record(record).values()
+                data = list(mapper.map_record(record).values())
                 if record.data != data or force_export:
                     vals = {'data': data}
                     if record.sync_state in ('done', 'new'):
