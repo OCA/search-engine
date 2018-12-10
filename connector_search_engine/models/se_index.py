@@ -47,19 +47,6 @@ class SeIndex(models.Model):
          'Lang and model of index must be uniq per backend.'),
     ]
 
-    def action_synchronize(self):
-        view = self.env.ref(
-            'connector_search_engine.se_index_synchronize_form_view')
-        return {
-            'name': _('Synchronize %s') % self.name,
-            'view_type': 'form',
-            'target': 'new',
-            'res_model': self._name,
-            'res_id': self.id,
-            'views': [(view.id, 'form')],
-            'type': 'ir.actions.act_window',
-            }
-
     @api.model
     def recompute_all_index(self, domain=None):
         if domain is None:
