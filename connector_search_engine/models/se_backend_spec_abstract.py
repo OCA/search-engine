@@ -39,19 +39,8 @@ class SeBackendSpecAbstract(models.AbstractModel):
         return res
 
     @api.multi
-    def _get_existing_keychain(self):
-        return self.se_backend_id._get_existing_keychain()
-
-    @api.onchange('name')
-    def onchange_backend_name(self):
-        if self.index_ids:
-            return {
-                'warning': {
-                    'title': _('Warning'),
-                    'message': _('Changing this name will change the name of '
-                                 'the indexes. If you proceed, you have to '
-                                 'take care of the configuration in your '
-                                 'website. Cancel the modification if you are'
-                                 ' not comfortable with this configuration.')
-                }
-            }
+    def _get_api_credentials(self):
+        # TODO: user self.name to retrieve creds from server env
+        return {
+            # TODO: username password etc
+        }

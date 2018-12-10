@@ -12,7 +12,6 @@
     'depends': [
         'connector',
         'base_jsonify',
-        'keychain',
     ],
     'data': [
         'views/se_backend.xml',
