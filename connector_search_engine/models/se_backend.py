@@ -13,7 +13,7 @@ class SeBackend(models.Model):
     _backend_type = 'se'
     _backend_name = 'search_engine_backend'
 
-    name = fields.Char(required=False)
+    name = fields.Char(required=True)
 
     specific_model = fields.Selection(
         string='Type',
