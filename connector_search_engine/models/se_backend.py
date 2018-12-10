@@ -54,7 +54,7 @@ class SeBackend(models.Model):
     def register_spec_backend(self, specific_backend_model):
         """
         This function must be called by specific backend from the
-        _requister_hoock method to register it into the allowed specific models
+        _register_hook method to register it into the allowed specific models
         :param self:
         :param specific_backend_model:
         """
