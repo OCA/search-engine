@@ -22,7 +22,7 @@ class SeIndex(models.Model):
     _name = 'se.index'
     _description = 'Se Index'
 
-    name = fields.Char(compute='_compute_name')
+    name = fields.Char(compute='_compute_name', store=True)
     backend_id = fields.Many2one(
         'se.backend',
         string='Backend',
