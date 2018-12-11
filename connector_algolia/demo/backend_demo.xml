@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="se_backend_1" model="se.backend">
-        <field name="specific_model">se.backend.algolia</field>
-        <field name="name">Demo Algolia Backend</field>
-    </record>
-
     <record id="backend_1" model="se.backend.algolia">
-        <field name="se_backend_id" ref="se_backend_1"/>
+        <field name="name">Demo Algolia Backend</field>
     </record>
 
 </odoo>

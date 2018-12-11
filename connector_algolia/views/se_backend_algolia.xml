@@ -9,7 +9,7 @@
                 <sheet>
                     <label for="name" class="oe_edit_only"/>
                     <h1>
-                        <field name="name" class="oe_inline"/>
+                        <field name="name" class="oe_inline" required="1"/>
                     </h1>
                     <group name="se" string="Configuration">
                         <group colspan="4" col="4" name="se-main">
