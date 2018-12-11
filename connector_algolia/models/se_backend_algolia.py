@@ -12,8 +12,12 @@ class SeBackendAlgolia(models.Model):
     _inherit = 'se.backend.spec.abstract'
     _description = 'Algolia Backend'
 
-    algolia_app_id = fields.Char(sparse="data", string="APP ID")
-    algolia_api_key = fields.Char(related='password', string="API KEY")
+    # TODO: load values from server env
+    algolia_app_id = fields.Char(string="APP ID")
+    # v12: we removed keychain inheritance
+    # which was providing the field `password`.
+    # This field was related to it, this is why `oldname` is here.
+    algolia_api_key = fields.Char(string="API KEY", oldname='password')
 
     def init(self):
         # The init is called at install/update only before loading xml data
