@@ -35,7 +35,6 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
         self.exporter = self.env.ref('base_jsonify.ir_exp_partner')
         self.se_index_model = self.env['se.index']
         self.se_index = self.se_index_model.create({
-            'name': 'partner index',
             'backend_id': self.backend.se_backend_id.id,
             'model_id': ir_model_res_partner.id,
             'lang_id': res_lang.id,
@@ -95,7 +94,8 @@ class TestConnectorAlgolia(ConnectorAlgoliaCase, JobMixin):
         self.perform_jobs(jobs)
         self.assertEqual(jobs2.count_created(), 1)
         self.assertEqual(
-            _("Export %d records of %d for index 'partner index'") % (
+            _("Export %d records of %d for index "
+              "'demo_algolia_backend_partner_en_US'") % (
                 count, count),
             jobs2.search_created().name)
 
