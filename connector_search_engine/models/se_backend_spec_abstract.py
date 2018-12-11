@@ -10,9 +10,11 @@ class SeBackendSpecAbstract(models.AbstractModel):
     _description = 'Se Specialized Backend'
     _inherit = 'connector.backend'
 
+    # This field may be removed in next  version, check comment in se.backend
+    # file
     name = fields.Char(
         related='se_backend_id.name',
-        # store=True,
+        store=True,
     )
     # Delegation inheritance
     se_backend_id = fields.Many2one(

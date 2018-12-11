@@ -13,7 +13,14 @@ class SeBackend(models.Model):
     _backend_type = 'se'
     _backend_name = 'search_engine_backend'
 
-    name = fields.Char(required=True)
+    # We can't leave this field required in database, because of strange
+    # behaviors with name field defined already on connector.backend, which is
+    # inherited by both se.backend and se.backend.spec.abstract.
+    # In next version, the field is removed from connector.backend, so we
+    # should probably just define the field here, with a required=True and
+    # remove the related field defined on specific backend which will
+    # be useless because it will be takend from se.backend...
+    name = fields.Char(required=False)
 
     specific_model = fields.Selection(
         string='Type',
