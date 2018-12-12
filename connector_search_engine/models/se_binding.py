@@ -15,18 +15,25 @@ class SeBinding(models.AbstractModel):
     index_id = fields.Many2one(
         'se.index',
         string="Index",
-        required=True)
+        required=True,
+        # TODO: shall we use 'restrict' here to preserve existing data?
+        ondelete='cascade'
+    )
     sync_state = fields.Selection([
         ('new', 'New'),
         ('to_update', 'To update'),
         ('scheduled', 'Scheduled'),
         ('done', 'Done'),
-        ],
+    ],
         default='new',
         readonly=True)
     date_modified = fields.Date(readonly=True)
     date_syncronized = fields.Date(readonly=True)
     data = fields.Serialized()
+
+    def get_export_data(self):
+        """Public method to retrieve export data."""
+        return self.data
 
     @api.model
     def create(self, vals):
@@ -60,7 +67,10 @@ class SeBinding(models.AbstractModel):
             mapper = work.component(usage='se.export.mapper')
             lang = work.index.lang_id.code
             for record in work.records.with_context(lang=lang):
-                data = list(mapper.map_record(record).values())
+                # TODO: check WTH here it was converted to list
+                # since list(dict) gives you the lis of the keys :)
+                # data = list(mapper.map_record(record).values())
+                data = mapper.map_record(record).values()
                 if record.data != data or force_export:
                     vals = {'data': data}
                     if record.sync_state in ('done', 'new'):

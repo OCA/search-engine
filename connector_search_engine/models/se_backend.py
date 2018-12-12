@@ -47,7 +47,10 @@ class SeBackend(models.Model):
             # field), no more se.backend will be available (because the
             # selection field still filled with the previous model and Odoo
             # try to load the model).
-            if model in s.env and s.env[model]._table_exist():
+            # TODO v12: rely on `se.backend.` to retrieve models
+            # and fix this table check.
+            # if model in s.env and s.env[model]._table_exist():
+            if model in s.env:
                 records = s.env[model].search([])
                 for record in records:
                     vals.append((model, record.id))

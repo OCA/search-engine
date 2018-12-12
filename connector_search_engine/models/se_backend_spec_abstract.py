@@ -35,12 +35,12 @@ class SeBackendSpecAbstract(models.AbstractModel):
     def unlink(self):
         se_backend = self.mapped('se_backend_id')
         res = super(SeBackendSpecAbstract, self).unlink()
+        # NOTE: this will delete indexes and bindings by cascade
         se_backend.unlink()
         return res
 
     @api.multi
     def _get_api_credentials(self):
         # TODO: user self.name to retrieve creds from server env
-        return {
-            # TODO: username password etc
-        }
+        # TODO: username password etc
+        return {}  # pragma: no cover
