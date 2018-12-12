@@ -14,7 +14,9 @@ class SeIndex(models.Model):
     backend_id = fields.Many2one(
         'se.backend',
         string='Backend',
-        required=True)
+        required=True,
+        ondelete='cascade',
+    )
     lang_id = fields.Many2one(
         'res.lang',
         string='Lang',
@@ -35,11 +37,26 @@ class SeIndex(models.Model):
          'Lang and model of index must be uniq per backend.'),
     ]
 
-    @api.model
+    @api.multi
+    def action_synchronize(self):
+        view = self.env.ref(
+            'connector_search_engine.se_index_synchronize_form_view')
+        return {
+            'name': _('Synchronize %s') % self.name,
+            'view_type': 'form',
+            'target': 'new',
+            'res_model': self._name,
+            'res_id': self.id,
+            'views': [(view.id, 'form')],
+            'type': 'ir.actions.act_window',
+        }
+
+    @api.multi
     def recompute_all_index(self, domain=None):
-        if domain is None:
-            domain = []
-        return self.search(domain).recompute_all_binding()
+        recordset = self
+        if domain is not None:
+            recordset = self.search(domain)  # pragma: no cover
+        return recordset.recompute_all_binding()
 
     def force_recompute_all_binding(self):
         return self.recompute_all_binding(force_export=True)
@@ -63,11 +80,12 @@ class SeIndex(models.Model):
         description = _("Prepare a batch export of index '%s'") % self.name
         self.with_delay(description=description).batch_export()
 
-    @api.model
+    @api.multi
     def generate_batch_export_per_index(self, domain=None):
-        if domain is None:
-            domain = []
-        for record in self.search(domain):
+        recordset = self
+        if domain is not None:
+            recordset = self.search(domain)  # pragma: no cover
+        for record in recordset:
             record._jobify_batch_export()
         return True
 
