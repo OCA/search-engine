@@ -2,7 +2,7 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class SeBackendSpecAbstract(models.AbstractModel):
@@ -42,3 +42,17 @@ class SeBackendSpecAbstract(models.AbstractModel):
     @api.multi
     def _get_existing_keychain(self):
         return self.se_backend_id._get_existing_keychain()
+
+    @api.onchange('name')
+    def onchange_backend_name(self):
+        if self.index_ids:
+            return {
+                'warning': {
+                    'title': _('Warning'),
+                    'message': _('Changing this name will change the name of '
+                                 'the indexes. If you proceed, you have to '
+                                 'take care of the configuration in your '
+                                 'website. Cancel the modification if you are'
+                                 ' not comfortable with this configuration.')
+                }
+            }
