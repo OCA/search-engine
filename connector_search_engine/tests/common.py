@@ -74,6 +74,7 @@ class TestSeBackendCase(SavepointComponentCase):
     def setUp(self):
         super(TestSeBackendCase, self).setUp()
         self.se_backend = self.env['test.se.backend'].create({
+            'name': 'My Test Backend',
             'specific_model': 'test.se.backend',
         })
         self._adapter_called = TestSeAdapter._called = []
