@@ -24,14 +24,13 @@ class SeIndex(models.Model):
 
     @api.model
     def _get_model_domain(self):
-        models = self.env['ir.model'].search([('transient', '=', False)])
-        se_model_ids = []
-        for model in models:
-            if model.model == 'se.binding':
+        se_model_names = []
+        for model in self.env:
+            if self.env[model]._abstract or self.env[model]._transient:
                 continue
-            if hasattr(self.env[model.model], '_se_model'):
-                se_model_ids.append(model.id)
-        return [('id', 'in', se_model_ids)]
+            if hasattr(self.env[model], '_se_model'):
+                se_model_names.append(model)
+        return [('model', 'in', se_model_names)]
 
     name = fields.Char(compute='_compute_name', store=True)
     backend_id = fields.Many2one(
