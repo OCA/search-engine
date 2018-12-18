@@ -1,7 +1,7 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, tools
 
 
 class SeBackend(models.Model):
@@ -20,7 +20,7 @@ class SeBackend(models.Model):
     name = fields.Char(required=False)
     specific_model = fields.Selection(
         string='Type',
-        selection=[],
+        selection='_select_specific_model',
         required=True,
         readonly=True
     )
@@ -31,41 +31,37 @@ class SeBackend(models.Model):
     specific_backend = fields.Reference(
         string='Specific backend',
         compute='_compute_specific_backend',
-        selection='_get_specific_backend_selection',
+        selection='_select_specific_backend',
         readonly=True,
     )
 
     @api.model
-    def _get_specific_backend_selection(self):
-        spec_backend_selection = self._fields['specific_model'].selection
-        vals = []
-        s = self.with_context(active_test=False)
-        for model, descr in spec_backend_selection:
-            # We have to check if the table really exist.
-            # Because in the case of the user uninstall a connector_XXX module
-            # with a new se.backend (so who adds a new element into selection
-            # field), no more se.backend will be available (because the
-            # selection field still filled with the previous model and Odoo
-            # try to load the model).
-            # TODO v12: rely on `se.backend.` to retrieve models
-            # and fix this table check.
-            # if model in s.env and s.env[model]._table_exist():
-            if model in s.env:
-                records = s.env[model].search([])
-                for record in records:
-                    vals.append((model, record.id))
-        return vals
+    @tools.ormcache('self')
+    def _select_specific_model(self):
+        """Retrieve available specific models via matchin prefix.
+
+        You can still override this to inject your own model
+        in case you use a 100% custom name for it.
+        """
+        models = self.env['ir.model'].search([
+            ('model', 'like', 'se.backend.%'),
+            ('model', '!=', 'se.backend.spec.abstract'),
+        ])
+        return [
+            (x.model, x.name) for x in models
+        ]
 
     @api.model
-    def register_spec_backend(self, specific_backend_model):
-        """
-        This function must be called by specific backend from the
-        _register_hook method to register it into the allowed specific models
-        :param self:
-        :param specific_backend_model:
-        """
-        self._fields['specific_model'].selection.append((
-            specific_backend_model._name, specific_backend_model._description))
+    @tools.ormcache('self')
+    def _select_specific_backend(self):
+        """Retrieve available specific backends."""
+        res = []
+        for model, __ in self._select_specific_model():
+            res.extend([
+                ('{},{}'.format(model, record.id), record.name)
+                for record in self.env[model].search([])
+            ])
+        return res
 
     @api.depends('specific_model')
     @api.multi
