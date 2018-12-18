@@ -12,13 +12,6 @@ class SeBackendFake(models.Model, TestMixin):
     _inherit = 'se.backend.spec.abstract'
     _description = 'Unit Test SE Backend'
 
-    # TODO: get rid of this
-    def init(self):
-        self.env['se.backend'].register_spec_backend(self)
-
-    def _register_hook(self):
-        self.env['se.backend'].register_spec_backend(self)
-
 
 class SeAdapterFake(Component):
     _name = "se.adapter.fake"

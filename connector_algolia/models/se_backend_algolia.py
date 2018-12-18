@@ -18,17 +18,3 @@ class SeBackendAlgolia(models.Model):
     # which was providing the field `password`.
     # This field was related to it, this is why `oldname` is here.
     algolia_api_key = fields.Char(string="API KEY", oldname='password')
-
-    def init(self):
-        # The init is called at install/update only before loading xml data
-        # and demo data. Moreovoer these data are loaded before the end of
-        # the initialization of the registry. Therefore we must also
-        # register our backend to avoid error when loading the data since
-        # the _register_hook is not yet called when the xml data are imported
-        self.env['se.backend'].register_spec_backend(self)
-
-    def _register_hook(self):
-        # The register hook is called each time the registry is initialized,
-        # not only at install.
-        # Register our specialized backend
-        self.env['se.backend'].register_spec_backend(self)
