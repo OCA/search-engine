@@ -18,3 +18,8 @@ class SeBackendAlgolia(models.Model):
     # which was providing the field `password`.
     # This field was related to it, this is why `oldname` is here.
     algolia_api_key = fields.Char(string="API KEY", oldname='password')
+
+    def _get_api_credentials(self):
+        return {
+            'password': self.algolia_api_key,
+        }  # pragma: no cover

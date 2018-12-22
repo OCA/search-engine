@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: [gzip]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [gzip]
+      User-Agent: [Algolia for Python (1.19.1); Python (3.6.3)]
+      X-Algolia-API-Key: [fd2b23ce63aebd599a738a8a558dbcdd]
+      X-Algolia-Application-Id: [RQJXD7ZPFA]
+    method: POST
+    uri: https://rqjxd7zpfa.algolia.net/1/indexes/Partner%20Index/clear
+  response:
+    body: {string: '{"updatedAt":"2018-12-22T18:10:03.746Z", "taskID":4066817682}
+
+        '}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=a.txt]
+      Content-Length: ['62']
+      Content-Type: [application/json; charset=UTF-8]
+      Date: ['Sat, 22 Dec 2018 18:10:03 GMT']
+      Server: [nginx]
+      Timing-Allow-Origin: ['*']
+      X-Content-Type-Options: [nosniff]
+    status: {code: 200, message: OK}
+version: 1

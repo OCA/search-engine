@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="backend_1" model="se.backend.algolia">
+    <record id="se_algolia_demo" model="se.backend.algolia">
         <field name="name">Demo Algolia Backend</field>
     </record>
 
