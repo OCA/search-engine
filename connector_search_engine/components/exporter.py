@@ -12,12 +12,13 @@ class SeExporter(Component):
     _base_mapper_usage = 'se.export.mapper'
     _base_backend_adapter_usage = 'se.backend.adapter'
 
-    def _index(self, data):
+    def _index(self, records):
         """ Index the record """
-        return self.backend_adapter.index(data)
+        return self.backend_adapter.index(records)
 
     def run(self):
         """ Run the synchronization """
+        # TODO: this state should be set _after_ the indexing
         self.work.records.write({'sync_state': 'done'})
         return self._index([
             record.get_export_data()
