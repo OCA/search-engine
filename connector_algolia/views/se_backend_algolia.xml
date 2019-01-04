@@ -4,49 +4,22 @@
     <record model="ir.ui.view" id="se_backend_algolia_form_view">
         <field name="name">se.backend.spec.abstract.form (in connector_search_engine)</field>
         <field name="model">se.backend.algolia</field>
+        <!--Mandatory to use the mode when inherited (cfr product.template and product.product)-->
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="connector_search_engine.se_backend_form_view"/>
+        <field name="priority" eval="50"/>
         <field name="arch" type="xml">
-            <form string="Search Engine Backend">
-                <sheet>
-                    <label for="name" class="oe_edit_only"/>
-                    <h1>
-                        <field name="name" class="oe_inline" required="1"/>
-                    </h1>
-                    <group name="se" string="Configuration">
-                        <group colspan="4" col="4" name="se-main">
-                            <field name="algolia_app_id"/>
-                            <field name="algolia_api_key"/>
-                        </group>
-                    </group>
-                    <group name="index" string="Index">
-                        <field name="index_ids" nolabel="1">
-                            <tree string="Index" editable="bottom">
-                                <field name="name"/>
-                                <field name="lang_id"/>
-                                <field name="model_id"/>
-                                <field name="exporter_id" context="{'form_view_ref': 'connector_algolia.view_ir_exports'}"/>
-                                <field name="batch_size"/>
-                                <button name="force_recompute_all_binding"
-                                        help="Force to recompute all binding of the index and set them to the state 'To update'"
-                                        icon="fa-gears"
-                                        type="object"/>
-                                <button name="force_batch_export"
-                                        help="Force the export of all binding"
-                                        icon="fa-upload"
-                                        type="object"/>
-                                <button name="clear_index"
-                                        help="Clear the index in the search engine"
-                                        icon="fa-times"
-                                        type="object"
-                                        groups="connector_search_engine.group_connector_search_engine_manager"/>
-                            </tree>
-                        </field>
-                    </group>
-                </sheet>
+            <form position="attributes">
+                <attribute name="create">true</attribute>
+                <attribute name="edit">true</attribute>
             </form>
+            <field name="specific_backend" position="replace"/>
+            <group name="se-main" position="inside">
+                <field name="algolia_app_id"/>
+                <field name="algolia_api_key"/>
+            </group>
         </field>
     </record>
-
-
 
     <record model="ir.ui.view" id="se_backend_algolia_tree_view">
         <field name="name">se.backend.algolia.tree (in connector_algolia)</field>
