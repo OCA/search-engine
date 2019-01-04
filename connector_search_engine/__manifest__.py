@@ -4,8 +4,12 @@
 
 {
     'name': 'Connector Search Engine',
-    'version': '10.0.0.0.1',
-    'author': 'Akretion,ACSONE SA/NV',
+    'version': '12.0.1.0.0',
+    'author': 'Akretion,'
+              'ACSONE SA/NV,'
+              'Camptocamp,'
+              'Odoo Community Association (OCA)',
+    # FIXME
     'website': 'http://www.akretion.com',
     'license': 'AGPL-3',
     'category': 'Generic Modules',
@@ -21,5 +25,4 @@
         'security/ir.model.access.csv',
     ],
     'installable': True,
-    'application': False,
 }
