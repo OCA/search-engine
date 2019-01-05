@@ -135,20 +135,6 @@ class TestBindingIndex(TestBindingIndexBase):
         self.assertEqual(self.partner_binding.get_export_data(), expected)
         self.assertEqual(self.partner_binding.sync_state, 'to_update')
 
-    def test_action_synchronize(self):
-        view = self.env.ref(
-            'connector_search_engine.se_index_synchronize_form_view')
-        expected = {
-            'name': 'Synchronize Partner Index',
-            'view_type': 'form',
-            'target': 'new',
-            'res_model': 'se.index',
-            'res_id': self.se_index.id,
-            'views': [(view.id, 'form')],
-            'type': 'ir.actions.act_window',
-        }
-        self.assertEqual(self.se_index.action_synchronize(), expected)
-
     def test_force_recompute_all_binding(self):
         with mock.patch.object(
                 type(self.se_index), 'recompute_all_binding') as mocked:
