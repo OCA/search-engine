@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.addons.queue_job.job import job
+from odoo.exceptions import UserError
 
 
 class SeBinding(models.AbstractModel):
@@ -30,6 +31,7 @@ class SeBinding(models.AbstractModel):
     date_modified = fields.Date(readonly=True)
     date_syncronized = fields.Date(readonly=True)
     data = fields.Serialized()
+    active = fields.Boolean(string="Active", default=True)
 
     def get_export_data(self):
         """Public method to retrieve export data."""
@@ -41,6 +43,30 @@ class SeBinding(models.AbstractModel):
         record._jobify_recompute_json()
         return record
 
+    @api.multi
+    def write(self, vals):
+        if 'active' in vals and not vals['active'] and self.sync_state != 'new':
+            vals['sync_state'] = 'to_update'
+        record = super(SeBinding, self).write(vals)
+        return record
+
+    @api.multi
+    def unlink(self):
+        for record in self:
+            if record.sync_state == 'new' or (
+                    record.sync_state == 'done' and not record.active):
+                continue
+            if record.active:
+                raise UserError(_(
+                    "You cannot delete the binding '%s', unactivate it first.")
+                    % record.name)
+            else:
+                raise UserError(_(
+                    "You cannot delete the binding '%s', wait until it's synchronized.")
+                    % record.name)
+        result = super(SeBinding, self).unlink()
+        return result
+
     def _jobify_recompute_json(self, force_export=False):
         description = _('Recompute %s json and check if need update'
                         % self._name)
@@ -48,12 +74,14 @@ class SeBinding(models.AbstractModel):
             record.with_delay(description=description).recompute_json(
                 force_export=force_export)
 
-    def _work_by_index(self):
+    def _work_by_index(self, active=True):
+        self = self.exists()
         for backend in self.mapped('se_backend_id'):
             for index in self.mapped('index_id'):
                 bindings = self.filtered(
                     lambda b, backend=backend, index=index:
-                    b.se_backend_id == backend and b.index_id == index)
+                    b.se_backend_id == backend and b.index_id == index
+                    and b.active == active)
                 specific_backend = backend.specific_backend
                 with specific_backend.work_on(
                     self._name, records=bindings, index=index
@@ -76,24 +104,15 @@ class SeBinding(models.AbstractModel):
 
     @job(default_channel='root.search_engine')
     @api.multi
-    def export(self):
+    def synchronize(self):
+        export_ids = []
+        delete_ids = []
         for work in self._work_by_index():
             exporter = work.component(usage='se.record.exporter')
             exporter.run()
-
-    @job(default_channel='root.search_engine')
-    @api.multi
-    def unsynchronize(self):
-        """
-        Unsynchronize/delete current recordset from backend
-        :return: bool
-        """
-        for index in self.mapped('index_id'):
-            # Same index means: same backend and same lang
-            bindings = self.filtered(lambda r, i=index: r.index_id == i)
-            specific_backend = index.se_backend_id.specific_backend
-            with specific_backend.work_on(
-                    self._name, records=bindings, index=index) as work:
-                deleter = work.component(usage='record.exporter.deleter')
-                deleter.run()
-        return True
+            export_ids += work.records.ids
+        for work in self._work_by_index(active=False):
+            deleter = work.component(usage='record.exporter.deleter')
+            deleter.run()
+            delete_ids += work.records.ids
+        return "Exported ids : %s\nDeleted ids : %s" % (export_ids, delete_ids)

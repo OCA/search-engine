@@ -9,13 +9,14 @@ class SeDeleter(Component):
     _name = 'se.deleter'
     _inherit = ['base.se.connector', 'base.deleter']
     _usage = 'record.exporter.deleter'
+    _base_backend_adapter_usage = 'se.backend.adapter'
 
-    def run(self, records):
+    def run(self):
         """
         Run the synchronization, delete the record on the backend
         :param records: recordset
         :return: bool
         """
-        if records:
-            return self.backend_adapter.delete(records.ids)
-        return True
+        self.work.records.write({'sync_state': 'done'})
+        record_ids = [x.record_id.id for x in self.work.records]
+        return self.backend_adapter.delete(record_ids)
