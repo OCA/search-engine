@@ -17,6 +17,9 @@
         'connector',
         'base_jsonify',
     ],
+    'external_dependencies': {
+        'python': ['unidecode'],
+    },
     'data': [
         'views/se_backend.xml',
         'views/se_menu.xml',

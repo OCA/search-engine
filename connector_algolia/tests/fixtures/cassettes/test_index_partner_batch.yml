@@ -15,7 +15,7 @@ interactions:
       X-Algolia-API-Key: [fd2b23ce63aebd599a738a8a558dbcdd]
       X-Algolia-Application-Id: [RQJXD7ZPFA]
     method: POST
-    uri: https://rqjxd7zpfa.algolia.net/1/indexes/Partner%20Index/batch
+    uri: https://rqjxd7zpfa.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/batch
   response:
     body: {string: '{"objectIDs":["IamAnObjectID"],"taskID":1662548861}
 
