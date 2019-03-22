@@ -1,3 +1,6 @@
-connector
-server-tools
-ak-incubator-base-jsonify https://github.com/akretion/ak-odoo-incubator 10.0
+queue
+# FIXME
+#connector
+connector https://github.com/guewen/connector 12.0-migrate-connector
+#server-tools
+server-tools https://github.com/simahawk/server-tools 12-base_jsonify

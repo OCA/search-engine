@@ -1,62 +1,33 @@
-# -*- coding: utf-8 -*-
-# © 2016 Akretion (http://www.akretion.com)
-# Sébastien BEAU <sebastien.beau@akretion.com>
+# Copyright 2018 Simone Orsi - Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from contextlib import contextmanager
-
-import mock
-from odoo.addons.component.tests.common import SavepointComponentCase
-
-
-class AlgoliaIndexMock(object):
-    """ Used to simulate the calls to Algolia
-    For a call (request) to Algolia, returns a stored
-    response.
-    """
-
-    def __init__(self):
-        self._calls = []
-
-    def add_objects(self, datas):
-        self._calls.append(('add_objects', datas))
-        return True
-
-    def delete_objects(self, binding_ids):
-        self._calls.append(('delete_objects', binding_ids))
-        return True
+import os
+from urllib import parse as urlparse
+from vcr import VCR
 
 
-class AlgoliaClientMock(object):
-
-    def __init__(self):
-        self.api = None
-        self.secret = None
-        self.index = {}
-
-    def initIndex(self, name):
-        self.index[name] = AlgoliaIndexMock()
-        return self.index[name]
+CASSETS_PATH = os.path.join(os.path.dirname(__file__), 'fixtures/cassettes')
 
 
-@contextmanager
-def mock_api(env):
-    algolia_mock = AlgoliaClientMock()
+class VCRMixin(object):
 
-    def get_mock_interface(api, secret):
-        algolia_mock.api = api
-        algolia_mock.secret = secret
-        return algolia_mock
+    @staticmethod
+    def get_recorder(**kw):
+        defaults = dict(
+            record_mode='once',
+            cassette_library_dir=CASSETS_PATH,
+            path_transformer=VCR.ensure_suffix('.yml'),
+            match_on=['method', 'path', 'query'],
+            filter_headers=['Authorization'],
+            decode_compressed_response=True,
+        )
+        defaults.update(kw)
+        return VCR(**defaults)
 
-    with mock.patch('algoliasearch.client.Client', get_mock_interface), \
-            mock.patch('odoo.addons.keychain.models.keychain.KeychainAccount'
-                       '._get_password') as mocked_get_password:
-        mocked_get_password.get_password.return_value = 'a'
-        yield algolia_mock
+    @staticmethod
+    def parse_path(url):
+        return urlparse.urlparse(url).path
 
-
-class ConnectorAlgoliaCase(SavepointComponentCase):
-
-    def setUp(self):
-        super(ConnectorAlgoliaCase, self).setUp()
-        self.backend = self.env.ref('connector_algolia.backend_1')
+    @staticmethod
+    def parse_qs(url):
+        return urlparse.parse_qs(urlparse.urlparse(url).query)

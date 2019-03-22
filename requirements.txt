@@ -1,0 +1,4 @@
+algoliasearch
+
+# tests
+vcrpy

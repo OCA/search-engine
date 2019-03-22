@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -34,9 +33,12 @@ class SeBackendSpecAbstract(models.AbstractModel):
     def unlink(self):
         se_backend = self.mapped('se_backend_id')
         res = super(SeBackendSpecAbstract, self).unlink()
+        # NOTE: this will delete indexes and bindings by cascade
         se_backend.unlink()
         return res
 
     @api.multi
-    def _get_existing_keychain(self):
-        return self.se_backend_id._get_existing_keychain()
+    def _get_api_credentials(self):
+        # TODO: user self.name to retrieve creds from server env
+        # TODO: username password etc
+        return {}  # pragma: no cover

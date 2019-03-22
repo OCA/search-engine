@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: '{"requests": [{"action": "addObject", "body": {"active": true, "child_ids":
+      [{"child_ids": [], "country_id": {"code": "US", "name": "United States"}, "email":
+      "docbrown@future.com", "id": 96, "name": "Doc Brown"}], "color": 0, "country_id":
+      {"code": "US", "name": "United States"}, "credit_limit": 0.0, "lang": "en_US",
+      "name": "Marty McFly", "id": 1, "objectID": "IamAnObjectID"}}]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: [gzip]
+      Connection: [keep-alive]
+      Content-Length: ['383']
+      Content-Type: [gzip]
+      User-Agent: [Algolia for Python (1.19.1); Python (3.6.3)]
+      X-Algolia-API-Key: [fd2b23ce63aebd599a738a8a558dbcdd]
+      X-Algolia-Application-Id: [RQJXD7ZPFA]
+    method: POST
+    uri: https://rqjxd7zpfa.algolia.net/1/indexes/Partner%20Index/batch
+  response:
+    body: {string: '{"objectIDs":["IamAnObjectID"],"taskID":1662548861}
+
+        '}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=a.txt]
+      Content-Length: ['52']
+      Content-Type: [application/json; charset=UTF-8]
+      Date: ['Sat, 22 Dec 2018 17:39:19 GMT']
+      Server: [nginx]
+      Timing-Allow-Origin: ['*']
+      X-Content-Type-Options: [nosniff]
+    status: {code: 200, message: OK}
+version: 1

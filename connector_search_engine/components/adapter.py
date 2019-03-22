@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# © 2016 Akretion (http://www.akretion.com)
+# Copyright 2016 Akretion (http://www.akretion.com)
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -13,13 +12,14 @@ class SeAdapter(AbstractComponent):
 
     @classmethod
     def match(cls, session, model):
-        return True  # We are a generic exporter; how cool is that?
+        # We are a generic exporter; how cool is that?
+        return True  # pragma: no cover
 
     def index(self, datas):
-        return NotImplemented
+        return NotImplemented  # pragma: no cover
 
     def delete(self, binding_ids):
-        return NotImplemented
+        return NotImplemented  # pragma: no cover
 
     def clear(self):
-        return NotImplemented
+        return NotImplemented  # pragma: no cover
