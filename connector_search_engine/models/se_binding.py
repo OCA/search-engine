@@ -67,9 +67,6 @@ class SeBinding(models.AbstractModel):
             mapper = work.component(usage='se.export.mapper')
             lang = work.index.lang_id.code
             for record in work.records.with_context(lang=lang):
-                # TODO: check WTH here it was converted to list
-                # since list(dict) gives you the lis of the keys :)
-                # data = list(mapper.map_record(record).values())
                 data = mapper.map_record(record).values()
                 if record.data != data or force_export:
                     vals = {'data': data}

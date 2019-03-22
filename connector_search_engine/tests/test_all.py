@@ -131,7 +131,7 @@ class TestBindingIndex(TestBindingIndexBase):
         # on index recompute external data must be updated
         self.partner.name = 'George McFly'
         expected['name'] = self.partner.name
-        self.se_index.recompute_all_index()
+        self.env['se.index'].recompute_all_index()
         self.assertEqual(self.partner_binding.get_export_data(), expected)
         self.assertEqual(self.partner_binding.sync_state, 'to_update')
 
@@ -150,7 +150,7 @@ class TestBindingIndex(TestBindingIndexBase):
 
     def test_generate_batch_export_per_index(self):
         with mock.patch.object(type(self.se_index), 'batch_export') as mocked:
-            self.se_index.generate_batch_export_per_index()
+            self.env['se.index'].generate_batch_export_per_index()
         mocked.assert_called()
 
     def test_get_domain_for_exporting_binding(self):
