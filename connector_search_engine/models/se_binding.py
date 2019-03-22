@@ -7,6 +7,7 @@ from odoo.addons.queue_job.job import job
 
 class SeBinding(models.AbstractModel):
     _name = 'se.binding'
+    _se_model = True
 
     se_backend_id = fields.Many2one(
         'se.backend',
