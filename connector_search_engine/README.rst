@@ -20,7 +20,7 @@ Connector Search Engine
     :target: https://translation.odoo-community.org/projects/connector-search-engine-12-0/connector-search-engine-12-0-connector_search_engine
     :alt: Translate me on Weblate
 
-|badge1| |badge2| |badge3| |badge4| 
+|badge1| |badge2| |badge3| |badge4|
 
 Base module for connecting Odoo with external search engines.
 
@@ -37,6 +37,8 @@ Known issues / Roadmap
   (the aim is to set the binding to be updated
   if we modify a field configured in the exporter)
 
+* When migrating the module the dependency on keychain have been remove
+  please take care of reconfiguring your backend
 Changelog
 =========
 

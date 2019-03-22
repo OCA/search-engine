@@ -14,10 +14,7 @@ class SeBackendAlgolia(models.Model):
 
     # TODO: load values from server env
     algolia_app_id = fields.Char(string="APP ID")
-    # v12: we removed keychain inheritance
-    # which was providing the field `password`.
-    # This field was related to it, this is why `oldname` is here.
-    algolia_api_key = fields.Char(string="API KEY", oldname='password')
+    algolia_api_key = fields.Char(string="API KEY")
 
     def _get_api_credentials(self):
         return {

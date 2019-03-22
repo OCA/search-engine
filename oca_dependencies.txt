@@ -1,6 +1,3 @@
 queue
-# FIXME
-#connector
-connector https://github.com/guewen/connector 12.0-migrate-connector
-#server-tools
-server-tools https://github.com/simahawk/server-tools 12-base_jsonify
+connector
+server-tools
