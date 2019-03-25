@@ -1,7 +1,7 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class SeBackendSpecAbstract(models.AbstractModel):
@@ -9,11 +9,6 @@ class SeBackendSpecAbstract(models.AbstractModel):
     _description = 'Se Specialized Backend'
     _inherit = 'connector.backend'
 
-    name = fields.Char(
-        related='se_backend_id.name',
-        store=True,
-        required=False,
-    )
     # Delegation inheritance
     se_backend_id = fields.Many2one(
         comodel_name='se.backend',
@@ -42,3 +37,17 @@ class SeBackendSpecAbstract(models.AbstractModel):
         # TODO: user self.name to retrieve creds from server env
         # TODO: username password etc
         return {}  # pragma: no cover
+
+    @api.onchange('name')
+    def onchange_backend_name(self):
+        if self.index_ids:
+            return {
+                'warning': {
+                    'title': _('Warning'),
+                    'message': _('Changing this name will change the name of '
+                                 'the indexes. If you proceed, you have to '
+                                 'take care of the configuration in your '
+                                 'website. Cancel the modification if you are'
+                                 ' not comfortable with this configuration.')
+                }
+            }

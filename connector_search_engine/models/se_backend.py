@@ -10,7 +10,7 @@ class SeBackend(models.Model):
     _description = 'Se Backend'
     _inherit = 'connector.backend'
 
-    name = fields.Char(required=False)
+    name = fields.Char(required=True)
     specific_model = fields.Selection(
         string='Type',
         selection='_select_specific_model',

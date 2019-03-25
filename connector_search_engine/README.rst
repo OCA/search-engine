@@ -39,6 +39,7 @@ Known issues / Roadmap
 
 * When migrating the module the dependency on keychain have been remove
   please take care of reconfiguring your backend
+
 Changelog
 =========
 

@@ -3,6 +3,17 @@
 
 from odoo import api, fields, models, _
 from odoo.addons.queue_job.job import job
+import logging
+_logger = logging.getLogger(__name__)
+try:
+    from unidecode import unidecode
+except ImportError:
+    _logger.debug('Cannot `import unidecode`.')
+
+
+def sanitize(name):
+    return unidecode(
+        name.replace(' ', '_').replace('.', '_').replace('-', '_').lower())
 
 
 class SeIndex(models.Model):
@@ -10,7 +21,17 @@ class SeIndex(models.Model):
     _name = 'se.index'
     _description = 'Se Index'
 
-    name = fields.Char(required=True)
+    @api.model
+    def _get_model_domain(self):
+        se_model_names = []
+        for model in self.env:
+            if self.env[model]._abstract or self.env[model]._transient:
+                continue
+            if hasattr(self.env[model], '_se_model'):
+                se_model_names.append(model)
+        return [('model', 'in', se_model_names)]
+
+    name = fields.Char(compute='_compute_name', store=True)
     backend_id = fields.Many2one(
         'se.backend',
         string='Backend',
@@ -24,7 +45,8 @@ class SeIndex(models.Model):
     model_id = fields.Many2one(
         'ir.model',
         string='Model',
-        required=True)
+        required=True,
+        domain=_get_model_domain)
     exporter_id = fields.Many2one(
         'ir.exports',
         string='Exporter')
@@ -36,6 +58,13 @@ class SeIndex(models.Model):
         ('lang_model_uniq', 'unique(backend_id, lang_id, model_id)',
          'Lang and model of index must be uniq per backend.'),
     ]
+
+    @api.onchange('model_id')
+    def onchange_model_id(self):
+        self.exporter_id = False
+        if self.model_id:
+            domain = [('resource', '=', self.model_id.model)]
+            return {'domain': {'exporter_id': domain}}
 
     @api.model
     def recompute_all_index(self, domain=None):
@@ -52,6 +81,15 @@ class SeIndex(models.Model):
             for bindings in binding_obj.search([('index_id', '=', record.id)]):
                 bindings._jobify_recompute_json(force_export=force_export)
         return True
+
+    @api.depends('lang_id', 'model_id', 'backend_id.name')
+    def _compute_name(self):
+        for rec in self:
+            if rec.lang_id and rec.model_id and rec.backend_id.name:
+                rec.name = '%s_%s_%s' % (
+                    sanitize(rec.backend_id.name),
+                    sanitize(rec.model_id.name or ''),
+                    rec.lang_id.code)
 
     def force_batch_export(self):
         self.ensure_one()

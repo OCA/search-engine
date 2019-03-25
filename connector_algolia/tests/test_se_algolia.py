@@ -34,9 +34,7 @@ class TestAlgoliaBackend(TestBindingIndexBase, VCRMixin):
         self.partner_binding.sync_state = 'to_update'
         with self.assertRaises(exceptions.UserError) as err:
             self.se_index.batch_export()
-        self.assertTrue(err.exception.name.startswith(
-            'Partner Index error. The key objectID is missing'
-        ))
+        self.assertIn('The key objectID is missing in', err.exception.name)
 
     def test_index_adapter(self):
         self.partner_binding.sync_state = 'to_update'
@@ -50,8 +48,10 @@ class TestAlgoliaBackend(TestBindingIndexBase, VCRMixin):
         self.assertEqual(len(cassette.requests), 1)
         request = cassette.requests[0]
         self.assertEqual(request.method, 'POST')
-        self.assertEqual(self.parse_path(request.uri),
-                         '/1/indexes/Partner%20Index/batch')
+        self.assertEqual(
+            self.parse_path(request.uri),
+            '/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US'
+            '/batch')
         # TODO
         # request_data = json.loads(request.body)['requests']
         # expected = [{
@@ -84,8 +84,10 @@ class TestAlgoliaBackend(TestBindingIndexBase, VCRMixin):
         self.assertEqual(len(cassette.requests), 1)
         request = cassette.requests[0]
         self.assertEqual(request.method, 'POST')
-        self.assertEqual(self.parse_path(request.uri),
-                         '/1/indexes/Partner%20Index/clear')
+        self.assertEqual(
+            self.parse_path(request.uri),
+            '/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US'
+            '/clear')
         self.assertEqual(request.body, None)
 
         response = cassette.responses[0]

@@ -64,11 +64,10 @@ class TestBindingIndex(TestBindingIndexBase):
         SeAdapterFake._build_component(cls._components_registry)
         SeBackendFake._test_setup_model(cls.env)
         cls.fake_backend_model = cls.env[SeBackendFake._name]
-        cls.backend_specific = cls.fake_backend_model.create({})
+        cls.backend_specific = cls.fake_backend_model.create({
+            'name': 'Fake SE'
+            })
         cls.backend = cls.backend_specific.se_backend_id
-        cls.backend.write({
-            'name': 'Fake SE',
-        })
         cls.setup_records()
 
     @classmethod
