@@ -45,7 +45,8 @@ class SeBinding(models.AbstractModel):
 
     @api.multi
     def write(self, vals):
-        if 'active' in vals and not vals['active'] and self.sync_state != 'new':
+        if 'active' in vals and not vals['active']\
+                and self.sync_state != 'new':
             vals['sync_state'] = 'to_update'
         record = super(SeBinding, self).write(vals)
         return record
@@ -62,7 +63,8 @@ class SeBinding(models.AbstractModel):
                     % record.name)
             else:
                 raise UserError(_(
-                    "You cannot delete the binding '%s', wait until it's synchronized.")
+                    "You cannot delete the binding '%s', "
+                    "wait until it's synchronized.")
                     % record.name)
         result = super(SeBinding, self).unlink()
         return result
