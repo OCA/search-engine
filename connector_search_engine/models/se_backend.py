@@ -47,8 +47,11 @@ class SeBackend(models.Model):
             ('model', 'like', 'se.backend.%'),
             ('model', '!=', 'se.backend.spec.abstract'),
         ])
+        # we check if the model exist in the env
+        # indeed during module upgrade the model may not exist yet
         return [
             (x.model, x.name) for x in models
+            if x.model in self.env
         ]
 
     @api.model
