@@ -13,10 +13,10 @@ class Indices(object):
     def exists(self, index):
         return False
 
-    def create(self, index):  # pylint: disable=W8106
+    def create(self, index, body=None, params=None):  # pylint: disable=W8106
         # disabled error w8106 because since this is a mock class
         # I don't need to call super model's create
-        self.elasticindex[index] = self
+        self.elasticindex[index] = {"body": body, "params": params}
         return True
 
     def delete(self, index, ignore):

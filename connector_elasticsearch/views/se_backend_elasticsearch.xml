@@ -24,6 +24,7 @@
                                 <field name="lang_id"/>
                                 <field name="model_id"/>
                                 <field name="exporter_id" context="{'form_view_ref': 'connector_elasticsearch.view_ir_exports'}"/>
+                                <field name="config_id"/>
                                 <field name="batch_size"/>
                                 <button name="force_recompute_all_binding"
                                         help="Force to recompute all binding of the index and set them to the state 'To update'"

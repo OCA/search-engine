@@ -5,6 +5,7 @@ from odoo import exceptions
 from odoo.addons.connector_search_engine.tests.test_all import (
     TestBindingIndexBase,
 )
+from odoo.exceptions import ValidationError
 
 from .common import mock_api
 
@@ -19,6 +20,23 @@ class TestConnectorElasticsearch(TestBindingIndexBase):
         cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
 
+    @classmethod
+    def setup_records(cls):
+        cls.se_config = cls.env["se.index.config"].create(
+            {
+                "name": "my_config",
+                "doc_type": "odoo_doc",
+                "body": {"mappings": {"odoo_doc": {}}},
+            }
+        )
+        super().setup_records()
+
+    @classmethod
+    def _prepare_index_values(cls, backend):
+        values = super()._prepare_index_values(backend)
+        values.update({"config_id": cls.se_config.id})
+        return values
+
     def test_index_adapter_no_objectID(self):
         self.partner_binding.sync_state = "to_update"
         with mock_api(self.env), self.assertRaises(
@@ -32,8 +50,33 @@ class TestConnectorElasticsearch(TestBindingIndexBase):
         self.partner_binding.write(
             {"sync_state": "to_update", "data": {"objectID": "foo"}}
         )
-
         # Export index to elasticsearch should be called
         with mock_api(self.env) as mocked_api:
             self.se_index.batch_export()
-            self.assertIn(self.se_index.name.lower(), mocked_api.index)
+            index_name = self.se_index.name.lower()
+            self.assertIn(index_name, mocked_api.index)
+            self.assertEqual(
+                mocked_api.index[index_name].get("body"), self.se_config.body
+            )
+
+    def test_index_config(self):
+        """Check constrains on doc_type and config body: If a mappings is
+        specified, at least one entry must exist for the given doctype
+        """
+        self.assertEqual(self.se_config.doc_type, "odoo_doc")
+        with self.assertRaises(ValidationError), self.env.cr.savepoint():
+            self.se_config.body = {"mappings": "toto"}
+        self.se_config.write(
+            {
+                "doc_type": "new_doc_type",
+                "body": {"mappings": {"new_doc_type": {}}},
+            }
+        )
+
+    def test_inex_config_as_str(self):
+        self.se_config.write(
+            {"body_str": '{"mappings": {"odoo_doc": {"1":1}}}'}
+        )
+        self.assertDictEqual(
+            self.se_config.body, {"mappings": {"odoo_doc": {"1": 1}}}
+        )
