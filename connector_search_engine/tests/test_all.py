@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import mock
-
+from odoo import exceptions
 from .common import TestSeBackendCaseBase
 from .models import (
     ResPartnerFake, BindingResPartnerFake,
@@ -53,7 +53,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
             ],
             'index_id': cls.se_index.id,
         })
-        cls.partner = cls.partner_binding.odoo_id
+        cls.partner = cls.partner_binding.record_id
 
 
 class TestBindingIndex(TestBindingIndexBase):
@@ -104,6 +104,24 @@ class TestBindingIndex(TestBindingIndexBase):
         self.backend_specific.unlink()
         self.assertFalse(self.backend_specific.exists())
         self.assertFalse(self.backend.exists())
+
+    def test_changing_name_with_index_raise_warning(self):
+        res = self.backend_specific.onchange_backend_name()
+        self.assertIn('warning', res)
+        self.backend_specific.index_ids.unlink()
+        res = self.backend_specific.onchange_backend_name()
+        self.assertIsNone(res)
+
+    def test_changing_model_remove_exporter(self):
+        res = self.se_index.onchange_model_id()
+        self.assertEqual(len(self.se_index.exporter_id), 0)
+        self.assertIn('domain', res)
+        self.assertIn('exporter_id', res['domain'])
+
+    def test_get_model_domain(self):
+        result = self.se_index._get_model_domain()
+        models = result[0][2]
+        self.assertIn('res.partner.binding.fake', models)
 
     def test_recompute_all_indexes(self):
         # on creation indexes are computed and external data stored
@@ -175,6 +193,14 @@ class TestBindingIndex(TestBindingIndexBase):
             self.se_index.batch_export()
         self.assertEqual(self.partner_binding.sync_state, 'scheduled')
         mocked.assert_called()
+        # even if the binding is inactive it should schedule them
+        self.partner_binding.sync_state = 'to_update'
+        self.partner_binding.active = False
+        with mock.patch.object(
+                type(self.partner_binding), 'synchronize') as mocked:
+            self.se_index.batch_export()
+        self.assertEqual(self.partner_binding.sync_state, 'scheduled')
+        mocked.assert_called()
 
     def test_clear_index(self):
         with SeAdapterFake.mocked_calls() as calls:
@@ -183,7 +209,8 @@ class TestBindingIndex(TestBindingIndexBase):
             self.assertEqual(calls[0]['work_ctx']['index'], self.se_index)
             self.assertEqual(calls[0]['method'], 'clear')
 
-    def test_synchronize(self):
+    def test_synchronize_active_binding(self):
+        # when binding is active it should update it
         with SeAdapterFake.mocked_calls() as calls:
             self.partner_binding.synchronize()
             self.assertEqual(len(calls), 1)
@@ -191,3 +218,70 @@ class TestBindingIndex(TestBindingIndexBase):
             self.assertEqual(
                 calls[0]['work_ctx']['records'], self.partner_binding)
             self.assertEqual(calls[0]['method'], 'index')
+
+    def test_synchronize_inactive_binding(self):
+        # when binding is inactive it should delete it
+        self.partner_binding.active = False
+        with SeAdapterFake.mocked_calls() as calls:
+            self.partner_binding.synchronize()
+            self.assertEqual(len(calls), 1)
+            self.assertEqual(calls[0]['work_ctx']['index'], self.se_index)
+            self.assertEqual(
+                calls[0]['work_ctx']['records'], self.partner_binding)
+            self.assertEqual(calls[0]['method'], 'delete')
+
+    def test_unlink_new_binding(self):
+        self.partner_binding.sync_state = 'new'
+        self.partner_binding.unlink()
+        self.assertEqual(len(self.partner_binding.exists()), 0)
+
+    def test_unlink_done_inactive_binding(self):
+        self.partner_binding.active = False
+        self.partner_binding.sync_state = 'done'
+        self.partner_binding.unlink()
+        self.assertEqual(len(self.partner_binding.exists()), 0)
+
+    def test_unlink_to_update_inactive_binding(self):
+        self.partner_binding.active = False
+        self.partner_binding.sync_state = 'to_update'
+        with self.assertRaises(exceptions.UserError) as err:
+            self.partner_binding.unlink()
+        self.assertIn("wait until it's synchronized.", err.exception.name)
+
+    def test_unlink_to_upgrade_active_binding(self):
+        self.partner_binding.sync_state = 'to_update'
+        with self.assertRaises(exceptions.UserError) as err:
+            self.partner_binding.unlink()
+        self.assertIn('unactivate it first', err.exception.name)
+
+    def test_unlink_done_active_binding(self):
+        self.partner_binding.sync_state = 'done'
+        with self.assertRaises(exceptions.UserError) as err:
+            self.partner_binding.unlink()
+        self.assertIn('unactivate it first', err.exception.name)
+
+    def test_inactive_binding_change_state(self):
+        self.partner_binding.sync_state = 'done'
+        self.partner_binding.active = False
+        self.assertEqual(self.partner_binding.sync_state, 'to_update')
+
+    def test_inactive_new_binding_do_not_change_state(self):
+        self.partner_binding.sync_state = 'new'
+        self.partner_binding.active = False
+        self.assertEqual(self.partner_binding.sync_state, 'new')
+
+    def test_resynchronize_all_bindings(self):
+        # The iter method in the mock will return the item id 42 that do not
+        # exist as we have dropped all binding
+        # the resync method will call the delete to remove this obsolete item
+        bindings = self.binding_model.search([])
+        bindings.write({'sync_state': 'new'})
+        bindings.unlink()
+        with SeAdapterFake.mocked_calls() as calls:
+            self.se_index.resynchronize_all_bindings()
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[0]['work_ctx']['index'], self.se_index)
+            self.assertEqual(calls[0]['method'], 'iter')
+            self.assertEqual(calls[1]['work_ctx']['index'], self.se_index)
+            self.assertEqual(calls[1]['method'], 'delete')
+            self.assertEqual(calls[1]['args'], [42])
