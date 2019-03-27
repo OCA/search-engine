@@ -19,4 +19,5 @@ class SeDeleter(Component):
         """
         self.work.records.write({'sync_state': 'done'})
         record_ids = [x.record_id.id for x in self.work.records]
-        return self.backend_adapter.delete(record_ids)
+        if record_ids:
+            return self.backend_adapter.delete(record_ids)
