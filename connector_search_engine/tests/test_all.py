@@ -163,13 +163,15 @@ class TestBindingIndex(TestBindingIndexBase):
     def test_batch_export(self):
         # state = new, nothing to export
         self.partner_binding.sync_state = 'new'
-        with mock.patch.object(type(self.partner_binding), 'export') as mocked:
+        with mock.patch.object(
+                type(self.partner_binding), 'synchronize') as mocked:
             self.se_index.batch_export()
         self.assertEqual(self.partner_binding.sync_state, 'new')
         mocked.assert_not_called()
         # now it should find the bindings marked for update and schedule them
         self.partner_binding.sync_state = 'to_update'
-        with mock.patch.object(type(self.partner_binding), 'export') as mocked:
+        with mock.patch.object(
+                type(self.partner_binding), 'synchronize') as mocked:
             self.se_index.batch_export()
         self.assertEqual(self.partner_binding.sync_state, 'scheduled')
         mocked.assert_called()
@@ -181,9 +183,9 @@ class TestBindingIndex(TestBindingIndexBase):
             self.assertEqual(calls[0]['work_ctx']['index'], self.se_index)
             self.assertEqual(calls[0]['method'], 'clear')
 
-    def test_export(self):
+    def test_synchronize(self):
         with SeAdapterFake.mocked_calls() as calls:
-            self.partner_binding.export()
+            self.partner_binding.synchronize()
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]['work_ctx']['index'], self.se_index)
             self.assertEqual(
