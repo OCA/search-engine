@@ -31,19 +31,24 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
         super().tearDownClass()
 
     @classmethod
+    def _prepare_index_values(cls, backend=None):
+        backend = backend or cls.backend
+        return {
+            "name": "Partner Index",
+            "backend_id": backend.id,
+            "model_id": cls.env.ref(
+                "connector_search_engine.model_res_partner_binding_fake"
+            ).id,
+            "lang_id": cls.env.ref("base.lang_en").id,
+            "exporter_id": cls.exporter.id,
+        }
+
+    @classmethod
     def setup_records(cls, backend=None):
         backend = backend or cls.backend
         # create an index for partner model
         cls.se_index = cls.se_index_model.create(
-            {
-                "name": "Partner Index",
-                "backend_id": backend.id,
-                "model_id": cls.env.ref(
-                    "connector_search_engine.model_res_partner_binding_fake"
-                ).id,
-                "lang_id": cls.env.ref("base.lang_en").id,
-                "exporter_id": cls.exporter.id,
-            }
+            cls._prepare_index_values(backend)
         )
         # create a binding + partner alltogether
         cls.binding_model = cls.env[BindingResPartnerFake._name]
