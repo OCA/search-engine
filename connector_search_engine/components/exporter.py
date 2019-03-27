@@ -18,9 +18,15 @@ class SeExporter(Component):
 
     def run(self):
         """ Run the synchronization """
-        # TODO: this state should be set _after_ the indexing
-        self.work.records.write({'sync_state': 'done'})
-        return self._index([
-            record.get_export_data()
-            for record in self.work.records
-        ])
+        if self.work.records:
+            # TODO: this state should be set _after_ the indexing
+            # the best will to add an extra state "sync_running"
+            # and setting this state here.
+            # Then we create a job (with the id of the index search task)
+            # and we ask the search engine if it finish or not and
+            # when it's finish we set the binding in done
+            self.work.records.write({'sync_state': 'done'})
+            return self._index([
+                record.get_export_data()
+                for record in self.work.records
+            ])
