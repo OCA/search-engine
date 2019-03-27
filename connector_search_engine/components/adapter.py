@@ -25,4 +25,4 @@ class SeAdapter(AbstractComponent):
         return NotImplemented  # pragma: no cover
 
     def iter(self):
-        return NotImplemented
+        return NotImplemented  # pragma: no cover

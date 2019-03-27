@@ -7,7 +7,7 @@ import logging
 _logger = logging.getLogger(__name__)
 try:
     from unidecode import unidecode
-except ImportError:
+except ImportError:  # pragma: no cover
     _logger.debug('Cannot `import unidecode`.')
 
 
@@ -137,8 +137,15 @@ class SeIndex(models.Model):
         return True
 
     def resynchronize_all_bindings(self):
+        """This method will iter on all item in the index of the search engine
+        if the corresponding binding do not exist on odoo it will create a job
+        that delete all this obsolete items.
+        You should not use this method for day to day job, it only an helper
+        for recovering your index after a dammage.
+        You can also drop index but this will introduce downtime, so it's
+        better to force a resynchronization"""
         for index in self:
-            delete_ids = []
+            item_ids = []
             backend = index.backend_id.specific_backend
             with backend.work_on(self._name, index=index) as work:
                 adapter = work.component(usage='se.backend.adapter')
@@ -147,15 +154,13 @@ class SeIndex(models.Model):
                         [('id', '=', se_binding['id'])]
                     )
                     if not binding:
-                        delete_ids.append(se_binding[adapter._record_id_key])
-                index.with_delay().synchronize(delete_ids)
+                        item_ids.append(se_binding[adapter._record_id_key])
+                index.with_delay().delete_obsolete_item(item_ids)
 
     @job(default_channel='root.search_engine')
     @api.multi
-    def synchronize(self, delete_ids):
-        """Synchronize index by deleting the obsolete records.
-        """
+    def delete_obsolete_item(self, item_ids):
         backend = self.backend_id.specific_backend
         with backend.work_on(self._name, index=self) as work:
             adapter = work.component(usage='se.backend.adapter')
-            adapter.delete(delete_ids)
+            adapter.delete(item_ids)

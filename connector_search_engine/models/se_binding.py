@@ -66,8 +66,7 @@ class SeBinding(models.AbstractModel):
                     "You cannot delete the binding '%s', "
                     "wait until it's synchronized.")
                     % record.name)
-        result = super(SeBinding, self).unlink()
-        return result
+        return super(SeBinding, self).unlink()
 
     def _jobify_recompute_json(self, force_export=False):
         description = _('Recompute %s json and check if need update'
