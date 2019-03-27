@@ -9,7 +9,7 @@
         Connector For Elasticsearch Search Engine""",
     "version": "12.0.0.0.1",
     "license": "AGPL-3",
-    "author": "ACSONE SA/NV",
+    "author": "ACSONE SA/NV, Odoo Community Association (OCA)",
     "website": "http://www.acsone.eu",
     "depends": [
         "connector_search_engine",
@@ -18,7 +18,9 @@
         "base_jsonify",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/se_backend_elasticsearch.xml",
+        "security/se_index_config.xml",
+        "views/se_index_config.xml",
         "views/se_backend_elasticsearch.xml",
         "views/se_menu.xml",
     ],

@@ -21,6 +21,14 @@ class ElasticsearchAdapter(Component):
     _inherit = ["base.backend.adapter", "elasticsearch.se.connector"]
     _usage = "se.backend.adapter"
 
+    @property
+    def _index_name(self):
+        return self.work.index.name.lower()
+
+    @property
+    def _doc_type(self):
+        return self.work.index.config_id.doc_type
+
     def _get_es(self):
         backend = self.backend_record
 
@@ -34,10 +42,12 @@ class ElasticsearchAdapter(Component):
         )
 
         if not es.ping():
-            raise ValueError("echec de connexion avec elasticsearch")
+            raise ValueError("Connect Exception with elasticsearch")
 
-        if not es.indices.exists(self.work.index.name.lower()):
-            es.indices.create(index=self.work.index.name.lower())
+        if not es.indices.exists(self._index_name):
+            es.indices.create(
+                index=self._index_name, body=self.work.index.config_id.body
+            )
         return es
 
     def index(self, datas):
@@ -51,8 +61,8 @@ class ElasticsearchAdapter(Component):
                 )
             else:
                 action = {
-                    "_index": self.work.index.name.lower(),
-                    "_type": "odoo",
+                    "_index": self._index_name,
+                    "_type": self._doc_type,
                     "_id": data.get("objectID"),
                     "_source": data,
                 }
@@ -65,15 +75,13 @@ class ElasticsearchAdapter(Component):
     def delete(self, binding_ids):
         es = self._get_es()
         res = es.delete(
-            index=self.work.index.name.lower(),
-            doc_type="product",
-            id=binding_ids,
+            index=self._index_name, doc_type=self._doc_type, id=binding_ids
         )
         return res
 
     def clear(self):
         es = self._get_es()
-        res = es.indices.delete(
-            index=self.work.index.name.lower(), ignore=[400, 404]
-        )
+        res = es.indices.delete(index=self._index_name, ignore=[400, 404])
+        # recreate the index
+        self._get_es()
         return res["acknowledged"]
