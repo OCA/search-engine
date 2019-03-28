@@ -10,8 +10,20 @@ addons:
 
 language: python
 
+stages:
+  - linting
+  - test
+
 python:
   - "3.5"
+
+jobs:
+  include:
+    - stage: linting
+      name: "Pre-Commit"
+      python: 3.6
+      install: pip install pre_commit
+      script: pre-commit run --all
 
 env:
   - VERSION="12.0" LINT_CHECK="1"
@@ -26,6 +38,7 @@ install:
   - travis_install_nightly
 
 script:
+  - mv .isort.cfg .isoft.cfg.disabled # to avoid trouble with pylint odoo
   - travis_run_tests
 
 after_success:

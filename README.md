@@ -11,3 +11,10 @@ This project include a generic search engine connector and also a specific conne
 Roadmap
 ========
 * Add support of Elastic Connector
+
+
+Developement
+============
+
+This project uses [black](https://github.com/ambv/black) as code formatting convention, as well as isort and flake8.
+To make sure local coding convention are respected before you commit, install [pre-commit](https://github.com/pre-commit/pre-commit>) and run ``pre-commit install`` after cloning the repository.
