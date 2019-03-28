@@ -2,4 +2,4 @@ algoliasearch
 unidecode
 
 # tests
-vcrpy
+vcrpy-unittest

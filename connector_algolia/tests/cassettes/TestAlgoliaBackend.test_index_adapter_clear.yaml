@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: [gzip]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [gzip]
+      User-Agent: [Algolia for Python (1.17.0); Python (3.5.3)]
+      X-Algolia-API-Key: [856fbe3fbd5f6cc3b9d765c92e80de83]
+      X-Algolia-Application-Id: [GH41KF783Z]
+    method: POST
+    uri: https://gh41kf783z.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
+  response:
+    body: {string: '{"updatedAt":"2019-03-28T16:14:35.558Z", "taskID":10958352282}
+
+        '}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Disposition: [inline; filename=a.txt]
+      Content-Length: ['63']
+      Content-Type: [application/json; charset=UTF-8]
+      Date: ['Thu, 28 Mar 2019 16:14:35 GMT']
+      Server: [nginx]
+      Timing-Allow-Origin: ['*']
+      X-Content-Type-Options: [nosniff]
+    status: {code: 200, message: OK}
+version: 1
