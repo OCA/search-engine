@@ -1,16 +1,17 @@
 # Copyright 2019 ACSONE SA/NV
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import json
+from time import sleep
 
 from odoo import exceptions
 from odoo.addons.connector_search_engine.tests.test_all import (
     TestBindingIndexBase,
 )
 from odoo.exceptions import ValidationError
+from vcr_unittest import VCRMixin
 
-from .common import mock_api
 
-
-class TestConnectorElasticsearch(TestBindingIndexBase):
+class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -19,6 +20,18 @@ class TestConnectorElasticsearch(TestBindingIndexBase):
         cls.exporter = cls.env.ref("base_jsonify.ir_exp_partner")
         cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
+        with cls.backend_specific.work_on(
+            "se.index", index=cls.se_index
+        ) as work:
+            cls.adapter = work.component(usage="se.backend.adapter")
+
+    def _get_vcr_kwargs(self, **kwargs):
+        return {
+            "record_mode": "one",
+            "match_on": ["method", "path", "query"],
+            "filter_headers": ["Authorization"],
+            "decode_compressed_response": True,
+        }
 
     @classmethod
     def setup_records(cls):
@@ -39,11 +52,9 @@ class TestConnectorElasticsearch(TestBindingIndexBase):
 
     def test_index_adapter_no_objectID(self):
         self.partner_binding.sync_state = "to_update"
-        with mock_api(self.env), self.assertRaises(
-            exceptions.UserError
-        ) as err:
+        with self.assertRaises(exceptions.UserError) as err:
             self.se_index.batch_export()
-        self.assertIn("The key objectID is missing in", err.exception.name)
+            self.assertIn("The key objectID is missing in", err.exception.name)
 
     def test_index_adapter(self):
         # Set partner to be updated with fake vals in data
@@ -51,13 +62,34 @@ class TestConnectorElasticsearch(TestBindingIndexBase):
             {"sync_state": "to_update", "data": {"objectID": "foo"}}
         )
         # Export index to elasticsearch should be called
-        with mock_api(self.env) as mocked_api:
-            self.se_index.batch_export()
-            index_name = self.se_index.name.lower()
-            self.assertIn(index_name, mocked_api.index)
-            self.assertEqual(
-                mocked_api.index[index_name].get("body"), self.se_config.body
-            )
+        self.se_index.batch_export()
+        # We should have 3 or 4 request...
+        # ping
+        # index exists?
+        # if not exits -> create (dependening of the elasticsearch content)
+        # export
+        self.assertGreaterEqual(len(self.cassette.requests), 3)
+        request = self.cassette.requests[-1]
+        self.assertEqual(request.method, "POST")
+        self.assertEqual(self.parse_path(request.uri), "/_bulk")
+        body = request.body.decode("utf-8")
+        lines = [l for l in filter(lambda l: l, body.split("\n"))]
+        # we must have 2 lines: 1 for the index op and 1 with data
+        self.assertEqual(len(lines), 2)
+        index_action = json.loads(lines[0])
+        self.assertDictEqual(
+            index_action,
+            {
+                "index": {
+                    "_index": "demo_elasticsearch_backend_res_partner_"
+                    "binding_fake_en_us",
+                    "_type": "odoo_doc",
+                    "_id": "foo",
+                }
+            },
+        )
+        index_data = json.loads(lines[1])
+        self.assertDictEqual(index_data, {"objectID": "foo"})
 
     def test_index_config(self):
         """Check constrains on doc_type and config body: If a mappings is
@@ -80,3 +112,18 @@ class TestConnectorElasticsearch(TestBindingIndexBase):
         self.assertDictEqual(
             self.se_config.body, {"mappings": {"odoo_doc": {"1": 1}}}
         )
+
+    def test_iter_adapter(self):
+        data = [
+            {"objectID": "foo"},
+            {"objectID": "foo2"},
+            {"objectID": "foo3"},
+        ]
+        self.adapter.clear()
+        self.adapter.index(data)
+        if self.cassette.dirty:
+            # when we record the test we must wait for algolia
+            sleep(2)
+        res = [x for x in self.adapter.iter()]
+        res.sort(key=lambda d: d["objectID"])
+        self.assertListEqual(res, data)
