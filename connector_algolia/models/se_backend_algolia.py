@@ -8,15 +8,13 @@ from odoo import fields, models
 
 
 class SeBackendAlgolia(models.Model):
-    _name = 'se.backend.algolia'
-    _inherit = 'se.backend.spec.abstract'
-    _description = 'Algolia Backend'
+    _name = "se.backend.algolia"
+    _inherit = "se.backend.spec.abstract"
+    _description = "Algolia Backend"
 
     # TODO: load values from server env
     algolia_app_id = fields.Char(string="APP ID")
     algolia_api_key = fields.Char(string="API KEY")
 
     def _get_api_credentials(self):
-        return {
-            'password': self.algolia_api_key,
-        }  # pragma: no cover
+        return {"password": self.algolia_api_key}  # pragma: no cover

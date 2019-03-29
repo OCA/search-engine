@@ -5,8 +5,8 @@
 
 import logging
 
-from odoo.addons.component.core import Component
 from odoo import _
+from odoo.addons.component.core import Component
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -15,19 +15,20 @@ _logger = logging.getLogger(__name__)
 try:
     import algoliasearch
 except ImportError:  # pragma: no cover
-    _logger.debug('Can not import algoliasearch')
+    _logger.debug("Can not import algoliasearch")
 
 
 class AlgoliaAdapter(Component):
     _name = "algolia.adapter"
-    _inherit = ['base.backend.adapter', 'algolia.se.connector']
-    _usage = 'se.backend.adapter'
+    _inherit = ["base.backend.adapter", "algolia.se.connector"]
+    _usage = "se.backend.adapter"
 
     def _get_index(self):
         backend = self.backend_record
         account = backend._get_api_credentials()
         client = algoliasearch.client.Client(
-            backend.algolia_app_id, account['password'])
+            backend.algolia_app_id, account["password"]
+        )
         return client.initIndex(self.work.index.name)
 
     def index(self, records):
@@ -37,8 +38,9 @@ class AlgoliaAdapter(Component):
         for data in records:
             if not data.get(self._record_id_key):
                 raise UserError(
-                    _('The key %s is missing in the data %s') % (
-                        self._record_id_key, data))
+                    _("The key %s is missing in the data %s")
+                    % (self._record_id_key, data)
+                )
         index.add_objects(records)
 
     def delete(self, binding_ids):

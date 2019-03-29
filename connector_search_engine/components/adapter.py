@@ -6,9 +6,9 @@ from odoo.addons.component.core import AbstractComponent
 
 
 class SeAdapter(AbstractComponent):
-    _name = 'se.backend.adapter'
-    _inherit = ['base.se.connector', 'base.backend.adapter']
-    _usage = 'se.backend.adapter'
+    _name = "se.backend.adapter"
+    _inherit = ["base.se.connector", "base.backend.adapter"]
+    _usage = "se.backend.adapter"
 
     @classmethod
     def match(cls, session, model):

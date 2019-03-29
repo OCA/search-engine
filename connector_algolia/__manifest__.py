@@ -3,33 +3,29 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
-    'name': 'Algolia Connector',
-    'version': '12.0.1.0.0',
-    'category': 'Connector',
-    'summary': 'Connector For Algolia Search Engine',
-    'author': 'Akretion,'
-              'ACSONE SA/NV,'
-              'Camptocamp,'
-              'Odoo Community Association (OCA)',
+    "name": "Algolia Connector",
+    "version": "12.0.1.0.0",
+    "category": "Connector",
+    "summary": "Connector For Algolia Search Engine",
+    "author": "Akretion,"
+    "ACSONE SA/NV,"
+    "Camptocamp,"
+    "Odoo Community Association (OCA)",
     # FIXME
-    'website': 'http://www.akretion.com',
-    'license': 'AGPL-3',
-    'depends': [
-        'connector_search_engine',
-        'connector',
-        'component',
-        'base_jsonify',
+    "website": "http://www.akretion.com",
+    "license": "AGPL-3",
+    "depends": [
+        "connector_search_engine",
+        "connector",
+        "component",
+        "base_jsonify",
     ],
-    'data': [
-        'views/se_backend_algolia.xml',
-        'views/se_menu.xml',
-        'security/ir.model.access.csv',
+    "data": [
+        "views/se_backend_algolia.xml",
+        "views/se_menu.xml",
+        "security/ir.model.access.csv",
     ],
-    'demo': [
-        'demo/backend_demo.xml',
-    ],
-    'external_dependencies': {
-        'python': ['algoliasearch'],
-    },
-    'installable': True,
+    "demo": ["demo/backend_demo.xml"],
+    "external_dependencies": {"python": ["algoliasearch"]},
+    "installable": True,
 }
