@@ -38,7 +38,7 @@ interactions:
         In 7.0 include_type_name will default to 'false', which means responses will
         omit the type name in mapping definitions."
       content-length:
-      - '446'
+      - '346'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -206,10 +206,79 @@ interactions:
     uri: http://127.0.0.1:9200/_bulk
   response:
     body:
-      string: '{"took":20,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo2","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}}]}'
+      string: '{"took":18,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo2","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}}]}'
     headers:
       content-length:
       - '743'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '446'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo"}}
+
+      {"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3"}}
+
+      '
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/x-ndjson
+    method: POST
+    uri: http://127.0.0.1:9200/_bulk
+  response:
+    body:
+      string: '{"took":7,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":200}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":200}}]}'
+    headers:
+      content-length:
+      - '508'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -271,10 +340,10 @@ interactions:
     uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us/odoo_doc/_search?filter_path=hits.hits._source
   response:
     body:
-      string: '{"hits":{"hits":[{"_source":{"objectID":"foo3"}},{"_source":{"objectID":"foo"}},{"_source":{"objectID":"foo2"}}]}}'
+      string: '{"hits":{"hits":[{"_source":{"objectID":"foo2"}}]}}'
     headers:
       content-length:
-      - '114'
+      - '51'
       content-type:
       - application/json; charset=UTF-8
     status:

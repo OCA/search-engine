@@ -41,7 +41,7 @@ class ElasticsearchAdapter(Component):
             ]
         )
 
-        if not es.ping():
+        if not es.ping():  # pragma: no cover
             raise ValueError("Connect Exception with elasticsearch")
 
         if not es.indices.exists(self._index_name):
@@ -76,10 +76,19 @@ class ElasticsearchAdapter(Component):
 
     def delete(self, binding_ids):
         es = self._get_es_client()
-        res = es.delete(
-            index=self._index_name, doc_type=self._doc_type, id=binding_ids
-        )
-        return res
+        dataforbulk = []
+        for binding_id in binding_ids:
+            action = {
+                "_op_type": "delete",
+                "_index": self._index_name,
+                "_type": self._doc_type,
+                "_id": binding_id,
+            }
+            dataforbulk.append(action)
+
+        res = elasticsearch.helpers.bulk(es, dataforbulk)
+        # checks if number of indexed object and object in datas are equal
+        return len(binding_ids) - res[0] == 0
 
     def clear(self):
         es = self._get_es_client()
