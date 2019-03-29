@@ -59,7 +59,7 @@ interactions:
     uri: http://127.0.0.1:9200/_bulk
   response:
     body:
-      string: '{"took":3,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":2,"result":"updated","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":200}}]}'
+      string: '{"took":4,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":2,"result":"updated","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":200}}]}'
     headers:
       content-length:
       - '270'
