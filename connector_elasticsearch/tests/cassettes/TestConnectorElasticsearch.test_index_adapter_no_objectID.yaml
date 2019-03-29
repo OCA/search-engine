@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '446'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1

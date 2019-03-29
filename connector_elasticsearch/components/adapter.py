@@ -29,7 +29,7 @@ class ElasticsearchAdapter(Component):
     def _doc_type(self):
         return self.work.index.config_id.doc_type
 
-    def _get_es(self):
+    def _get_es_client(self):
         backend = self.backend_record
 
         es = elasticsearch.Elasticsearch(
@@ -51,19 +51,21 @@ class ElasticsearchAdapter(Component):
         return es
 
     def index(self, datas):
-        es = self._get_es()
+        es = self._get_es_client()
         dataforbulk = []
         for data in datas:
-            # Ensure that the objectID is set for creating/updating the record
-            if not data.get("objectID"):
+            # Ensure that the _record_id_key is set for creating/updating
+            # the record
+            if not data.get(self._record_id_key):
                 raise UserError(
-                    _("The key objectID is missing in the data %s") % data
+                    _("The key %s is missing in the data %s")
+                    % (self._record_id_key, data)
                 )
             else:
                 action = {
                     "_index": self._index_name,
                     "_type": self._doc_type,
-                    "_id": data.get("objectID"),
+                    "_id": data.get(self._record_id_key),
                     "_source": data,
                 }
                 dataforbulk.append(action)
@@ -73,15 +75,25 @@ class ElasticsearchAdapter(Component):
         return len(datas) - res[0] == 0
 
     def delete(self, binding_ids):
-        es = self._get_es()
+        es = self._get_es_client()
         res = es.delete(
             index=self._index_name, doc_type=self._doc_type, id=binding_ids
         )
         return res
 
     def clear(self):
-        es = self._get_es()
+        es = self._get_es_client()
         res = es.indices.delete(index=self._index_name, ignore=[400, 404])
         # recreate the index
-        self._get_es()
+        self._get_es_client()
         return res["acknowledged"]
+
+    def iter(self):
+        es = self._get_es_client()
+        res = es.search(
+            index=self._index_name,
+            doc_type=self._doc_type,
+            filter_path=["hits.hits._source"],
+        )
+        hits = res["hits"]["hits"]
+        return [r["_source"] for r in hits]

@@ -8,3 +8,4 @@ class ElasticsearchConnectorComponent(Component):
     _name = "elasticsearch.se.connector"
     _inherit = "base.se.connector"
     _collection = "se.backend.elasticsearch"
+    _record_id_key = "objectID"
