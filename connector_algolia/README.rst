@@ -20,7 +20,7 @@ Algolia Connector
     :target: https://translation.odoo-community.org/projects/connector-search-engine-12-0/connector-search-engine-12-0-connector_algolia
     :alt: Translate me on Weblate
 
-|badge1| |badge2| |badge3| |badge4| 
+|badge1| |badge2| |badge3| |badge4|
 
 Base module to synchronize Algolia search engine with Odoo.
 
