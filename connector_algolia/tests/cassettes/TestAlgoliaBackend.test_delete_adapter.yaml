@@ -1,19 +1,19 @@
 interactions:
 - request:
-    body: null
+    body: '{"requests": [{"body": {"objectID": "IamAnObjectID"}, "action": "deleteObject"}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: [gzip]
       Connection: [keep-alive]
-      Content-Length: ['0']
+      Content-Length: ['81']
       Content-Type: [gzip]
-      User-Agent: [Algolia for Python (1.19.1); Python (3.6.3)]
-      X-Algolia-API-Key: [fd2b23ce63aebd599a738a8a558dbcdd]
-      X-Algolia-Application-Id: [RQJXD7ZPFA]
+      User-Agent: [Algolia for Python (1.17.0); Python (3.5.3)]
+      X-Algolia-API-Key: [856fbe3fbd5f6cc3b9d765c92e80de83]
+      X-Algolia-Application-Id: [GH41KF783Z]
     method: POST
-    uri: https://rqjxd7zpfa.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
+    uri: https://gh41kf783z.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/batch
   response:
-    body: {string: '{"updatedAt":"2018-12-22T18:10:03.746Z", "taskID":4066817682}
+    body: {string: '{"objectIDs":["IamAnObjectID"],"taskID":10958352262}
 
         '}
     headers:
@@ -21,9 +21,9 @@ interactions:
       Cache-Control: [no-cache]
       Connection: [keep-alive]
       Content-Disposition: [inline; filename=a.txt]
-      Content-Length: ['62']
+      Content-Length: ['53']
       Content-Type: [application/json; charset=UTF-8]
-      Date: ['Sat, 22 Dec 2018 18:10:03 GMT']
+      Date: ['Thu, 28 Mar 2019 16:14:35 GMT']
       Server: [nginx]
       Timing-Allow-Origin: ['*']
       X-Content-Type-Options: [nosniff]

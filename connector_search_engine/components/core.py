@@ -7,3 +7,4 @@ from odoo.addons.component.core import AbstractComponent
 class BaseSeConnectorComponent(AbstractComponent):
     _name = 'base.se.connector'
     _inherit = 'base.connector'
+    _record_id_key = None

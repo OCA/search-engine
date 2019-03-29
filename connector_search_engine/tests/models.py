@@ -18,6 +18,7 @@ class SeAdapterFake(Component):
     _inherit = 'base.backend.adapter'
     _usage = 'se.backend.adapter'
     _collection = SeBackendFake._name
+    _record_id_key = 'id'
 
     def index(self, data):
         self._mocked_calls.append(dict(
@@ -39,6 +40,14 @@ class SeAdapterFake(Component):
             method='clear',
             args=None,
         ))
+
+    def iter(self):
+        self._mocked_calls.append(dict(
+            work_ctx=self.work.__dict__,
+            method='iter',
+            args=None,
+        ))
+        return [{'id': 42}]
 
     @classmethod
     @contextmanager
@@ -62,12 +71,12 @@ class SeAdapterFake(Component):
 class BindingResPartnerFake(models.Model, TestMixin):
     _name = 'res.partner.binding.fake'
     _inherit = ['se.binding', ]
-    _inherits = {'res.partner': 'odoo_id'}
+    _inherits = {'res.partner': 'record_id'}
     # we need to reference this model for the index
     _test_setup_gen_xid = True
 
     # TODO: use autosetup fields to handle these fields in mixins
-    odoo_id = fields.Many2one(
+    record_id = fields.Many2one(
         comodel_name='res.partner',
         string='Odoo record',
         required=True,
@@ -84,7 +93,7 @@ class ResPartnerFake(models.Model, TestMixin):
     # TODO: use autosetup fields to handle these fields in mixins
     binding_ids = fields.One2many(
         comodel_name=BindingResPartnerFake._name,
-        inverse_name='odoo_id',
+        inverse_name='record_id',
         copy=False,
         string='Bindings',
         context={'active_test': False},

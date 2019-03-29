@@ -35,11 +35,10 @@ class AlgoliaAdapter(Component):
         # Ensure that the objectID is set because algolia will use it
         # for creating or updating the record
         for data in records:
-            if not data.get('objectID'):
-                raise UserError(_(
-                    '%s error. The key objectID is missing in %s'
-                ) % (index.index_name, data)
-                )
+            if not data.get(self._record_id_key):
+                raise UserError(
+                    _('The key %s is missing in the data %s') % (
+                        self._record_id_key, data))
         index.add_objects(records)
 
     def delete(self, binding_ids):
@@ -49,3 +48,7 @@ class AlgoliaAdapter(Component):
     def clear(self):
         index = self._get_index()
         index.clear_index()
+
+    def iter(self):
+        index = self._get_index()
+        return index.browse_all()

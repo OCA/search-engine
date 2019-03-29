@@ -7,7 +7,7 @@ import logging
 _logger = logging.getLogger(__name__)
 try:
     from unidecode import unidecode
-except ImportError:
+except ImportError:  # pragma: no cover
     _logger.debug('Cannot `import unidecode`.')
 
 
@@ -78,8 +78,8 @@ class SeIndex(models.Model):
     def recompute_all_binding(self, force_export=False):
         for record in self:
             binding_obj = self.env[record.model_id.model]
-            for bindings in binding_obj.search([('index_id', '=', record.id)]):
-                bindings._jobify_recompute_json(force_export=force_export)
+            for binding in binding_obj.search([('index_id', '=', record.id)]):
+                binding._jobify_recompute_json(force_export=force_export)
         return True
 
     @api.depends('lang_id', 'model_id', 'backend_id.name')
@@ -118,7 +118,8 @@ class SeIndex(models.Model):
     def batch_export(self):
         self.ensure_one()
         domain = self._get_domain_for_exporting_binding()
-        bindings = self.env[self.model_id.model].search(domain)
+        binding_obj = self.env[self.model_id.model]
+        bindings = binding_obj.with_context(active_test=False).search(domain)
         bindings_count = len(bindings)
         while bindings:
             processing = bindings[0:self.batch_size]
@@ -128,7 +129,7 @@ class SeIndex(models.Model):
                     len(processing),
                     bindings_count,
                     self.name)
-            processing.with_delay(description=description).export()
+            processing.with_delay(description=description).synchronize()
             processing.with_context(connector_no_export=True).write({
                 'sync_state': 'scheduled',
             })
@@ -141,3 +142,32 @@ class SeIndex(models.Model):
             adapter = work.component(usage='se.backend.adapter')
             adapter.clear()
         return True
+
+    def resynchronize_all_bindings(self):
+        """This method will iter on all item in the index of the search engine
+        if the corresponding binding do not exist on odoo it will create a job
+        that delete all this obsolete items.
+        You should not use this method for day to day job, it only an helper
+        for recovering your index after a dammage.
+        You can also drop index but this will introduce downtime, so it's
+        better to force a resynchronization"""
+        for index in self:
+            item_ids = []
+            backend = index.backend_id.specific_backend
+            with backend.work_on(self._name, index=index) as work:
+                adapter = work.component(usage='se.backend.adapter')
+                for se_binding in adapter.iter():
+                    binding = self.env[index.model_id.model].search(
+                        [('id', '=', se_binding['id'])]
+                    )
+                    if not binding:
+                        item_ids.append(se_binding[adapter._record_id_key])
+                index.with_delay().delete_obsolete_item(item_ids)
+
+    @job(default_channel='root.search_engine')
+    @api.multi
+    def delete_obsolete_item(self, item_ids):
+        backend = self.backend_id.specific_backend
+        with backend.work_on(self._name, index=self) as work:
+            adapter = work.component(usage='se.backend.adapter')
+            adapter.delete(item_ids)
