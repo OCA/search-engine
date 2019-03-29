@@ -1,33 +1,35 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.addons.queue_job.job import job
 from odoo.exceptions import UserError
 
 
 class SeBinding(models.AbstractModel):
-    _name = 'se.binding'
+    _name = "se.binding"
     _se_model = True
 
     se_backend_id = fields.Many2one(
-        'se.backend',
-        related="index_id.backend_id")
+        "se.backend", related="index_id.backend_id"
+    )
     index_id = fields.Many2one(
-        'se.index',
+        "se.index",
         string="Index",
         required=True,
         # TODO: shall we use 'restrict' here to preserve existing data?
-        ondelete='cascade'
+        ondelete="cascade",
     )
-    sync_state = fields.Selection([
-        ('new', 'New'),
-        ('to_update', 'To update'),
-        ('scheduled', 'Scheduled'),
-        ('done', 'Done'),
-    ],
-        default='new',
-        readonly=True)
+    sync_state = fields.Selection(
+        [
+            ("new", "New"),
+            ("to_update", "To update"),
+            ("scheduled", "Scheduled"),
+            ("done", "Done"),
+        ],
+        default="new",
+        readonly=True,
+    )
     date_modified = fields.Date(readonly=True)
     date_syncronized = fields.Date(readonly=True)
     data = fields.Serialized()
@@ -45,44 +47,59 @@ class SeBinding(models.AbstractModel):
 
     @api.multi
     def write(self, vals):
-        if 'active' in vals and not vals['active']\
-                and self.sync_state != 'new':
-            vals['sync_state'] = 'to_update'
+        if (
+            "active" in vals
+            and not vals["active"]
+            and self.sync_state != "new"
+        ):
+            vals["sync_state"] = "to_update"
         record = super(SeBinding, self).write(vals)
         return record
 
     @api.multi
     def unlink(self):
         for record in self:
-            if record.sync_state == 'new' or (
-                    record.sync_state == 'done' and not record.active):
+            if record.sync_state == "new" or (
+                record.sync_state == "done" and not record.active
+            ):
                 continue
             if record.active:
-                raise UserError(_(
-                    "You cannot delete the binding '%s', unactivate it first.")
-                    % record.name)
+                raise UserError(
+                    _(
+                        "You cannot delete the binding '%s', unactivate it "
+                        "first."
+                    )
+                    % record.name
+                )
             else:
-                raise UserError(_(
-                    "You cannot delete the binding '%s', "
-                    "wait until it's synchronized.")
-                    % record.name)
+                raise UserError(
+                    _(
+                        "You cannot delete the binding '%s', "
+                        "wait until it's synchronized."
+                    )
+                    % record.name
+                )
         return super(SeBinding, self).unlink()
 
     def _jobify_recompute_json(self, force_export=False):
-        description = _('Recompute %s json and check if need update'
-                        % self._name)
+        description = _(
+            "Recompute %s json and check if need update" % self._name
+        )
         for record in self:
             record.with_delay(description=description).recompute_json(
-                force_export=force_export)
+                force_export=force_export
+            )
 
     def _work_by_index(self, active=True):
         self = self.exists()
-        for backend in self.mapped('se_backend_id'):
-            for index in self.mapped('index_id'):
+        for backend in self.mapped("se_backend_id"):
+            for index in self.mapped("index_id"):
                 bindings = self.filtered(
-                    lambda b, backend=backend, index=index:
-                    b.se_backend_id == backend and b.index_id == index
-                    and b.active == active)
+                    lambda b, backend=backend, index=index: b.se_backend_id
+                    == backend
+                    and b.index_id == index
+                    and b.active == active
+                )
                 specific_backend = backend.specific_backend
                 with specific_backend.work_on(
                     self._name, records=bindings, index=index
@@ -90,20 +107,20 @@ class SeBinding(models.AbstractModel):
                     yield work
 
     # TODO maybe we need to add lock (todo check)
-    @job(default_channel='root.search_engine.recompute_json')
+    @job(default_channel="root.search_engine.recompute_json")
     def recompute_json(self, force_export=False):
         for work in self._work_by_index():
-            mapper = work.component(usage='se.export.mapper')
+            mapper = work.component(usage="se.export.mapper")
             lang = work.index.lang_id.code
             for record in work.records.with_context(lang=lang):
                 data = mapper.map_record(record).values()
                 if record.data != data or force_export:
-                    vals = {'data': data}
-                    if record.sync_state in ('done', 'new'):
-                        vals['sync_state'] = 'to_update'
+                    vals = {"data": data}
+                    if record.sync_state in ("done", "new"):
+                        vals["sync_state"] = "to_update"
                     record.write(vals)
 
-    @job(default_channel='root.search_engine')
+    @job(default_channel="root.search_engine")
     @api.multi
     def synchronize(self):
         # We volontary to the export and delete in the same transaction
@@ -119,11 +136,13 @@ class SeBinding(models.AbstractModel):
         export_ids = []
         delete_ids = []
         for work in self._work_by_index():
-            exporter = work.component(usage='se.record.exporter')
+            exporter = work.component(usage="se.record.exporter")
             exporter.run()
             export_ids += work.records.ids
         for work in self._work_by_index(active=False):
-            deleter = work.component(usage='record.exporter.deleter')
+            deleter = work.component(usage="record.exporter.deleter")
             deleter.run()
             delete_ids += work.records.ids
-        return "Exported ids : %s\nDeleted ids : %s" % (export_ids, delete_ids)
+        return "Exported ids : {}\nDeleted ids : {}".format(
+            export_ids, delete_ids
+        )
