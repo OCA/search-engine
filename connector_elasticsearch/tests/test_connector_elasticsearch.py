@@ -105,15 +105,18 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
             }
         )
 
-    def test_inex_config_as_str(self):
+    def test_index_config_as_str(self):
         self.se_config.write(
             {"body_str": '{"mappings": {"odoo_doc": {"1":1}}}'}
         )
         self.assertDictEqual(
             self.se_config.body, {"mappings": {"odoo_doc": {"1": 1}}}
         )
+        self.assertEqual(
+            self.se_config.body_str, '{"mappings": {"odoo_doc": {"1": 1}}}'
+        )
 
-    def test_iter_adapter(self):
+    def test_index_adapter_iter(self):
         data = [
             {"objectID": "foo"},
             {"objectID": "foo2"},
@@ -127,3 +130,23 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         res = [x for x in self.adapter.iter()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, data)
+
+    def test_index_adapter_delete(self):
+        data = [
+            {"objectID": "foo"},
+            {"objectID": "foo2"},
+            {"objectID": "foo3"},
+        ]
+        self.adapter.clear()
+        self.adapter.index(data)
+        if self.cassette.dirty:
+            # when we record the test we must wait for algolia
+            sleep(2)
+        res = self.adapter.delete(["foo", "foo3"])
+        self.assertTrue(res)
+        if self.cassette.dirty:
+            # when we record the test we must wait for algolia
+            sleep(2)
+        res = [x for x in self.adapter.iter()]
+        res.sort(key=lambda d: d["objectID"])
+        self.assertListEqual(res, [{"objectID": "foo2"}])
