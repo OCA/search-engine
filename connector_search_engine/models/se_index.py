@@ -156,7 +156,7 @@ class SeIndex(models.Model):
                 adapter = work.component(usage="se.backend.adapter")
                 for se_binding in adapter.iter():
                     binding = self.env[index.model_id.model].search(
-                        [("id", "=", se_binding["id"])]
+                        [("id", "=", se_binding[adapter._record_id_key])]
                     )
                     if not binding:
                         item_ids.append(se_binding[adapter._record_id_key])
