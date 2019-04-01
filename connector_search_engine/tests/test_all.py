@@ -74,7 +74,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
 class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
-        super(TestBindingIndex, cls).setUpClass()
+        super(TestBindingIndexBaseFake, cls).setUpClass()
         SeAdapterFake._build_component(cls._components_registry)
         SeBackendFake._test_setup_model(cls.env)
         cls.fake_backend_model = cls.env[SeBackendFake._name]
@@ -87,7 +87,7 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def tearDownClass(cls):
         SeBackendFake._test_teardown_model(cls.env)
-        super(TestBindingIndex, cls).tearDownClass()
+        super(TestBindingIndexBaseFake, cls).tearDownClass()
 
 
 class TestBindingIndex(TestBindingIndexBaseFake):
