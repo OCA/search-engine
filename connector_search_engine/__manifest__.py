@@ -9,8 +9,7 @@
     "ACSONE SA/NV,"
     "Camptocamp,"
     "Odoo Community Association (OCA)",
-    # FIXME
-    "website": "http://www.akretion.com",
+    "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
     "category": "Generic Modules",
     "depends": ["connector", "base_jsonify"],
