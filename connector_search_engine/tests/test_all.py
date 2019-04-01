@@ -71,7 +71,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
         cls.partner = cls.partner_binding.record_id
 
 
-class TestBindingIndex(TestBindingIndexBase):
+class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super(TestBindingIndex, cls).setUpClass()
@@ -88,6 +88,9 @@ class TestBindingIndex(TestBindingIndexBase):
     def tearDownClass(cls):
         SeBackendFake._test_teardown_model(cls.env)
         super(TestBindingIndex, cls).tearDownClass()
+
+
+class TestBindingIndex(TestBindingIndexBaseFake):
 
     # TODO: the following `test_backend*` methods
     # should be splitted to a smaller test case.
