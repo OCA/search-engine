@@ -4,7 +4,6 @@
 import json
 import os
 from time import sleep
-from urllib import parse as urlparse
 
 from odoo import exceptions
 from odoo.addons.connector_search_engine.tests.test_all import (
@@ -41,10 +40,6 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
             "filter_headers": ["Authorization"],
             "decode_compressed_response": True,
         }
-
-    @staticmethod
-    def parse_path(url):
-        return urlparse.urlparse(url).path
 
     def test_get_api_credentials(self):
         self.assertEqual(

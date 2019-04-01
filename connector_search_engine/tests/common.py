@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
+from urllib import parse as urlparse
 
 from odoo import tools
 from odoo.addons.component.tests.common import SavepointComponentCase
@@ -40,3 +41,7 @@ class TestSeBackendCaseBase(SavepointComponentCase):
     @classmethod
     def _load_fixture(cls, fixture, module="connector_search_engine"):
         load_xml(cls.env, module, "tests/fixtures/%s" % fixture)
+
+    @staticmethod
+    def parse_path(url):
+        return urlparse.urlparse(url).path
