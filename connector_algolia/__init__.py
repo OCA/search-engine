@@ -1,4 +1,3 @@
 # -*- coding: utf-8 -*-
-
-from . import components
-from . import models
+from . import components  # pragma: no cover
+from . import models  # pragma: no cover

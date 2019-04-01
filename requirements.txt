@@ -1,0 +1,6 @@
+algoliasearch
+elasticsearch
+unidecode
+
+# tests
+vcrpy-unittest

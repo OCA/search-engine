@@ -1,0 +1,352 @@
+interactions:
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '346'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: DELETE
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: '{"acknowledged":true}'
+    headers:
+      content-length:
+      - '21'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '551'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"mappings":{"odoo_doc":{}}}'
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: PUT
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}'
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "the default number of shards will change
+        from [5] to [1] in 7.0.0; if you wish to continue using the default of [5]
+        shards, you must manage this on the create index request or with an index
+        template"
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in create index requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', and requests are expected
+        to omit the type name in mapping definitions."
+      content-length:
+      - '116'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '346'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo"}}
+
+      {"objectID":"foo"}
+
+      {"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo2"}}
+
+      {"objectID":"foo2"}
+
+      {"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3"}}
+
+      {"objectID":"foo3"}
+
+      '
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/x-ndjson
+    method: POST
+    uri: http://127.0.0.1:9200/_bulk
+  response:
+    body:
+      string: '{"took":18,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo2","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}}]}'
+    headers:
+      content-length:
+      - '743'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '446'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo"}}
+
+      {"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3"}}
+
+      '
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/x-ndjson
+    method: POST
+    uri: http://127.0.0.1:9200/_bulk
+  response:
+    body:
+      string: '{"took":7,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":200}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"odoo_doc","_id":"foo3","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":200}}]}'
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '493'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: HEAD
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-6.7.0-8453f77 "[types removal] The parameter include_type_name
+        should be explicitly specified in get indices requests to prepare for 7.0.
+        In 7.0 include_type_name will default to 'false', which means responses will
+        omit the type name in mapping definitions."
+      content-length:
+      - '446'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+    method: GET
+    uri: http://127.0.0.1:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us/odoo_doc/_search?filter_path=hits.hits._source
+  response:
+    body:
+      string: '{"hits":{"hits":[{"_source":{"objectID":"foo2"}}]}}'
+    headers:
+      content-length:
+      - '51'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1
