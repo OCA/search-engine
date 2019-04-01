@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 # Copyright 2016 Akretion (http://www.akretion.com)
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
     "name": "Connector Search Engine",
-    "version": "12.0.2.0.0",
+    "version": "10.0.2.0.0",
     "author": "Akretion,"
     "ACSONE SA/NV,"
     "Camptocamp,"
