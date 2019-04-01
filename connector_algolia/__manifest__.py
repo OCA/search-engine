@@ -11,8 +11,7 @@
     "ACSONE SA/NV,"
     "Camptocamp,"
     "Odoo Community Association (OCA)",
-    # FIXME
-    "website": "http://www.akretion.com",
+    "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
     "depends": [
         "connector_search_engine",

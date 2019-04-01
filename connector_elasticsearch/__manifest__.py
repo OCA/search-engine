@@ -8,7 +8,7 @@
     "version": "12.0.0.0.1",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV, Odoo Community Association (OCA)",
-    "website": "http://www.acsone.eu",
+    "website": "https://github.com/OCA/search-engine",
     "depends": [
         "connector_search_engine",
         "connector",
