@@ -17,7 +17,7 @@ from .models import (
 class TestBindingIndexBase(TestSeBackendCaseBase):
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        super(TestBindingIndexBase, cls).setUpClass()
         BindingResPartnerFake._test_setup_model(cls.env)
         ResPartnerFake._test_setup_model(cls.env)
         cls._load_fixture("ir_exports_test.xml")
@@ -29,7 +29,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
     def tearDownClass(cls):
         ResPartnerFake._test_teardown_model(cls.env)
         BindingResPartnerFake._test_teardown_model(cls.env)
-        super().tearDownClass()
+        super(TestBindingIndexBase, cls).tearDownClass()
 
     @classmethod
     def _prepare_index_values(cls, backend=None):
@@ -74,7 +74,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
 class TestBindingIndex(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        super(TestBindingIndex, cls).setUpClass()
         SeAdapterFake._build_component(cls._components_registry)
         SeBackendFake._test_setup_model(cls.env)
         cls.fake_backend_model = cls.env[SeBackendFake._name]
@@ -87,7 +87,7 @@ class TestBindingIndex(TestBindingIndexBase):
     @classmethod
     def tearDownClass(cls):
         SeBackendFake._test_teardown_model(cls.env)
-        super().tearDownClass()
+        super(TestBindingIndex, cls).tearDownClass()
 
     # TODO: the following `test_backend*` methods
     # should be splitted to a smaller test case.

@@ -18,7 +18,7 @@ from ..components.adapter import AlgoliaAdapter
 class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        super(TestAlgoliaBackend, cls).setUpClass()
         AlgoliaAdapter._build_component(cls._components_registry)
         cls.backend_specific = cls.env.ref("connector_algolia.se_algolia_demo")
         cls.backend = cls.backend_specific.se_backend_id

@@ -15,7 +15,7 @@ from vcr_unittest import VCRMixin
 class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        super(TestConnectorElasticsearch, cls).setUpClass()
         cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
         cls.backend = cls.backend_specific.se_backend_id
         cls.exporter = cls.env.ref("base_jsonify.ir_exp_partner")
@@ -43,11 +43,13 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
                 "body": {"mappings": {"odoo_doc": {}}},
             }
         )
-        super().setup_records()
+        super(TestConnectorElasticsearch, cls).setup_records()
 
     @classmethod
     def _prepare_index_values(cls, backend):
-        values = super()._prepare_index_values(backend)
+        values = super(TestConnectorElasticsearch, cls)._prepare_index_values(
+            backend
+        )
         values.update({"config_id": cls.se_config.id})
         return values
 
