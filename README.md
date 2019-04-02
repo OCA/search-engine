@@ -1,6 +1,6 @@
-[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/276/12.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-search-engine-276)
-[![Build Status](https://travis-ci.org/OCA/search-engine.svg?branch=12.0)](https://travis-ci.org/OCA/search-engine)
-[![codecov](https://codecov.io/gh/OCA/search-engine/branch/12.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
+[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/276/10.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-search-engine-276)
+[![Build Status](https://travis-ci.org/OCA/search-engine.svg?branch=10.0)](https://travis-ci.org/OCA/search-engine)
+[![codecov](https://codecov.io/gh/OCA/search-engine/branch/10.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
 
 
 Search Engine Connector for Odoo
@@ -14,9 +14,9 @@ Available addons
 ----------------
 addon | version | summary
 --- | --- | ---
-[connector_algolia](connector_algolia/) | 12.0.2.0.0 | Connector For Algolia Search Engine
-[connector_elasticsearch](connector_elasticsearch/) | 12.0.0.0.1 | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 12.0.2.0.0 | Connector Search Engine
+[connector_algolia](connector_algolia/) | 10.0.2.0.0 | Connector For Algolia Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 10.0.0.0.1 | Connector For Elasticsearch Search Engine
+[connector_search_engine](connector_search_engine/) | 10.0.2.0.0 | Connector Search Engine
 
 [//]: # (end addons)
 
