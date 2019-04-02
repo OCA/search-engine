@@ -1,16 +1,24 @@
-[![Build Status](https://travis-ci.org/akretion/connector-search-engine.svg?branch=12.0)](https://travis-ci.org/akretion/connector-search-engine)
-[![Coverage Status](https://coveralls.io/repos/github/akretion/connector-search-engine/badge.svg?branch=12.0)](https://coveralls.io/github/akretion/connector-search-engine?branch=12.0)
-[![Code Climate](https://codeclimate.com/github/akretion/connector-search-engine/badges/gpa.svg)](https://codeclimate.com/github/akretion/connector-search-engine)
+[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/276/10.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-search-engine-276)
+[![Build Status](https://travis-ci.org/OCA/search-engine.svg?branch=10.0)](https://travis-ci.org/OCA/search-engine)
+[![codecov](https://codecov.io/gh/OCA/search-engine/branch/10.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
+
 
 Search Engine Connector for Odoo
 ===================================
 
-This project include a generic search engine connector and also a specific connector for Algolia.
+This project include a generic search engine connector and specific implementation for algolia and elasticsearch.
 
+[//]: # (addons)
 
-Roadmap
-========
-* Add support of Elastic Connector
+Available addons
+----------------
+addon | version | summary
+--- | --- | ---
+[connector_algolia](connector_algolia/) | 10.0.2.0.0 | Connector For Algolia Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 10.0.0.0.1 | Connector For Elasticsearch Search Engine
+[connector_search_engine](connector_search_engine/) | 10.0.2.0.0 | Connector Search Engine
+
+[//]: # (end addons)
 
 
 Developement
