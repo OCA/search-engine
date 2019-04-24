@@ -86,7 +86,8 @@ class SeBinding(models.AbstractModel):
         description = _(
             "Recompute %s json and check if need update" % self._name
         )
-        for record in self:
+        # The job creation with tracking is very costly. So disable it.
+        for record in self.with_context(tracking_disable=True):
             record.with_delay(description=description).recompute_json(
                 force_export=force_export
             )
