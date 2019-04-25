@@ -1,4 +1,4 @@
-algoliasearch
+algoliasearch<2.0.0
 elasticsearch
 unidecode
 
