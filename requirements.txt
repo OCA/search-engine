@@ -1,5 +1,5 @@
 algoliasearch<2.0.0
-elasticsearch
+elasticsearch>=6.0.0,<7.0.0
 unidecode
 
 # tests
