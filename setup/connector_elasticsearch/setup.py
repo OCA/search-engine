@@ -3,5 +3,11 @@ import setuptools
 
 setuptools.setup(
     setup_requires=['setuptools-odoo'],
-    odoo_addon=True,
+    odoo_addons={
+        'external_dependencies_override': {
+            'python': {
+                'elasticsearch': 'elasticsearch>=6.0.0,<7.0.0',
+            }
+        }
+    }
 )
