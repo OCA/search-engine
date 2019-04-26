@@ -2,6 +2,8 @@
 # Copyright 2018 Simone Orsi - Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import mock
+
 
 class TestMixin(object):
     """Mixin to setup fake models for tests.
@@ -40,12 +42,13 @@ class TestMixin(object):
     @classmethod
     def _test_setup_model(cls, env):
         """Initialize it."""
-        cls._build_model(env.registry, env.cr)
-        env.registry.setup_models(env.cr)
-        ctx = dict(env.context, update_custom_fields=True)
-        if cls._test_setup_gen_xid:
-            ctx["module"] = cls._module
-        env.registry.init_models(env.cr, [cls._name], ctx)
+        with mock.patch.object(env.cr, "commit"):
+            cls._build_model(env.registry, env.cr)
+            env.registry.setup_models(env.cr)
+            ctx = dict(env.context, update_custom_fields=True)
+            if cls._test_setup_gen_xid:
+                ctx["module"] = cls._module
+            env.registry.init_models(env.cr, [cls._name], ctx)
 
     @classmethod
     def _test_teardown_model(cls, env):
