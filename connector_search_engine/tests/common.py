@@ -4,6 +4,7 @@
 
 import logging
 
+import mock
 import urlparse
 from odoo import tools
 from odoo.addons.component.tests.common import SavepointComponentCase
@@ -14,15 +15,16 @@ logging.getLogger("odoo.addons.queue_job.models.base").setLevel("CRITICAL")
 
 
 def load_xml(env, module, filepath):
-    tools.convert_file(
-        env.cr,
-        module,
-        get_resource_path(module, filepath),
-        {},
-        mode="init",
-        noupdate=False,
-        kind="test",
-    )
+    with mock.patch.object(env.cr.__class__, "commit"):
+        tools.convert_file(
+            env.cr,
+            module,
+            get_resource_path(module, filepath),
+            {},
+            mode="init",
+            noupdate=False,
+            kind="test",
+        )
 
 
 class TestSeBackendCaseBase(SavepointComponentCase):

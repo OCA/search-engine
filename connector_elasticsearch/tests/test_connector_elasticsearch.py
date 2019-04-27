@@ -5,6 +5,7 @@ import json
 from time import sleep
 
 from odoo import exceptions
+from odoo.addons.connector_search_engine.tests.models import SeBackendFake
 from odoo.addons.connector_search_engine.tests.test_all import (
     TestBindingIndexBase,
 )
@@ -18,13 +19,18 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         super(TestConnectorElasticsearch, cls).setUpClass()
         cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
         cls.backend = cls.backend_specific.se_backend_id
-        cls.exporter = cls.env.ref("base_jsonify.ir_exp_partner")
         cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
         with cls.backend_specific.work_on(
             "se.index", index=cls.se_index
         ) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
+        SeBackendFake._test_setup_model(cls.env)
+        cls.fake_backend_model = cls.env[SeBackendFake._name]
+        cls.fake_backend_specific = cls.fake_backend_model.create(
+            {"name": "Fake SE"}
+        )
+        cls.fake_backend = cls.fake_backend_specific.se_backend_id
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
@@ -57,7 +63,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.partner_binding.sync_state = "to_update"
         with self.assertRaises(exceptions.UserError) as err:
             self.se_index.batch_export()
-            self.assertIn("The key objectID is missing in", err.exception.name)
+        self.assertIn("The key objectID is missing in", err.exception.name)
 
     def test_index_adapter(self):
         # Set partner to be updated with fake vals in data
@@ -107,6 +113,15 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
                 "body": {"mappings": {"new_doc_type": {}}},
             }
         )
+
+    def test_index_config_required(self):
+        with self.assertRaises(ValidationError), self.env.cr.savepoint():
+            self.se_index.config_id = False
+        # the config is anlyt required for elastc...
+        self.se_index.backend_id = self.fake_backend
+        self.se_index.config_id = False
+        with self.assertRaises(ValidationError), self.env.cr.savepoint():
+            self.se_index.backend_id = self.backend
 
     def test_index_config_as_str(self):
         self.se_config.write(
