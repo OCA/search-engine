@@ -1,5 +1,6 @@
 # Copyright 2018 Simone Orsi - Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+from operator import attrgetter
 
 
 class TestMixin(object):
@@ -57,6 +58,27 @@ class TestMixin(object):
 
         if not getattr(cls, "_test_teardown_no_delete", False):
             del env.registry.models[cls._name]
+            # here we must remove the model from list of children of inherited
+            # models
+            parents = cls._inherit
+            parents = (
+                [parents] if isinstance(parents, str) else (parents or [])
+            )
+            # keep a copy to be sure to not modify the original _inherit
+            parents = list(parents)
+            parents.extend(cls._inherits.keys())
+            parents.append("base")
+            funcs = [
+                attrgetter(kind + "_children")
+                for kind in ["_inherits", "_inherit"]
+            ]
+            for parent in parents:
+                for func in funcs:
+                    children = func(env.registry[parent])
+                    if cls._name in children:
+                        # at this stage our cls is referenced as children of
+                        # parent -> must un reference it
+                        children.remove(cls._name)
 
     def _test_get_model_id(self):
         self.env.cr.execute(
