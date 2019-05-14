@@ -73,10 +73,16 @@ class SeIndex(models.Model):
         return self.recompute_all_binding(force_export=True)
 
     def recompute_all_binding(self, force_export=False):
-        for record in self:
-            binding_obj = self.env[record.model_id.model]
-            for binding in binding_obj.search([("index_id", "=", record.id)]):
-                binding._jobify_recompute_json(force_export=force_export)
+        target_models = self.mapped("model_id.model")
+        for target_model in target_models:
+            indexes = self.filtered(
+                lambda r, m=target_model: r.model_id.model == m
+            )
+            bindings = self.env[target_model].search(
+                [("index_id", "in", indexes.ids)]
+            )
+            if bindings:
+                bindings._jobify_recompute_json(force_export=force_export)
         return True
 
     @api.depends("lang_id", "model_id", "backend_id.name")
