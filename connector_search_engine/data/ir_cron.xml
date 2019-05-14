@@ -3,28 +3,28 @@
 
     <record forcecreate="True" id="ir_cron_recompute_all_index" model="ir.cron">
         <field name="name">Search engine: recompute all index</field>
-        <field name="active" eval="True" />
+        <field name="active" eval="True"/>
         <field name="user_id" ref="base.user_root"/>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
         <field name="doall" eval="False"/>
-        <field name="model_id" ref="model_se_index"/>
-        <field name="state">code</field>
-        <field name="code">model.recompute_all_index()</field>
+        <field name="model">se.index</field>
+        <field name="function">recompute_all_index</field>
+        <field name="args">()</field>
     </record>
 
     <record forcecreate="True" id="ir_cron_export_binding" model="ir.cron">
         <field name="name">Search engine: Generate job for exporting binding per index</field>
-        <field name="active" eval="True" />
+        <field name="active" eval="True"/>
         <field name="user_id" ref="base.user_root"/>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
         <field name="doall" eval="False"/>
-        <field name="model_id" ref="model_se_index"/>
-        <field name="state">code</field>
-        <field name="code">model.generate_batch_export_per_index()</field>
+        <field name="model">se.index</field>
+        <field name="function">generate_batch_export_per_index</field>
+        <field name="args">()</field>
     </record>
 
 </odoo>
