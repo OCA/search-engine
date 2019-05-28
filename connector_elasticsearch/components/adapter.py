@@ -26,10 +26,6 @@ class ElasticsearchAdapter(Component):
     def _index_name(self):
         return self.work.index.name.lower()
 
-    @property
-    def _doc_type(self):
-        return self.work.index.config_id.doc_type
-
     def _get_es_client(self):
         backend = self.backend_record
 
@@ -65,7 +61,6 @@ class ElasticsearchAdapter(Component):
             else:
                 action = {
                     "_index": self._index_name,
-                    "_type": self._doc_type,
                     "_id": data.get(self._record_id_key),
                     "_source": data,
                 }
@@ -82,7 +77,6 @@ class ElasticsearchAdapter(Component):
             action = {
                 "_op_type": "delete",
                 "_index": self._index_name,
-                "_type": self._doc_type,
                 "_id": binding_id,
             }
             dataforbulk.append(action)
@@ -101,9 +95,7 @@ class ElasticsearchAdapter(Component):
     def iter(self):
         es = self._get_es_client()
         res = es.search(
-            index=self._index_name,
-            doc_type=self._doc_type,
-            filter_path=["hits.hits._source"],
+            index=self._index_name, filter_path=["hits.hits._source"]
         )
         hits = res["hits"]["hits"]
         return [r["_source"] for r in hits]

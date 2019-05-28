@@ -1,4 +1,4 @@
-exclude: "^(setup/)|.pot$|.po$|README.rst"
+exclude: "^(setup/)|.pot$|.po$|README.rst|^(connector_elasticsearch/tests/cassettes/)"
 repos:
 - repo: https://github.com/ambv/black
   rev: 18.9b0
