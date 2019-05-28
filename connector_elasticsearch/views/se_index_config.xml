@@ -14,7 +14,6 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="doc_type"/>
                         <field name="body_str" required="1"/>
                     </group>
                 </sheet>
