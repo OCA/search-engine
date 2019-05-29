@@ -2,8 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
 
-from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models
 
 
 class SeIndexConfig(models.Model):
@@ -12,7 +11,6 @@ class SeIndexConfig(models.Model):
     _description = "Elasticsearch index configuration"
 
     name = fields.Char(required=True)
-    doc_type = fields.Char(required=True, default="odoo")
     body = fields.Serialized(required=True)
     # This field is used since no widget exists to edit a serialized field
     # into the web fontend
@@ -34,18 +32,3 @@ class SeIndexConfig(models.Model):
             if rec.body_str:
                 data = json.loads(rec.body_str)
             rec.body = data
-
-    @api.constrains("doc_type", "body")
-    def _check_body(self):
-        for rec in self:
-            if (
-                "mappings" in rec.body
-                and rec.doc_type not in rec.body["mappings"]
-            ):
-                raise ValidationError(
-                    _(
-                        "You must specify a mapping into the same doc type "
-                        "(%s)"
-                    )
-                    % rec.doc_type
-                )
