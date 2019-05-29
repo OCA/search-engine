@@ -9,7 +9,6 @@ from odoo.addons.connector_search_engine.tests.models import SeBackendFake
 from odoo.addons.connector_search_engine.tests.test_all import (
     TestBindingIndexBase,
 )
-from odoo.exceptions import ValidationError
 from vcr_unittest import VCRMixin
 
 
@@ -43,11 +42,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setup_records(cls):
         cls.se_config = cls.env["se.index.config"].create(
-            {
-                "name": "my_config",
-                "doc_type": "odoo_doc",
-                "body": {"mappings": {"odoo_doc": {}}},
-            }
+            {"name": "my_config", "body": {"mappings": {}}}
         )
         super(TestConnectorElasticsearch, cls).setup_records()
 
@@ -92,7 +87,6 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
                 "index": {
                     "_index": "demo_elasticsearch_backend_res_partner_"
                     "binding_fake_en_us",
-                    "_type": "odoo_doc",
                     "_id": "foo",
                 }
             },
@@ -100,39 +94,10 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         index_data = json.loads(lines[1])
         self.assertDictEqual(index_data, {"objectID": "foo"})
 
-    def test_index_config(self):
-        """Check constrains on doc_type and config body: If a mappings is
-        specified, at least one entry must exist for the given doctype
-        """
-        self.assertEqual(self.se_config.doc_type, "odoo_doc")
-        with self.assertRaises(ValidationError), self.env.cr.savepoint():
-            self.se_config.body = {"mappings": "toto"}
-        self.se_config.write(
-            {
-                "doc_type": "new_doc_type",
-                "body": {"mappings": {"new_doc_type": {}}},
-            }
-        )
-
-    def test_index_config_required(self):
-        with self.assertRaises(ValidationError), self.env.cr.savepoint():
-            self.se_index.config_id = False
-        # the config is anlyt required for elastc...
-        self.se_index.backend_id = self.fake_backend
-        self.se_index.config_id = False
-        with self.assertRaises(ValidationError), self.env.cr.savepoint():
-            self.se_index.backend_id = self.backend
-
     def test_index_config_as_str(self):
-        self.se_config.write(
-            {"body_str": '{"mappings": {"odoo_doc": {"1":1}}}'}
-        )
-        self.assertDictEqual(
-            self.se_config.body, {"mappings": {"odoo_doc": {"1": 1}}}
-        )
-        self.assertEqual(
-            self.se_config.body_str, '{"mappings": {"odoo_doc": {"1": 1}}}'
-        )
+        self.se_config.write({"body_str": '{"mappings": {"1":1}}'})
+        self.assertDictEqual(self.se_config.body, {"mappings": {"1": 1}})
+        self.assertEqual(self.se_config.body_str, '{"mappings": {"1": 1}}')
 
     def test_index_adapter_iter(self):
         data = [
