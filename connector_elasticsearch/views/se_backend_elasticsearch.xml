@@ -12,9 +12,8 @@
                         <field name="name" class="oe_inline" required="1"/>
                     </h1>
                     <group name="se" string="Configuration">
-                        <group colspan="4" col="4" name="se-main">
-                            <field name="elasticsearch_server_ip"/>
-                            <field name="elasticsearch_server_port"/>
+                        <group name="se-main">
+                            <field name="es_server_host" placeholder="http://127.0.0.1:9200"/>
                         </group>
                     </group>
                     <group name="index" string="Index">
