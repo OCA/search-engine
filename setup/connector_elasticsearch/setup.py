@@ -5,7 +5,7 @@ setuptools.setup(
     odoo_addon={
         'external_dependencies_override': {
             'python': {
-                'elasticsearch': 'elasticsearch>=6.0.0,<7.0.0',
+                'elasticsearch': 'elasticsearch>=7.0.0,<8.0.0',
             }
         }
     }
