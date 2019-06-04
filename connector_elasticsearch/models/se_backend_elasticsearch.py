@@ -11,5 +11,4 @@ class SeBackendElasticsearch(models.Model):
     _inherit = "se.backend.spec.abstract"
     _description = "Elasticsearch Backend"
 
-    elasticsearch_server_ip = fields.Char(string="ElasticSearch IP adress")
-    elasticsearch_server_port = fields.Char(string="ElasticSearch Port")
+    es_server_host = fields.Char(string="ElasticSearch host")
