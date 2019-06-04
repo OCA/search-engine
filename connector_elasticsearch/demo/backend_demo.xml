@@ -6,8 +6,7 @@
 
     <record id="backend_1" model="se.backend.elasticsearch">
         <field name="name">Demo Elasticsearch Backend</field>
-        <field name="elasticsearch_server_ip">127.0.0.1</field>
-        <field name="elasticsearch_server_port">9200</field>
+        <field name="es_server_host">http://127.0.0.1:9200</field>
     </record>
 
 </odoo>
