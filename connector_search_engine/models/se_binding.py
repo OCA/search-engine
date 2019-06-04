@@ -81,6 +81,7 @@ class SeBinding(models.AbstractModel):
                 )
         return super(SeBinding, self).unlink()
 
+    @job(default_channel="root.search_engine.recompute_json")
     def _jobify_recompute_json(self, force_export=False):
         description = _(
             "Recompute %s json and check if need update" % self._name
