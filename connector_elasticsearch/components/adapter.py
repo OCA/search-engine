@@ -104,5 +104,7 @@ class ElasticsearchAdapter(Component):
             doc_type=self._doc_type,
             filter_path=["hits.hits._source"],
         )
-        hits = res["hits"]["hits"]
+        hits = []
+        if res:
+            hits = res["hits"]["hits"]
         return [r["_source"] for r in hits]
