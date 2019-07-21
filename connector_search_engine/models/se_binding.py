@@ -9,9 +9,12 @@ from odoo.exceptions import UserError
 class SeBinding(models.AbstractModel):
     _name = "se.binding"
     _se_model = True
+    _description = "Search Engine Binding"
 
     se_backend_id = fields.Many2one(
-        "se.backend", related="index_id.backend_id"
+        "se.backend",
+        related="index_id.backend_id",
+        string="Search Engine Backend",
     )
     index_id = fields.Many2one(
         "se.index",

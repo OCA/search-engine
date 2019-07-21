@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Search Engine",
-    "version": "12.0.2.0.0",
+    "version": "12.0.2.0.1",
     "author": "Akretion,"
     "ACSONE SA/NV,"
     "Camptocamp,"
@@ -15,11 +15,11 @@
     "depends": ["connector", "base_jsonify"],
     "external_dependencies": {"python": ["unidecode"]},
     "data": [
+        "security/connector_search_engine_security.xml",
+        "security/ir.model.access.csv",
         "views/se_backend.xml",
         "views/se_menu.xml",
         "data/ir_cron.xml",
-        "security/connector_search_engine_security.xml",
-        "security/ir.model.access.csv",
     ],
     "installable": True,
 }
