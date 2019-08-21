@@ -26,10 +26,17 @@ class ElasticsearchAdapter(Component):
     def _index_name(self):
         return self.work.index.name.lower()
 
+    @property
+    def _es_connection_class(self):
+        return elasticsearch.RequestsHttpConnection
+
     def _get_es_client(self):
         backend = self.backend_record
 
-        es = elasticsearch.Elasticsearch([backend.es_server_host])
+        es = elasticsearch.Elasticsearch(
+            [backend.es_server_host],
+            connection_class=self._es_connection_class,
+        )
 
         if not es.ping():  # pragma: no cover
             raise ValueError("Connect Exception with elasticsearch")
