@@ -18,6 +18,18 @@ class SeIndexConfig(models.Model):
         compute="_compute_body_str", inverse="_inverse_body_str"
     )
 
+    @api.model
+    def create(self, values):
+        # For new record creation, the inverse function for `body_str` is 
+        # called after the record is inserted into database. The field 
+        # `body` would be empty, and a validation error will pop up as field 
+        # `body` is required. The solution is to override create function, 
+        # and initialize field `body` based on field `body_str`.
+        if 'body' not in values and 'body_str' in values:
+            values['body'] = json.loads(values['body_str'])
+
+        return super(SeIndexConfig, self).create(values)
+
     @api.multi
     @api.depends("body")
     def _compute_body_str(self):
