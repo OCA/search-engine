@@ -138,13 +138,34 @@ class SeIndex(models.Model):
             )
         return True
 
+    def _get_backend_adapter(self, backend=None, model=None, index=None, **kw):
+        backend = backend or self.backend_id.specific_backend
+        model = model or self._name
+        index = index or self
+        with backend.work_on(model, index=index, **kw) as work:
+            return work.component(usage="se.backend.adapter")
+
     def clear_index(self):
         self.ensure_one()
-        backend = self.backend_id.specific_backend
-        with backend.work_on(self._name, index=self) as work:
-            adapter = work.component(usage="se.backend.adapter")
-            adapter.clear()
+        adapter = self._get_backend_adapter()
+        adapter.clear()
         return True
+
+    def _get_settings(self):
+        """
+            Override this method is sub modules in order to pass the adequate
+            settings (like Facetting, pagination, advanced settings, etc...)
+        """
+        self.ensure_one()
+        return {}
+
+    @api.model
+    def export_all_settings(self):
+        for index in self.search([]):
+            se_specific_backend = index.backend_id.specific_backend
+            with se_specific_backend.work_on(index.model_id.model, index=index) as work:
+                exporter = work.component(usage="se.record.exporter")
+                exporter.export_settings()
 
     def resynchronize_all_bindings(self):
         """This method will iter on all item in the index of the search engine
@@ -157,19 +178,16 @@ class SeIndex(models.Model):
         for index in self:
             item_ids = []
             backend = index.backend_id.specific_backend
-            with backend.work_on(self._name, index=index) as work:
-                adapter = work.component(usage="se.backend.adapter")
-                for se_binding in adapter.each():
-                    binding = self.env[index.model_id.model].search(
-                        [("id", "=", se_binding[adapter._record_id_key])]
-                    )
-                    if not binding:
-                        item_ids.append(se_binding[adapter._record_id_key])
-                index.with_delay().delete_obsolete_item(item_ids)
+            adapter = self._get_backend_adapter(backend=backend, index=index)
+            for se_binding in adapter.each():
+                binding = self.env[index.model_id.model].search(
+                    [("id", "=", se_binding[adapter._record_id_key])]
+                )
+                if not binding:
+                    item_ids.append(se_binding[adapter._record_id_key])
+            index.with_delay().delete_obsolete_item(item_ids)
 
     @job(default_channel="root.search_engine")
     def delete_obsolete_item(self, item_ids):
-        backend = self.backend_id.specific_backend
-        with backend.work_on(self._name, index=self) as work:
-            adapter = work.component(usage="se.backend.adapter")
-            adapter.delete(item_ids)
+        adapter = self._get_backend_adapter()
+        adapter.delete(item_ids)
