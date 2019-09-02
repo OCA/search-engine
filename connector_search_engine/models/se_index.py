@@ -155,6 +155,24 @@ class SeIndex(models.Model):
             adapter.clear()
         return True
 
+    def _get_setting_values(self):
+        """
+            Override this method is sub modules in order to pass the adequate
+            settings (like Facetting, pagination, advanced settings, etc...)
+        """
+        self.ensure_one()
+        return {}
+
+    @api.model
+    def export_all_settings(self):
+        for index in self.search([]):
+            se_specific_backend = index.backend_id.specific_backend
+            with se_specific_backend.work_on(
+                index.model_id.model, index=index
+            ) as work:
+                exporter = work.component(usage='se.record.exporter')
+                exporter.export_settings()
+
     def resynchronize_all_bindings(self):
         """This method will iter on all item in the index of the search engine
         if the corresponding binding do not exist on odoo it will create a job

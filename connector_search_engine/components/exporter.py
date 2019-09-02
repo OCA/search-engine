@@ -29,3 +29,7 @@ class SeExporter(Component):
             return self._index(
                 [record.get_export_data() for record in self.work.records]
             )
+
+    def export_settings(self, force=True):
+        """ Run the settings synchronization """
+        return self.backend_adapter.set_settings(force=force)
