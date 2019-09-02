@@ -1,0 +1,106 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - gzip
+      User-Agent:
+      - Algolia for Python (1.20.0); Python (3.5.3)
+      X-Algolia-API-Key:
+      - d1a7ac10bddafb54d0065bd647b8534a
+      X-Algolia-Application-Id:
+      - SB99T7H2KV
+    method: POST
+    uri: https://sb99t7h2kv.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
+  response:
+    body:
+      string: '{"updatedAt":"2019-11-19T10:19:21.751Z","taskID":41813134872}'
+    headers:
+      Accept-Encoding:
+      - deflate, gzip
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=a.txt
+      Content-Length:
+      - '61'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Nov 2019 10:19:21 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Timing-Allow-Origin:
+      - '*'
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"attributesForFaceting": ["name"]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - gzip
+      User-Agent:
+      - Algolia for Python (1.20.0); Python (3.5.3)
+      X-Algolia-API-Key:
+      - d1a7ac10bddafb54d0065bd647b8534a
+      X-Algolia-Application-Id:
+      - SB99T7H2KV
+    method: PUT
+    uri: https://sb99t7h2kv.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/settings?forwardToReplicas=true
+  response:
+    body:
+      string: '{"updatedAt":"2019-11-19T10:19:21.936Z","taskID":41813134882}'
+    headers:
+      Accept-Encoding:
+      - deflate, gzip
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename=a.txt
+      Content-Length:
+      - '61'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Nov 2019 10:19:21 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Timing-Allow-Origin:
+      - '*'
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1
