@@ -170,7 +170,7 @@ class SeIndex(models.Model):
             with se_specific_backend.work_on(
                 index.model_id.model, index=index
             ) as work:
-                exporter = work.component(usage='se.record.exporter')
+                exporter = work.component(usage="se.record.exporter")
                 exporter.export_settings()
 
     def resynchronize_all_bindings(self):

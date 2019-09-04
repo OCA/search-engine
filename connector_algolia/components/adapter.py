@@ -47,7 +47,7 @@ class AlgoliaAdapter(Component):
             # export settings if it is the first creation of the index.
             indexes = client.list_indexes()
             index_names = [
-                item.get('name') for item in indexes.get('items', [])
+                item.get("name") for item in indexes.get("items", [])
             ]
             set_settings = index.index_name not in index_names or False
         if data and set_settings:
