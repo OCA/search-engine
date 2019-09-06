@@ -52,5 +52,6 @@ class AlgoliaAdapter(Component):
         index.clear_index()
 
     def iter(self):
-        index = self._get_index()
+        client = self._get_client()
+        index = self._get_index(client)
         return index.browse_all()
