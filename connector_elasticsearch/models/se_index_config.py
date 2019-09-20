@@ -12,7 +12,7 @@ class SeIndexConfig(models.Model):
     _description = "Elasticsearch index configuration"
 
     name = fields.Char(required=True)
-    body = fields.Serialized(required=True)
+    body = fields.Serialized(required=True, default="{}")
     # This field is used since no widget exists to edit a serialized field
     # into the web fontend
     body_str = fields.Text(
