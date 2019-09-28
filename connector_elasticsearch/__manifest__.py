@@ -24,5 +24,5 @@
         "views/se_menu.xml",
     ],
     "demo": ["demo/backend_demo.xml"],
-    "external_dependencies": {"python": ["elasticsearch"]},
+    "external_dependencies": {"python": ["elasticsearch", "requests"]},
 }
