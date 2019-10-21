@@ -5,8 +5,9 @@
 import logging
 
 from odoo import _
-from odoo.addons.component.core import Component
 from odoo.exceptions import UserError
+
+from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
@@ -34,8 +35,7 @@ class ElasticsearchAdapter(Component):
         backend = self.backend_record
 
         es = elasticsearch.Elasticsearch(
-            [backend.es_server_host],
-            connection_class=self._es_connection_class,
+            [backend.es_server_host], connection_class=self._es_connection_class
         )
 
         if not es.ping():  # pragma: no cover
@@ -94,8 +94,6 @@ class ElasticsearchAdapter(Component):
 
     def iter(self):
         es = self._get_es_client()
-        res = es.search(
-            index=self._index_name, filter_path=["hits.hits._source"]
-        )
+        res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
         hits = res["hits"]["hits"]
         return [r["_source"] for r in hits]

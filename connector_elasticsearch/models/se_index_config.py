@@ -15,9 +15,7 @@ class SeIndexConfig(models.Model):
     body = fields.Serialized(required=True)
     # This field is used since no widget exists to edit a serialized field
     # into the web fontend
-    body_str = fields.Text(
-        compute="_compute_body_str", inverse="_inverse_body_str"
-    )
+    body_str = fields.Text(compute="_compute_body_str", inverse="_inverse_body_str")
 
     @api.multi
     @api.depends("body")
