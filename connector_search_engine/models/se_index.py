@@ -4,6 +4,7 @@
 import logging
 
 from odoo import _, api, fields, models
+
 from odoo.addons.queue_job.job import job
 
 _logger = logging.getLogger(__name__)
@@ -14,9 +15,7 @@ except ImportError:  # pragma: no cover
 
 
 def sanitize(name):
-    return unidecode(
-        name.replace(" ", "_").replace(".", "_").replace("-", "_").lower()
-    )
+    return unidecode(name.replace(" ", "_").replace(".", "_").replace("-", "_").lower())
 
 
 class SeIndex(models.Model):
@@ -43,9 +42,7 @@ class SeIndex(models.Model):
         "ir.model", string="Model", required=True, domain=_get_model_domain
     )
     exporter_id = fields.Many2one("ir.exports", string="Exporter")
-    batch_size = fields.Integer(
-        default=5000, help="Batch size for exporting element"
-    )
+    batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
 
     _sql_constraints = [
         (
@@ -75,21 +72,17 @@ class SeIndex(models.Model):
     def recompute_all_binding(self, force_export=False, batch_size=500):
         target_models = self.mapped("model_id.model")
         for target_model in target_models:
-            indexes = self.filtered(
-                lambda r, m=target_model: r.model_id.model == m
-            )
-            bindings = self.env[target_model].search(
-                [("index_id", "in", indexes.ids)]
-            )
+            indexes = self.filtered(lambda r, m=target_model: r.model_id.model == m)
+            bindings = self.env[target_model].search([("index_id", "in", indexes.ids)])
             while bindings:
                 processing = bindings[0:batch_size]  # noqa: E203
                 bindings = bindings[batch_size:]  # noqa: E203
-                description = _(
-                    "Batch task for generating %s recompute job"
-                ) % len(processing)
-                processing.with_delay(
-                    description=description
-                )._jobify_recompute_json(force_export=force_export)
+                description = _("Batch task for generating %s recompute job") % len(
+                    processing
+                )
+                processing.with_delay(description=description)._jobify_recompute_json(
+                    force_export=force_export
+                )
         return True
 
     @api.depends("lang_id", "model_id", "backend_id.name")
@@ -104,9 +97,7 @@ class SeIndex(models.Model):
 
     def force_batch_export(self):
         self.ensure_one()
-        bindings = self.env[self.model_id.model].search(
-            [("index_id", "=", self.id)]
-        )
+        bindings = self.env[self.model_id.model].search([("index_id", "=", self.id)])
         bindings.write({"sync_state": "to_update"})
         self._jobify_batch_export()
 

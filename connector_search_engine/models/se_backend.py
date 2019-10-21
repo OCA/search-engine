@@ -19,10 +19,7 @@ class SeBackend(models.Model):
     # be useless because it will be takend from se.backend...
     name = fields.Char(required=False)
     specific_model = fields.Selection(
-        string="Type",
-        selection="_select_specific_model",
-        required=True,
-        readonly=True,
+        string="Type", selection="_select_specific_model", required=True, readonly=True
     )
     index_ids = fields.One2many("se.index", "backend_id")
     specific_backend = fields.Reference(
