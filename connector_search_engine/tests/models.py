@@ -3,6 +3,7 @@
 from contextlib import contextmanager
 
 from odoo import fields, models
+
 from odoo.addons.component.core import Component
 
 from .models_mixin import TestMixin
@@ -29,9 +30,7 @@ class SeAdapterFake(Component):
 
     def delete(self, binding_ids):
         self._mocked_calls.append(
-            dict(
-                work_ctx=self.work.__dict__, method="delete", args=binding_ids
-            )
+            dict(work_ctx=self.work.__dict__, method="delete", args=binding_ids)
         )
 
     def clear(self):

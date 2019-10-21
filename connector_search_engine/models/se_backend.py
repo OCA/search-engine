@@ -12,10 +12,7 @@ class SeBackend(models.Model):
 
     name = fields.Char(required=True)
     specific_model = fields.Selection(
-        string="Type",
-        selection="_select_specific_model",
-        required=True,
-        readonly=True,
+        string="Type", selection="_select_specific_model", required=True, readonly=True
     )
     index_ids = fields.One2many("se.index", "backend_id")
     specific_backend = fields.Reference(
