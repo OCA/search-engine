@@ -5,11 +5,11 @@ import json
 import os
 from time import sleep
 
-from odoo import exceptions
-from odoo.addons.connector_search_engine.tests.test_all import (
-    TestBindingIndexBase,
-)
 from vcr_unittest import VCRMixin
+
+from odoo import exceptions
+
+from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 from ..components.adapter import AlgoliaAdapter
 
@@ -28,9 +28,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
             "ALGOLIA_API_KEY", "FAKE_KEY"
         )
         cls.setup_records()
-        with cls.backend_specific.work_on(
-            "se.index", index=cls.se_index
-        ) as work:
+        with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
 
     def _get_vcr_kwargs(self, **kwargs):
@@ -60,8 +58,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         self.assertEqual(request.method, "POST")
         self.assertEqual(
             self.parse_path(request.uri),
-            "/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US"
-            "/batch",
+            "/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US" "/batch",
         )
         request_data = json.loads(request.body.decode("utf-8"))["requests"]
         self.assertEqual(len(request_data), 1)
@@ -75,8 +72,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         self.assertEqual(request.method, "POST")
         self.assertEqual(
             self.parse_path(request.uri),
-            "/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US"
-            "/clear",
+            "/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US" "/clear",
         )
 
     def test_delete_adapter(self):
@@ -86,15 +82,12 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         self.assertEqual(request.method, "POST")
         self.assertEqual(
             self.parse_path(request.uri),
-            "/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US"
-            "/batch",
+            "/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US" "/batch",
         )
         request_data = json.loads(request.body.decode("utf-8"))["requests"]
         self.assertEqual(len(request_data), 1)
         self.assertEqual(request_data[0]["action"], "deleteObject")
-        self.assertEqual(
-            request_data[0]["body"], {"objectID": "IamAnObjectID"}
-        )
+        self.assertEqual(request_data[0]["body"], {"objectID": "IamAnObjectID"})
 
     def test_iter_adapter(self):
         data = [{"objectID": "foo"}]
