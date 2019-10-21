@@ -3,15 +3,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import mock
+
 from odoo import exceptions
 
 from .common import TestSeBackendCaseBase
-from .models import (
-    BindingResPartnerFake,
-    ResPartnerFake,
-    SeAdapterFake,
-    SeBackendFake,
-)
+from .models import BindingResPartnerFake, ResPartnerFake, SeAdapterFake, SeBackendFake
 
 
 class TestBindingIndexBase(TestSeBackendCaseBase):
@@ -21,9 +17,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
         BindingResPartnerFake._test_setup_model(cls.env)
         ResPartnerFake._test_setup_model(cls.env)
         cls._load_fixture("ir_exports_test.xml")
-        cls.exporter = cls.env.ref(
-            "connector_search_engine.ir_exp_partner_test"
-        )
+        cls.exporter = cls.env.ref("connector_search_engine.ir_exp_partner_test")
 
     @classmethod
     def tearDownClass(cls):
@@ -48,9 +42,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
     def setup_records(cls, backend=None):
         backend = backend or cls.backend
         # create an index for partner model
-        cls.se_index = cls.se_index_model.create(
-            cls._prepare_index_values(backend)
-        )
+        cls.se_index = cls.se_index_model.create(cls._prepare_index_values(backend))
         # create a binding + partner alltogether
         cls.binding_model = cls.env[BindingResPartnerFake._name]
         cls.partner_binding = cls.binding_model.create(
@@ -59,11 +51,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
                 "country_id": cls.env.ref("base.us").id,
                 "email": "marty.mcfly@future.com",
                 "child_ids": [
-                    (
-                        0,
-                        0,
-                        {"name": "Doc Brown", "email": "docbrown@future.com"},
-                    )
+                    (0, 0, {"name": "Doc Brown", "email": "docbrown@future.com"})
                 ],
                 "index_id": cls.se_index.id,
             }
@@ -78,9 +66,7 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
         SeAdapterFake._build_component(cls._components_registry)
         SeBackendFake._test_setup_model(cls.env)
         cls.fake_backend_model = cls.env[SeBackendFake._name]
-        cls.backend_specific = cls.fake_backend_model.create(
-            {"name": "Fake SE"}
-        )
+        cls.backend_specific = cls.fake_backend_model.create({"name": "Fake SE"})
         cls.backend = cls.backend_specific.se_backend_id
         cls.setup_records()
 
@@ -104,18 +90,14 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         )
 
     def test_backend_specific_records(self):
-        sel = "{},{}".format(
-            self.fake_backend_model._name, self.backend_specific.id
-        )
+        sel = "{},{}".format(self.fake_backend_model._name, self.backend_specific.id)
         self.assertIn(
             (sel, self.backend_specific.name),
             self.env["se.backend"]._select_specific_backend(),
         )
 
     def test_backend_defaults(self):
-        self.assertEqual(
-            self.backend.specific_model, self.backend_specific._name
-        )
+        self.assertEqual(self.backend.specific_model, self.backend_specific._name)
 
     def test_backend_unlink(self):
         self.assertTrue(self.backend_specific.exists())
@@ -172,9 +154,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(self.partner_binding.sync_state, "to_update")
 
     def test_force_recompute_all_binding(self):
-        with mock.patch.object(
-            type(self.se_index), "recompute_all_binding"
-        ) as mocked:
+        with mock.patch.object(type(self.se_index), "recompute_all_binding") as mocked:
             self.se_index.force_recompute_all_binding()
         mocked.assert_called_with(force_export=True)
 
@@ -195,33 +175,25 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             ("index_id", "=", self.se_index.id),
             ("sync_state", "=", "to_update"),
         ]
-        self.assertEqual(
-            self.se_index._get_domain_for_exporting_binding(), expected
-        )
+        self.assertEqual(self.se_index._get_domain_for_exporting_binding(), expected)
 
     def test_batch_export(self):
         # state = new, nothing to export
         self.partner_binding.sync_state = "new"
-        with mock.patch.object(
-            type(self.partner_binding), "synchronize"
-        ) as mocked:
+        with mock.patch.object(type(self.partner_binding), "synchronize") as mocked:
             self.se_index.batch_export()
         self.assertEqual(self.partner_binding.sync_state, "new")
         mocked.assert_not_called()
         # now it should find the bindings marked for update and schedule them
         self.partner_binding.sync_state = "to_update"
-        with mock.patch.object(
-            type(self.partner_binding), "synchronize"
-        ) as mocked:
+        with mock.patch.object(type(self.partner_binding), "synchronize") as mocked:
             self.se_index.batch_export()
         self.assertEqual(self.partner_binding.sync_state, "scheduled")
         mocked.assert_called()
         # even if the binding is inactive it should schedule them
         self.partner_binding.sync_state = "to_update"
         self.partner_binding.active = False
-        with mock.patch.object(
-            type(self.partner_binding), "synchronize"
-        ) as mocked:
+        with mock.patch.object(type(self.partner_binding), "synchronize") as mocked:
             self.se_index.batch_export()
         self.assertEqual(self.partner_binding.sync_state, "scheduled")
         mocked.assert_called()
@@ -239,9 +211,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.partner_binding.synchronize()
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(
-                calls[0]["work_ctx"]["records"], self.partner_binding
-            )
+            self.assertEqual(calls[0]["work_ctx"]["records"], self.partner_binding)
             self.assertEqual(calls[0]["method"], "index")
 
     def test_synchronize_inactive_binding(self):
@@ -251,9 +221,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.partner_binding.synchronize()
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(
-                calls[0]["work_ctx"]["records"], self.partner_binding
-            )
+            self.assertEqual(calls[0]["work_ctx"]["records"], self.partner_binding)
             self.assertEqual(calls[0]["method"], "delete")
 
     def test_unlink_new_binding(self):

@@ -10,12 +10,7 @@
     "license": "AGPL-3",
     "author": "ACSONE SA/NV, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
-    "depends": [
-        "connector_search_engine",
-        "connector",
-        "component",
-        "base_jsonify",
-    ],
+    "depends": ["connector_search_engine", "connector", "component", "base_jsonify"],
     "data": [
         "security/se_backend_elasticsearch.xml",
         "security/se_index_config.xml",

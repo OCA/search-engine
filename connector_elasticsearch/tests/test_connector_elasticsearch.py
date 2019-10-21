@@ -4,12 +4,12 @@
 import json
 from time import sleep
 
-from odoo import exceptions
-from odoo.addons.connector_search_engine.tests.models import SeBackendFake
-from odoo.addons.connector_search_engine.tests.test_all import (
-    TestBindingIndexBase,
-)
 from vcr_unittest import VCRMixin
+
+from odoo import exceptions
+
+from odoo.addons.connector_search_engine.tests.models import SeBackendFake
+from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 
 class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
@@ -20,15 +20,11 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         cls.backend = cls.backend_specific.se_backend_id
         cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
-        with cls.backend_specific.work_on(
-            "se.index", index=cls.se_index
-        ) as work:
+        with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
         SeBackendFake._test_setup_model(cls.env)
         cls.fake_backend_model = cls.env[SeBackendFake._name]
-        cls.fake_backend_specific = cls.fake_backend_model.create(
-            {"name": "Fake SE"}
-        )
+        cls.fake_backend_specific = cls.fake_backend_model.create({"name": "Fake SE"})
         cls.fake_backend = cls.fake_backend_specific.se_backend_id
 
     def _get_vcr_kwargs(self, **kwargs):
@@ -48,9 +44,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
 
     @classmethod
     def _prepare_index_values(cls, backend):
-        values = super(TestConnectorElasticsearch, cls)._prepare_index_values(
-            backend
-        )
+        values = super(TestConnectorElasticsearch, cls)._prepare_index_values(backend)
         values.update({"config_id": cls.se_config.id})
         return values
 
@@ -100,11 +94,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.assertEqual(self.se_config.body_str, '{"mappings": {"1": 1}}')
 
     def test_index_adapter_iter(self):
-        data = [
-            {"objectID": "foo"},
-            {"objectID": "foo2"},
-            {"objectID": "foo3"},
-        ]
+        data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
@@ -115,11 +105,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.assertListEqual(res, data)
 
     def test_index_adapter_delete(self):
-        data = [
-            {"objectID": "foo"},
-            {"objectID": "foo2"},
-            {"objectID": "foo3"},
-        ]
+        data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:

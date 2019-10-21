@@ -3,17 +3,16 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
-from odoo.addons.queue_job.job import job
 from odoo.exceptions import UserError
+
+from odoo.addons.queue_job.job import job
 
 
 class SeBinding(models.AbstractModel):
     _name = "se.binding"
     _se_model = True
 
-    se_backend_id = fields.Many2one(
-        "se.backend", related="index_id.backend_id"
-    )
+    se_backend_id = fields.Many2one("se.backend", related="index_id.backend_id")
     index_id = fields.Many2one(
         "se.index",
         string="Index",
@@ -67,10 +66,7 @@ class SeBinding(models.AbstractModel):
                 continue
             if record.active:
                 raise UserError(
-                    _(
-                        "You cannot delete the binding '%s', unactivate it "
-                        "first."
-                    )
+                    _("You cannot delete the binding '%s', unactivate it " "first.")
                     % record.name
                 )
             else:
@@ -85,9 +81,7 @@ class SeBinding(models.AbstractModel):
 
     @job(default_channel="root.search_engine.recompute_json")
     def _jobify_recompute_json(self, force_export=False):
-        description = _(
-            "Recompute %s json and check if need update" % self._name
-        )
+        description = _("Recompute %s json and check if need update" % self._name)
         # The job creation with tracking is very costly. So disable it.
         for record in self.with_context(tracking_disable=True):
             record.with_delay(description=description).recompute_json(
@@ -99,8 +93,7 @@ class SeBinding(models.AbstractModel):
         for backend in self.mapped("se_backend_id"):
             for index in self.mapped("index_id"):
                 bindings = self.filtered(
-                    lambda b, backend=backend, index=index: b.se_backend_id
-                    == backend
+                    lambda b, backend=backend, index=index: b.se_backend_id == backend
                     and b.index_id == index
                     and b.active == active
                 )
@@ -147,6 +140,4 @@ class SeBinding(models.AbstractModel):
             deleter = work.component(usage="record.exporter.deleter")
             deleter.run()
             delete_ids += work.records.ids
-        return "Exported ids : {}\nDeleted ids : {}".format(
-            export_ids, delete_ids
-        )
+        return "Exported ids : {}\nDeleted ids : {}".format(export_ids, delete_ids)
