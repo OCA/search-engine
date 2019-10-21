@@ -19,4 +19,5 @@
     ],
     "demo": ["demo/backend_demo.xml"],
     "external_dependencies": {"python": ["elasticsearch", "requests"]},
+    "installable": False,
 }

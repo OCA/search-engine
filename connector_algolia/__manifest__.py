@@ -21,5 +21,5 @@
     ],
     "demo": ["demo/backend_demo.xml"],
     "external_dependencies": {"python": ["algoliasearch"]},
-    "installable": True,
+    "installable": False,
 }
