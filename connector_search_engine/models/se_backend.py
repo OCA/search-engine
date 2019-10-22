@@ -62,7 +62,6 @@ class SeBackend(models.Model):
         return res
 
     @api.depends("specific_model")
-    @api.multi
     def _compute_specific_backend(self):
         for specific_model in self.mapped("specific_model"):
             recs = self.filtered(

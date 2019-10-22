@@ -31,7 +31,6 @@ class SeBackendSpecAbstract(models.AbstractModel):
         vals["specific_model"] = self._name
         return super(SeBackendSpecAbstract, self).create(vals)
 
-    @api.multi
     def unlink(self):
         se_backend = self.mapped("se_backend_id")
         res = super(SeBackendSpecAbstract, self).unlink()
@@ -39,7 +38,6 @@ class SeBackendSpecAbstract(models.AbstractModel):
         se_backend.unlink()
         return res
 
-    @api.multi
     def _get_api_credentials(self):
         # TODO: user self.name to retrieve creds from server env
         # TODO: username password etc
