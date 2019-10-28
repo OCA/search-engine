@@ -9,6 +9,12 @@ class SeBackendSpecAbstract(models.AbstractModel):
     _description = "Se Specialized Backend"
     _inherit = "connector.backend"
 
+    # declare a unique name for this search engine service
+    # (eg: elasticsearch, algolia, my-super-engine).
+    # This can be used by other modules to understand
+    # which engine they are dealing with
+    _search_engine_name = ""
+
     # Delegation inheritance
     se_backend_id = fields.Many2one(
         comodel_name="se.backend",
