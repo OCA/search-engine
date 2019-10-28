@@ -29,6 +29,10 @@ class SeBackend(models.Model):
         readonly=True,
     )
 
+    @property
+    def search_engine_name(self):
+        return self.specific_backend._search_engine_name
+
     @api.model
     @tools.ormcache("self")
     def _select_specific_model(self):
