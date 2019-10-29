@@ -10,4 +10,6 @@ class SeBackendElasticsearch(models.Model):
     _inherit = "se.backend.spec.abstract"
     _description = "Elasticsearch Backend"
 
+    _search_engine_name = "elasticsearch"
+
     es_server_host = fields.Char(string="ElasticSearch host")
