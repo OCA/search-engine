@@ -45,7 +45,7 @@ msgid "Batch task for generating %s recompute job"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:47
+#: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:53
 #, python-format
 msgid "Changing this name will change the name of the indexes. If you proceed, you have to take care of the configuration in your website. Cancel the modification if you are not comfortable with this configuration."
 msgstr ""
@@ -279,7 +279,7 @@ msgid "Type"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:46
+#: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:52
 #, python-format
 msgid "Warning"
 msgstr ""
