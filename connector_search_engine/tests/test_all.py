@@ -89,9 +89,8 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         )
 
     def test_backend_specific_records(self):
-        sel = "{},{}".format(self.fake_backend_model._name, self.backend_specific.id)
         self.assertIn(
-            (sel, self.backend_specific.name),
+            (self.fake_backend_model._name, self.backend_specific.name),
             self.env["se.backend"]._select_specific_backend(),
         )
 
