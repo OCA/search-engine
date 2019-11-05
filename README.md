@@ -9,6 +9,10 @@ Search Engine Connector for Odoo
 This project include a generic search engine connector and specific implementation for algolia and elasticsearch.
 
 
+[//]: # (addons)
+
+
+[//]: # (end addons)
 
 
 Developement
