@@ -47,7 +47,6 @@ class SeBinding(models.AbstractModel):
         record._jobify_recompute_json()
         return record
 
-    @api.multi
     def write(self, vals):
         not_new = self.browse()
         if "active" in vals and not vals["active"]:
@@ -59,7 +58,6 @@ class SeBinding(models.AbstractModel):
         res = super(SeBinding, self - not_new).write(vals)
         return res
 
-    @api.multi
     def unlink(self):
         for record in self:
             if record.sync_state == "new" or (
@@ -120,7 +118,6 @@ class SeBinding(models.AbstractModel):
                     record.write(vals)
 
     @job(default_channel="root.search_engine")
-    @api.multi
     def synchronize(self):
         # We volontary to the export and delete in the same transaction
         # we try first to process it into two different process but the code

@@ -46,16 +46,10 @@ class SeBackend(models.Model):
         """Retrieve available specific backends."""
         res = []
         for model, __ in self._select_specific_model():
-            res.extend(
-                [
-                    ("{},{}".format(model, record.id), record.name)
-                    for record in self.env[model].search([])
-                ]
-            )
+            res.extend([(model, record.name) for record in self.env[model].search([])])
         return res
 
     @api.depends("specific_model")
-    @api.multi
     def _compute_specific_backend(self):
         for specific_model in self.mapped("specific_model"):
             recs = self.filtered(

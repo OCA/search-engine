@@ -1,4 +1,4 @@
-exclude: "^setup/|/static/lib/|/static/src/lib/|^connector_search_engine|^connector_algolia|^connector_elasticsearch"
+exclude: "^setup/|/static/lib/|/static/src/lib/|^connector_algolia|^connector_elasticsearch"
 default_language_version:
   python: python3
 repos:

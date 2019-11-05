@@ -168,7 +168,6 @@ class SeIndex(models.Model):
                 index.with_delay().delete_obsolete_item(item_ids)
 
     @job(default_channel="root.search_engine")
-    @api.multi
     def delete_obsolete_item(self, item_ids):
         backend = self.backend_id.specific_backend
         with backend.work_on(self._name, index=self) as work:
