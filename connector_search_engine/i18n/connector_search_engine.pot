@@ -248,6 +248,13 @@ msgid "Search Engine Connector Manager"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.actions.server,name:connector_search_engine.ir_cron_export_settings_ir_actions_server
+#: model:ir.cron,cron_name:connector_search_engine.ir_cron_export_settings
+#: model:ir.cron,name:connector_search_engine.ir_cron_export_settings
+msgid "Search engine: Export settings for all indexes"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_export_binding_ir_actions_server
 #: model:ir.cron,cron_name:connector_search_engine.ir_cron_export_binding
 #: model:ir.cron,name:connector_search_engine.ir_cron_export_binding
