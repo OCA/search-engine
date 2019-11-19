@@ -99,7 +99,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = [x for x in self.adapter.iter()]
+        res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, data)
 
@@ -115,6 +115,6 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = [x for x in self.adapter.iter()]
+        res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, [{"objectID": "foo2"}])
