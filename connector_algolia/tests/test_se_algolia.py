@@ -96,5 +96,5 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = [x for x in self.adapter.iter()]
+        res = [x for x in self.adapter.each()]
         self.assertEqual(res, data)

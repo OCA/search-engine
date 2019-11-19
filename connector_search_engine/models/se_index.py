@@ -159,7 +159,7 @@ class SeIndex(models.Model):
             backend = index.backend_id.specific_backend
             with backend.work_on(self._name, index=index) as work:
                 adapter = work.component(usage="se.backend.adapter")
-                for se_binding in adapter.iter():
+                for se_binding in adapter.each():
                     binding = self.env[index.model_id.model].search(
                         [("id", "=", se_binding[adapter._record_id_key])]
                     )

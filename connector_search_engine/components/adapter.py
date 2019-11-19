@@ -24,5 +24,8 @@ class SeAdapter(AbstractComponent):
     def clear(self):
         return NotImplemented  # pragma: no cover
 
-    def iter(self):
+    def each(self):
+        return NotImplemented  # pragma: no cover
+
+    def settings(self):
         return NotImplemented  # pragma: no cover
