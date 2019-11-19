@@ -274,7 +274,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.se_index.resynchronize_all_bindings()
             self.assertEqual(len(calls), 2)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(calls[0]["method"], "iter")
+            self.assertEqual(calls[0]["method"], "each")
             self.assertEqual(calls[1]["work_ctx"]["index"], self.se_index)
             self.assertEqual(calls[1]["method"], "delete")
             self.assertEqual(calls[1]["args"], [42])

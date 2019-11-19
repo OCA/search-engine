@@ -39,9 +39,9 @@ class SeAdapterFake(Component):
             dict(work_ctx=self.work.__dict__, method="clear", args=None)
         )
 
-    def iter(self):
+    def each(self):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="iter", args=None)
+            dict(work_ctx=self.work.__dict__, method="each", args=None)
         )
         return [{"id": 42}]
 
