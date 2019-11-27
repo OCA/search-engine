@@ -12,7 +12,7 @@
     "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
     "category": "Generic Modules",
-    "depends": ["connector", "base_jsonify"],
+    "depends": ["connector", "base_jsonify", "server_environment"],
     "external_dependencies": {"python": ["unidecode"]},
     "data": [
         "security/connector_search_engine_security.xml",
