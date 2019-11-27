@@ -8,14 +8,6 @@ from odoo import _, api, fields, models
 from odoo.addons.queue_job.job import job
 
 _logger = logging.getLogger(__name__)
-try:
-    from unidecode import unidecode
-except ImportError:  # pragma: no cover
-    _logger.debug("Cannot `import unidecode`.")
-
-
-def sanitize(name):
-    return unidecode(name.replace(" ", "_").replace(".", "_").replace("-", "_").lower())
 
 
 class SeIndex(models.Model):
@@ -23,8 +15,22 @@ class SeIndex(models.Model):
     _name = "se.index"
     _description = "Se Index"
 
+    name = fields.Char(compute="_compute_name")
+    backend_id = fields.Many2one(
+        "se.backend", string="Backend", required=True, ondelete="cascade"
+    )
+    lang_id = fields.Many2one("res.lang", string="Lang", required=True)
+    model_id = fields.Many2one(
+        "ir.model",
+        string="Model",
+        required=True,
+        domain=lambda self: self._model_id_domain(),
+    )
+    exporter_id = fields.Many2one("ir.exports", string="Exporter")
+    batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
+
     @api.model
-    def _get_model_domain(self):
+    def _model_id_domain(self):
         se_model_names = []
         for model in self.env:
             if self.env[model]._abstract or self.env[model]._transient:
@@ -33,16 +39,10 @@ class SeIndex(models.Model):
                 se_model_names.append(model)
         return [("model", "in", se_model_names)]
 
-    name = fields.Char(compute="_compute_name", store=True)
-    backend_id = fields.Many2one(
-        "se.backend", string="Backend", required=True, ondelete="cascade"
-    )
-    lang_id = fields.Many2one("res.lang", string="Lang", required=True)
-    model_id = fields.Many2one(
-        "ir.model", string="Model", required=True, domain=_get_model_domain
-    )
-    exporter_id = fields.Many2one("ir.exports", string="Exporter")
-    batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
+    @api.model
+    def _get_model_domain(self):
+        _logger.warn("DEPRECATED: use `_model_id_domain`")
+        return self._model_id_domain()
 
     _sql_constraints = [
         (
@@ -85,14 +85,17 @@ class SeIndex(models.Model):
                 )
         return True
 
-    @api.depends("lang_id", "model_id", "backend_id.name")
+    @api.depends("lang_id", "model_id", "backend_id.index_prefix_name")
     def _compute_name(self):
         for rec in self:
-            if rec.lang_id and rec.model_id and rec.backend_id.name:
-                rec.name = "{}_{}_{}".format(
-                    sanitize(rec.backend_id.name),
-                    sanitize(rec.model_id.name or ""),
-                    rec.lang_id.code,
+            backend = rec.backend_id
+            if rec.lang_id and rec.model_id and backend.index_prefix_name:
+                rec.name = "_".join(
+                    [
+                        backend.index_prefix_name,
+                        backend._normalize_name(rec.model_id.name or ""),
+                        rec.lang_id.code,
+                    ]
                 )
 
     def force_batch_export(self):
