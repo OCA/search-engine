@@ -13,3 +13,9 @@ class SeBackendElasticsearch(models.Model):
     _search_engine_name = "elasticsearch"
 
     es_server_host = fields.Char(string="ElasticSearch host")
+
+    @property
+    def _server_env_fields(self):
+        env_fields = super()._server_env_fields
+        env_fields.update({"es_server_host": {}})
+        return env_fields
