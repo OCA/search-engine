@@ -161,7 +161,11 @@ class SeIndex(models.Model):
 
     @api.model
     def export_all_settings(self):
-        for index in self.search([]):
+        self.search([]).export_settings()
+
+    @api.multi
+    def export_settings(self):
+        for index in self:
             se_specific_backend = index.backend_id.specific_backend
             with se_specific_backend.work_on(index.model_id.model, index=index) as work:
                 exporter = work.component(usage="se.record.exporter")
