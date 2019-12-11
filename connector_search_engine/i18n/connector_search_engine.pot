@@ -45,15 +45,6 @@ msgid "Batch task for generating %s recompute job"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:0
-#, python-format
-msgid ""
-"Changing this name will change the name of the indexes. If you proceed, you "
-"have to take care of the configuration in your website. Cancel the "
-"modification if you are not comfortable with this configuration."
-msgstr ""
-
-#. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid "Clear the index in the search engine"
 msgstr ""
@@ -106,7 +97,7 @@ msgid "Done"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_index.py:0
+#: code:addons/connector_search_engine/models/se_index.py:133
 #, python-format
 msgid "Export %d records of %d for index '%s'"
 msgstr ""
@@ -142,6 +133,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__index_id
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid "Index"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name
+msgid "Index Prefix Name"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name_env_default
+msgid "Index Prefix Name Env Default"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_is_editable
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name_env_is_editable
+msgid "Index Prefix Name Env Is Editable"
 msgstr ""
 
 #. module: connector_search_engine
@@ -194,7 +203,13 @@ msgid "New"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_index.py:0
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name
+msgid "Prefix for technical indexes tech name. You could use this to change index names based on current env."
+msgstr ""
+
+#. module: connector_search_engine
+#: code:addons/connector_search_engine/models/se_index.py:109
 #, python-format
 msgid "Prepare a batch export of index '%s'"
 msgstr ""
@@ -269,6 +284,12 @@ msgid "Search engine: recompute all index"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__server_env_defaults
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__server_env_defaults
+msgid "Server Env Defaults"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__specific_backend
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__specific_backend
 msgid "Specific backend"
@@ -280,7 +301,13 @@ msgid "Sync State"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__sync_state__to_update
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__tech_name
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__tech_name
+msgid "Tech Name"
+msgstr ""
+
+#. module: connector_search_engine
+#: selection:se.binding,sync_state:0
 msgid "To update"
 msgstr ""
 
@@ -291,9 +318,9 @@ msgid "Type"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:0
-#, python-format
-msgid "Warning"
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend__tech_name
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend_spec_abstract__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
 
 #. module: connector_search_engine
@@ -307,3 +334,9 @@ msgstr ""
 #, python-format
 msgid "You cannot delete the binding '%s', wait until it's synchronized."
 msgstr ""
+
+#. module: connector_search_engine
+#: sql_constraint:se.backend:0
+msgid "`tech_name` must be unique"
+msgstr ""
+
