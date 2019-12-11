@@ -1,7 +1,7 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class SeBackendSpecAbstract(models.AbstractModel):
@@ -43,19 +43,3 @@ class SeBackendSpecAbstract(models.AbstractModel):
         # TODO: user self.name to retrieve creds from server env
         # TODO: username password etc
         return {}  # pragma: no cover
-
-    @api.onchange("name")
-    def onchange_backend_name(self):
-        if self.index_ids:
-            return {
-                "warning": {
-                    "title": _("Warning"),
-                    "message": _(
-                        "Changing this name will change the name of "
-                        "the indexes. If you proceed, you have to "
-                        "take care of the configuration in your "
-                        "website. Cancel the modification if you are"
-                        " not comfortable with this configuration."
-                    ),
-                }
-            }

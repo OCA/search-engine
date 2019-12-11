@@ -3,6 +3,7 @@
 
     <record id="se_algolia_demo" model="se.backend.algolia">
         <field name="name">Demo Algolia Backend</field>
+        <field name="tech_name">demo_algolia_backend</field>
     </record>
 
 </odoo>

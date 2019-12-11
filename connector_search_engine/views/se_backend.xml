@@ -16,7 +16,9 @@
                     </h1>
                     <group name="se" string="Configuration">
                         <group colspan="4" col="4" name="se-main">
-                            <field name="specific_backend" colspan="4"/>
+                            <field name="tech_name" colspan="2"/>
+                            <field name="index_prefix_name" colspan="2"/>
+                            <field name="specific_backend" colspan="2"/>
                         </group>
                     </group>
                     <group name="index" string="Index">
@@ -53,6 +55,7 @@
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
             <tree create="false">
+                <field name="tech_name" />
                 <field name="specific_backend"/>
                 <field name="specific_model"/>
            </tree>

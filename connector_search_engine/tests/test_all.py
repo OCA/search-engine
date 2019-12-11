@@ -4,6 +4,7 @@
 import mock
 
 from odoo import exceptions
+from odoo.tests.common import Form
 
 from .common import TestSeBackendCaseBase
 from .models import BindingResPartnerFake, ResPartnerFake, SeAdapterFake, SeBackendFake
@@ -65,7 +66,9 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
         SeAdapterFake._build_component(cls._components_registry)
         SeBackendFake._test_setup_model(cls.env)
         cls.fake_backend_model = cls.env[SeBackendFake._name]
-        cls.backend_specific = cls.fake_backend_model.create({"name": "Fake SE"})
+        cls.backend_specific = cls.fake_backend_model.create(
+            {"name": "Fake SE", "tech_name": "fake_se"}
+        )
         cls.backend = cls.backend_specific.se_backend_id
         cls.setup_records()
 
@@ -105,12 +108,37 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertFalse(self.backend_specific.exists())
         self.assertFalse(self.backend.exists())
 
-    def test_changing_name_with_index_raise_warning(self):
-        res = self.backend_specific.onchange_backend_name()
-        self.assertIn("warning", res)
-        self.backend_specific.index_ids.unlink()
-        res = self.backend_specific.onchange_backend_name()
-        self.assertIsNone(res)
+    def test_backend_name(self):
+        form = Form(self.env["se.backend"])
+        form.name = "Á weird nämë plenty of CR@P!"
+        # tech name normalized
+        self.assertEqual(form.tech_name, "a_weird_name_plenty_of_cr_p")
+        self.assertEqual(form.index_prefix_name, "a_weird_name_plenty_of_cr_p")
+        form.tech_name = "better_name"
+        form.index_prefix_name = "better_prefix"
+        form.name = "My search backend"
+        # name updated, tech names stay
+        self.assertEqual(form.tech_name, "better_name")
+        self.assertEqual(form.index_prefix_name, "better_prefix")
+
+    def test_backend_create_tech_defaults(self):
+        b1 = self.fake_backend_model.create({"name": "Fake 1"})
+        self.assertEqual(b1.tech_name, "fake_1")
+        self.assertEqual(b1.index_prefix_name, "fake_1")
+        b2 = self.fake_backend_model.create({"name": "Fake 2", "tech_name": "test2"})
+        self.assertEqual(b2.tech_name, "test2")
+        self.assertEqual(b2.index_prefix_name, "test2")
+        b3 = self.fake_backend_model.create(
+            {"name": "Fake 3", "tech_name": "test3", "index_prefix_name": "baz"}
+        )
+        self.assertEqual(b3.tech_name, "test3")
+        self.assertEqual(b3.index_prefix_name, "baz")
+
+    def test_index_name(self):
+        self.assertEqual(self.se_index.name, "fake_se_res_partner_binding_fake_en_US")
+        # control indexes' name via prefix tech name
+        self.backend.index_prefix_name = "foo_baz"
+        self.assertEqual(self.se_index.name, "foo_baz_res_partner_binding_fake_en_US")
 
     def test_changing_model_remove_exporter(self):
         res = self.se_index.onchange_model_id()
@@ -118,8 +146,8 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertIn("domain", res)
         self.assertIn("exporter_id", res["domain"])
 
-    def test_get_model_domain(self):
-        result = self.se_index._get_model_domain()
+    def test_model_id_domain(self):
+        result = self.se_index._model_id_domain()
         models = result[0][2]
         self.assertIn("res.partner.binding.fake", models)
 
