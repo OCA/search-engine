@@ -88,6 +88,21 @@ msgid "Index"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name
+msgid "Index Prefix Name"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name_env_default
+msgid "Index Prefix Name Env Default"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name_env_is_editable
+msgid "Index Prefix Name Env Is Editable"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia____last_update
 #: model:ir.model.fields,field_description:connector_algolia.field_se_index_config____last_update
 msgid "Last Modified on"
@@ -112,6 +127,11 @@ msgid "Name"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_backend_algolia__index_prefix_name
+msgid "Prefix for technical indexes tech name. You could use this to change index names based on current env."
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__se_backend_id
 msgid "Se Backend"
 msgstr ""
@@ -127,8 +147,18 @@ msgid "Search Engine Backend"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__server_env_defaults
+msgid "Server Env Defaults"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__specific_backend
 msgid "Specific backend"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__tech_name
+msgid "Tech Name"
 msgstr ""
 
 #. module: connector_algolia
@@ -140,5 +170,10 @@ msgstr ""
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__specific_model
 msgid "Type"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_backend_algolia__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
 
