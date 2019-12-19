@@ -14,7 +14,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
+        cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1_se_backend")
         cls.backend = cls.backend_specific.se_backend_id
         cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
@@ -85,7 +85,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     def test_index_config_as_str(self):
         self.se_config.write({"body_str": '{"mappings": {"1":1}}'})
         self.assertDictEqual(self.se_config.body, {"mappings": {"1": 1}})
-        self.assertEqual(self.se_config.body_str, '{"mappings": {"1": 1}}')
+        self.assertEqual(self.se_config.body_str, '{"mappings": {"1":1}}')
 
     def test_index_adapter_iter(self):
         data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
