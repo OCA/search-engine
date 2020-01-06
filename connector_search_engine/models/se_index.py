@@ -166,7 +166,6 @@ class SeIndex(models.Model):
     def export_all_settings(self):
         self.search([]).export_settings()
 
-    @api.multi
     def export_settings(self):
         for index in self:
             se_specific_backend = index.backend_id.specific_backend

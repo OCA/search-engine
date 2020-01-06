@@ -17,14 +17,12 @@ class SeIndexConfig(models.Model):
     # into the web fontend
     body_str = fields.Text(compute="_compute_body_str", inverse="_inverse_body_str")
 
-    @api.multi
     @api.depends("body")
     def _compute_body_str(self):
         for rec in self:
             if rec.body:
                 rec.body_str = json.dumps(rec.body)
 
-    @api.multi
     def _inverse_body_str(self):
         for rec in self:
             data = None
