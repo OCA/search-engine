@@ -92,6 +92,11 @@ class ElasticsearchAdapter(Component):
         return res["acknowledged"]
 
     def iter(self):
+        # `iter` is a built-in keyword -> to be replaced
+        _logger.warning("DEPRECATED: use `each` instead of `iter`.")
+        return self.each()
+
+    def each(self):
         es = self._get_es_client()
         res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
         hits = res["hits"]["hits"]
