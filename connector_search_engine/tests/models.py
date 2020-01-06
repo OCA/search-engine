@@ -14,6 +14,7 @@ class SeBackendFake(models.Model, TestMixin):
     _name = "se.backend.fake"
     _inherit = "se.backend.spec.abstract"
     _description = "Unit Test SE Backend"
+    _search_engine_name = "FakeSE"
 
 
 class SeAdapterFake(Component):

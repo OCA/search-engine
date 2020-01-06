@@ -33,7 +33,6 @@ class TestSeBackendCaseBase(SavepointComponentCase):
             context=dict(
                 cls.env.context,
                 tracking_disable=True,  # speed up tests
-                # TODO: requires https://github.com/OCA/queue/pull/114
                 test_queue_job_no_delay=True,  # no jobs thanks
             )
         )
