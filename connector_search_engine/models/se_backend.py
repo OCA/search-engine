@@ -39,7 +39,6 @@ class SeBackend(models.Model):
     def _server_env_fields(self):
         return {"index_prefix_name": {}}
 
-    @api.multi
     def _server_env_section_name(self):
         self.ensure_one()
         if not self.tech_name:
