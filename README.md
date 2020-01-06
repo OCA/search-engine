@@ -23,7 +23,7 @@ Unported addons
 ---------------
 addon | version | summary
 --- | --- | ---
-[connector_elasticsearch](connector_elasticsearch/) | 12.0.0.1.0 (unported) | Connector For Elasticsearch Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 12.0.0.1.1 (unported) | Connector For Elasticsearch Search Engine
 
 [//]: # (end addons)
 
