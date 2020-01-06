@@ -85,7 +85,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     def test_index_config_as_str(self):
         self.se_config.write({"body_str": '{"mappings": {"1":1}}'})
         self.assertDictEqual(self.se_config.body, {"mappings": {"1": 1}})
-        self.assertEqual(self.se_config.body_str, '{"mappings": {"1": 1}}')
+        self.assertEqual(self.se_config.body_str, '{"mappings": {"1":1}}')
 
     def test_index_adapter_iter(self):
         data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
