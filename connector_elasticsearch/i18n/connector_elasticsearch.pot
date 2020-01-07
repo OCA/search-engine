@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* connector_elasticsearch
+# 	* connector_elasticsearch
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: <>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_elasticsearch
-#: code:addons/connector_elasticsearch/models/se_index.py:28
+#: code:addons/connector_elasticsearch/models/se_index.py:0
 #, python-format
 msgid "An index definition is rquired for elasticsearch"
 msgstr ""
@@ -69,7 +69,10 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_index__config_id
-msgid "Elasticseacrh index definition (see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html)"
+msgid ""
+"Elasticseacrh index definition (see "
+"https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
+"create-index.html)"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -94,7 +97,9 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid "Force to recompute all binding of the index and set them to the state 'To update'"
+msgid ""
+"Force to recompute all binding of the index and set them to the state 'To "
+"update'"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -107,6 +112,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_ids
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
 msgid "Index"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name
+msgid "Index Prefix Name"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_default
+msgid "Index Prefix Name Env Default"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_is_editable
+msgid "Index Prefix Name Env Is Editable"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -134,6 +154,13 @@ msgid "Name"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name
+msgid ""
+"Prefix for technical indexes tech name. You could use this to change index "
+"names based on current env."
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__se_backend_id
 msgid "Se Backend"
 msgstr ""
@@ -156,12 +183,22 @@ msgid "Search Engine Backend"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__server_env_defaults
+msgid "Server Env Defaults"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__specific_backend
 msgid "Specific backend"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: code:addons/connector_elasticsearch/components/adapter.py:57
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__tech_name
+msgid "Tech Name"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/components/adapter.py:0
 #, python-format
 msgid "The key %s is missing in the data %s"
 msgstr ""
@@ -172,7 +209,11 @@ msgid "Type"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
 msgid "http://127.0.0.1:9200"
 msgstr ""
-
