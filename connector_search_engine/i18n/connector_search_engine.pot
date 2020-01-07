@@ -205,11 +205,13 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name
-msgid "Prefix for technical indexes tech name. You could use this to change index names based on current env."
+msgid ""
+"Prefix for technical indexes tech name. You could use this to change index "
+"names based on current env."
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_index.py:109
+#: code:addons/connector_search_engine/models/se_index.py:0
 #, python-format
 msgid "Prepare a batch export of index '%s'"
 msgstr ""
@@ -307,7 +309,7 @@ msgid "Tech Name"
 msgstr ""
 
 #. module: connector_search_engine
-#: selection:se.binding,sync_state:0
+#: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__sync_state__to_update
 msgid "To update"
 msgstr ""
 
@@ -336,7 +338,6 @@ msgid "You cannot delete the binding '%s', wait until it's synchronized."
 msgstr ""
 
 #. module: connector_search_engine
-#: sql_constraint:se.backend:0
+#: model:ir.model.constraint,message:connector_search_engine.constraint_se_backend_tech_name_uniq
 msgid "`tech_name` must be unique"
 msgstr ""
-
