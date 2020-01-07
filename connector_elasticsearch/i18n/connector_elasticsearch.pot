@@ -99,7 +99,7 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch_id
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config_id_2406
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config_id_2407
 msgid "ID"
 msgstr ""
 
