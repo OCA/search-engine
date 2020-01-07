@@ -18,5 +18,11 @@ class SeBackendAlgolia(models.Model):
     algolia_app_id = fields.Char(string="APP ID")
     algolia_api_key = fields.Char(string="API KEY")
 
+    @property
+    def _server_env_fields(self):
+        env_fields = super()._server_env_fields
+        env_fields.update({"algolia_app_id": {}, "algolia_api_key": {}})
+        return env_fields
+
     def _get_api_credentials(self):
         return {"password": self.algolia_api_key}  # pragma: no cover

@@ -5,6 +5,7 @@ import json
 from odoo import api, fields, models
 
 
+# TODO: this part is copied from Elasticsearch but should stay in base module
 class SeIndexConfig(models.Model):
 
     _name = "se.index.config"

@@ -24,16 +24,33 @@ class AlgoliaAdapter(Component):
     _inherit = ["base.backend.adapter", "algolia.se.connector"]
     _usage = "se.backend.adapter"
 
-    def _get_index(self):
+    def get_index(self):
+        client = self._get_client()
+        return self._get_index(client)
+
+    def _get_client(self):
         backend = self.backend_record
         account = backend._get_api_credentials()
-        client = algoliasearch.client.Client(
-            backend.algolia_app_id, account["password"]
-        )
+        return algoliasearch.client.Client(backend.algolia_app_id, account["password"])
+
+    def _get_index(self, client):
         return client.initIndex(self.work.index.name)
 
+    def settings(self, force=False):
+        """Push advanced settings like facettings attributes."""
+        client = self._get_client()
+        index = self._get_index(client)
+        data = self.work.index._get_settings()
+        if not force:
+            # export settings if it is the first creation of the index.
+            indexes = client.list_indexes()
+            index_names = [item.get("name") for item in indexes.get("items", [])]
+            force = index.index_name not in index_names or False
+        if data and force:
+            index.setSettings(data)
+
     def index(self, records):
-        index = self._get_index()
+        index = self.get_index()
         # Ensure that the objectID is set because algolia will use it
         # for creating or updating the record
         for data in records:
@@ -45,13 +62,19 @@ class AlgoliaAdapter(Component):
         index.add_objects(records)
 
     def delete(self, binding_ids):
-        index = self._get_index()
+        index = self.get_index()
         index.delete_objects(binding_ids)
 
     def clear(self):
-        index = self._get_index()
+        index = self.get_index()
         index.clear_index()
+        self.settings(force=True)
 
     def iter(self):
-        index = self._get_index()
+        # `iter` is a built-in keyword -> to be replaced
+        _logger.warning("DEPRECATED: use `each` instead of `iter`.")
+        return self.each()
+
+    def each(self):
+        index = self.get_index()
         return index.browse_all()

@@ -7,7 +7,6 @@ from vcr_unittest import VCRMixin
 
 from odoo import exceptions
 
-from odoo.addons.connector_search_engine.tests.models import SeBackendFake
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 
@@ -21,10 +20,6 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         cls.setup_records()
         with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
-        SeBackendFake._test_setup_model(cls.env)
-        cls.fake_backend_model = cls.env[SeBackendFake._name]
-        cls.fake_backend_specific = cls.fake_backend_model.create({"name": "Fake SE"})
-        cls.fake_backend = cls.fake_backend_specific.se_backend_id
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
@@ -90,7 +85,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     def test_index_config_as_str(self):
         self.se_config.write({"body_str": '{"mappings": {"1":1}}'})
         self.assertDictEqual(self.se_config.body, {"mappings": {"1": 1}})
-        self.assertEqual(self.se_config.body_str, '{"mappings": {"1": 1}}')
+        self.assertEqual(self.se_config.body_str, '{"mappings": {"1":1}}')
 
     def test_index_adapter_iter(self):
         data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
@@ -99,7 +94,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = [x for x in self.adapter.iter()]
+        res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, data)
 
@@ -115,6 +110,6 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = [x for x in self.adapter.iter()]
+        res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, [{"objectID": "foo2"}])
