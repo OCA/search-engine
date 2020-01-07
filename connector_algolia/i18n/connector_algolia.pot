@@ -34,22 +34,54 @@ msgid "Algolia Backends"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__body
+msgid "Body"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__body_str
+msgid "Body Str"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index__config_id
+msgid "Config"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__create_uid
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__create_date
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__display_name
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_index__config_id
+msgid ""
+"Elasticseacrh index definition (see "
+"https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
+"create-index.html)"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model,name:connector_algolia.model_se_index_config
+msgid "Elasticsearch index configuration"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__id
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__id
 msgid "ID"
 msgstr ""
 
@@ -59,23 +91,49 @@ msgid "Index"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name
+msgid "Index Prefix Name"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name_env_default
+msgid "Index Prefix Name Env Default"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name_env_is_editable
+msgid "Index Prefix Name Env Is Editable"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia____last_update
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__write_uid
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__write_date
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__name
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index_config__name
 msgid "Name"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_backend_algolia__index_prefix_name
+msgid ""
+"Prefix for technical indexes tech name. You could use this to change index "
+"names based on current env."
 msgstr ""
 
 #. module: connector_algolia
@@ -84,13 +142,28 @@ msgid "Se Backend"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model,name:connector_algolia.model_se_index
+msgid "Se Index"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.actions.act_window,name:connector_algolia.se_backend_algolia_act_window
 msgid "Search Engine Backend"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__server_env_defaults
+msgid "Server Env Defaults"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__specific_backend
 msgid "Specific backend"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__tech_name
+msgid "Tech Name"
 msgstr ""
 
 #. module: connector_algolia
@@ -102,4 +175,9 @@ msgstr ""
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__specific_model
 msgid "Type"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_backend_algolia__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
