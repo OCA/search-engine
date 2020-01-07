@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo13-addon-connector_algolia',
+        'odoo13-addon-connector_elasticsearch',
         'odoo13-addon-connector_search_engine',
     ],
     classifiers=[
