@@ -19,7 +19,7 @@ except ImportError:
 
 class ElasticsearchAdapter(Component):
     _name = "elasticsearch.adapter"
-    _inherit = ["base.backend.adapter", "elasticsearch.se.connector"]
+    _inherit = ["se.backend.adapter", "elasticsearch.se.connector"]
     _usage = "se.backend.adapter"
 
     @property
