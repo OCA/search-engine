@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
-    <menuitem id="se_root_menu"
+    <menuitem
+        id="se_root_menu"
         parent="connector.menu_connector_root"
         name="Search Engine Connector"
         sequence="10"
-        groups="connector.group_connector_manager"/>
-
-    <menuitem id="se_backend_menu"
+        groups="connector.group_connector_manager"
+    />
+    <menuitem
+        id="se_backend_menu"
         name="Backends"
         parent="se_root_menu"
-        action="se_backend_act_window"/>
-
+        action="se_backend_act_window"
+    />
 </odoo>
