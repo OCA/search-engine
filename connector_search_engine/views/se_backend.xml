@@ -1,46 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2013 Akretion (http://www.akretion.com)
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
-
 <odoo>
-
     <record model="ir.ui.view" id="se_backend_form_view">
         <field name="name">se.backend.form (in connector_search_engine)</field>
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
             <form create="false" edit="false">
                 <sheet>
-                    <label for="name" class="oe_edit_only"/>
+                    <label for="name" class="oe_edit_only" />
                     <h1>
-                        <field name="name" class="oe_inline"/>
+                        <field name="name" class="oe_inline" />
                     </h1>
                     <group name="se" string="Configuration">
                         <group colspan="4" col="4" name="se-main">
-                            <field name="tech_name" colspan="2"/>
-                            <field name="index_prefix_name" colspan="2"/>
-                            <field name="specific_backend" colspan="2"/>
+                            <field name="tech_name" colspan="2" />
+                            <field name="index_prefix_name" colspan="2" />
+                            <field name="specific_backend" colspan="2" />
                         </group>
                     </group>
                     <group name="index" string="Index">
                         <field name="index_ids" nolabel="1">
                             <tree string="Index" editable="bottom">
-                                <field name="lang_id"/>
-                                <field name="model_id"/>
-                                <field name="exporter_id"/>
-                                <field name="batch_size"/>
-                                <button name="force_recompute_all_binding"
-                                        help="Force to recompute all binding of the index and set them to the state 'To update'"
-                                        icon="fa-gears"
-                                        type="object"/>
-                                <button name="force_batch_export"
-                                        help="Force the export of all binding"
-                                        icon="fa-upload"
-                                        type="object"/>
-                                <button name="clear_index"
-                                        help="Clear the index in the search engine"
-                                        icon="fa-times"
-                                        type="object"
-                                        groups="connector_search_engine.group_connector_search_engine_manager"/>
+                                <field name="name" />
+                                <field name="lang_id" />
+                                <field name="model_id" />
+                                <field name="exporter_id" />
+                                <field name="batch_size" />
+                                <button
+                                    name="force_recompute_all_binding"
+                                    help="Force to recompute all binding of the index and set them to the state 'To update'"
+                                    icon="fa-gears"
+                                    type="object"
+                                />
+                                <button
+                                    name="force_batch_export"
+                                    help="Force the export of all binding"
+                                    icon="fa-upload"
+                                    type="object"
+                                />
+                                <button
+                                    name="clear_index"
+                                    help="Clear the index in the search engine"
+                                    icon="fa-times"
+                                    type="object"
+                                    groups="connector_search_engine.group_connector_search_engine_manager"
+                                />
                             </tree>
                         </field>
                     </group>
@@ -48,19 +53,17 @@
             </form>
         </field>
     </record>
-
     <record model="ir.ui.view" id="se_backend_tree_view">
         <field name="name">se.backend.tree (in connector_search_engine)</field>
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
             <tree create="false">
                 <field name="tech_name" />
-                <field name="specific_backend"/>
-                <field name="specific_model"/>
-           </tree>
+                <field name="specific_backend" />
+                <field name="specific_model" />
+            </tree>
         </field>
     </record>
-
     <record model="ir.actions.act_window" id="se_backend_act_window">
         <field name="name">Search Engine Backend</field>
         <field name="res_model">se.backend</field>
@@ -68,6 +71,4 @@
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
-
-
 </odoo>
