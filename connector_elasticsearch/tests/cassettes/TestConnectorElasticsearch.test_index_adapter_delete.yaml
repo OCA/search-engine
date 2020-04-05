@@ -2,8 +2,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -15,8 +15,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -28,8 +28,9 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
+      Content-Length: ['0']
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: DELETE
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -41,8 +42,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -54,8 +55,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -67,8 +68,9 @@ interactions:
 - request:
     body: !!python/unicode '{"mappings":{}}'
     headers:
-      connection: [keep-alive]
+      Content-Length: ['15']
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: PUT
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -80,8 +82,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -93,8 +95,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -118,12 +120,13 @@ interactions:
 
       '
     headers:
-      connection: [keep-alive]
-      content-type: [!!python/unicode 'application/x-ndjson']
+      Content-Length: ['340']
+      content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: POST
     uri: http://elastic:9200/_bulk
   response:
-    body: {string: !!python/unicode '{"took":51,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo2","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo3","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":2,"_primary_term":1,"status":201}}]}'}
+    body: {string: !!python/unicode '{"took":41,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo2","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo3","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":2,"_primary_term":1,"status":201}}]}'}
     headers:
       content-length: ['731']
       content-type: [application/json; charset=UTF-8]
@@ -131,8 +134,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -144,8 +147,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -161,12 +164,13 @@ interactions:
 
       '
     headers:
-      connection: [keep-alive]
-      content-type: [!!python/unicode 'application/x-ndjson']
+      Content-Length: ['189']
+      content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: POST
     uri: http://elastic:9200/_bulk
   response:
-    body: {string: !!python/unicode '{"took":31,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":3,"_primary_term":1,"status":200}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo3","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":4,"_primary_term":1,"status":200}}]}'}
+    body: {string: !!python/unicode '{"took":18,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":3,"_primary_term":1,"status":200}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo3","_version":2,"result":"deleted","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":4,"_primary_term":1,"status":200}}]}'}
     headers:
       content-length: ['501']
       content-type: [application/json; charset=UTF-8]
@@ -174,8 +178,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -187,8 +191,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
@@ -200,9 +204,10 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
+      Content-Length: ['0']
       content-type: [application/json]
-    method: GET
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
+    method: POST
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us/_search?filter_path=hits.hits._source
   response:
     body: {string: !!python/unicode '{"hits":{"hits":[{"_source":{"objectID":"foo2"}}]}}'}

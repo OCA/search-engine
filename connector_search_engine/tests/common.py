@@ -41,7 +41,6 @@ class TestSeBackendCaseBase(SavepointComponentCase):
                 test_queue_job_no_delay=True,  # no jobs thanks
             )
         )
-        cls.se_index_model = cls.env["se.index"]
 
     @classmethod
     def _load_fixture(cls, fixture, module="connector_search_engine"):

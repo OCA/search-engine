@@ -1,0 +1,3 @@
+vcrpy-unittest
+unittest2
+odoo-test-helper

@@ -2,8 +2,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -15,8 +15,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:

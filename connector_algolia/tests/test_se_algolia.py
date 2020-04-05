@@ -19,6 +19,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super(TestAlgoliaBackend, cls).setUpClass()
+        cls._load_fake_model()
         AlgoliaAdapter._build_component(cls._components_registry)
         cls.backend_specific = cls.env.ref("connector_algolia.se_algolia_demo")
         cls.backend = cls.backend_specific.se_backend_id
@@ -31,6 +32,11 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         cls.setup_records()
         with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._restore_registry()
+        super(TestBindingIndexBase, cls).tearDownClass()
 
     def _get_vcr_kwargs(self, **kwargs):
         return {

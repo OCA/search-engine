@@ -8,7 +8,6 @@ from vcr_unittest import VCRMixin
 
 from odoo import exceptions
 
-from odoo.addons.connector_search_engine.tests.models import SeBackendFake
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 
@@ -16,16 +15,20 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super(TestConnectorElasticsearch, cls).setUpClass()
+        cls._load_fake_model()
         cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
         cls.backend = cls.backend_specific.se_backend_id
-        cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
         with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
-        SeBackendFake._test_setup_model(cls.env)
-        cls.fake_backend_model = cls.env[SeBackendFake._name]
+        cls.fake_backend_model = cls.env["se.backend.fake"]
         cls.fake_backend_specific = cls.fake_backend_model.create({"name": "Fake SE"})
         cls.fake_backend = cls.fake_backend_specific.se_backend_id
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._restore_registry()
+        super(TestBindingIndexBase, cls).tearDownClass()
 
     def _get_vcr_kwargs(self, **kwargs):
         return {

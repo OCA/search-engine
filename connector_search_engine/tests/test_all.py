@@ -3,27 +3,27 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import mock
+from odoo_test_helper import FakeModelLoader
 
 from odoo import exceptions
 
 from .common import TestSeBackendCaseBase
-from .models import BindingResPartnerFake, ResPartnerFake, SeAdapterFake, SeBackendFake
+from .components import SeAdapterFake
 
 
-class TestBindingIndexBase(TestSeBackendCaseBase):
+class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
+    @classmethod
+    def _load_fake_model(cls):
+        cls._backup_registry()
+        from models import SeBackendFake, BindingResPartnerFake, ResPartnerFake
+
+        cls._update_registry((SeBackendFake, BindingResPartnerFake, ResPartnerFake))
+
     @classmethod
     def setUpClass(cls):
         super(TestBindingIndexBase, cls).setUpClass()
-        BindingResPartnerFake._test_setup_model(cls.env)
-        ResPartnerFake._test_setup_model(cls.env)
         cls._load_fixture("ir_exports_test.xml")
         cls.exporter = cls.env.ref("connector_search_engine.ir_exp_partner_test")
-
-    @classmethod
-    def tearDownClass(cls):
-        ResPartnerFake._test_teardown_model(cls.env)
-        BindingResPartnerFake._test_teardown_model(cls.env)
-        super(TestBindingIndexBase, cls).tearDownClass()
 
     @classmethod
     def _prepare_index_values(cls, backend=None):
@@ -31,9 +31,9 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
         return {
             "name": "Partner Index",
             "backend_id": backend.id,
-            "model_id": cls.env.ref(
-                "connector_search_engine.model_res_partner_binding_fake"
-            ).id,
+            "model_id": cls.env["ir.model"]
+            .search([("model", "=", "res.partner.binding.fake")])
+            .id,
             "lang_id": cls.env.ref("base.lang_en").id,
             "exporter_id": cls.exporter.id,
         }
@@ -42,9 +42,9 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
     def setup_records(cls, backend=None):
         backend = backend or cls.backend
         # create an index for partner model
-        cls.se_index = cls.se_index_model.create(cls._prepare_index_values(backend))
+        cls.se_index = cls.env["se.index"].create(cls._prepare_index_values(backend))
         # create a binding + partner alltogether
-        cls.binding_model = cls.env[BindingResPartnerFake._name]
+        cls.binding_model = cls.env["res.partner.binding.fake"]
         cls.partner_binding = cls.binding_model.create(
             {
                 "name": "Marty McFly",
@@ -63,17 +63,17 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super(TestBindingIndexBaseFake, cls).setUpClass()
+        cls._load_fake_model()
         SeAdapterFake._build_component(cls._components_registry)
-        SeBackendFake._test_setup_model(cls.env)
-        cls.fake_backend_model = cls.env[SeBackendFake._name]
+        cls.fake_backend_model = cls.env["se.backend.fake"]
         cls.backend_specific = cls.fake_backend_model.create({"name": "Fake SE"})
         cls.backend = cls.backend_specific.se_backend_id
         cls.setup_records()
 
     @classmethod
     def tearDownClass(cls):
-        SeBackendFake._test_teardown_model(cls.env)
-        super(TestBindingIndexBaseFake, cls).tearDownClass()
+        cls._restore_registry()
+        super(TestBindingIndexBase, cls).tearDownClass()
 
 
 class TestBindingIndex(TestBindingIndexBaseFake):

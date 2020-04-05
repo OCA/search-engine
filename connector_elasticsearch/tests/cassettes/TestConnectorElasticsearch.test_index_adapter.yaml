@@ -2,8 +2,8 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/
   response:
@@ -15,27 +15,14 @@ interactions:
 - request:
     body: null
     headers:
-      connection: [keep-alive]
       content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: HEAD
     uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
   response:
     body: {string: !!python/unicode ''}
     headers:
-      content-length: ['671']
-      content-type: [application/json; charset=UTF-8]
-    status: {code: 404, message: Not Found}
-- request:
-    body: !!python/unicode '{"mappings":{}}'
-    headers:
-      connection: [keep-alive]
-      content-type: [application/json]
-    method: PUT
-    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
-  response:
-    body: {string: !!python/unicode '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}'}
-    headers:
-      content-length: ['116']
+      content-length: ['433']
       content-type: [application/json; charset=UTF-8]
     status: {code: 200, message: OK}
 - request:
@@ -45,12 +32,13 @@ interactions:
 
       '
     headers:
-      connection: [keep-alive]
-      content-type: [!!python/unicode 'application/x-ndjson']
+      Content-Length: ['112']
+      content-type: [application/json]
+      user-agent: [elasticsearch-py/7.6.0 (Python 2.7.9)]
     method: POST
     uri: http://elastic:9200/_bulk
   response:
-    body: {string: !!python/unicode '{"took":50,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}}]}'}
+    body: {string: !!python/unicode '{"took":18,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":2,"result":"updated","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":3,"_primary_term":1,"status":200}}]}'}
     headers:
       content-length: ['267']
       content-type: [application/json; charset=UTF-8]
