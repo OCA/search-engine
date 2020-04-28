@@ -102,6 +102,8 @@ class SeIndex(models.Model):
                         rec.lang_id.code,
                     ]
                 )
+            else:
+                rec.name = ""
 
     def force_batch_export(self):
         self.ensure_one()
