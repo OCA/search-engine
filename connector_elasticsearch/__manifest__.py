@@ -12,8 +12,6 @@
     "depends": ["connector_search_engine", "connector", "component", "base_jsonify"],
     "data": [
         "security/se_backend_elasticsearch.xml",
-        "security/se_index_config.xml",
-        "views/se_index_config.xml",
         "views/se_backend_elasticsearch.xml",
         "views/se_menu.xml",
     ],
