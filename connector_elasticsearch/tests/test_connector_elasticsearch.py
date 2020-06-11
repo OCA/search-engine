@@ -9,6 +9,11 @@ from odoo import exceptions
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
+# NOTE: if you need to refresh tests, you can fire up an ElasticSearch instance
+# using `docker-compose.elasticsearch.example.yml` in this same folder.
+# If you are not running in a docker env, you'll need to add an alias
+# in /etc/hosts to make "elastic" name point to 127.0.0.1
+
 
 class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
