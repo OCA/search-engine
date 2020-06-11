@@ -119,16 +119,18 @@ class SeBinding(models.AbstractModel):
 
     @job(default_channel="root.search_engine")
     def synchronize(self):
-        # We volontary to the export and delete in the same transaction
+        # We volontary do the export and delete in the same transaction
         # we try first to process it into two different process but the code
-        # was more complexe and it was harder to catch/understand
-        # active/unactive case for exemple
-        # 1: some body bind a product and an export job is created
-        # 2: the binding is unactivated
-        # 3: when the job run we must exclude all inactive binding
-        # So in both export/delete we have to refilter all binding
+        # was more complex and it was harder to catch/understand
+        # active/inactive case for example:
+        #
+        # 1. some body bind a product and an export job is created
+        # 2. the binding is inactivated
+        # 3. when the job runs we must exclude all inactive binding
+        #
+        # Hence in both export/delete we have to re-filter all bindings
         # using one transaction and one sync method allow to filter only once
-        # and to to the right action as we are in an transaction
+        # and to do the right action as we are in a transaction.
         export_ids = []
         delete_ids = []
         for work in self._work_by_index():

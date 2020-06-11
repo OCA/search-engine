@@ -2,27 +2,41 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import mock
+from odoo_test_helper import FakeModelLoader
 
 from odoo import exceptions
 from odoo.tests.common import Form
 
 from .common import TestSeBackendCaseBase
-from .models import BindingResPartnerFake, ResPartnerFake, SeAdapterFake, SeBackendFake
+from .models import SeAdapterFake
 
 
-class TestBindingIndexBase(TestSeBackendCaseBase):
+class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        BindingResPartnerFake._test_setup_model(cls.env)
-        ResPartnerFake._test_setup_model(cls.env)
+        # Load fake models ->/
+        cls.loader = FakeModelLoader(cls.env, cls.__module__)
+        cls.loader.backup_registry()
+        from .models import (
+            BindingResPartnerFake,
+            ResPartnerFake,
+            SeBackendFake,
+        )
+
+        cls.loader.update_registry(
+            (BindingResPartnerFake, ResPartnerFake, SeBackendFake)
+        )
+        cls.binding_model = cls.env[BindingResPartnerFake._name]
+        cls.fake_backend_model = cls.env[SeBackendFake._name]
+        # ->/ Load fake models
+
         cls._load_fixture("ir_exports_test.xml")
         cls.exporter = cls.env.ref("connector_search_engine.ir_exp_partner_test")
 
     @classmethod
     def tearDownClass(cls):
-        ResPartnerFake._test_teardown_model(cls.env)
-        BindingResPartnerFake._test_teardown_model(cls.env)
+        cls.loader.restore_registry()
         super().tearDownClass()
 
     @classmethod
@@ -31,9 +45,9 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
         return {
             "name": "Partner Index",
             "backend_id": backend.id,
-            "model_id": cls.env.ref(
-                "connector_search_engine.model_res_partner_binding_fake"
-            ).id,
+            "model_id": cls.env["ir.model"]
+            .search([("model", "=", "res.partner.binding.fake")], limit=1)
+            .id,
             "lang_id": cls.env.ref("base.lang_en").id,
             "exporter_id": cls.exporter.id,
         }
@@ -44,7 +58,6 @@ class TestBindingIndexBase(TestSeBackendCaseBase):
         # create an index for partner model
         cls.se_index = cls.se_index_model.create(cls._prepare_index_values(backend))
         # create a binding + partner alltogether
-        cls.binding_model = cls.env[BindingResPartnerFake._name]
         cls.partner_binding = cls.binding_model.create(
             {
                 "name": "Marty McFly",
@@ -64,21 +77,18 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
     def setUpClass(cls):
         super().setUpClass()
         SeAdapterFake._build_component(cls._components_registry)
-        SeBackendFake._test_setup_model(cls.env)
-        cls.fake_backend_model = cls.env[SeBackendFake._name]
+
         cls.backend_specific = cls.fake_backend_model.create(
             {"name": "Fake SE", "tech_name": "fake_se"}
         )
         cls.backend = cls.backend_specific.se_backend_id
         cls.setup_records()
 
-    @classmethod
-    def tearDownClass(cls):
-        SeBackendFake._test_teardown_model(cls.env)
-        super().tearDownClass()
-
 
 class TestBindingIndex(TestBindingIndexBaseFake):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
     # TODO: the following `test_backend*` methods
     # should be splitted to a smaller test case.
@@ -137,6 +147,8 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(self.se_index.name, "fake_se_res_partner_binding_fake_en_US")
         # control indexes' name via prefix tech name
         self.backend.index_prefix_name = "foo_baz"
+        # TODO: not sure why this is needed here
+        self.se_index.invalidate_cache()
         self.assertEqual(self.se_index.name, "foo_baz_res_partner_binding_fake_en_US")
 
     def test_changing_model_remove_exporter(self):
@@ -185,16 +197,19 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         mocked.assert_called_with(force_export=True)
 
     def test_force_batch_export(self):
+        # "new" should not be sync'ed but it will because we run forced export
         self.partner_binding.sync_state = "new"
-        with mock.patch.object(type(self.se_index), "batch_export") as mocked:
-            self.se_index.force_batch_export()
-        self.assertEqual(self.partner_binding.sync_state, "to_update")
-        mocked.assert_called()
+        tracking = []
+        self.se_index.with_context(call_tracking=tracking).force_batch_export()
+        self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
+        self.assertEqual(self.partner_binding.sync_state, "scheduled")
 
     def test_generate_batch_export_per_index(self):
-        with mock.patch.object(type(self.se_index), "batch_export") as mocked:
-            self.env["se.index"].generate_batch_export_per_index()
-        mocked.assert_called()
+        tracking = []
+        self.env["se.index"].with_context(
+            call_tracking=tracking
+        ).generate_batch_export_per_index()
+        self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
 
     def test_get_domain_for_exporting_binding(self):
         expected = [
@@ -206,23 +221,25 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_batch_export(self):
         # state = new, nothing to export
         self.partner_binding.sync_state = "new"
-        with mock.patch.object(type(self.partner_binding), "synchronize") as mocked:
-            self.se_index.batch_export()
+        tracking = []
+        self.se_index.with_context(call_tracking=tracking).batch_export()
+        self.assertEqual(tracking, [])
         self.assertEqual(self.partner_binding.sync_state, "new")
-        mocked.assert_not_called()
+
         # now it should find the bindings marked for update and schedule them
         self.partner_binding.sync_state = "to_update"
-        with mock.patch.object(type(self.partner_binding), "synchronize") as mocked:
-            self.se_index.batch_export()
+        tracking = []
+        self.se_index.with_context(call_tracking=tracking).batch_export()
+        self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
         self.assertEqual(self.partner_binding.sync_state, "scheduled")
-        mocked.assert_called()
-        # even if the binding is inactive it should schedule them
+
+        # even if the binding is inactive it should schedule and delete them
         self.partner_binding.sync_state = "to_update"
         self.partner_binding.active = False
-        with mock.patch.object(type(self.partner_binding), "synchronize") as mocked:
-            self.se_index.batch_export()
+        tracking = []
+        self.se_index.with_context(call_tracking=tracking).batch_export()
+        self.assertEqual(tracking, ["Exported ids : []\nDeleted ids : [1]"])
         self.assertEqual(self.partner_binding.sync_state, "scheduled")
-        mocked.assert_called()
 
     def test_clear_index(self):
         with SeAdapterFake.mocked_calls() as calls:
