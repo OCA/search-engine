@@ -18,7 +18,6 @@
         "views/se_backend_algolia.xml",
         "views/se_menu.xml",
         "security/ir.model.access.csv",
-        "security/se_index_config.xml",
     ],
     "demo": ["demo/backend_demo.xml"],
     "external_dependencies": {"python": ["algoliasearch"]},

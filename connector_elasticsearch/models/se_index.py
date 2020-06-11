@@ -10,9 +10,7 @@ class SeIndex(models.Model):
     _inherit = "se.index"
 
     config_id = fields.Many2one(
-        comodel_name="se.index.config",
-        string="Config",
-        help="Elasticseacrh index definition (see https://www.elastic.co/"
+        help="ElasticSearch index definition (see https://www.elastic.co/"
         "guide/en/elasticsearch/reference/current/"
         "indices-create-index.html)",
     )
@@ -25,5 +23,5 @@ class SeIndex(models.Model):
                 and not rec.config_id
             ):
                 raise ValidationError(
-                    _("An index definition is rquired for elasticsearch")
+                    _("An index definition is required for ElasticSearch")
                 )

@@ -114,12 +114,19 @@ class SeBackend(models.Model):
 
     @api.model
     def create(self, vals):
-        # make sure technical names are always there
-        if not vals.get("tech_name"):
-            vals["tech_name"] = self._normalize_name(vals["name"])
-        if not vals.get("index_prefix_name"):
-            vals["index_prefix_name"] = vals["tech_name"]
+        self._handle_tech_name(vals)
         return super().create(vals)
+
+    def write(self, vals):
+        self._handle_tech_name(vals)
+        return super().write(vals)
+
+    def _handle_tech_name(self, vals):
+        # make sure technical names are always there
+        if not vals.get("tech_name") and vals.get("name"):
+            vals["tech_name"] = self._normalize_name(vals["name"])
+        if not vals.get("index_prefix_name") and vals.get("tech_name"):
+            vals["index_prefix_name"] = vals["tech_name"]
 
     @staticmethod
     def _normalize_name(name):
