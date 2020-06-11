@@ -28,6 +28,11 @@ class SeIndex(models.Model):
     )
     exporter_id = fields.Many2one("ir.exports", string="Exporter")
     batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
+    config_id = fields.Many2one(
+        comodel_name="se.index.config",
+        string="Config",
+        help="Index configuration record",
+    )
 
     @api.model
     def _model_id_domain(self):

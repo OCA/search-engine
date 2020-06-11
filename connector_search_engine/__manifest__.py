@@ -16,9 +16,11 @@
     "external_dependencies": {"python": ["unidecode"]},
     "data": [
         "security/connector_search_engine_security.xml",
+        "security/se_index_config.xml",
         "security/ir.model.access.csv",
         "views/se_backend.xml",
         "views/se_menu.xml",
+        "views/se_index_config.xml",
         "data/ir_cron.xml",
     ],
     "installable": True,
