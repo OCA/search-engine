@@ -2,27 +2,41 @@ interactions:
   - request:
       body: null
       headers:
-        connection: [keep-alive]
-        content-type: [application/json]
+        content-type:
+          - application/json
+        user-agent:
+          - elasticsearch-py/7.7.1 (Python 3.7.3)
       method: HEAD
       uri: http://elastic:9200/
     response:
-      body: {string: !!python/unicode ""}
+      body:
+        string: ""
       headers:
-        content-length: ["508"]
-        content-type: [application/json; charset=UTF-8]
-      status: {code: 200, message: OK}
+        content-length:
+          - "508"
+        content-type:
+          - application/json; charset=UTF-8
+      status:
+        code: 200
+        message: OK
   - request:
       body: null
       headers:
-        connection: [keep-alive]
-        content-type: [application/json]
+        content-type:
+          - application/json
+        user-agent:
+          - elasticsearch-py/7.7.1 (Python 3.7.3)
       method: HEAD
       uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
     response:
-      body: {string: !!python/unicode ""}
+      body:
+        string: ""
       headers:
-        content-length: ["433"]
-        content-type: [application/json; charset=UTF-8]
-      status: {code: 200, message: OK}
+        content-length:
+          - "433"
+        content-type:
+          - application/json; charset=UTF-8
+      status:
+        code: 200
+        message: OK
 version: 1
