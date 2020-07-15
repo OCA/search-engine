@@ -93,7 +93,7 @@ class SeIndex(models.Model):
                 rec.name = "_".join(
                     [
                         backend.index_prefix_name,
-                        backend._normalize_name(rec.model_id.name or ""),
+                        backend._normalize_tech_name(rec.model_id.name or ""),
                         rec.lang_id.code,
                     ]
                 )
