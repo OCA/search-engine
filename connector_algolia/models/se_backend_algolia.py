@@ -9,7 +9,11 @@ from odoo import fields, models
 
 class SeBackendAlgolia(models.Model):
     _name = "se.backend.algolia"
-    _inherit = "se.backend.spec.abstract"
+    _inherit = [
+        "se.backend.spec.abstract",
+        "server.env.techname.mixin",
+        "server.env.mixin",
+    ]
     _description = "Algolia Backend"
 
     _search_engine_name = "algolia"

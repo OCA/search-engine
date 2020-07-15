@@ -3,20 +3,18 @@
 
 from odoo import api, fields, models, tools
 
-from odoo.addons.http_routing.models.ir_http import slugify
-
 
 class SeBackend(models.Model):
 
     _name = "se.backend"
     _description = "Se Backend"
-    _inherit = ["connector.backend", "server.env.mixin"]
+    _inherit = [
+        "connector.backend",
+        "server.env.techname.mixin",
+        "server.env.mixin",
+    ]
 
     name = fields.Char(required=True)
-    tech_name = fields.Char(
-        required=True,
-        help="Unique name for technical purposes. " "Eg: server env keys.",
-    )
     index_prefix_name = fields.Char(
         help="Prefix for technical indexes tech name. "
         "You could use this to change index names based on current env."
@@ -31,23 +29,10 @@ class SeBackend(models.Model):
         selection="_select_specific_backend",
         readonly=True,
     )
-    _sql_constraints = [
-        ("tech_name_uniq", "unique(tech_name)", "`tech_name` must be unique")
-    ]
 
     @property
     def _server_env_fields(self):
         return {"index_prefix_name": {}}
-
-    def _server_env_section_name(self):
-        self.ensure_one()
-        if not self.tech_name:
-            # special case: we have onchanges relying on tech_name
-            # and we are testing them using `tests.common.Form`.
-            # when the for is initialized there's no value yet.
-            return
-        base = self._server_env_global_section_name()
-        return ".".join((base, self.tech_name))
 
     @property
     def search_engine_name(self):
@@ -96,38 +81,16 @@ class SeBackend(models.Model):
                     spec_backend._name, spec_backend.id
                 )
 
-    @api.onchange("name")
-    def _onchange_name(self):
-        if self.name and not self.tech_name:
-            self.tech_name = self.name
-
     @api.onchange("tech_name", "index_prefix_name")
     def _onchange_tech_name(self):
-        if self.tech_name:
-            # make sure is normalized
-            self.tech_name = self._normalize_name(self.tech_name)
+        super()._onchange_tech_name()
         if self.index_prefix_name:
             # make sure is normalized
-            self.index_prefix_name = self._normalize_name(self.index_prefix_name)
+            self.index_prefix_name = self._normalize_tech_name(self.index_prefix_name)
         else:
             self.index_prefix_name = self.tech_name
 
-    @api.model
-    def create(self, vals):
-        self._handle_tech_name(vals)
-        return super().create(vals)
-
-    def write(self, vals):
-        self._handle_tech_name(vals)
-        return super().write(vals)
-
     def _handle_tech_name(self, vals):
-        # make sure technical names are always there
-        if not vals.get("tech_name") and vals.get("name"):
-            vals["tech_name"] = self._normalize_name(vals["name"])
+        super()._handle_tech_name(vals)
         if not vals.get("index_prefix_name") and vals.get("tech_name"):
             vals["index_prefix_name"] = vals["tech_name"]
-
-    @staticmethod
-    def _normalize_name(name):
-        return slugify(name).replace("-", "_")

@@ -13,7 +13,13 @@
     "Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
-    "depends": ["connector_search_engine", "connector", "component", "base_jsonify"],
+    "depends": [
+        "connector_search_engine",
+        "connector",
+        "component",
+        "base_jsonify",
+        "server_environment",
+    ],
     "data": [
         "views/se_backend_algolia.xml",
         "views/se_menu.xml",
