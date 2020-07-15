@@ -355,12 +355,6 @@ msgid "Sync State"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__tech_name
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__tech_name
-msgid "Tech Name"
-msgstr ""
-
-#. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__sync_state__to_update
 msgid "To update"
 msgstr ""
@@ -369,12 +363,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__specific_model
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__specific_model
 msgid "Type"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,help:connector_search_engine.field_se_backend__tech_name
-#: model:ir.model.fields,help:connector_search_engine.field_se_backend_spec_abstract__tech_name
-msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
 
 #. module: connector_search_engine
@@ -387,9 +375,4 @@ msgstr ""
 #: code:addons/connector_search_engine/models/se_binding.py:0
 #, python-format
 msgid "You cannot delete the binding '%s', wait until it's synchronized."
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.constraint,message:connector_search_engine.constraint_se_backend_tech_name_uniq
-msgid "`tech_name` must be unique"
 msgstr ""
