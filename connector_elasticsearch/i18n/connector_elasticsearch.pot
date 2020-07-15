@@ -164,11 +164,6 @@ msgid "Specific backend"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__tech_name
-msgid "Tech Name"
-msgstr ""
-
-#. module: connector_elasticsearch
 #: code:addons/connector_elasticsearch/components/adapter.py:0
 #, python-format
 msgid "The key %s is missing in the data %s"
@@ -177,11 +172,6 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__specific_model
 msgid "Type"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__tech_name
-msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
 
 #. module: connector_elasticsearch
