@@ -1,6 +1,8 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -35,7 +37,16 @@ class SeBinding(models.AbstractModel):
     date_modified = fields.Date(readonly=True)
     date_syncronized = fields.Date(readonly=True)
     data = fields.Serialized()
+    data_display = fields.Text(
+        compute="_compute_data_display",
+        help="Include this in debug mode to be able to inspect index data.",
+    )
     active = fields.Boolean(string="Active", default=True)
+
+    @api.depends("data")
+    def _compute_data_display(self):
+        for rec in self:
+            rec.data_display = json.dumps(rec.data, sort_keys=True, indent=4)
 
     def get_export_data(self):
         """Public method to retrieve export data."""
