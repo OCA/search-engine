@@ -1,7 +1,10 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
+# @author Sébestien Beau <sebastien.beau@akretion.com>
+# Copyright 2020 Camptomcap (http://www.camptomcamp.com)
+# @author Simone Orsi <simahawk@gmail.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 
 class SeBackendSpecAbstract(models.AbstractModel):
@@ -14,6 +17,8 @@ class SeBackendSpecAbstract(models.AbstractModel):
     # This can be used by other modules to understand
     # which engine they are dealing with
     _search_engine_name = ""
+    # Unique index record key
+    _record_id_key = None
 
     # Delegation inheritance
     se_backend_id = fields.Many2one(
@@ -52,3 +57,15 @@ class SeBackendSpecAbstract(models.AbstractModel):
         # TODO: user self.name to retrieve creds from server env
         # TODO: username password etc
         return {}  # pragma: no cover
+
+    def _validate_record(self, record):
+        """Validate record for the specific search engine.
+
+        :param record: a dict representing a record to index
+        :return: error message if not validated, None if it's all good.
+        """
+        if not record:
+            return _("The record is empty")
+        if not record.get(self._record_id_key):
+            # Ensure _record_id_key is set when creating/updating records
+            return _("The key `%s` is missing in:\n%s") % (self._record_id_key, record)

@@ -13,14 +13,14 @@ class SeBackendFake(models.Model):
     _inherit = "se.backend.spec.abstract"
     _description = "Unit Test SE Backend"
     _search_engine_name = "FakeSE"
+    _record_id_key = "id"
 
 
 class SeAdapterFake(Component):
     _name = "se.adapter.fake"
-    _inherit = "base.backend.adapter"
+    _inherit = "se.backend.adapter"
     _usage = "se.backend.adapter"
     _collection = SeBackendFake._name
-    _record_id_key = "id"
 
     def __init__(self, work_context):
         super().__init__(work_context)
