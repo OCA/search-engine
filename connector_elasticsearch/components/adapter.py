@@ -3,8 +3,7 @@
 
 import logging
 
-from odoo import _
-from odoo.exceptions import UserError
+from odoo import exceptions
 
 from odoo.addons.component.core import Component
 
@@ -46,42 +45,37 @@ class ElasticsearchAdapter(Component):
             )
         return es
 
-    def index(self, datas):
+    def index(self, records):
         es = self._get_es_client()
-        dataforbulk = []
-        for data in datas:
-            # Ensure that the _record_id_key is set for creating/updating
-            # the record
-            if not data.get(self._record_id_key):
-                raise UserError(
-                    _("The key %s is missing in the data %s")
-                    % (self._record_id_key, data)
-                )
-            else:
-                action = {
-                    "_index": self._index_name,
-                    "_id": data.get(self._record_id_key),
-                    "_source": data,
-                }
-                dataforbulk.append(action)
+        records_for_bulk = []
+        for record in records:
+            error = self._validate_record(record)
+            if error:
+                raise exceptions.ValidationError(error)
+            action = {
+                "_index": self._index_name,
+                "_id": record.get(self._record_id_key),
+                "_source": record,
+            }
+            records_for_bulk.append(action)
 
-        res = elasticsearch.helpers.bulk(es, dataforbulk)
-        # checks if number of indexed object and object in datas are equal
-        return len(datas) - res[0] == 0
+        res = elasticsearch.helpers.bulk(es, records_for_bulk)
+        # checks if number of indexed object and object in records are equal
+        return len(records) - res[0] == 0
 
     def delete(self, binding_ids):
         es = self._get_es_client()
-        dataforbulk = []
+        records_for_bulk = []
         for binding_id in binding_ids:
             action = {
                 "_op_type": "delete",
                 "_index": self._index_name,
                 "_id": binding_id,
             }
-            dataforbulk.append(action)
+            records_for_bulk.append(action)
 
-        res = elasticsearch.helpers.bulk(es, dataforbulk)
-        # checks if number of indexed object and object in datas are equal
+        res = elasticsearch.helpers.bulk(es, records_for_bulk)
+        # checks if number of indexed object and object in records are equal
         return len(binding_ids) - res[0] == 0
 
     def clear(self):
