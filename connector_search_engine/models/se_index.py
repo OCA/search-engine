@@ -125,7 +125,10 @@ class SeIndex(models.Model):
         return True
 
     def _get_domain_for_exporting_binding(self):
-        return [("index_id", "=", self.id), ("sync_state", "=", "to_update")]
+        return [
+            ("index_id", "=", self.id),
+            ("sync_state", "=", "to_update"),
+        ]
 
     @job(default_channel="root.search_engine.prepare_batch_export")
     def batch_export(self):
@@ -181,7 +184,9 @@ class SeIndex(models.Model):
                 exporter.export_settings()
 
     def resynchronize_all_bindings(self):
-        """This method will iter on all item in the index of the search engine
+        """Force sync between Odoo records and index records.
+
+        This method will iter on all item in the index of the search engine
         if the corresponding binding do not exist on odoo it will create a job
         that delete all this obsolete items.
         You should not use this method for day to day job, it only an helper
@@ -192,12 +197,12 @@ class SeIndex(models.Model):
             item_ids = []
             backend = index.backend_id.specific_backend
             adapter = self._get_backend_adapter(backend=backend, index=index)
-            for se_binding in adapter.each():
+            for index_record in adapter.each():
                 binding = self.env[index.model_id.model].search(
-                    [("id", "=", se_binding[adapter._record_id_key])]
+                    [("id", "=", adapter.external_id(index_record))], limit=1
                 )
                 if not binding:
-                    item_ids.append(se_binding[adapter._record_id_key])
+                    item_ids.append(adapter.external_id(index_record))
             index.with_delay().delete_obsolete_item(item_ids)
 
     @job(default_channel="root.search_engine")
