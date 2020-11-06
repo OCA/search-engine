@@ -8,7 +8,6 @@ from odoo import exceptions
 from odoo.tests.common import Form
 
 from .common import TestSeBackendCaseBase
-from .models import SeAdapterFake
 
 
 class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
@@ -22,6 +21,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
             BindingResPartnerFake,
             ResPartnerFake,
             SeBackendFake,
+            SeAdapterFake,
         )
 
         cls.loader.update_registry(
@@ -31,6 +31,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         cls.fake_backend_model = cls.env[SeBackendFake._name]
         # ->/ Load fake models
 
+        cls.se_adapter_fake = SeAdapterFake
         cls._load_fixture("ir_exports_test.xml")
         cls.exporter = cls.env.ref("connector_search_engine.ir_exp_partner_test")
 
@@ -76,7 +77,7 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        SeAdapterFake._build_component(cls._components_registry)
+        cls.se_adapter_fake._build_component(cls._components_registry)
 
         cls.backend_specific = cls.fake_backend_model.create(
             {"name": "Fake SE", "tech_name": "fake_se"}
@@ -242,7 +243,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(self.partner_binding.sync_state, "scheduled")
 
     def test_clear_index(self):
-        with SeAdapterFake.mocked_calls() as calls:
+        with self.se_adapter_fake.mocked_calls() as calls:
             self.se_index.clear_index()
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
@@ -250,7 +251,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
 
     def test_synchronize_active_binding(self):
         # when binding is active it should update it
-        with SeAdapterFake.mocked_calls() as calls:
+        with self.se_adapter_fake.mocked_calls() as calls:
             self.partner_binding.synchronize()
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
@@ -260,7 +261,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_synchronize_inactive_binding(self):
         # when binding is inactive it should delete it
         self.partner_binding.active = False
-        with SeAdapterFake.mocked_calls() as calls:
+        with self.se_adapter_fake.mocked_calls() as calls:
             self.partner_binding.synchronize()
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
@@ -314,7 +315,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         bindings = self.binding_model.search([])
         bindings.write({"sync_state": "new"})
         bindings.unlink()
-        with SeAdapterFake.mocked_calls() as calls:
+        with self.se_adapter_fake.mocked_calls() as calls:
             self.se_index.resynchronize_all_bindings()
             self.assertEqual(len(calls), 2)
             self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
