@@ -1,5 +1,4 @@
-# TMP dependency to include https://github.com/akretion/odoo-test-helper/pull/1
-git+git://github.com/simahawk/odoo-test-helper.git@master#egg=odoo-test-helper
+odoo-test-helper>=1.1.0
 
 algoliasearch<2.0.0
 elasticsearch>=7.0.0,<8.0.0
