@@ -34,6 +34,13 @@ msgid "Algolia Backends"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_binding__data_size
+msgid ""
+"Computed size of the index. Algolia limits record size to 10KB and exports "
+"fail if your record exceeds the quota."
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__create_uid
 msgid "Created by"
 msgstr ""
@@ -71,6 +78,11 @@ msgstr ""
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__index_prefix_name_env_is_editable
 msgid "Index Prefix Name Env Is Editable"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_binding__data_size
+msgid "Index record size"
 msgstr ""
 
 #. module: connector_algolia
@@ -113,6 +125,11 @@ msgstr ""
 #. module: connector_algolia
 #: model:ir.actions.act_window,name:connector_algolia.se_backend_algolia_act_window
 msgid "Search Engine Backend"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model,name:connector_algolia.model_se_binding
+msgid "Search Engine Binding"
 msgstr ""
 
 #. module: connector_algolia
