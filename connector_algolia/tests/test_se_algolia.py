@@ -8,6 +8,7 @@ from time import sleep
 from vcr_unittest import VCRMixin
 
 from odoo import exceptions
+from odoo.tools import human_size
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
@@ -135,3 +136,12 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
             sleep(2)
         res = [x for x in self.adapter.each()]
         self.assertEqual(res, data)
+
+    def test_index_size(self):
+        self.assertTrue(self.partner_binding.data)
+        self.assertEqual(
+            self.partner_binding.data_size,
+            human_size(self.partner_binding._get_bytes_size()),
+        )
+        self.partner_binding.data = {}
+        self.assertEqual(self.partner_binding.data_size, "2.00 bytes")
