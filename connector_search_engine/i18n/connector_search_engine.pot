@@ -45,8 +45,23 @@ msgid "Batch task for generating %s recompute job"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__body
+msgid "Body"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__body_str
+msgid "Body Str"
+msgstr ""
+
+#. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid "Clear the index in the search engine"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index__config_id
+msgid "Config"
 msgstr ""
 
 #. module: connector_search_engine
@@ -58,6 +73,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_uid
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_uid
 msgid "Created by"
 msgstr ""
 
@@ -65,6 +81,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_date
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_date
 msgid "Created on"
 msgstr ""
 
@@ -88,6 +105,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__display_name
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -97,7 +115,20 @@ msgid "Done"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_index.py:133
+#: model:ir.model.fields,help:connector_search_engine.field_se_index__config_id
+msgid ""
+"ElasticSearch index definition (see "
+"https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
+"create-index.html)"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model,name:connector_search_engine.model_se_index_config
+msgid "Elasticsearch index configuration"
+msgstr ""
+
+#. module: connector_search_engine
+#: code:addons/connector_search_engine/models/se_index.py:0
 #, python-format
 msgid "Export %d records of %d for index '%s'"
 msgstr ""
@@ -124,6 +155,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__id
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__id
 msgid "ID"
 msgstr ""
 
@@ -168,6 +200,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index____last_update
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -175,6 +208,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_uid
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -182,6 +216,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_date
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -194,6 +229,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__name
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__name
 msgid "Name"
 msgstr ""
 
@@ -236,6 +272,12 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model,name:connector_search_engine.model_se_index
 msgid "Se Index"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.actions.act_window,name:connector_search_engine.se_index_config_act_window
+#: model:ir.ui.menu,name:connector_search_engine.se_index_config_menu
+msgid "Se Index Config"
 msgstr ""
 
 #. module: connector_search_engine
