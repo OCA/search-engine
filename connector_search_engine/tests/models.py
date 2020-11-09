@@ -6,10 +6,8 @@ from odoo import fields, models
 
 from odoo.addons.component.core import Component
 
-from .models_mixin import TestMixin
 
-
-class SeBackendFake(models.Model, TestMixin):
+class SeBackendFake(models.Model):
 
     _name = "se.backend.fake"
     _inherit = "se.backend.spec.abstract"
@@ -23,6 +21,12 @@ class SeAdapterFake(Component):
     _usage = "se.backend.adapter"
     _collection = SeBackendFake._name
     _record_id_key = "id"
+
+    def __init__(self, work_context):
+        super().__init__(work_context)
+        if not hasattr(self, "_mocked_calls"):
+            # Not using the context manager below
+            self._mocked_calls = []
 
     def index(self, data):
         self._mocked_calls.append(
@@ -65,12 +69,11 @@ class SeAdapterFake(Component):
 # Fake partner binding
 
 
-class BindingResPartnerFake(models.Model, TestMixin):
+class BindingResPartnerFake(models.Model):
     _name = "res.partner.binding.fake"
     _inherit = ["se.binding"]
     _inherits = {"res.partner": "record_id"}
     # we need to reference this model for the index
-    _test_setup_gen_xid = True
 
     # TODO: use autosetup fields to handle these fields in mixins
     record_id = fields.Many2one(
@@ -80,12 +83,17 @@ class BindingResPartnerFake(models.Model, TestMixin):
         ondelete="cascade",
     )
 
+    def synchronize(self):
+        # You can set `call_tracking` as a list in ctx to collect the results.
+        res = super().synchronize()
+        if "call_tracking" in self.env.context:
+            self.env.context["call_tracking"].append(res)
+        return res
 
-class ResPartnerFake(models.Model, TestMixin):
+
+class ResPartnerFake(models.Model):
     _name = "res.partner"
     _inherit = "res.partner"
-    _test_teardown_no_delete = True
-    _test_purge_fields = ["binding_ids"]
 
     # TODO: use autosetup fields to handle these fields in mixins
     binding_ids = fields.One2many(

@@ -14,7 +14,6 @@ class SeBackendAlgolia(models.Model):
 
     _search_engine_name = "algolia"
 
-    # TODO: load values from server env
     algolia_app_id = fields.Char(string="APP ID")
     algolia_api_key = fields.Char(string="API KEY")
 
