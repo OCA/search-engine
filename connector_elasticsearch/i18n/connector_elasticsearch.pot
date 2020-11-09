@@ -16,17 +16,7 @@ msgstr ""
 #. module: connector_elasticsearch
 #: code:addons/connector_elasticsearch/models/se_index.py:0
 #, python-format
-msgid "An index definition is rquired for elasticsearch"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__body
-msgid "Body"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__body_str
-msgid "Body Str"
+msgid "An index definition is required for ElasticSearch"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -46,19 +36,16 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__create_uid
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__create_date
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__display_name
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -70,7 +57,7 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_index__config_id
 msgid ""
-"Elasticseacrh index definition (see "
+"ElasticSearch index definition (see "
 "https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
 "create-index.html)"
 msgstr ""
@@ -83,11 +70,6 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.ui.menu,name:connector_elasticsearch.se_backend_elasticsearch_menu
 msgid "Elasticsearch Backends"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model:ir.model,name:connector_elasticsearch.model_se_index_config
-msgid "Elasticsearch index configuration"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -104,7 +86,6 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__id
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__id
 msgid "ID"
 msgstr ""
 
@@ -131,25 +112,21 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch____last_update
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__write_uid
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__write_date
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__name
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index_config__name
 msgid "Name"
 msgstr ""
 
@@ -168,12 +145,6 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_index
 msgid "Se Index"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model:ir.actions.act_window,name:connector_elasticsearch.se_index_config_act_window
-#: model:ir.ui.menu,name:connector_elasticsearch.se_index_config_menu
-msgid "Se Index Config"
 msgstr ""
 
 #. module: connector_elasticsearch
