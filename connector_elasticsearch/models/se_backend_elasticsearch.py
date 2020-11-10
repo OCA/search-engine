@@ -17,6 +17,13 @@ class SeBackendElasticsearch(models.Model):
     _search_engine_name = "elasticsearch"
 
     es_server_host = fields.Char(string="ElasticSearch host")
+    # `tech_name` should come from `server.env.techname.mixin`
+    # but `se.backend.spec.abstract` adds delegation inheritance
+    # with `se.backend` which inherits as well from `server.env.techname.mixin`
+    # hence the field is not created in this specific model table
+    tech_name = fields.Char(
+        related="se_backend_id.tech_name", store=True, readonly=False
+    )
 
     @property
     def _server_env_fields(self):
