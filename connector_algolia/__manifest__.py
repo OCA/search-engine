@@ -4,7 +4,7 @@
 
 {
     "name": "Algolia Connector",
-    "version": "13.0.2.1.0",
+    "version": "13.0.2.2.0",
     "category": "Connector",
     "summary": "Connector For Algolia Search Engine",
     "author": "Akretion,"
@@ -13,7 +13,13 @@
     "Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
-    "depends": ["connector_search_engine", "connector", "component", "base_jsonify"],
+    "depends": [
+        "connector_search_engine",
+        "connector",
+        "component",
+        "base_jsonify",
+        "server_environment",
+    ],
     "data": [
         "views/se_backend_algolia.xml",
         "views/se_menu.xml",
