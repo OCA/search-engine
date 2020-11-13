@@ -15,8 +15,8 @@ Available addons
 ----------------
 addon | version | summary
 --- | --- | ---
-[connector_algolia](connector_algolia/) | 13.0.2.1.0 | Connector For Algolia Search Engine
-[connector_elasticsearch](connector_elasticsearch/) | 13.0.2.0.0 | Connector For Elasticsearch Search Engine
+[connector_algolia](connector_algolia/) | 13.0.2.2.0 | Connector For Algolia Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 13.0.2.1.0 | Connector For Elasticsearch Search Engine
 [connector_search_engine](connector_search_engine/) | 13.0.2.1.1 | Connector Search Engine
 
 [//]: # (end addons)
