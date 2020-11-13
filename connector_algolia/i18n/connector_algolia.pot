@@ -24,6 +24,26 @@ msgid "APP ID"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__algolia_api_key_env_default
+msgid "Algolia Api Key Env Default"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__algolia_api_key_env_is_editable
+msgid "Algolia Api Key Env Is Editable"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__algolia_app_id_env_default
+msgid "Algolia App Id Env Default"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__algolia_app_id_env_is_editable
+msgid "Algolia App Id Env Is Editable"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model,name:connector_algolia.model_se_backend_algolia
 msgid "Algolia Backend"
 msgstr ""
@@ -143,6 +163,11 @@ msgid "Specific backend"
 msgstr ""
 
 #. module: connector_algolia
+#: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__tech_name
+msgid "Tech Name"
+msgstr ""
+
+#. module: connector_algolia
 #: code:addons/connector_algolia/components/adapter.py:0
 #, python-format
 msgid "The key %s is missing in the data %s"
@@ -151,4 +176,9 @@ msgstr ""
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__specific_model
 msgid "Type"
+msgstr ""
+
+#. module: connector_algolia
+#: model:ir.model.fields,help:connector_algolia.field_se_backend_algolia__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
