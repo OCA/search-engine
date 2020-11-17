@@ -5,6 +5,8 @@ from time import sleep
 
 from vcr_unittest import VCRMixin
 
+from odoo.tools import mute_logger
+
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 # NOTE: if you need to refresh tests, you can fire up an ElasticSearch instance
@@ -115,6 +117,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, [{"objectID": "foo2"}])
 
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_missing_object_key(self):
         self.object_id_export_line.unlink()
         res = self.partner_binding.recompute_json()

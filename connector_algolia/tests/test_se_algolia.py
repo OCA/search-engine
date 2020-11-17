@@ -7,7 +7,7 @@ from time import sleep
 
 from vcr_unittest import VCRMixin
 
-from odoo.tools import human_size
+from odoo.tools import human_size, mute_logger
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
@@ -141,6 +141,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         res = [x for x in self.adapter.each()]
         self.assertEqual(res, data)
 
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_missing_object_key(self):
         self.object_id_export_line.unlink()
         res = self.partner_binding.recompute_json()

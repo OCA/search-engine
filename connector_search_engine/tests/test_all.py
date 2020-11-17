@@ -6,6 +6,7 @@ from odoo_test_helper import FakeModelLoader
 
 from odoo import exceptions
 from odoo.tests.common import Form
+from odoo.tools import mute_logger
 
 from .common import TestSeBackendCaseBase
 
@@ -324,6 +325,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.assertEqual(calls[1]["method"], "delete")
             self.assertEqual(calls[1]["args"], [42])
 
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_recompute_json_to_be_checked(self):
         # When something goes wrong on recomputing index data
         # the state is properly set to `to_be_checked`
