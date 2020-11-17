@@ -7,18 +7,27 @@ from time import sleep
 
 from vcr_unittest import VCRMixin
 
-from odoo import exceptions
 from odoo.tools import human_size
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 from ..components.adapter import AlgoliaAdapter
 
+# To refresh cassets data:
+# 0. prepare your Algolia account
+# 1. delete existing cassettes
+# 2. set ALGOLIA_APP_ID + ALGOLIA_API_KEY env vars
+# 3. WARNING: replace real app id and api key in cassets files when done!
+
 
 class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Needed to make validation happy
+        cls.object_id_export_line = cls.env["ir.exports.line"].create(
+            {"export_id": cls.exporter.id, "name": "id:objectID"}
+        )
         AlgoliaAdapter._build_component(cls._components_registry)
         cls.backend_specific = cls.env.ref("connector_algolia.se_algolia_demo")
         cls.backend = cls.backend_specific.se_backend_id
@@ -45,11 +54,6 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
             self.backend_specific._get_api_credentials(),
             {"password": self.backend_specific.algolia_api_key},
         )
-
-    def test_index_adapter_no_objectID(self):
-        with self.assertRaises(exceptions.UserError) as err:
-            self.adapter.index([{"foo": "bar"}])
-        self.assertIn("The key objectID is missing in", err.exception.name)
 
     def test_index_adapter(self):
         data = {"objectID": "IamAnObjectID1", "foo": "bar"}
@@ -136,6 +140,14 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
             sleep(2)
         res = [x for x in self.adapter.each()]
         self.assertEqual(res, data)
+
+    def test_missing_object_key(self):
+        self.object_id_export_line.unlink()
+        res = self.partner_binding.recompute_json()
+        error_string = "\n".join(
+            ["Validation errors", "{}: The key `objectID` is missing in:"]
+        ).format(str(self.partner_binding))
+        self.assertTrue(res.startswith(error_string))
 
     def test_index_size(self):
         self.assertTrue(self.partner_binding.data)
