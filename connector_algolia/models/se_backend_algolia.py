@@ -17,6 +17,7 @@ class SeBackendAlgolia(models.Model):
     _description = "Algolia Backend"
 
     _search_engine_name = "algolia"
+    _record_id_key = "objectID"
 
     algolia_app_id = fields.Char(string="APP ID")
     algolia_api_key = fields.Char(string="API KEY")

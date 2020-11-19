@@ -10,6 +10,6 @@ class SeIndex(models.Model):
 
     def _get_settings(self):
         settings = super()._get_settings()
-        if self.config_id:
+        if self.config_id and self.config_id.body:
             settings.update(self.config_id.body)
         return settings

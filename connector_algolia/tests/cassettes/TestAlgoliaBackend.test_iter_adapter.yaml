@@ -2,91 +2,158 @@ interactions:
   - request:
       body: null
       headers:
-        Accept: ["*/*"]
-        Accept-Encoding: [gzip]
-        Connection: [keep-alive]
-        Content-Length: ["0"]
-        Content-Type: [gzip]
-        User-Agent: [Algolia for Python (1.17.0); Python (3.5.3)]
-        X-Algolia-API-Key: [856fbe3fbd5f6cc3b9d765c92e80de83]
-        X-Algolia-Application-Id: [GH41KF783Z]
+        Accept:
+          - "*/*"
+        Accept-Encoding:
+          - gzip
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Content-Type:
+          - gzip
+        User-Agent:
+          - Algolia for Python (1.20.0); Python (3.6.7)
+        X-Algolia-API-Key:
+          - FAKE_KEY
+        X-Algolia-Application-Id:
+          - FAKE_APP
       method: POST
-      uri: https://gh41kf783z.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
+      uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
     response:
-      body: {string: '{"updatedAt":"2019-03-28T16:14:35.726Z", "taskID":10958352292}
-
-            '}
+      body:
+        string: '{"updatedAt":"2020-11-17T12:48:14.099Z","taskID":848586689000}'
       headers:
-        Access-Control-Allow-Origin: ["*"]
-        Cache-Control: [no-cache]
-        Connection: [keep-alive]
-        Content-Disposition: [inline; filename=a.txt]
-        Content-Length: ["63"]
-        Content-Type: [application/json; charset=UTF-8]
-        Date: ["Thu, 28 Mar 2019 16:14:35 GMT"]
-        Server: [nginx]
-        Timing-Allow-Origin: ["*"]
-        X-Content-Type-Options: [nosniff]
-      status: {code: 200, message: OK}
+        Accept-Encoding:
+          - deflate, gzip
+        Access-Control-Allow-Origin:
+          - "*"
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Disposition:
+          - inline; filename=a.txt
+        Content-Length:
+          - "62"
+        Content-Type:
+          - application/json; charset=UTF-8
+        Date:
+          - Tue, 17 Nov 2020 12:48:14 GMT
+        Server:
+          - nginx
+        Strict-Transport-Security:
+          - max-age=31536000; includeSubDomains; preload
+        Timing-Allow-Origin:
+          - "*"
+        X-Content-Type-Options:
+          - nosniff
+      status:
+        code: 200
+        message: OK
   - request:
-      body: '{"requests": [{"body": {"objectID": "foo"}, "action": "addObject"}]}'
+      body: '{"requests": [{"action": "addObject", "body": {"objectID": "foo"}}]}'
       headers:
-        Accept: ["*/*"]
-        Accept-Encoding: [gzip]
-        Connection: [keep-alive]
-        Content-Length: ["68"]
-        Content-Type: [gzip]
-        User-Agent: [Algolia for Python (1.17.0); Python (3.5.3)]
-        X-Algolia-API-Key: [856fbe3fbd5f6cc3b9d765c92e80de83]
-        X-Algolia-Application-Id: [GH41KF783Z]
+        Accept:
+          - "*/*"
+        Accept-Encoding:
+          - gzip
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "68"
+        Content-Type:
+          - gzip
+        User-Agent:
+          - Algolia for Python (1.20.0); Python (3.6.7)
+        X-Algolia-API-Key:
+          - FAKE_KEY
+        X-Algolia-Application-Id:
+          - FAKE_APP
       method: POST
-      uri: https://gh41kf783z.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/batch
+      uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/batch
     response:
-      body: {string: '{"objectIDs":["foo"],"taskID":10845016740}
-
-            '}
+      body:
+        string: '{"objectIDs":["foo"],"taskID":841541523001}'
       headers:
-        Access-Control-Allow-Origin: ["*"]
-        Cache-Control: [no-cache]
-        Connection: [keep-alive]
-        Content-Disposition: [inline; filename=a.txt]
-        Content-Length: ["43"]
-        Content-Type: [application/json; charset=UTF-8]
-        Date: ["Thu, 28 Mar 2019 16:14:35 GMT"]
-        Server: [nginx]
-        Timing-Allow-Origin: ["*"]
-        X-Content-Type-Options: [nosniff]
-      status: {code: 200, message: OK}
+        Accept-Encoding:
+          - deflate, gzip
+        Access-Control-Allow-Origin:
+          - "*"
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Disposition:
+          - inline; filename=a.txt
+        Content-Length:
+          - "43"
+        Content-Type:
+          - application/json; charset=UTF-8
+        Date:
+          - Tue, 17 Nov 2020 12:48:14 GMT
+        Server:
+          - nginx
+        Strict-Transport-Security:
+          - max-age=31536000; includeSubDomains; preload
+        Timing-Allow-Origin:
+          - "*"
+        X-Content-Type-Options:
+          - nosniff
+      status:
+        code: 200
+        message: OK
   - request:
       body: null
       headers:
-        Accept: ["*/*"]
-        Accept-Encoding: [gzip]
-        Connection: [keep-alive]
-        Content-Type: [gzip]
-        User-Agent: [Algolia for Python (1.17.0); Python (3.5.3)]
-        X-Algolia-API-Key: [856fbe3fbd5f6cc3b9d765c92e80de83]
-        X-Algolia-Application-Id: [GH41KF783Z]
+        Accept:
+          - "*/*"
+        Accept-Encoding:
+          - gzip
+        Connection:
+          - keep-alive
+        Content-Type:
+          - gzip
+        User-Agent:
+          - Algolia for Python (1.20.0); Python (3.6.7)
+        X-Algolia-API-Key:
+          - FAKE_KEY
+        X-Algolia-Application-Id:
+          - FAKE_APP
       method: GET
-      uri: https://gh41kf783z-dsn.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/browse
+      uri: https://fake_app-dsn.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/browse
     response:
       body:
-        {
-          string:
-            '{"hits":[{"objectID":"foo"}],"nbHits":1,"page":0,"nbPages":1,"hitsPerPage":1000,"processingTimeMS":1,"query":"","params":""}
+        string:
+          '{"hits":[{"objectID":"foo"}],"nbHits":1,"page":0,"nbPages":1,"hitsPerPage":1000,"processingTimeMS":1,"query":"","params":""}
 
-            ',
-        }
+          '
       headers:
-        Access-Control-Allow-Origin: ["*"]
-        Cache-Control: [no-cache]
-        Connection: [keep-alive]
-        Content-Disposition: [inline; filename=a.txt]
-        Content-Length: ["125"]
-        Content-Type: [application/json; charset=UTF-8]
-        Date: ["Thu, 28 Mar 2019 16:14:37 GMT"]
-        Server: [nginx]
-        Timing-Allow-Origin: ["*"]
-        X-Content-Type-Options: [nosniff]
-      status: {code: 200, message: OK}
+        Accept-Encoding:
+          - deflate, gzip
+        Access-Control-Allow-Origin:
+          - "*"
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Disposition:
+          - inline; filename=a.txt
+        Content-Length:
+          - "125"
+        Content-Type:
+          - application/json; charset=UTF-8
+        Date:
+          - Tue, 17 Nov 2020 12:48:16 GMT
+        Server:
+          - nginx
+        Strict-Transport-Security:
+          - max-age=31536000; includeSubDomains; preload
+        Timing-Allow-Origin:
+          - "*"
+        X-Content-Type-Options:
+          - nosniff
+      status:
+        code: 200
+        message: OK
 version: 1

@@ -5,7 +5,7 @@ from time import sleep
 
 from vcr_unittest import VCRMixin
 
-from odoo import exceptions
+from odoo.tools import mute_logger
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
@@ -19,6 +19,10 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Needed to make validation happy
+        cls.object_id_export_line = cls.env["ir.exports.line"].create(
+            {"export_id": cls.exporter.id, "name": "id:objectID"}
+        )
         cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
         cls.backend = cls.backend_specific.se_backend_id
         cls.se_index_model = cls.env["se.index"]
@@ -46,12 +50,6 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         values = super()._prepare_index_values(backend)
         values.update({"config_id": cls.se_config.id})
         return values
-
-    def test_index_adapter_no_objectID(self):
-        self.partner_binding.sync_state = "to_update"
-        with self.assertRaises(exceptions.UserError) as err:
-            self.se_index.batch_export()
-        self.assertIn("The key objectID is missing in", err.exception.name)
 
     def test_index_adapter(self):
         # Set partner to be updated with fake vals in data
@@ -118,3 +116,12 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, [{"objectID": "foo2"}])
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_missing_object_key(self):
+        self.object_id_export_line.unlink()
+        res = self.partner_binding.recompute_json()
+        error_string = "\n".join(
+            ["Validation errors", "{}: The key `objectID` is missing in:"]
+        ).format(str(self.partner_binding))
+        self.assertTrue(res.startswith(error_string))

@@ -6,6 +6,7 @@ from odoo_test_helper import FakeModelLoader
 
 from odoo import exceptions
 from odoo.tests.common import Form
+from odoo.tools import mute_logger
 
 from .common import TestSeBackendCaseBase
 
@@ -323,3 +324,30 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.assertEqual(calls[1]["work_ctx"]["index"], self.se_index)
             self.assertEqual(calls[1]["method"], "delete")
             self.assertEqual(calls[1]["args"], [42])
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_recompute_json_to_be_checked(self):
+        # When something goes wrong on recomputing index data
+        # the state is properly set to `to_be_checked`
+        self.assertNotEqual(self.partner_binding.sync_state, "to_be_checked")
+        with mock.patch.object(
+            type(self.partner_binding), "_validate_record"
+        ) as mocked:
+            mocked.return_value = "Something wrong with data"
+            result = self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.sync_state, "to_be_checked")
+        self.assertEqual(
+            result,
+            "Validation errors\n"
+            "res.partner.binding.fake(%s,): Something wrong with data"
+            % self.partner_binding.id,
+        )
+
+    def test_recompute_json_to_be_checked_rollback(self):
+        # If something was to check but it's now good,
+        # the state should be back to normal
+        self.partner_binding.sync_state = "to_be_checked"
+        self.partner_binding.name = "Data changes, binding is written"
+        result = self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.sync_state, "to_update")
+        self.assertEqual(result, "")
