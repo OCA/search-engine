@@ -168,12 +168,6 @@ msgid "Tech Name"
 msgstr ""
 
 #. module: connector_algolia
-#: code:addons/connector_algolia/components/adapter.py:0
-#, python-format
-msgid "The key %s is missing in the data %s"
-msgstr ""
-
-#. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__specific_model
 msgid "Type"
 msgstr ""
