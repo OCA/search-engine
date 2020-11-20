@@ -21,7 +21,7 @@ except ImportError:  # pragma: no cover
 
 class AlgoliaAdapter(Component):
     _name = "algolia.adapter"
-    _inherit = ["base.backend.adapter", "algolia.se.connector"]
+    _inherit = ["se.backend.adapter", "algolia.se.connector"]
     _usage = "se.backend.adapter"
 
     def get_index(self):
