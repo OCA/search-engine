@@ -27,7 +27,7 @@ class SeAdapter(AbstractComponent):
     def each(self):
         return NotImplemented  # pragma: no cover
 
-    def settings(self):
+    def settings(self, force=False):
         return NotImplemented  # pragma: no cover
 
     def external_id(self, record):
