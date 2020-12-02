@@ -25,6 +25,7 @@
         <field name="model_id" ref="model_se_index" />
         <field name="state">code</field>
         <field name="code">model.generate_batch_export_per_index()</field>
+        <field name="priority" eval="6" />
     </record>
     <record forcecreate="True" id="ir_cron_export_settings" model="ir.cron">
         <field name="name">Search engine: Export settings for all indexes</field>
