@@ -23,5 +23,5 @@
         "views/se_index_config.xml",
         "data/ir_cron.xml",
     ],
-    "installable": True,
+    "installable": False,
 }
