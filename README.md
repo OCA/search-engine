@@ -15,7 +15,13 @@ TODO: add repo description.
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Unported addons
+---------------
+addon | version | summary
+--- | --- | ---
+[connector_algolia](connector_algolia/) | 13.0.2.5.0 (unported) | Connector For Algolia Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 13.0.2.4.1 (unported) | Connector For Elasticsearch Search Engine
+[connector_search_engine](connector_search_engine/) | 13.0.2.6.1 (unported) | Connector Search Engine
 
 [//]: # (end addons)
 
