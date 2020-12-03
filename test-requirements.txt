@@ -6,3 +6,8 @@ unidecode
 
 # tests
 vcrpy-unittest
+
+
+# pending pr do not merge
+odoo14-addon-connector @ git+https://github.com/OCA/connector@refs/pull/385/head#subdirectory=setup/connector
+odoo14-addon-base_jsonify @ git+https://github.com/oca/server-tools@refs/pull/1911/head#subdirectory=setup/base_jsonify
