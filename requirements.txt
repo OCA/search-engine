@@ -1,6 +1,5 @@
-algoliasearch<2.0.0
-elasticsearch>=7.0.0,<8.0.0
+# generated from manifests external_dependencies
+algoliasearch
+elasticsearch
+requests
 unidecode
-
-# tests
-vcrpy-unittest
