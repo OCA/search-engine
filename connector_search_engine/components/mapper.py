@@ -19,8 +19,6 @@ class JsonExportMapper(Component):
         super(JsonExportMapper, self).__init__(work)
         exporter = work.index.exporter_id
         self._json_parser = exporter.get_json_parser()
-        if "id" not in self._json_parser:
-            self._json_parser.append("id")
 
     def _apply(self, map_record, options=None):
         return map_record._source.jsonify(self._json_parser)[0]
