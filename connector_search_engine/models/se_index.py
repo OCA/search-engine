@@ -131,7 +131,7 @@ class SeIndex(models.Model):
         self.ensure_one()
         domain = self._get_domain_for_exporting_binding(force_export)
         binding_obj = self.env[self.model_id.model]
-        bindings = binding_obj.with_context(active_test=False).search(domain)
+        bindings = binding_obj.search(domain)
         bindings_count = len(bindings)
         while bindings:
             processing = bindings[0 : self.batch_size]  # noqa: E203
