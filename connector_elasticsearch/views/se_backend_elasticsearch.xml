@@ -19,7 +19,7 @@
                                 name="es_server_host"
                                 placeholder="http://127.0.0.1:9200"
                             />
-                            <field name="api_key_id"/>
+                            <field name="api_key_id" />
                             <field name="api_key" />
                         </group>
                     </group>
