@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 
 try:
-    import algoliasearch
+    from algoliasearch.search_client import SearchClient
 except ImportError:  # pragma: no cover
     _logger.debug("Can not import algoliasearch")
 
@@ -30,10 +30,10 @@ class AlgoliaAdapter(Component):
     def _get_client(self):
         backend = self.backend_record
         account = backend._get_api_credentials()
-        return algoliasearch.client.Client(backend.algolia_app_id, account["password"])
+        return SearchClient.create(backend.algolia_app_id, account["password"])
 
     def _get_index(self, client):
-        return client.initIndex(self.work.index.name)
+        return client.init_index(self.work.index.name)
 
     def settings(self, force=False):
         """Push advanced settings like facettings attributes."""
@@ -46,7 +46,7 @@ class AlgoliaAdapter(Component):
             index_names = [item.get("name") for item in indexes.get("items", [])]
             force = index.index_name not in index_names or False
         if data and force:
-            index.setSettings(data)
+            index.set_settings(data)
 
     def index(self, records):
         index = self.get_index()
@@ -54,7 +54,7 @@ class AlgoliaAdapter(Component):
             error = self._validate_record(record)
             if error:
                 raise exceptions.ValidationError(error)
-        index.add_objects(records)
+        index.save_objects(records)
 
     def delete(self, binding_ids):
         index = self.get_index()
@@ -62,7 +62,7 @@ class AlgoliaAdapter(Component):
 
     def clear(self):
         index = self.get_index()
-        index.clear_index()
+        index.clear_objects()
         self.settings(force=True)
 
     def iter(self):
@@ -72,4 +72,4 @@ class AlgoliaAdapter(Component):
 
     def each(self):
         index = self.get_index()
-        return index.browse_all()
+        return index.browse_objects()
