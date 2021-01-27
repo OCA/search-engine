@@ -16,7 +16,7 @@
             <field name="specific_backend" position="replace" />
             <group name="se-main" position="inside">
                 <field name="es_server_host" placeholder="http://elactic:9200" />
-                <field name="api_key_id"/>
+                <field name="api_key_id" />
                 <field name="api_key" />
             </group>
         </field>
