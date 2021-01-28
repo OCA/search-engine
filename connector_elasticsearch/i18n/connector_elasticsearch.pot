@@ -20,6 +20,16 @@ msgid "An index definition is required for ElasticSearch"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__api_key
+msgid "Api Key"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__api_key_id
+msgid "Api Key ID"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
 msgid "Clear the index in the search engine"
 msgstr ""
@@ -60,6 +70,16 @@ msgid ""
 "ElasticSearch index definition (see "
 "https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
 "create-index.html)"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__api_key
+msgid "Elasticsearch Api Key"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__api_key_id
+msgid "Elasticsearch Api Key ID"
 msgstr ""
 
 #. module: connector_elasticsearch
