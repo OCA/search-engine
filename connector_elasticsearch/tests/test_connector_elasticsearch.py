@@ -108,8 +108,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = self.adapter.delete(["foo", "foo3"])
-        self.assertTrue(res)
+        self.adapter.delete(["foo", "foo3"])
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
@@ -125,3 +124,10 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
             ["Validation errors", "{}: The key `objectID` is missing in:"]
         ).format(str(self.partner_binding))
         self.assertTrue(res.startswith(error_string))
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_index_adapter_delete_nonexisting_documents(self):
+        """We try to delete records that do not exist.
+           Because it does not matter, it is just ignored. No exception.
+        """
+        self.adapter.delete(["donotexist", "donotexisteither"])
