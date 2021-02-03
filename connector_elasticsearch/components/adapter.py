@@ -16,6 +16,12 @@ except ImportError:
     _logger.debug("Can not import elasticsearch")
 
 
+def _is_delete_nonexistent_documents(elastic_exception):
+    """True iff all errors in this exception are deleting a nonexisting document."""
+    b = lambda d: "delete" in d and d["delete"]["status"] == 404  # noqa
+    return all(b(error) for error in elastic_exception.errors)
+
+
 class ElasticsearchAdapter(Component):
     _name = "elasticsearch.adapter"
     _inherit = ["se.backend.adapter", "elasticsearch.se.connector"]
@@ -78,10 +84,15 @@ class ElasticsearchAdapter(Component):
                 "_id": binding_id,
             }
             records_for_bulk.append(action)
-
-        res = elasticsearch.helpers.bulk(es, records_for_bulk)
-        # checks if number of indexed object and object in records are equal
-        return len(binding_ids) - res[0] == 0
+        try:
+            elasticsearch.helpers.bulk(es, records_for_bulk)
+        except elasticsearch.helpers.errors.BulkIndexError as e:
+            # if the document we are trying to delete does not exist,
+            # we can consider deletion a success (there is nothing to do).
+            if not _is_delete_nonexistent_documents(e):
+                raise e
+            msg = "Trying to delete non-existent documents. Ignored: %s"
+            _logger.info(msg, e)
 
     def clear(self):
         es = self._get_es_client()
