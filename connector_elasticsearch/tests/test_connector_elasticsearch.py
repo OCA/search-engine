@@ -6,6 +6,7 @@ from time import sleep
 from vcr_unittest import VCRMixin
 
 from odoo import exceptions
+from odoo.tools import mute_logger
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
@@ -105,11 +106,17 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
-        res = self.adapter.delete(["foo", "foo3"])
-        self.assertTrue(res)
+        self.adapter.delete(["foo", "foo3"])
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["objectID"])
         self.assertListEqual(res, [{"objectID": "foo2"}])
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_index_adapter_delete_nonexisting_documents(self):
+        """We try to delete records that do not exist.
+           Because it does not matter, it is just ignored. No exception.
+        """
+        self.adapter.delete(["donotexist", "donotexisteither"])

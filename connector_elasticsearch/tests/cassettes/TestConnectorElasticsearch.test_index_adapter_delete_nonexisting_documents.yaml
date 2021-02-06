@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.10.1 (Python 3.6.12)
+    method: HEAD
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '542'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.10.1 (Python 3.6.12)
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '671'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{}'
+    headers:
+      Content-Length:
+      - '2'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.10.1 (Python 3.6.12)
+    method: PUT
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}'
+    headers:
+      content-length:
+      - '116'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"delete":{"_id":"donotexist","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      {"delete":{"_id":"donotexisteither","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      '
+    headers:
+      Content-Length:
+      - '208'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.10.1 (Python 3.6.12)
+    method: POST
+    uri: http://elastic:9200/_bulk
+  response:
+    body:
+      string: '{"took":155,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":404}}]}'
+    headers:
+      content-length:
+      - '525'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1
