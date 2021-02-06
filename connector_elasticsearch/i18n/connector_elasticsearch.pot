@@ -191,7 +191,7 @@ msgid "Tech Name"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: code:addons/connector_elasticsearch/components/adapter.py:57
+#: code:addons/connector_elasticsearch/components/adapter.py:63
 #, python-format
 msgid "The key %s is missing in the data %s"
 msgstr ""
