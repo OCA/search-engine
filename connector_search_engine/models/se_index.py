@@ -5,8 +5,6 @@ import logging
 
 from odoo import _, api, fields, models
 
-from odoo.addons.queue_job.job import job
-
 _logger = logging.getLogger(__name__)
 
 
@@ -25,6 +23,7 @@ class SeIndex(models.Model):
         string="Model",
         required=True,
         domain=lambda self: self._model_id_domain(),
+        ondelete="cascade",
     )
     exporter_id = fields.Many2one("ir.exports", string="Exporter")
     batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
@@ -85,7 +84,7 @@ class SeIndex(models.Model):
                 description = _("Batch task for generating %s recompute job") % len(
                     processing
                 )
-                processing.with_delay(description=description)._jobify_recompute_json(
+                processing.with_delay(description=description).jobify_recompute_json(
                     force_export=force_export
                 )
         return True
@@ -128,7 +127,6 @@ class SeIndex(models.Model):
             domain.append(("sync_state", "=", "to_update"))
         return domain
 
-    @job(default_channel="root.search_engine.prepare_batch_export")
     def batch_export(self, force_export=False):
         self.ensure_one()
         domain = self._get_domain_for_exporting_binding(force_export)
@@ -164,8 +162,8 @@ class SeIndex(models.Model):
 
     def _get_settings(self):
         """
-            Override this method is sub modules in order to pass the adequate
-            settings (like Facetting, pagination, advanced settings, etc...)
+        Override this method is sub modules in order to pass the adequate
+        settings (like Facetting, pagination, advanced settings, etc...)
         """
         self.ensure_one()
         return {}
@@ -203,7 +201,6 @@ class SeIndex(models.Model):
                     item_ids.append(adapter.external_id(index_record))
             index.with_delay().delete_obsolete_item(item_ids)
 
-    @job(default_channel="root.search_engine")
     def delete_obsolete_item(self, item_ids):
         adapter = self._get_backend_adapter()
         adapter.delete(item_ids)

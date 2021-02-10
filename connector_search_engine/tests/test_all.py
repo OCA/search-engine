@@ -21,8 +21,8 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         from .models import (
             BindingResPartnerFake,
             ResPartnerFake,
-            SeBackendFake,
             SeAdapterFake,
+            SeBackendFake,
         )
 
         cls.loader.update_registry(

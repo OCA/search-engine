@@ -7,8 +7,6 @@ import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons.queue_job.job import job
-
 _logger = logging.getLogger(__name__)
 
 
@@ -59,7 +57,7 @@ class SeBinding(models.AbstractModel):
     @api.model
     def create(self, vals):
         record = super(SeBinding, self).create(vals)
-        record._jobify_recompute_json()
+        record.jobify_recompute_json()
         return record
 
     def write(self, vals):
@@ -94,8 +92,7 @@ class SeBinding(models.AbstractModel):
                 )
         return super(SeBinding, self).unlink()
 
-    @job(default_channel="root.search_engine.recompute_json")
-    def _jobify_recompute_json(self, force_export=False):
+    def jobify_recompute_json(self, force_export=False):
         description = _("Recompute %s json and check if need update" % self._name)
         # The job creation with tracking is very costly. So disable it.
         for record in self.with_context(tracking_disable=True):
@@ -119,7 +116,6 @@ class SeBinding(models.AbstractModel):
                     yield work
 
     # TODO maybe we need to add lock (todo check)
-    @job(default_channel="root.search_engine.recompute_json")
     def recompute_json(self, force_export=False):
         """Compute index record data as JSON."""
         # `sudo` because the recomputation can be triggered from everywhere
@@ -159,7 +155,6 @@ class SeBinding(models.AbstractModel):
     def _validate_record(self, work, index_record):
         return work.collection._validate_record(index_record)
 
-    @job(default_channel="root.search_engine")
     def synchronize(self):
         # We volontary do the export and delete in the same transaction
         # we try first to process it into two different process but the code
