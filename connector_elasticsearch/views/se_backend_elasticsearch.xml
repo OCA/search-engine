@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record model="ir.ui.view" id="se_backend_elasticsearch_form_view">
-        <field
-            name="name"
-        >se.backend.spec.abstract.form (in connector_search_engine)</field>
+        <field name="name">se.backend.elasticsearch (in connector_search_engine)</field>
         <field name="model">se.backend.elasticsearch</field>
         <field name="mode">primary</field>
         <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
