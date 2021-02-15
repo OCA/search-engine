@@ -13,4 +13,16 @@
         parent="se_root_menu"
         action="se_backend_act_window"
     />
+    <menuitem
+        id="se_index_menu"
+        name="Indexes"
+        parent="se_root_menu"
+        action="se_index_act_window"
+    />
+    <menuitem
+        id="se_index_config_menu"
+        name="Index configurations"
+        parent="se_root_menu"
+        action="se_index_config_act_window"
+    />
 </odoo>
