@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2019 ACSONE SA/NV
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record model="ir.ui.view" id="se_index_tree_view">
+        <field name="name">se.index.tree (in connector_search_engine)</field>
+        <field name="model">se.index</field>
+        <field name="arch" type="xml">
+            <tree string="Index" editable="bottom">
+                <field name="backend_id" />
+                <field name="name" />
+                <field name="lang_id" />
+                <field name="model_id" />
+                <field
+                    name="exporter_id"
+                    context="{'form_view_ref': 'base_jsonify.view_ir_exports'}"
+                />
+                <field name="config_id" />
+                <field name="batch_size" />
+                <button
+                    name="force_recompute_all_binding"
+                    help="Force to recompute all binding of the index and set them to the state 'To update'"
+                    icon="fa-gears"
+                    type="object"
+                />
+                <button
+                    name="force_batch_export"
+                    help="Force the export of all binding"
+                    icon="fa-upload"
+                    type="object"
+                />
+                <button
+                    name="clear_index"
+                    help="Clear the index in the search engine"
+                    icon="fa-times"
+                    type="object"
+                    groups="connector_search_engine.group_connector_search_engine_manager"
+                />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="se_index_tree_no_backend_view">
+        <field
+            name="name"
+        >se.index.tree with backend hidden (in connector_search_engine)</field>
+        <field name="model">se.index</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="connector_search_engine.se_index_tree_view" />
+        <field name="arch" type="xml">
+            <field name="backend_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="se_index_search_view">
+        <field name="name">se.index.search (in connector_search_engine)</field>
+        <field name="model">se.index</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="backend_id" />
+                <field name="name" />
+                <field name="lang_id" />
+                <field name="model_id" />
+                <group expand="0" string="Group By...">
+                    <filter
+                        string="Backend"
+                        name="backend"
+                        domain="[]"
+                        context="{'group_by':'backend_id'}"
+                    />
+                    <filter
+                        string="Model"
+                        name="model"
+                        domain="[]"
+                        context="{'group_by':'model_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="se_index_act_window">
+        <field name="name">Se Index</field>
+        <field name="res_model">se.index</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'default_group_by_backend': 1}</field>
+    </record>
+</odoo>

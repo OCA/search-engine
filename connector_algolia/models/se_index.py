@@ -3,6 +3,8 @@
 
 from odoo import models
 
+from ..utils import data_merge
+
 
 class SeIndex(models.Model):
 
@@ -11,5 +13,6 @@ class SeIndex(models.Model):
     def _get_settings(self):
         settings = super()._get_settings()
         if self.config_id and self.config_id.body:
-            settings.update(self.config_id.body)
+            # Smart merge of settings: extend instead of override all values
+            settings = data_merge(settings, self.config_id.body)
         return settings
