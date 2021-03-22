@@ -95,10 +95,19 @@ class SeBinding(models.AbstractModel):
     def jobify_recompute_json(self, force_export=False):
         description = _("Recompute %s json and check if need update" % self._name)
         # The job creation with tracking is very costly. So disable it.
+        queue_job_channel = self.env.ref(
+            "connector_search_engine.channel_search_engine_recompute",
+            raise_if_not_found=False,
+        )
         for record in self.with_context(tracking_disable=True):
-            record.with_delay(description=description).recompute_json(
-                force_export=force_export
-            )
+            if queue_job_channel:
+                record.with_delay(
+                    description=description, channel=queue_job_channel.complete_name
+                ).recompute_json(force_export=force_export)
+            else:
+                record.with_delay(description=description).recompute_json(
+                    force_export=force_export
+                )
 
     def _work_by_index(self, active=True):
         self = self.exists()
