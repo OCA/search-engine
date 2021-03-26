@@ -67,7 +67,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         )
         request_data = json.loads(request.body.decode("utf-8"))["requests"]
         self.assertEqual(len(request_data), 1)
-        self.assertEqual(request_data[0]["action"], "addObject")
+        self.assertEqual(request_data[0]["action"], "updateObject")
         self.assertEqual(request_data[0]["body"], data)
 
     def test_index_adapter_clear(self):
@@ -114,7 +114,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         with myvcr.use_cassette(cassette):
             adapter = self.se_index._get_backend_adapter()
             algolia_index = adapter.get_index()
-            settings = algolia_index.getSettings()
+            settings = algolia_index.get_settings()
             self.assertEqual(settings["attributesForFaceting"], ["name"])
 
     def test_delete_adapter(self):

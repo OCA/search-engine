@@ -2,18 +2,12 @@ interactions:
   - request:
       body: null
       headers:
-        Accept:
-          - "*/*"
-        Accept-Encoding:
-          - gzip
-        Connection:
-          - keep-alive
         Content-Length:
           - "0"
         Content-Type:
-          - gzip
+          - application/json
         User-Agent:
-          - Algolia for Python (1.20.0); Python (3.6.7)
+          - Algolia for Python (2.4.0); Python (3.7.3)
         X-Algolia-API-Key:
           - FAKE_KEY
         X-Algolia-Application-Id:
@@ -22,7 +16,7 @@ interactions:
       uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
     response:
       body:
-        string: '{"updatedAt":"2020-11-17T12:38:32.215Z","taskID":862722396002}'
+        string: '{"updatedAt":"2021-01-27T09:44:14.817Z","taskID":884433458001}'
       headers:
         Accept-Encoding:
           - deflate, gzip
@@ -39,7 +33,7 @@ interactions:
         Content-Type:
           - application/json; charset=UTF-8
         Date:
-          - Tue, 17 Nov 2020 12:38:32 GMT
+          - Wed, 27 Jan 2021 09:44:14 GMT
         Server:
           - nginx
         Strict-Transport-Security:
@@ -54,27 +48,21 @@ interactions:
   - request:
       body: '{"attributesForFaceting": ["name"]}'
       headers:
-        Accept:
-          - "*/*"
-        Accept-Encoding:
-          - gzip
-        Connection:
-          - keep-alive
         Content-Length:
           - "35"
         Content-Type:
-          - gzip
+          - application/json
         User-Agent:
-          - Algolia for Python (1.20.0); Python (3.6.7)
+          - Algolia for Python (2.4.0); Python (3.7.3)
         X-Algolia-API-Key:
           - FAKE_KEY
         X-Algolia-Application-Id:
           - FAKE_APP
       method: PUT
-      uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/settings?forwardToReplicas=true
+      uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/settings
     response:
       body:
-        string: '{"updatedAt":"2020-11-17T12:38:32.428Z","taskID":862722397002}'
+        string: '{"updatedAt":"2021-01-27T09:44:14.949Z","taskID":884433459001}'
       headers:
         Accept-Encoding:
           - deflate, gzip
@@ -91,7 +79,7 @@ interactions:
         Content-Type:
           - application/json; charset=UTF-8
         Date:
-          - Tue, 17 Nov 2020 12:38:32 GMT
+          - Wed, 27 Jan 2021 09:44:14 GMT
         Server:
           - nginx
         Strict-Transport-Security:

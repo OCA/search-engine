@@ -2,18 +2,12 @@ interactions:
   - request:
       body: null
       headers:
-        Accept:
-          - "*/*"
-        Accept-Encoding:
-          - gzip
-        Connection:
-          - keep-alive
         Content-Length:
           - "0"
         Content-Type:
-          - gzip
+          - application/json
         User-Agent:
-          - Algolia for Python (1.20.0); Python (3.6.7)
+          - Algolia for Python (2.4.0); Python (3.7.3)
         X-Algolia-API-Key:
           - FAKE_KEY
         X-Algolia-Application-Id:
@@ -22,7 +16,7 @@ interactions:
       uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/clear
     response:
       body:
-        string: '{"updatedAt":"2020-11-17T12:48:14.099Z","taskID":848586689000}'
+        string: '{"updatedAt":"2021-01-27T09:44:17.281Z","taskID":884433480001}'
       headers:
         Accept-Encoding:
           - deflate, gzip
@@ -39,7 +33,7 @@ interactions:
         Content-Type:
           - application/json; charset=UTF-8
         Date:
-          - Tue, 17 Nov 2020 12:48:14 GMT
+          - Wed, 27 Jan 2021 09:44:17 GMT
         Server:
           - nginx
         Strict-Transport-Security:
@@ -52,20 +46,14 @@ interactions:
         code: 200
         message: OK
   - request:
-      body: '{"requests": [{"action": "addObject", "body": {"objectID": "foo"}}]}'
+      body: '{"requests": [{"action": "updateObject", "body": {"objectID": "foo"}}]}'
       headers:
-        Accept:
-          - "*/*"
-        Accept-Encoding:
-          - gzip
-        Connection:
-          - keep-alive
         Content-Length:
-          - "68"
+          - "71"
         Content-Type:
-          - gzip
+          - application/json
         User-Agent:
-          - Algolia for Python (1.20.0); Python (3.6.7)
+          - Algolia for Python (2.4.0); Python (3.7.3)
         X-Algolia-API-Key:
           - FAKE_KEY
         X-Algolia-Application-Id:
@@ -74,7 +62,7 @@ interactions:
       uri: https://fake_app.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/batch
     response:
       body:
-        string: '{"objectIDs":["foo"],"taskID":841541523001}'
+        string: '{"objectIDs":["foo"],"taskID":884433482001}'
       headers:
         Accept-Encoding:
           - deflate, gzip
@@ -91,7 +79,7 @@ interactions:
         Content-Type:
           - application/json; charset=UTF-8
         Date:
-          - Tue, 17 Nov 2020 12:48:14 GMT
+          - Wed, 27 Jan 2021 09:44:17 GMT
         Server:
           - nginx
         Strict-Transport-Security:
@@ -104,30 +92,23 @@ interactions:
         code: 200
         message: OK
   - request:
-      body: null
+      body: "{}"
       headers:
-        Accept:
-          - "*/*"
-        Accept-Encoding:
-          - gzip
-        Connection:
-          - keep-alive
+        Content-Length:
+          - "2"
         Content-Type:
-          - gzip
+          - application/json
         User-Agent:
-          - Algolia for Python (1.20.0); Python (3.6.7)
+          - Algolia for Python (2.4.0); Python (3.7.3)
         X-Algolia-API-Key:
           - FAKE_KEY
         X-Algolia-Application-Id:
           - FAKE_APP
-      method: GET
+      method: POST
       uri: https://fake_app-dsn.algolia.net/1/indexes/demo_algolia_backend_res_partner_binding_fake_en_US/browse
     response:
       body:
-        string:
-          '{"hits":[{"objectID":"foo"}],"nbHits":1,"page":0,"nbPages":1,"hitsPerPage":1000,"processingTimeMS":1,"query":"","params":""}
-
-          '
+        string: '{"hits":[{"objectID":"foo"}],"nbHits":1,"page":0,"nbPages":1,"hitsPerPage":1000,"processingTimeMS":0,"query":"","params":""}'
       headers:
         Accept-Encoding:
           - deflate, gzip
@@ -140,11 +121,11 @@ interactions:
         Content-Disposition:
           - inline; filename=a.txt
         Content-Length:
-          - "125"
+          - "124"
         Content-Type:
           - application/json; charset=UTF-8
         Date:
-          - Tue, 17 Nov 2020 12:48:16 GMT
+          - Wed, 27 Jan 2021 09:44:19 GMT
         Server:
           - nginx
         Strict-Transport-Security:
