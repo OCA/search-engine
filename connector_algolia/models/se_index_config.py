@@ -4,6 +4,8 @@ import json
 
 from odoo import api, fields, models
 
+from odoo.addons.base_sparse_field.models.fields import Serialized
+
 
 # TODO: this part is copied from Elasticsearch but should stay in base module
 class SeIndexConfig(models.Model):
@@ -12,22 +14,20 @@ class SeIndexConfig(models.Model):
     _description = "Elasticsearch index configuration"
 
     name = fields.Char(required=True)
-    body = fields.Serialized(required=True)
+    body = Serialized(required=True, default={})
     # This field is used since no widget exists to edit a serialized field
     # into the web fontend
-    body_str = fields.Text(compute="_compute_body_str", inverse="_inverse_body_str")
+    body_str = fields.Text(
+        compute="_compute_body_str", inverse="_inverse_body_str", default="{}"
+    )
 
     @api.multi
     @api.depends("body")
     def _compute_body_str(self):
         for rec in self:
-            if rec.body:
-                rec.body_str = json.dumps(rec.body)
+            rec.body_str = json.dumps(rec.body)
 
     @api.multi
     def _inverse_body_str(self):
         for rec in self:
-            data = None
-            if rec.body_str:
-                data = json.loads(rec.body_str)
-            rec.body = data
+            rec.body = json.loads(rec.body_str or "{}")
