@@ -32,7 +32,8 @@ class SeBackendSpecAbstract(models.AbstractModel):
     # This must be re-defined here because
     # we want to be able to set the prefix based on the specific search engine.
     index_prefix_name = fields.Char(
-        related="se_backend_id.index_prefix_name", readonly=False,
+        related="se_backend_id.index_prefix_name",
+        readonly=False,
     )
 
     @property
