@@ -1,4 +1,4 @@
-algoliasearch<2.0.0
+algoliasearch>=2.0,<3.0
 elasticsearch>=7.0.0,<8.0.0
 unidecode
 
