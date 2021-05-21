@@ -15,13 +15,19 @@ TODO: add repo description.
 
 [//]: # (addons)
 
+Available addons
+----------------
+addon | version | summary
+--- | --- | ---
+[connector_search_engine](connector_search_engine/) | 14.0.1.0.0 | Connector Search Engine
+
+
 Unported addons
 ---------------
 addon | version | summary
 --- | --- | ---
 [connector_algolia](connector_algolia/) | 13.0.2.5.0 (unported) | Connector For Algolia Search Engine
 [connector_elasticsearch](connector_elasticsearch/) | 13.0.2.4.1 (unported) | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 13.0.2.6.1 (unported) | Connector Search Engine
 
 [//]: # (end addons)
 
