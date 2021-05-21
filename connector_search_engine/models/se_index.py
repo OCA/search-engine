@@ -162,8 +162,8 @@ class SeIndex(models.Model):
 
     def _get_settings(self):
         """
-            Override this method is sub modules in order to pass the adequate
-            settings (like Facetting, pagination, advanced settings, etc...)
+        Override this method is sub modules in order to pass the adequate
+        settings (like Facetting, pagination, advanced settings, etc...)
         """
         self.ensure_one()
         return {}
