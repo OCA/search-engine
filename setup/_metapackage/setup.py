@@ -8,6 +8,7 @@ setuptools.setup(
     description="Meta package for oca-search-engine Odoo addons",
     version=version,
     install_requires=[
+        'odoo14-addon-connector_elasticsearch',
         'odoo14-addon-connector_search_engine',
     ],
     classifiers=[
