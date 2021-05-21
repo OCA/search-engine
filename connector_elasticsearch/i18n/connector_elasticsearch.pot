@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -46,6 +46,7 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__display_name
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -96,6 +97,7 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__id
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__id
 msgid "ID"
 msgstr ""
 
@@ -122,6 +124,7 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch____last_update
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index____last_update
 msgid "Last Modified on"
 msgstr ""
 
