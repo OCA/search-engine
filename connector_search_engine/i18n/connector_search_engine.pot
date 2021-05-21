@@ -120,6 +120,14 @@ msgid "Done"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,help:connector_search_engine.field_se_index__config_id
+msgid ""
+"ElasticSearch index definition (see "
+"https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
+"create-index.html)"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model,name:connector_search_engine.model_se_index_config
 msgid "Elasticsearch index configuration"
 msgstr ""
@@ -185,11 +193,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_is_editable
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name_env_is_editable
 msgid "Index Prefix Name Env Is Editable"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,help:connector_search_engine.field_se_index__config_id
-msgid "Index configuration record"
 msgstr ""
 
 #. module: connector_search_engine
