@@ -1,4 +1,6 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
+# Copyright 2021 Camptocamp (http://www.camptocamp.com)
+# Simone Orsi <simone.orsi@camptocamp.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import json
@@ -129,8 +131,9 @@ class SeBinding(models.AbstractModel):
         to_be_checked = []
         for work in self.sudo()._work_by_index():
             mapper = work.component(usage="se.export.mapper")
-            lang = work.index.lang_id.code
-            for binding in work.records.with_context(lang=lang):
+            for binding in work.records.with_context(
+                **self._recompute_json_work_ctx(work)
+            ):
                 index_record = mapper.map_record(binding).values()
                 # Validate data and track items to check
                 error = self._validate_record(work, index_record)
@@ -151,6 +154,12 @@ class SeBinding(models.AbstractModel):
         if to_be_checked:
             self.browse(to_be_checked).write({"sync_state": "to_be_checked"})
         return "\n\n".join(result)
+
+    def _recompute_json_work_ctx(self, work):
+        ctx = {}
+        if work.index.lang_id:
+            ctx["lang"] = work.index.lang_id.code
+        return ctx
 
     def _validate_record(self, work, index_record):
         return work.collection._validate_record(index_record)
