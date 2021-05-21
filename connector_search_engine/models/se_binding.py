@@ -14,8 +14,16 @@ _logger = logging.getLogger(__name__)
 
 class SeBinding(models.AbstractModel):
     _name = "se.binding"
-    _se_model = True
     _description = "Search Engine Binding"
+
+    # Tech flag to identify model for SE bindings
+    _se_model = True
+    # Tech flag to identify model for SE bindings
+    # that do not require lang specific indexes.
+    # This flag does not trigger any automatic machinery.
+    # It provides a common key to provide implementers a unified way
+    # to check whether their specific binding models need or not lang spec index.
+    _se_index_lang_agnostic = False
 
     se_backend_id = fields.Many2one(
         "se.backend", related="index_id.backend_id", string="Search Engine Backend"
