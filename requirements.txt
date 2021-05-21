@@ -1,2 +1,4 @@
 # generated from manifests external_dependencies
+elasticsearch>=7.0.0,<8.0.0
+requests
 unidecode
