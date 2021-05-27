@@ -17,7 +17,7 @@ class SeIndex(models.Model):
     backend_id = fields.Many2one(
         "se.backend", string="Backend", required=True, ondelete="cascade"
     )
-    lang_id = fields.Many2one("res.lang", string="Lang", required=True)
+    lang_id = fields.Many2one("res.lang", string="Lang", required=False)
     model_id = fields.Many2one(
         "ir.model",
         string="Model",
@@ -93,16 +93,16 @@ class SeIndex(models.Model):
     def _compute_name(self):
         for rec in self:
             backend = rec.backend_id
+            name = ""
             if rec.lang_id and rec.model_id and backend.index_prefix_name:
-                rec.name = "_".join(
-                    [
-                        backend.index_prefix_name,
-                        backend._normalize_tech_name(rec.model_id.name or ""),
-                        rec.lang_id.code,
-                    ]
-                )
-            else:
-                rec.name = ""
+                bits = [
+                    backend.index_prefix_name,
+                    backend._normalize_tech_name(rec.model_id.name or ""),
+                ]
+                if rec.lang_id:
+                    bits.append(rec.lang_id.code)
+                name = "_".join(bits)
+            rec.name = name
 
     def force_batch_export(self):
         self.ensure_one()
