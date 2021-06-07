@@ -43,11 +43,6 @@ class SeIndex(models.Model):
                 se_model_names.append(model)
         return [("model", "in", se_model_names)]
 
-    @api.model
-    def _get_model_domain(self):
-        _logger.warn("DEPRECATED: use `_model_id_domain`")
-        return self._model_id_domain()
-
     _sql_constraints = [
         (
             "lang_model_uniq",
