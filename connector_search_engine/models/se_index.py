@@ -89,7 +89,7 @@ class SeIndex(models.Model):
         for rec in self:
             backend = rec.backend_id
             name = ""
-            if rec.lang_id and rec.model_id and backend.index_prefix_name:
+            if rec.model_id and backend.index_prefix_name:
                 bits = [
                     backend.index_prefix_name,
                     backend._normalize_tech_name(rec.model_id.name or ""),
