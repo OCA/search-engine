@@ -88,19 +88,22 @@ class SeBinding(models.AbstractModel):
             ):
                 continue
             if record.active:
-                raise UserError(
-                    _("You cannot delete the binding '%s', unactivate it " "first.")
-                    % record.name
-                )
+                raise UserError(record._msg_cannot_delete_active())
             else:
-                raise UserError(
-                    _(
-                        "You cannot delete the binding '%s', "
-                        "wait until it's synchronized."
-                    )
-                    % record.name
-                )
+                raise UserError(record._msg_cannot_delete_not_synchronized())
         return super(SeBinding, self).unlink()
+
+    def _msg_cannot_delete_active(self):
+        return (
+            _("You cannot delete the binding '%s', unactivate it first.")
+            % self.display_name
+        )
+
+    def _msg_cannot_delete_not_synchronized(self):
+        return (
+            _("You cannot delete the binding '%s', wait until it's synchronized.")
+            % self.display_name
+        )
 
     def jobify_recompute_json(self, force_export=False):
         description = _("Recompute %s json and check if need update" % self._name)
