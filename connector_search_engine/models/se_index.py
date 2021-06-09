@@ -14,6 +14,12 @@ class SeIndex(models.Model):
     _description = "Se Index"
 
     name = fields.Char(compute="_compute_name")
+    custom_tech_name = fields.Char(
+        help="Take control of index technical name. "
+        "The final index name is still computed and contains in any case: "
+        "backend index name prefix and language if given. "
+        "If no custom name is provided, model's normalized name will be used."
+    )
     backend_id = fields.Many2one(
         "se.backend", string="Backend", required=True, ondelete="cascade"
     )
@@ -84,20 +90,29 @@ class SeIndex(models.Model):
                 )
         return True
 
-    @api.depends("lang_id", "model_id", "backend_id.index_prefix_name")
+    @api.depends(
+        "custom_tech_name", "lang_id", "model_id", "backend_id.index_prefix_name"
+    )
     def _compute_name(self):
         for rec in self:
-            backend = rec.backend_id
-            name = ""
-            if rec.model_id and backend.index_prefix_name:
-                bits = [
-                    backend.index_prefix_name,
-                    backend._normalize_tech_name(rec.model_id.name or ""),
-                ]
-                if rec.lang_id:
-                    bits.append(rec.lang_id.code)
-                name = "_".join(bits)
-            rec.name = name
+            rec.name = rec._make_name()
+
+    def _make_name(self):
+        """Compute the final name of the index."""
+        name = ""
+        backend = self.backend_id
+        tech_name = self._make_tech_name()
+        if tech_name:
+            bits = [backend.index_prefix_name, tech_name]
+            if self.lang_id:
+                bits.append(self.lang_id.code)
+            name = "_".join(bits)
+        return name
+
+    def _make_tech_name(self):
+        """Compute the main part of the name of the index."""
+        tech_name = self.custom_tech_name or self.model_id.name or ""
+        return self.backend_id._normalize_tech_name(tech_name)
 
     def force_batch_export(self):
         self.ensure_one()
