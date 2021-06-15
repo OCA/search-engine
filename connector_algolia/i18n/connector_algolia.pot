@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -72,11 +72,15 @@ msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__display_name
+#: model:ir.model.fields,field_description:connector_algolia.field_se_binding__display_name
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia__id
+#: model:ir.model.fields,field_description:connector_algolia.field_se_binding__id
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index__id
 msgid "ID"
 msgstr ""
 
@@ -107,6 +111,8 @@ msgstr ""
 
 #. module: connector_algolia
 #: model:ir.model.fields,field_description:connector_algolia.field_se_backend_algolia____last_update
+#: model:ir.model.fields,field_description:connector_algolia.field_se_binding____last_update
+#: model:ir.model.fields,field_description:connector_algolia.field_se_index____last_update
 msgid "Last Modified on"
 msgstr ""
 
