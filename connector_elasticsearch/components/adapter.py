@@ -45,10 +45,6 @@ class ElasticsearchAdapter(Component):
         if not es.ping():  # pragma: no cover
             raise ValueError("Connect Exception with elasticsearch")
 
-        if not es.indices.exists(self._index_name):
-            es.indices.create(
-                index=self._index_name, body=self.work.index.config_id.body
-            )
         return es
 
     def index(self, records):
@@ -96,13 +92,21 @@ class ElasticsearchAdapter(Component):
         self._get_es_client()
         return res["acknowledged"]
 
-    def iter(self):
-        # `iter` is a built-in keyword -> to be replaced
-        _logger.warning("DEPRECATED: use `each` instead of `iter`.")
-        return self.each()
-
     def each(self):
         es = self._get_es_client()
         res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
         hits = res["hits"]["hits"]
         return [r["_source"] for r in hits]
+
+    def settings(self, force=False):
+        es = self._get_es_client()
+        index_name = self._index_name
+        if not es.indices.exists(index_name) and force:
+            es.indices.create(index=index_name, body=self.work.index.config_id.body)
+            msg = "Missing index %s created."
+            _logger.info(msg, index_name)
+        # TODO: understand how to handle this only for dynamic indexes.
+        # For non dynamic indexes you should delete the index and reindex.
+        # if not created and force:
+        #     es.indices.put_settings(self.work.index.config_id.body, index=index_name)
+        return True
