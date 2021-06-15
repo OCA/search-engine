@@ -16,19 +16,19 @@ class SeAdapter(AbstractComponent):
         return True  # pragma: no cover
 
     def index(self, datas):
-        return NotImplemented  # pragma: no cover
+        raise NotImplementedError()
 
     def delete(self, binding_ids):
-        return NotImplemented  # pragma: no cover
+        raise NotImplementedError()
 
     def clear(self):
-        return NotImplemented  # pragma: no cover
+        raise NotImplementedError()
 
     def each(self):
-        return NotImplemented  # pragma: no cover
+        raise NotImplementedError()
 
     def settings(self, force=False):
-        return NotImplemented  # pragma: no cover
+        raise NotImplementedError()
 
     def external_id(self, record):
         return record[self._record_id_key]
