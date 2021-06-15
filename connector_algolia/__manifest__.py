@@ -4,7 +4,7 @@
 
 {
     "name": "Algolia Connector",
-    "version": "13.0.2.5.0",
+    "version": "14.0.1.0.0",
     "category": "Connector",
     "summary": "Connector For Algolia Search Engine",
     "author": "Akretion,"
@@ -26,6 +26,6 @@
         "security/ir.model.access.csv",
     ],
     "demo": ["demo/backend_demo.xml"],
-    "external_dependencies": {"python": ["algoliasearch"]},
-    "installable": False,
+    "external_dependencies": {"python": ["algoliasearch>=2.0,<3.0"]},
+    "installable": True,
 }
