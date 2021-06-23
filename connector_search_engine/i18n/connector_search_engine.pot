@@ -86,6 +86,11 @@ msgid "Created on"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index__custom_tech_name
+msgid "Custom Tech Name"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__data
 msgid "Data"
 msgstr ""
@@ -352,6 +357,14 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__sync_state
 msgid "Sync State"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,help:connector_search_engine.field_se_index__custom_tech_name
+msgid ""
+"Take control of index technical name. The final index name is still computed"
+" and contains in any case: backend index name prefix and language if given. "
+"If no custom name is provided, model's normalized name will be used."
 msgstr ""
 
 #. module: connector_search_engine
