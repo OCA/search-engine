@@ -95,6 +95,9 @@ class ElasticsearchAdapter(Component):
     def each(self):
         es = self._get_es_client()
         res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
+        if not res:
+            # eg: empty index
+            return []
         hits = res["hits"]["hits"]
         return [r["_source"] for r in hits]
 
