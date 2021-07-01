@@ -190,11 +190,11 @@ class SeBinding(models.AbstractModel):
         # and to do the right action as we are in a transaction.
         export_ids = []
         delete_ids = []
-        for work in self._work_by_index():
+        for work in self.sudo()._work_by_index():
             exporter = work.component(usage="se.record.exporter")
             exporter.run()
             export_ids += work.records.ids
-        for work in self._work_by_index(active=False):
+        for work in self.sudo()._work_by_index(active=False):
             deleter = work.component(usage="record.exporter.deleter")
             deleter.run()
             delete_ids += work.records.ids
