@@ -19,10 +19,6 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Needed to make validation happy
-        cls.object_id_export_line = cls.env["ir.exports.line"].create(
-            {"export_id": cls.exporter.id, "name": "id:objectID"}
-        )
         cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
         cls.backend = cls.backend_specific.se_backend_id
         cls.se_index_model = cls.env["se.index"]
@@ -53,9 +49,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
 
     def test_index_adapter(self):
         # Set partner to be updated with fake vals in data
-        self.partner_binding.write(
-            {"sync_state": "to_update", "data": {"objectID": "foo"}}
-        )
+        self.partner_binding.write({"sync_state": "to_update", "data": {"id": "foo"}})
         # Export index to elasticsearch should be called
         self.se_index.batch_export()
         # We should have 3 or 4 request...
@@ -83,7 +77,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
             },
         )
         index_data = json.loads(lines[1])
-        self.assertDictEqual(index_data, {"objectID": "foo"})
+        self.assertDictEqual(index_data, {"id": "foo"})
 
     def test_index_config_as_str(self):
         self.se_config.write({"body_str": '{"mappings": {"1":1}}'})
@@ -91,18 +85,18 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.assertEqual(self.se_config.body_str, '{"mappings": {"1":1}}')
 
     def test_index_adapter_iter(self):
-        data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
+        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
             # when we record the test we must wait for algolia
             sleep(2)
         res = [x for x in self.adapter.each()]
-        res.sort(key=lambda d: d["objectID"])
+        res.sort(key=lambda d: d["id"])
         self.assertListEqual(res, data)
 
     def test_index_adapter_delete(self):
-        data = [{"objectID": "foo"}, {"objectID": "foo2"}, {"objectID": "foo3"}]
+        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
@@ -113,17 +107,8 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
             # when we record the test we must wait for algolia
             sleep(2)
         res = [x for x in self.adapter.each()]
-        res.sort(key=lambda d: d["objectID"])
-        self.assertListEqual(res, [{"objectID": "foo2"}])
-
-    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
-    def test_missing_object_key(self):
-        self.object_id_export_line.unlink()
-        res = self.partner_binding.recompute_json()
-        error_string = "\n".join(
-            ["Validation errors", "{}: The key `objectID` is missing in:"]
-        ).format(str(self.partner_binding))
-        self.assertTrue(res.startswith(error_string))
+        res.sort(key=lambda d: d["id"])
+        self.assertListEqual(res, [{"id": "foo2"}])
 
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_index_adapter_delete_nonexisting_documents(self):
