@@ -43,7 +43,7 @@ interactions:
       body:
         '{"index":{"_id":"foo","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
 
-        {"objectID":"foo"}
+        {"id":"foo"}
 
         '
       headers:

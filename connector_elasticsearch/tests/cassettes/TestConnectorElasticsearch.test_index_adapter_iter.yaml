@@ -167,15 +167,15 @@ interactions:
       body:
         '{"index":{"_id":"foo","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
 
-        {"objectID":"foo"}
+        {"id":"foo"}
 
         {"index":{"_id":"foo2","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
 
-        {"objectID":"foo2"}
+        {"id":"foo2"}
 
         {"index":{"_id":"foo3","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
 
-        {"objectID":"foo3"}
+        {"id":"foo3"}
 
         '
       headers:
@@ -251,7 +251,7 @@ interactions:
       uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us/_search?filter_path=hits.hits._source
     response:
       body:
-        string: '{"hits":{"hits":[{"_source":{"objectID":"foo"}},{"_source":{"objectID":"foo2"}},{"_source":{"objectID":"foo3"}}]}}'
+        string: '{"hits":{"hits":[{"_source":{"id":"foo"}},{"_source":{"id":"foo2"}},{"_source":{"id":"foo3"}}]}}'
       headers:
         content-length:
           - "114"

@@ -35,6 +35,9 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         cls.se_adapter_fake = SeAdapterFake
         cls._load_fixture("ir_exports_test.xml")
         cls.exporter = cls.env.ref("connector_search_engine.ir_exp_partner_test")
+        cls.record_id_export_line = cls.env.ref(
+            "connector_search_engine.ir_exp_partner_line_test0"
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -176,7 +179,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_recompute_all_indexes(self):
         # on creation indexes are computed and external data stored
         expected = {
-            "id": self.partner_binding.id,
+            "id": self.partner_binding.record_id.id,
             "active": True,
             "lang": "en_US",
             "name": "Marty McFly",
@@ -360,3 +363,26 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         result = self.partner_binding.recompute_json()
         self.assertEqual(self.partner_binding.sync_state, "to_update")
         self.assertEqual(result, "")
+
+    def test_customize_id_key_without_target(self):
+        self.env["ir.exports.line"].create(
+            {"export_id": self.exporter.id, "name": "id"}
+        )
+        self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.data["id"], self.partner_binding.id)
+
+    def test_customize_id_key_with_target(self):
+        self.env["ir.exports.line"].create(
+            {"export_id": self.exporter.id, "name": "name:id"}
+        )
+        self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.data["id"], "Marty McFly")
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_missing_record_key(self):
+        self.record_id_export_line.unlink()
+        res = self.partner_binding.recompute_json()
+        error_string = "\n".join(
+            ["Validation errors", "{}: The key `id` is missing in:"]
+        ).format(str(self.partner_binding))
+        self.assertTrue(res.startswith(error_string))
