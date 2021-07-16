@@ -78,7 +78,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
 
     def test_index_adapter_clear_settings(self):
         config = self.env["se.index.config"].create(
-            {"name": "Facet", "body": {"attributesForFaceting": ["name"]}}
+            {"name": "Facet", "body_str": '{"attributesForFaceting": ["name"]}'}
         )
         self.se_index.config_id = config
         self.se_index.clear_index()
