@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from odoo.addons.base_jsonify.models.utils import _f
 from odoo.addons.component.core import Component
 
 
@@ -20,8 +19,6 @@ class JsonExportMapper(Component):
         super(JsonExportMapper, self).__init__(work)
         exporter = work.index.exporter_id
         self._json_parser = exporter.get_json_parser()
-        if _f("id") not in self._json_parser["fields"]:
-            self._json_parser["fields"].append(_f("id"))
 
     def _apply(self, map_record, options=None):
         return map_record._source.jsonify(self._json_parser)[0]

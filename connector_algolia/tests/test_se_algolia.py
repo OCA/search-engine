@@ -24,10 +24,6 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Needed to make validation happy
-        cls.object_id_export_line = cls.env["ir.exports.line"].create(
-            {"export_id": cls.exporter.id, "name": "id:objectID"}
-        )
         AlgoliaAdapter._build_component(cls._components_registry)
         cls.backend_specific = cls.env.ref("connector_algolia.se_algolia_demo")
         cls.backend = cls.backend_specific.se_backend_id
@@ -82,7 +78,7 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
 
     def test_index_adapter_clear_settings(self):
         config = self.env["se.index.config"].create(
-            {"name": "Facet", "body": {"attributesForFaceting": ["name"]}}
+            {"name": "Facet", "body_str": '{"attributesForFaceting": ["name"]}'}
         )
         self.se_index.config_id = config
         self.se_index.clear_index()
@@ -143,12 +139,28 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
 
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_missing_object_key(self):
-        self.object_id_export_line.unlink()
+        self.record_id_export_line.unlink()
         res = self.partner_binding.recompute_json()
         error_string = "\n".join(
             ["Validation errors", "{}: The key `objectID` is missing in:"]
         ).format(str(self.partner_binding))
         self.assertTrue(res.startswith(error_string))
+
+    def test_added_object_key(self):
+        self.assertTrue(self.partner_binding.data)
+        self.assertIn("objectID", self.partner_binding.data)
+        self.assertEqual(
+            self.partner_binding.data["objectID"], self.partner_binding.record_id.id
+        )
+
+    def test_customize_object_key(self):
+        self.env["ir.exports.line"].create(
+            {"export_id": self.exporter.id, "name": "id:objectID"}
+        )
+        self.partner_binding.recompute_json()
+        self.assertTrue(self.partner_binding.data)
+        self.assertIn("objectID", self.partner_binding.data)
+        self.assertEqual(self.partner_binding.data["objectID"], self.partner_binding.id)
 
     def test_index_size(self):
         self.assertTrue(self.partner_binding.data)

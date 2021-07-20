@@ -2,7 +2,13 @@
 <odoo>
     <record id="ir_exp_partner_test" model="ir.exports">
         <field name="name">Test Partner Export</field>
-        <field name="resource">res.partner</field>
+        <field name="resource">res.partner.binding.fake</field>
+    </record>
+    <record id="ir_exp_partner_line_test0" model="ir.exports.line">
+        <field name="export_id" ref="ir_exp_partner_test" />
+        <field name="name">record_id</field>
+        <field name="target">record_id:id</field>
+        <field name="instance_method_name">_jsonify_m2o_to_id</field>
     </record>
     <record id="ir_exp_partner_line_test1" model="ir.exports.line">
         <field name="export_id" ref="ir_exp_partner_test" />
