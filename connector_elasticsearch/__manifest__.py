@@ -19,5 +19,7 @@
         "views/se_menu.xml",
     ],
     "demo": ["demo/backend_demo.xml"],
+    # TODO: Get latest improvements from elasticsearch library
     "external_dependencies": {"python": ["elasticsearch", "requests"]},
+    "installable": True,
 }
