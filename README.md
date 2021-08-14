@@ -17,11 +17,11 @@ TODO: add repo description.
 
 Available addons
 ----------------
-addon | version | summary
---- | --- | ---
-[connector_algolia](connector_algolia/) | 14.0.2.0.0 | Connector For Algolia Search Engine
-[connector_elasticsearch](connector_elasticsearch/) | 14.0.2.0.2 | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 14.0.2.0.1 | Connector Search Engine
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[connector_algolia](connector_algolia/) | 14.0.2.0.0 |  | Connector For Algolia Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 14.0.2.0.2 |  | Connector For Elasticsearch Search Engine
+[connector_search_engine](connector_search_engine/) | 14.0.2.0.1 |  | Connector Search Engine
 
 [//]: # (end addons)
 
