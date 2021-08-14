@@ -12,11 +12,11 @@ This project include a generic search engine connector and specific implementati
 
 Available addons
 ----------------
-addon | version | summary
---- | --- | ---
-[connector_algolia](connector_algolia/) | 12.0.3.0.1 | Connector For Algolia Search Engine
-[connector_elasticsearch](connector_elasticsearch/) | 12.0.1.1.1 | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 12.0.3.2.1 | Connector Search Engine
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[connector_algolia](connector_algolia/) | 12.0.3.0.1 |  | Connector For Algolia Search Engine
+[connector_elasticsearch](connector_elasticsearch/) | 12.0.1.1.1 |  | Connector For Elasticsearch Search Engine
+[connector_search_engine](connector_search_engine/) | 12.0.3.2.1 |  | Connector Search Engine
 
 [//]: # (end addons)
 
