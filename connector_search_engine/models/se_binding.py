@@ -72,7 +72,7 @@ class SeBinding(models.AbstractModel):
 
     def write(self, vals):
         not_new = self.browse()
-        if "active" in vals and not vals["active"]:
+        if "active" in vals:
             not_new = self.filtered(lambda x: x.sync_state != "new")
             new_vals = vals.copy()
             new_vals["sync_state"] = "to_update"
