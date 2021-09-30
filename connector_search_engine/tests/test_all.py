@@ -346,6 +346,11 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.partner_binding.active = False
         self.assertEqual(self.partner_binding.sync_state, "to_update")
 
+    def test_inactive_binding_change_state_to_active(self):
+        self.partner_binding.sync_state = "done"
+        self.partner_binding.active = True
+        self.assertEqual(self.partner_binding.sync_state, "to_update")
+
     def test_inactive_new_binding_do_not_change_state(self):
         self.partner_binding.sync_state = "new"
         self.partner_binding.active = False
