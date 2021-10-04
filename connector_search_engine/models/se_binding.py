@@ -5,6 +5,7 @@
 
 import json
 import logging
+import math
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -24,6 +25,10 @@ class SeBinding(models.AbstractModel):
     # It provides a common key to provide implementers a unified way
     # to check whether their specific binding models need or not lang spec index.
     _se_index_lang_agnostic = False
+
+    # TODO: make it customizable
+    _batch_recompute_max_size = 200
+    _batch_recompute_channel_nb_simultaneous_jobs = 4
 
     se_backend_id = fields.Many2one(
         "se.backend", related="index_id.backend_id", string="Search Engine Backend"
@@ -105,13 +110,29 @@ class SeBinding(models.AbstractModel):
             % self.display_name
         )
 
+    def batch_recompute_size(self, records):
+        return min(
+            math.ceil(
+                len(records) / self._batch_recompute_channel_nb_simultaneous_jobs
+            ),
+            self._batch_recompute_max_size,
+        )
+
     def jobify_recompute_json(self, force_export=False):
-        description = _("Recompute %s json and check if need update" % self._name)
-        # The job creation with tracking is very costly. So disable it.
-        for record in self.with_context(tracking_disable=True):
-            record.with_delay(description=description).recompute_json(
-                force_export=force_export
+        se_binding_class = self.env["se.binding"]
+        records = self.with_context(tracking_disable=True)
+        batch_recompute_size = se_binding_class.batch_recompute_size(records)
+        while records:
+            processing = records[0:batch_recompute_size]
+            records = records[batch_recompute_size:]
+            description = _(
+                "Recompute a batch of %s json and check if need update"
+                % len(processing)
             )
+            processing.with_delay(
+                # channel=se_binding_class.batch_recompute_channel(),
+                description=description
+            ).recompute_json(force_export=force_export)
 
     def _work_by_index(self, active=True):
         self = self.exists()
