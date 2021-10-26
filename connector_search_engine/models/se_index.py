@@ -38,6 +38,12 @@ class SeIndex(models.Model):
         string="Config",
         help="Index configuration record",
     )
+    binding_todelete_ids = fields.One2many(
+        comodel_name="se.binding.todelete",
+        inverse_name="index_id",
+        string="Bindings to delete",
+        readonly=True,
+    )
 
     @api.model
     def _model_id_domain(self):
@@ -137,7 +143,7 @@ class SeIndex(models.Model):
             domain.append(("sync_state", "=", "to_update"))
         return domain
 
-    def batch_export(self, force_export=False):
+    def _batch_export(self, force_export=False):
         self.ensure_one()
         domain = self._get_domain_for_exporting_binding(force_export)
         binding_obj = self.env[self.model_id.model]
@@ -155,6 +161,26 @@ class SeIndex(models.Model):
             processing.with_context(connector_no_export=True).write(
                 {"sync_state": "scheduled"}
             )
+
+    def _batch_delete(self):
+        self.ensure_one()
+        binding_todelete_ids = self.binding_todelete_ids
+        binding_todelete_count = len(binding_todelete_ids)
+        while binding_todelete_ids:
+            processing = binding_todelete_ids[0 : self.batch_size]  # noqa: E203
+            binding_todelete_ids = binding_todelete_ids[self.batch_size :]  # noqa: E203
+            description = _(
+                "Delete %d obsolete records of %d for index '%s'",
+                len(processing),
+                binding_todelete_count,
+                self.name,
+            )
+            processing.with_delay(description=description).synchronize()
+
+    def batch_export(self, force_export=False):
+        self.ensure_one()
+        self._batch_export(force_export=force_export)
+        self._batch_delete()
         return True
 
     def _get_backend_adapter(self, backend=None, model=None, index=None, **kw):
@@ -214,3 +240,4 @@ class SeIndex(models.Model):
     def delete_obsolete_item(self, item_ids):
         adapter = self._get_backend_adapter()
         adapter.delete(item_ids)
+        return f"Deleted ids : {item_ids}"

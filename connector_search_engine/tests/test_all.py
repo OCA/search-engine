@@ -4,7 +4,6 @@
 import mock
 from odoo_test_helper import FakeModelLoader
 
-from odoo import exceptions
 from odoo.tests.common import Form
 from odoo.tools import mute_logger
 
@@ -281,6 +280,26 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.assertEqual(calls[0]["work_ctx"]["records"], self.partner_binding)
             self.assertEqual(calls[0]["method"], "delete")
 
+    def test_batch_delete(self):
+        # when a binding is unlinked, it should delete it
+        partner_binding_id = self.partner_binding.id
+        self.partner_binding.unlink()
+        self.assertIn(
+            partner_binding_id,
+            self.se_index.binding_todelete_ids.mapped("binding_id"),
+            "Binding should be queued for deletion",
+        )
+        with self.se_adapter_fake.mocked_calls() as calls:
+            self.se_index.batch_export()
+            self.assertEqual(len(calls), 1)
+            self.assertEqual(calls[0]["method"], "delete")
+            self.assertEqual(calls[0]["args"], [partner_binding_id])
+        self.assertNotIn(
+            partner_binding_id,
+            self.se_index.binding_todelete_ids.mapped("binding_id"),
+            "Binding should've been removed from the delete queue",
+        )
+
     def test_unlink_new_binding(self):
         self.partner_binding.sync_state = "new"
         self.partner_binding.unlink()
@@ -293,23 +312,32 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(len(self.partner_binding.exists()), 0)
 
     def test_unlink_to_update_inactive_binding(self):
+        partner_binding_id = self.partner_binding.id
         self.partner_binding.active = False
         self.partner_binding.sync_state = "to_update"
-        with self.assertRaises(exceptions.UserError) as err:
-            self.partner_binding.unlink()
-        self.assertIn("wait until it's synchronized.", err.exception.name)
+        self.partner_binding.unlink()
+        self.assertIn(
+            partner_binding_id, self.se_index.binding_todelete_ids.mapped("binding_id")
+        )
+        self.assertEqual(len(self.partner_binding.exists()), 0)
 
     def test_unlink_to_upgrade_active_binding(self):
+        partner_binding_id = self.partner_binding.id
         self.partner_binding.sync_state = "to_update"
-        with self.assertRaises(exceptions.UserError) as err:
-            self.partner_binding.unlink()
-        self.assertIn("unactivate it first", err.exception.name)
+        self.partner_binding.unlink()
+        self.assertIn(
+            partner_binding_id, self.se_index.binding_todelete_ids.mapped("binding_id")
+        )
+        self.assertEqual(len(self.partner_binding.exists()), 0)
 
     def test_unlink_done_active_binding(self):
+        partner_binding_id = self.partner_binding.id
         self.partner_binding.sync_state = "done"
-        with self.assertRaises(exceptions.UserError) as err:
-            self.partner_binding.unlink()
-        self.assertIn("unactivate it first", err.exception.name)
+        self.partner_binding.unlink()
+        self.assertIn(
+            partner_binding_id, self.se_index.binding_todelete_ids.mapped("binding_id")
+        )
+        self.assertEqual(len(self.partner_binding.exists()), 0)
 
     def test_inactive_binding_change_state(self):
         self.partner_binding.sync_state = "done"
