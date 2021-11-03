@@ -45,6 +45,16 @@ msgid "Batch task for generating %s recompute job"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__binding_id
+msgid "Binding ID"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index__binding_todelete_ids
+msgid "Bindings to delete"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__body
 msgid "Body"
 msgstr ""
@@ -72,6 +82,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__create_uid
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_uid
 msgid "Created by"
@@ -80,6 +91,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__create_date
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_date
 msgid "Created on"
@@ -111,9 +123,16 @@ msgid "Date Syncronized"
 msgstr ""
 
 #. module: connector_search_engine
+#: code:addons/connector_search_engine/models/se_index.py:0
+#, python-format
+msgid "Delete %d obsolete records of %d for index '%s'"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__display_name
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__display_name
 msgid "Display Name"
@@ -164,6 +183,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__id
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__id
 msgid "ID"
@@ -178,6 +198,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_ids
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_ids
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__index_id
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__index_id
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid "Index"
 msgstr ""
@@ -214,6 +235,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding____last_update
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config____last_update
 msgid "Last Modified on"
@@ -222,6 +244,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__write_uid
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_uid
 msgid "Last Updated by"
@@ -230,6 +253,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__write_date
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_date
 msgid "Last Updated on"
@@ -309,6 +333,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model,name:connector_search_engine.model_se_binding
 msgid "Search Engine Binding"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model,name:connector_search_engine.model_se_binding_todelete
+msgid "Search Engine Binding To Delete"
 msgstr ""
 
 #. module: connector_search_engine
@@ -413,16 +442,4 @@ msgstr ""
 #: code:addons/connector_search_engine/models/se_binding.py:0
 #, python-format
 msgid "Validation errors"
-msgstr ""
-
-#. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
-msgid "You cannot delete the binding '%s', unactivate it first."
-msgstr ""
-
-#. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
-msgid "You cannot delete the binding '%s', wait until it's synchronized."
 msgstr ""
