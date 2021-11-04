@@ -112,7 +112,7 @@ class SeIndex(models.Model):
             bits = [backend.index_prefix_name, tech_name]
             if self.lang_id:
                 bits.append(self.lang_id.code)
-            name = "_".join(bits)
+            name = "_".join([b for b in bits if b])
         return name
 
     def _make_tech_name(self):
