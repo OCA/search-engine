@@ -109,6 +109,14 @@ class SeIndex(models.Model):
         backend = self.backend_id
         tech_name = self._make_tech_name()
         if tech_name:
+            if not backend.index_prefix_name:
+                # index_prefix_name should be not empty
+                # indeed from the UI the index_prefix_name is alway fill base on
+                # tech_name
+                # So if it's empty it because we have change some config using
+                # server env or using dataencryption module
+                # in that case we set the default value to fix everything
+                backend._onchange_tech_name()
             bits = [backend.index_prefix_name, tech_name]
             if self.lang_id:
                 bits.append(self.lang_id.code)
