@@ -20,18 +20,8 @@ msgid "An index definition is required for ElasticSearch"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid "Clear the index in the search engine"
-msgstr ""
-
-#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__config_id
 msgid "Config"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid "Configuration"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -84,18 +74,6 @@ msgid "Es Server Host Env Is Editable"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid "Force the export of all binding"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid ""
-"Force to recompute all binding of the index and set them to the state 'To "
-"update'"
-msgstr ""
-
-#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__id
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__id
 msgid "ID"
@@ -103,7 +81,6 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_ids
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
 msgid "Index"
 msgstr ""
 
@@ -162,7 +139,6 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.actions.act_window,name:connector_elasticsearch.se_backend_elasticsearch_act_window
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
 msgid "Search Engine Backend"
 msgstr ""
 
@@ -193,5 +169,5 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid "http://127.0.0.1:9200"
+msgid "http://elactic:9200"
 msgstr ""
