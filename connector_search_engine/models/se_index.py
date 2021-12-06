@@ -101,7 +101,12 @@ class SeIndex(models.Model):
     )
     def _compute_name(self):
         for rec in self:
-            rec.name = rec._make_name()
+            if not rec.backend_id:
+                # in onchange on concrete views rec is a new Id
+                # so we can't calc the right name.
+                rec.name = ""
+            else:
+                rec.name = rec._make_name()
 
     def _make_name(self):
         """Compute the final name of the index."""
