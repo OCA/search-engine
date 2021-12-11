@@ -28,6 +28,7 @@
                                 <field name="model_id" />
                                 <field name="exporter_id" />
                                 <field name="batch_size" />
+                                <field name="config_id" />
                                 <button
                                     name="force_recompute_all_binding"
                                     help="Force to recompute all binding of the index and set them to the state 'To update'"
