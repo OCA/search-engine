@@ -20,11 +20,6 @@ msgid "An index definition is required for ElasticSearch"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__config_id
-msgid "Config"
-msgstr ""
-
-#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__create_uid
 msgid "Created by"
 msgstr ""
@@ -43,14 +38,6 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host
 msgid "ElasticSearch host"
-msgstr ""
-
-#. module: connector_elasticsearch
-#: model:ir.model.fields,help:connector_elasticsearch.field_se_index__config_id
-msgid ""
-"ElasticSearch index definition (see "
-"https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-"
-"create-index.html)"
 msgstr ""
 
 #. module: connector_elasticsearch
