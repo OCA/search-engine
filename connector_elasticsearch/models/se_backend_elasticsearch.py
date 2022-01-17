@@ -25,6 +25,8 @@ class SeBackendElasticsearch(models.Model):
     tech_name = fields.Char(
         related="se_backend_id.tech_name", store=True, readonly=False
     )
+    api_key_id = fields.Char(help="Elasticsearch Api Key ID", string="Api Key ID")
+    api_key = fields.Char(help="Elasticsearch Api Key")
 
     @property
     def _server_env_fields(self):
