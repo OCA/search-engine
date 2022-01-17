@@ -20,6 +20,7 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__backend_id
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_search_view
 msgid "Backend"
 msgstr ""
 
@@ -65,7 +66,7 @@ msgid "Body Str"
 msgstr ""
 
 #. module: connector_search_engine
-#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid "Clear the index in the search engine"
 msgstr ""
 
@@ -160,15 +161,20 @@ msgid "Exporter"
 msgstr ""
 
 #. module: connector_search_engine
-#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid "Force the export of all binding"
 msgstr ""
 
 #. module: connector_search_engine
-#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid ""
 "Force to recompute all binding of the index and set them to the state 'To "
 "update'"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_search_view
+msgid "Group By..."
 msgstr ""
 
 #. module: connector_search_engine
@@ -192,6 +198,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__index_id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__index_id
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid "Index"
 msgstr ""
 
@@ -216,6 +223,16 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index__config_id
 msgid "Index configuration record"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.ui.menu,name:connector_search_engine.se_index_config_menu
+msgid "Index configurations"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.ui.menu,name:connector_search_engine.se_index_menu
+msgid "Indexes"
 msgstr ""
 
 #. module: connector_search_engine
@@ -258,6 +275,7 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__model_id
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_search_view
 msgid "Model"
 msgstr ""
 
@@ -306,13 +324,13 @@ msgid "Se Backend"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.actions.act_window,name:connector_search_engine.se_index_act_window
 #: model:ir.model,name:connector_search_engine.model_se_index
 msgid "Se Index"
 msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.act_window,name:connector_search_engine.se_index_config_act_window
-#: model:ir.ui.menu,name:connector_search_engine.se_index_config_menu
 msgid "Se Index Config"
 msgstr ""
 
