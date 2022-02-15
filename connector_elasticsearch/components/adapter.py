@@ -37,20 +37,16 @@ class ElasticsearchAdapter(Component):
 
     def _get_es_client(self):
         backend = self.backend_record
-
-        api_key = None
-        if backend.api_key_id and backend.api_key:
-            api_key = (backend.api_key_id, backend.api_key)
-        es = elasticsearch.Elasticsearch(
+        api_key = (
+            (backend.api_key_id, backend.api_key)
+            if backend.api_key_id and backend.api_key
+            else None
+        )
+        return elasticsearch.Elasticsearch(
             [backend.es_server_host],
             connection_class=self._es_connection_class,
             api_key=api_key,
         )
-
-        if not es.ping():  # pragma: no cover
-            raise ValueError("Connect Exception with elasticsearch")
-
-        return es
 
     def index(self, records):
         es = self._get_es_client()
