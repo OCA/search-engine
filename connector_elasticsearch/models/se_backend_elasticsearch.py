@@ -1,7 +1,10 @@
 # Copyright 2019 ACSONE SA/NV
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import fields, models
+from elasticsearch import AuthenticationException, NotFoundError
+
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 
 class SeBackendElasticsearch(models.Model):
@@ -33,3 +36,27 @@ class SeBackendElasticsearch(models.Model):
         env_fields = super()._server_env_fields
         env_fields.update({"es_server_host": {}})
         return env_fields
+
+    def action_test_connection(self):
+        with self.specific_backend.work_on(self._name) as work:
+            adapter = work.component(usage="se.backend.adapter")
+            es = adapter._get_es_client()
+            try:
+                es.security.authenticate()
+            except NotFoundError:
+                raise UserError(_("Unable to reach host."))
+            except AuthenticationException:
+                raise UserError(_("Unable to authenticate. Check credentials."))
+            except Exception as e:
+                raise UserError(
+                    _("Unable to connect to ElasticSearch:") + "\n\n" + repr(e)
+                )
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Connection Test Succeeded!"),
+                "message": _("Everything seems properly set up!"),
+                "sticky": False,
+            },
+        }
