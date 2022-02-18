@@ -1,4 +1,4 @@
-[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/276/14.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-search-engine-276)
+[![Runboat](https://img.shields.io/badge/runboat-Try%20me-875A7B.png)](https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=14.0)
 [![Build Status](https://travis-ci.com/OCA/search-engine.svg?branch=14.0)](https://travis-ci.com/OCA/search-engine)
 [![codecov](https://codecov.io/gh/OCA/search-engine/branch/14.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
 [![Translation Status](https://translation.odoo-community.org/widgets/search-engine-14-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/search-engine-14-0/?utm_source=widget)
@@ -15,13 +15,7 @@ TODO: add repo description.
 
 [//]: # (addons)
 
-Available addons
-----------------
-addon | version | maintainers | summary
---- | --- | --- | ---
-[connector_algolia](connector_algolia/) | 14.0.2.1.0 |  | Connector For Algolia Search Engine
-[connector_elasticsearch](connector_elasticsearch/) | 14.0.2.4.0 |  | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 14.0.2.3.0 |  | Connector Search Engine
+This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
 
 [//]: # (end addons)
 
