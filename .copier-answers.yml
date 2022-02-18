@@ -1,13 +1,13 @@
 # Do NOT update manually; changes here will be overwritten by Copier
 _commit: v1.5.1
 _src_path: gh:oca/oca-addons-repo-template
-ci: Travis
+ci: GitHub
 dependency_installation_mode: PIP
 generate_requirements_txt: true
 include_wkhtmltopdf: false
 odoo_version: 14.0
 rebel_module_groups: []
-repo_description: 'TODO: add repo description.'
+repo_description: External search engine connectors
 repo_name: search-engine
 repo_slug: search-engine
 travis_apt_packages: []
