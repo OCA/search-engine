@@ -1,5 +1,6 @@
 [![Runboat](https://img.shields.io/badge/runboat-Try%20me-875A7B.png)](https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=14.0)
-[![Build Status](https://travis-ci.com/OCA/search-engine.svg?branch=14.0)](https://travis-ci.com/OCA/search-engine)
+[![Pre-commit Status](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml/badge.svg?branch=14.0)](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml?query=branch%3A14.0)
+[![Build Status](https://github.com/OCA/search-engine/actions/workflows/test.yml/badge.svg?branch=14.0)](https://github.com/OCA/search-engine/actions/workflows/test.yml?query=branch%3A14.0)
 [![codecov](https://codecov.io/gh/OCA/search-engine/branch/14.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
 [![Translation Status](https://translation.odoo-community.org/widgets/search-engine-14-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/search-engine-14-0/?utm_source=widget)
 
@@ -7,7 +8,7 @@
 
 # search-engine
 
-TODO: add repo description.
+External search engine connectors
 
 <!-- /!\ do not modify below this line -->
 
