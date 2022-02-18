@@ -30,6 +30,12 @@ msgid "Api Key ID"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Connection Test Succeeded!"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__create_uid
 msgid "Created by"
 msgstr ""
@@ -78,6 +84,17 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host_env_is_editable
 msgid "Es Server Host Env Is Editable"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Everything seems properly set up!"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
+msgid "Host"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -165,8 +182,31 @@ msgid "Tech Name"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
+msgid "Test Connection"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__specific_model
 msgid "Type"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Unable to authenticate. Check credentials."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Unable to connect to ElasticSearch:"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Unable to reach host."
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -176,5 +216,5 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
-msgid "http://elactic:9200"
+msgid "http://elastic:9200"
 msgstr ""
