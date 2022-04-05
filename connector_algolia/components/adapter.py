@@ -73,3 +73,8 @@ class AlgoliaAdapter(Component):
     def each(self):
         index = self.get_index()
         return index.browse_objects()
+
+    def external_id(self, record):
+        # Algolia stores objectID as a strings, therefore we can't browse
+        # records with it.
+        return int(super().external_id(record))
