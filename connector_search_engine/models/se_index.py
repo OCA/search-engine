@@ -13,7 +13,7 @@ class SeIndex(models.Model):
     _name = "se.index"
     _description = "Se Index"
 
-    name = fields.Char(compute="_compute_name")
+    name = fields.Char(compute="_compute_name", store=True)
     custom_tech_name = fields.Char(
         help="Take control of index technical name. "
         "The final index name is still computed and contains in any case: "
