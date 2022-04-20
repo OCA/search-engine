@@ -8,7 +8,7 @@
         <!--Mandatory to use the mode when inherited (cfr product.template and product.product)-->
         <field name="mode">primary</field>
         <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
-        <field name="priority" eval="50" />
+        <field name="priority" eval="99" />
         <field name="arch" type="xml">
             <form position="attributes">
                 <attribute name="create">true</attribute>
