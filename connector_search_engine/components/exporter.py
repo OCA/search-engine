@@ -13,11 +13,11 @@ class SeExporter(Component):
     _base_backend_adapter_usage = "se.backend.adapter"
 
     def _index(self, records):
-        """ Index the record """
+        """Index the record"""
         return self.backend_adapter.index(records)
 
     def run(self):
-        """ Run the synchronization """
+        """Run the synchronization"""
         if self.work.records:
             # TODO: this state should be set _after_ the indexing
             # the best will to add an extra state "sync_running"
@@ -31,5 +31,5 @@ class SeExporter(Component):
             )
 
     def export_settings(self, force=True):
-        """ Run the settings synchronization """
+        """Run the settings synchronization"""
         return self.backend_adapter.settings(force=force)
