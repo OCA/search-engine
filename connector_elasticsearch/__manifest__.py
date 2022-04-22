@@ -13,7 +13,7 @@
         "connector_search_engine",
         "connector",
         "component",
-        "base_jsonify",
+        "jsonifier",
         "server_environment",
     ],
     "data": [
