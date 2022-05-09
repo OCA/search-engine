@@ -42,7 +42,7 @@ class SeBackendElasticsearch(models.Model):
             adapter = work.component(usage="se.backend.adapter")
             es = adapter._get_es_client()
             try:
-                es.security.authenticate()
+                es.info()
             except NotFoundError:
                 raise UserError(_("Unable to reach host."))
             except AuthenticationException:
