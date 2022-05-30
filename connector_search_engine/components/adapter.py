@@ -31,4 +31,6 @@ class SeAdapter(AbstractComponent):
         raise NotImplementedError()
 
     def external_id(self, record):
-        return record[self._record_id_key]
+        # Doesn't matter how the external id is stored on SE side, it should always
+        # be a valid odoo id.
+        return int(record[self._record_id_key])
