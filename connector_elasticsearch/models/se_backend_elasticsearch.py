@@ -1,6 +1,7 @@
 # Copyright 2019 ACSONE SA/NV
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+# pylint: disable=missing-manifest-dependency
 from elasticsearch import AuthenticationException, NotFoundError
 
 from odoo import _, fields, models
