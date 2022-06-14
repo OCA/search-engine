@@ -203,6 +203,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.env["se.index"].recompute_all_index()
         self.assertEqual(self.partner_binding.get_export_data(), expected)
         self.assertEqual(self.partner_binding.sync_state, "to_update")
+        self.assertNotEqual(self.partner_binding.date_modified, False)
 
     def test_force_recompute_all_binding(self):
         with mock.patch.object(type(self.se_index), "recompute_all_binding") as mocked:
@@ -216,6 +217,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.se_index.with_context(call_tracking=tracking).force_batch_export()
         self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
         self.assertEqual(self.partner_binding.sync_state, "scheduled")
+        self.assertNotEqual(self.partner_binding.date_syncronized, False)
 
     def test_generate_batch_export_per_index(self):
         tracking = []
