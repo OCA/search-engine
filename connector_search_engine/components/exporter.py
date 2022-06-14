@@ -1,6 +1,7 @@
 # Copyright 2016 Akretion (http://www.akretion.com)
 # Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+from odoo import fields
 
 from odoo.addons.component.core import Component
 
@@ -25,7 +26,9 @@ class SeExporter(Component):
             # Then we create a job (with the id of the index search task)
             # and we ask the search engine if it finish or not and
             # when it's finish we set the binding in done
-            self.work.records.write({"sync_state": "done"})
+            self.work.records.write(
+                {"sync_state": "done", "date_syncronized": fields.Datetime.now()}
+            )
             return self._index(
                 [record.get_export_data() for record in self.work.records]
             )
