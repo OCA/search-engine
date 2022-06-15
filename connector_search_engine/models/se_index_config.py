@@ -11,6 +11,7 @@ from odoo.addons.base_sparse_field.models.fields import Serialized
 class SeIndexConfig(models.Model):
 
     _name = "se.index.config"
+    _inherit = ["mail.thread"]
     _description = "Elasticsearch index configuration"
 
     name = fields.Char(required=True)
@@ -18,7 +19,10 @@ class SeIndexConfig(models.Model):
     # This field is used since no widget exists to edit a serialized field
     # into the web fontend
     body_str = fields.Text(
-        compute="_compute_body_str", inverse="_inverse_body_str", default="{}"
+        compute="_compute_body_str",
+        inverse="_inverse_body_str",
+        default="{}",
+        track_visibility="onchange",
     )
 
     @api.depends("body")
