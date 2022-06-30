@@ -45,8 +45,8 @@ class SeBinding(models.AbstractModel):
         default="new",
         readonly=True,
     )
-    date_modified = fields.Date(readonly=True)
-    date_syncronized = fields.Date(readonly=True)
+    date_modified = fields.Datetime(readonly=True)
+    date_syncronized = fields.Datetime(readonly=True)
     data = fields.Serialized()
     data_display = fields.Text(
         compute="_compute_data_display",
@@ -157,6 +157,7 @@ class SeBinding(models.AbstractModel):
                     vals = {"data": index_record}
                     if binding.sync_state != "to_update":
                         vals["sync_state"] = "to_update"
+                        vals["date_modified"] = fields.Datetime.now()
                     binding.write(vals)
         if validation_errors:
             result.append(_("Validation errors") + "\n" + "\n".join(validation_errors))
