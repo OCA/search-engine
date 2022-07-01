@@ -44,6 +44,8 @@ class SeBinding(models.AbstractModel):
         ],
         default="new",
         readonly=True,
+        compute="_compute_sync_state",
+        store=True,
     )
     date_modified = fields.Datetime(readonly=True)
     date_syncronized = fields.Datetime(readonly=True)
@@ -77,16 +79,12 @@ class SeBinding(models.AbstractModel):
         record.jobify_recompute_json()
         return record
 
-    def write(self, vals):
-        not_new = self.browse()
-        if "active" in vals and not vals["active"]:
-            not_new = self.filtered(lambda x: x.sync_state != "new")
-            new_vals = vals.copy()
-            new_vals["sync_state"] = "to_update"
-            super(SeBinding, not_new).write(new_vals)
-
-        res = super(SeBinding, self - not_new).write(vals)
-        return res
+    @api.depends("active")
+    def _compute_sync_state(self):
+        for rec in self:
+            if rec.sync_state != "new":
+                rec.sync_state = "to_update"
+                rec.date_modified = fields.Datetime.now()
 
     def _prepare_todelete_vals(self):
         self.ensure_one()
