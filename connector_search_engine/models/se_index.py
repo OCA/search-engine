@@ -22,6 +22,7 @@ class SeIndex(models.Model):
     _name = 'se.index'
     _description = 'Se Index'
 
+<<<<<<< HEAD
     @api.model
     def _get_model_domain(self):
         models = self.env['ir.model'].search([('transient', '=', False)])
@@ -37,6 +38,9 @@ class SeIndex(models.Model):
         return [('id', 'in', se_model_ids)]
 
     name = fields.Char(required=True)
+=======
+    name = fields.Char(compute='_compute_name')
+>>>>>>> FIX connector_search: replace onchange by compute
     backend_id = fields.Many2one(
         'se.backend',
         string='Backend',
@@ -98,19 +102,12 @@ class SeIndex(models.Model):
                 bindings._jobify_recompute_json(force_export=force_export)
         return True
 
-    @api.onchange('lang_id', 'model_id', 'backend_id.name')
-    def _onchange_name(self):
-        ctx = self.env.context
+    @api.depends('lang_id', 'model_id', 'backend_id.name')
+    def _compute_name(self):
         for rec in self:
-            backend = rec.backend_id
-            if not backend and ctx.get('backend_model') and ctx.get(
-                    'backend_id'):
-                backend = rec.env[ctx['backend_model']].browse(
-                    ctx['backend_id'])
-                rec.backend_id = backend.id
-            if rec.lang_id and rec.model_id:
+            if rec.lang_id and rec.model_id and rec.backend_id.name:
                 rec.name = '%s_%s_%s' % (
-                    sanitize(backend and backend.name or ''),
+                    sanitize(rec.backend_id.name),
                     sanitize(rec.model_id.name or ''),
                     rec.lang_id.code)
 
