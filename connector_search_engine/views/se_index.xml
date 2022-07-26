@@ -6,7 +6,7 @@
         <field name="name">se.index.tree (in connector_search_engine)</field>
         <field name="model">se.index</field>
         <field name="arch" type="xml">
-            <tree string="Index" editable="bottom">
+            <tree editable="bottom">
                 <field name="custom_tech_name" optional="hide" />
                 <field
                     name="backend_id"

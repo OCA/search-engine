@@ -5,7 +5,6 @@ from odoo import api, fields, models, tools
 
 
 class SeBackend(models.Model):
-
     _name = "se.backend"
     _description = "Se Backend"
     _inherit = [
@@ -24,7 +23,6 @@ class SeBackend(models.Model):
     )
     index_ids = fields.One2many("se.index", "backend_id")
     specific_backend = fields.Reference(
-        string="Specific backend",
         compute="_compute_specific_backend",
         selection="_select_specific_backend",
         readonly=True,
@@ -83,14 +81,16 @@ class SeBackend(models.Model):
 
     @api.onchange("tech_name", "index_prefix_name")
     def _onchange_tech_name(self):
-        super()._onchange_tech_name()
+        res = super()._onchange_tech_name()
         if self.index_prefix_name:
             # make sure is normalized
             self.index_prefix_name = self._normalize_tech_name(self.index_prefix_name)
         else:
             self.index_prefix_name = self.tech_name
+        return res
 
     def _handle_tech_name(self, vals):
-        super()._handle_tech_name(vals)
+        res = super()._handle_tech_name(vals)
         if not vals.get("index_prefix_name") and vals.get("tech_name"):
             vals["index_prefix_name"] = vals["tech_name"]
+        return res

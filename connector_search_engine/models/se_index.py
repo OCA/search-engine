@@ -9,7 +9,6 @@ _logger = logging.getLogger(__name__)
 
 
 class SeIndex(models.Model):
-
     _name = "se.index"
     _description = "Se Index"
 
@@ -165,10 +164,14 @@ class SeIndex(models.Model):
         while bindings:
             processing = bindings[0 : self.batch_size]  # noqa: E203
             bindings = bindings[self.batch_size :]  # noqa: E203
-            description = _("Export %d records of %d for index '%s'") % (
-                len(processing),
-                bindings_count,
-                self.name,
+            description = _(
+                "Export %(len_processing)d records of %(bindings_count)d for index '%(name)s'"
+            ) % (
+                {
+                    "len_processing": len(processing),
+                    "bindings_count": bindings_count,
+                    "name": self.name,
+                }
             )
             processing.with_delay(description=description).synchronize()
             processing.with_context(connector_no_export=True).write(
@@ -183,11 +186,16 @@ class SeIndex(models.Model):
             processing = binding_todelete_ids[0 : self.batch_size]  # noqa: E203
             binding_todelete_ids = binding_todelete_ids[self.batch_size :]  # noqa: E203
             description = _(
-                "Delete %d obsolete records of %d for index '%s'",
-                len(processing),
-                binding_todelete_count,
-                self.name,
+                "Delete %(len_processing)d obsolete records of "
+                "%(binding_todelete_count)d for index '%(name)s'"
+            ) % (
+                {
+                    "len_processing": len(processing),
+                    "binding_todelete_count": binding_todelete_count,
+                    "name": self.name,
+                }
             )
+
             processing.with_delay(description=description).synchronize()
 
     def batch_export(self, force_export=False):

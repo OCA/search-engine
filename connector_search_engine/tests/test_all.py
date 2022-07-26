@@ -13,7 +13,7 @@ from .common import TestSeBackendCaseBase
 class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        res = super().setUpClass()
         # Load fake models ->/
         cls.loader = FakeModelLoader(cls.env, cls.__module__)
         cls.loader.backup_registry()
@@ -37,11 +37,12 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         cls.record_id_export_line = cls.env.ref(
             "connector_search_engine.ir_exp_partner_line_test0"
         )
+        return res
 
     @classmethod
     def tearDownClass(cls):
         cls.loader.restore_registry()
-        super().tearDownClass()
+        return super().tearDownClass()
 
     @classmethod
     def _prepare_index_values(cls, backend=None):

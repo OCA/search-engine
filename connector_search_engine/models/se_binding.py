@@ -52,7 +52,7 @@ class SeBinding(models.AbstractModel):
         compute="_compute_data_display",
         help="Include this in debug mode to be able to inspect index data.",
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
 
     @api.depends("data")
     def _compute_data_display(self):
@@ -104,7 +104,10 @@ class SeBinding(models.AbstractModel):
         return super().unlink()
 
     def jobify_recompute_json(self, force_export=False):
-        description = _("Recompute %s json and check if need update" % self._name)
+        description = _("Recompute %(name)s json and check if need update") % {
+            "name": self._name
+        }
+
         # The job creation with tracking is very costly. So disable it.
         for record in self.with_context(tracking_disable=True):
             record.with_delay(description=description).recompute_json(
