@@ -1,6 +1,6 @@
 # Copyright 2019 ACSONE SA/NV
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
+# pylint: disable=W7936
 from elasticsearch import AuthenticationException, NotFoundError
 
 from odoo import _, fields, models
@@ -8,7 +8,6 @@ from odoo.exceptions import UserError
 
 
 class SeBackendElasticsearch(models.Model):
-
     _name = "se.backend.elasticsearch"
     _inherit = [
         "se.backend.spec.abstract",
@@ -43,14 +42,14 @@ class SeBackendElasticsearch(models.Model):
             es = adapter._get_es_client()
             try:
                 es.security.authenticate()
-            except NotFoundError:
-                raise UserError(_("Unable to reach host."))
-            except AuthenticationException:
-                raise UserError(_("Unable to authenticate. Check credentials."))
+            except NotFoundError as e:
+                raise UserError(_("Unable to reach host.")) from e
+            except AuthenticationException as e:
+                raise UserError(_("Unable to authenticate. Check credentials.")) from e
             except Exception as e:
                 raise UserError(
                     _("Unable to connect to ElasticSearch:") + "\n\n" + repr(e)
-                )
+                ) from e
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",

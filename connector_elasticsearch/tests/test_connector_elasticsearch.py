@@ -18,13 +18,14 @@ from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexB
 class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        res = super().setUpClass()
         cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
         cls.backend = cls.backend_specific.se_backend_id
         cls.se_index_model = cls.env["se.index"]
         cls.setup_records()
         with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
             cls.adapter = work.component(usage="se.backend.adapter")
+        return res
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
@@ -39,7 +40,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         cls.se_config = cls.env["se.index.config"].create(
             {"name": "my_config", "body": {"mappings": {}}}
         )
-        super().setup_records()
+        return super().setup_records()
 
     @classmethod
     def _prepare_index_values(cls, backend):
