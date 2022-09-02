@@ -7,6 +7,7 @@ import json
 import logging
 
 from odoo import _, api, fields, models
+from odoo.tools import ormcache
 
 _logger = logging.getLogger(__name__)
 
@@ -59,6 +60,8 @@ class SeBinding(models.AbstractModel):
         for rec in self:
             rec.data_display = json.dumps(rec.data, sort_keys=True, indent=4)
 
+    # Reading this field cost a lot
+    @ormcache()
     def get_export_data(self):
         """Public method to retrieve export data."""
         return self.data
@@ -73,19 +76,27 @@ class SeBinding(models.AbstractModel):
 
     @api.model
     def create(self, vals):
-        record = super(SeBinding, self).create(vals)
+        record = super().create(vals)
         record.jobify_recompute_json()
         return record
 
     def write(self, vals):
+        to_clear = self.browse()
         not_new = self.browse()
         if "active" in vals and not vals["active"]:
             not_new = self.filtered(lambda x: x.sync_state != "new")
             new_vals = vals.copy()
             new_vals["sync_state"] = "to_update"
+            if "data" in new_vals:
+                to_clear |= not_new
             super(SeBinding, not_new).write(new_vals)
-
-        res = super(SeBinding, self - not_new).write(vals)
+        other = self - not_new
+        if "data" in vals:
+            to_clear |= other
+        res = super(SeBinding, other).write(vals)
+        if to_clear:
+            # As the data has been updated, force clear cache.
+            to_clear.get_export_data.clear_cache(to_clear)
         return res
 
     def _prepare_todelete_vals(self):
