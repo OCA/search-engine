@@ -60,7 +60,7 @@ class SeBinding(models.AbstractModel):
         for rec in self:
             rec.data_display = json.dumps(rec.data, sort_keys=True, indent=4)
 
-    # Reading this field cost a lot
+    # Reading this field cost a lot so use cache.
     @ormcache()
     def get_export_data(self):
         """Public method to retrieve export data."""
@@ -74,11 +74,11 @@ class SeBinding(models.AbstractModel):
             return False
         return True
 
-    @api.model
-    def create(self, vals):
-        record = super().create(vals)
-        record.jobify_recompute_json()
-        return record
+    @api.model_create_multi
+    def create(self, list_vals):
+        records = super().create(list_vals)
+        records.jobify_recompute_json()
+        return records
 
     def write(self, vals):
         to_clear = self.browse()
@@ -124,13 +124,15 @@ class SeBinding(models.AbstractModel):
 
     def _work_by_index(self, active=True):
         self = self.exists()
+        all_bindings = self
         for backend in self.mapped("se_backend_id"):
-            for index in self.mapped("index_id"):
-                bindings = self.filtered(
+            for index in all_bindings.mapped("index_id"):
+                bindings = all_bindings.filtered(
                     lambda b, backend=backend, index=index: b.se_backend_id == backend
                     and b.index_id == index
                     and b.active == active
                 )
+                all_bindings -= bindings
                 specific_backend = backend.specific_backend
                 with specific_backend.work_on(
                     self._name, records=bindings, index=index
