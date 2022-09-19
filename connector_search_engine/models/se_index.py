@@ -77,23 +77,17 @@ class SeIndex(models.Model):
         return self.search(domain).recompute_all_binding()
 
     def force_recompute_all_binding(self):
-        for record in self:
-            record.recompute_all_binding(force_export=True)
+        self.recompute_all_binding(force_export=True)
 
     def recompute_all_binding(self, force_export=False, batch_size=500):
         target_models = self.mapped("model_id.model")
         for target_model in target_models:
             indexes = self.filtered(lambda r, m=target_model: r.model_id.model == m)
             bindings = self.env[target_model].search([("index_id", "in", indexes.ids)])
-            while bindings:
-                processing = bindings[0:batch_size]  # noqa: E203
-                bindings = bindings[batch_size:]  # noqa: E203
-                description = _("Batch task for generating %s recompute job") % len(
-                    processing
-                )
-                processing.with_delay(description=description).jobify_recompute_json(
-                    force_export=force_export
-                )
+            bindings.jobify_recompute_json(
+                force_export=force_export, batch_size=batch_size
+            )
+
         return True
 
     @api.depends(
