@@ -22,15 +22,11 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
             BindingResPartnerFake,
             ResPartnerFake,
             SeAdapterFake,
-            SeBackendFake,
+            SeBackend,
         )
 
-        cls.loader.update_registry(
-            (BindingResPartnerFake, ResPartnerFake, SeBackendFake)
-        )
+        cls.loader.update_registry((BindingResPartnerFake, ResPartnerFake, SeBackend))
         cls.binding_model = cls.env[BindingResPartnerFake._name]
-        cls.fake_backend_model = cls.env[SeBackendFake._name]
-        # ->/ Load fake models
 
         cls.se_adapter_fake = SeAdapterFake
         cls._load_fixture("ir_exports_test.xml")
@@ -82,11 +78,10 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
     def setUpClass(cls):
         super().setUpClass()
         cls.se_adapter_fake._build_component(cls._components_registry)
-
-        cls.backend_specific = cls.fake_backend_model.create(
-            {"name": "Fake SE", "tech_name": "fake_se"}
+        cls.backend_model = cls.env["se.backend"]
+        cls.backend = cls.backend_model.create(
+            {"name": "Fake SE", "tech_name": "fake_se", "backend_type": "fake"}
         )
-        cls.backend = cls.backend_specific.se_backend_id
         cls.setup_records()
 
 
@@ -100,28 +95,6 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     # ATM is not possible since the teardown of this class
     # is going to drop the fake models and make any subsequent test case fail.
     # We should find a way to run tear down at the end of ALL test cases.
-    def test_backend_specific_select(self):
-        self.assertIn(
-            self.fake_backend_model._name,
-            [x[0] for x in self.env["se.backend"]._select_specific_model()],
-        )
-
-    def test_backend_specific_records(self):
-        self.assertIn(
-            (self.fake_backend_model._name, self.backend_specific.name),
-            self.env["se.backend"]._select_specific_backend(),
-        )
-
-    def test_backend_defaults(self):
-        self.assertEqual(self.backend.specific_model, self.backend_specific._name)
-
-    def test_backend_unlink(self):
-        self.assertTrue(self.backend_specific.exists())
-        self.assertTrue(self.backend.exists())
-        self.backend_specific.unlink()
-        self.assertFalse(self.backend_specific.exists())
-        self.assertFalse(self.backend.exists())
-
     def test_backend_name(self):
         form = Form(self.env["se.backend"])
         form.name = "Á weird nämë plenty of CR@P!"
@@ -136,14 +109,21 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(form.index_prefix_name, "better_prefix")
 
     def test_backend_create_tech_defaults(self):
-        b1 = self.fake_backend_model.create({"name": "Fake 1"})
+        b1 = self.backend_model.create({"name": "Fake 1", "backend_type": "fake"})
         self.assertEqual(b1.tech_name, "fake_1")
         self.assertEqual(b1.index_prefix_name, "fake_1")
-        b2 = self.fake_backend_model.create({"name": "Fake 2", "tech_name": "test2"})
+        b2 = self.backend_model.create(
+            {"name": "Fake 2", "tech_name": "test2", "backend_type": "fake"}
+        )
         self.assertEqual(b2.tech_name, "test2")
         self.assertEqual(b2.index_prefix_name, "test2")
-        b3 = self.fake_backend_model.create(
-            {"name": "Fake 3", "tech_name": "test3", "index_prefix_name": "baz"}
+        b3 = self.backend_model.create(
+            {
+                "name": "Fake 3",
+                "tech_name": "test3",
+                "index_prefix_name": "baz",
+                "backend_type": "fake",
+            }
         )
         self.assertEqual(b3.tech_name, "test3")
         self.assertEqual(b3.index_prefix_name, "baz")

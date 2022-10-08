@@ -3,7 +3,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record model="ir.ui.view" id="se_backend_form_view">
-        <field name="name">se.backend.form (in connector_search_engine)</field>
+        <field name="name">se.backend.form</field>
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
             <form create="false" edit="false">
@@ -16,7 +16,7 @@
                         <group colspan="4" col="4" name="se-main">
                             <field name="tech_name" colspan="2" />
                             <field name="index_prefix_name" colspan="2" />
-                            <field name="specific_backend" colspan="2" />
+                            <field name="backend_type" colspan="2" />
                         </group>
                     </group>
                     <group name="index" string="Index">
@@ -39,8 +39,7 @@
         <field name="arch" type="xml">
             <tree create="false">
                 <field name="tech_name" />
-                <field name="specific_backend" />
-                <field name="specific_model" />
+                <field name="backend_type" />
             </tree>
         </field>
     </record>

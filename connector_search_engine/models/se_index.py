@@ -196,7 +196,7 @@ class SeIndex(models.Model):
         return True
 
     def _get_backend_adapter(self, backend=None, model=None, index=None, **kw):
-        backend = backend or self.backend_id.specific_backend
+        backend = backend or self.backend_id
         model = model or self._name
         index = index or self
         with backend.work_on(model, index=index, **kw) as work:
@@ -222,8 +222,7 @@ class SeIndex(models.Model):
 
     def export_settings(self):
         for index in self:
-            se_specific_backend = index.backend_id.specific_backend
-            with se_specific_backend.work_on(index.model_id.model, index=index) as work:
+            with index.backend_id.work_on(index.model_id.model, index=index) as work:
                 exporter = work.component(usage="se.record.exporter")
                 exporter.export_settings()
 
@@ -239,8 +238,7 @@ class SeIndex(models.Model):
         better to force a resynchronization"""
         for index in self:
             item_ids = []
-            backend = index.backend_id.specific_backend
-            adapter = self._get_backend_adapter(backend=backend, index=index)
+            adapter = self._get_backend_adapter(backend=index.backend_id, index=index)
             binding_model = self.env[index.model_id.model]
             for index_record in adapter.each():
                 ext_id = adapter.external_id(index_record)

@@ -7,20 +7,19 @@ from odoo import fields, models
 from odoo.addons.component.core import Component
 
 
-class SeBackendFake(models.Model):
+class SeBackend(models.Model):
+    _inherit = "se.backend"
 
-    _name = "se.backend.fake"
-    _inherit = "se.backend.spec.abstract"
-    _description = "Unit Test SE Backend"
-    _search_engine_name = "FakeSE"
-    _record_id_key = "id"
+    backend_type = fields.Selection(
+        selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
+    )
 
 
 class SeAdapterFake(Component):
     _name = "se.adapter.fake"
     _inherit = "se.backend.adapter"
     _usage = "se.backend.adapter"
-    _collection = SeBackendFake._name
+    _collection = SeBackend._name
 
     def __init__(self, work_context):
         super().__init__(work_context)

@@ -168,10 +168,7 @@ class SeBinding(models.AbstractModel):
                     and b.index_id == index
                     and b.active == active
                 )
-                specific_backend = backend.specific_backend
-                with specific_backend.work_on(
-                    self._name, records=bindings, index=index
-                ) as work:
+                with backend.work_on(self._name, records=bindings, index=index) as work:
                     yield work
 
     # TODO maybe we need to add lock (todo check)
