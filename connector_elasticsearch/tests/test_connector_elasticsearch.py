@@ -39,7 +39,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         cls.se_config = cls.env["se.index.config"].create(
             {"name": "my_config", "body": {"mappings": {}}}
         )
-        super().setup_records()
+        return super().setup_records()
 
     @classmethod
     def _prepare_index_values(cls, backend):

@@ -1,7 +1,11 @@
 # Copyright 2019 ACSONE SA/NV
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from elasticsearch import AuthenticationException, NotFoundError
+# TODO fix oca linter it seem that pylint do not detect dependency with version
+from elasticsearch import (  # pylint: disable=missing-manifest-dependency
+    AuthenticationException,
+    NotFoundError,
+)
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
@@ -43,14 +47,16 @@ class SeBackendElasticsearch(models.Model):
             es = adapter._get_es_client()
             try:
                 es.security.authenticate()
-            except NotFoundError:
-                raise UserError(_("Unable to reach host."))
-            except AuthenticationException:
-                raise UserError(_("Unable to authenticate. Check credentials."))
-            except Exception as e:
+            except NotFoundError as exc:
+                raise UserError(_("Unable to reach host.")) from exc
+            except AuthenticationException as exc:
                 raise UserError(
-                    _("Unable to connect to ElasticSearch:") + "\n\n" + repr(e)
-                )
+                    _("Unable to authenticate. Check credentials.")
+                ) from exc
+            except Exception as exc:
+                raise UserError(
+                    _("Unable to connect to ElasticSearch:") + "\n\n" + repr(exc)
+                ) from exc
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
