@@ -7,7 +7,7 @@ from urllib import parse as urlparse
 from odoo import tools
 from odoo.modules.module import get_resource_path
 
-from odoo.addons.component.tests.common import SavepointComponentCase
+from odoo.addons.component.tests.common import TransactionComponentCase
 
 # mute `test_queue_job_no_delay` logging
 logging.getLogger("odoo.addons.queue_job.models.base").setLevel("CRITICAL")
@@ -25,7 +25,7 @@ def load_xml(env, module, filepath):
     )
 
 
-class TestSeBackendCaseBase(SavepointComponentCase):
+class TestSeBackendCaseBase(TransactionComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

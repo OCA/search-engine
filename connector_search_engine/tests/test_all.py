@@ -1,7 +1,8 @@
 # Copyright 2018 Simone Orsi - Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import mock
+from unittest import mock
+
 from odoo_test_helper import FakeModelLoader
 
 from odoo.tests.common import Form
@@ -152,10 +153,10 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         # control indexes' name via prefix tech name
         self.backend.index_prefix_name = "foo_baz"
         # TODO: not sure why this is needed here
-        self.se_index.invalidate_cache()
+        self.se_index.invalidate_recordset()
         self.assertEqual(self.se_index.name, "foo_baz_res_partner_binding_fake_en_US")
         self.se_index.lang_id = False
-        self.se_index.invalidate_cache()
+        self.se_index.invalidate_recordset()
         self.assertEqual(self.se_index.name, "foo_baz_res_partner_binding_fake")
 
     def test_index_custom_name(self):
@@ -182,7 +183,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             "active": True,
             "lang": "en_US",
             "name": "Marty McFly",
-            "credit_limit": 0.0,
+            "partner_latitude": 0.0,
             "country_id": {"code": "US", "name": "United States"},
             "color": 0,
             "child_ids": [
