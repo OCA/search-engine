@@ -19,12 +19,9 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
-        cls.backend = cls.backend_specific.se_backend_id
-        cls.se_index_model = cls.env["se.index"]
+        cls.backend = cls.env.ref("connector_elasticsearch.backend_1")
         cls.setup_records()
-        with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
-            cls.adapter = work.component(usage="se.backend.adapter")
+        cls.adapter = cls.se_index._get_adapter()
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
@@ -49,15 +46,14 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
 
     def test_index_adapter(self):
         # Set partner to be updated with fake vals in data
-        self.partner_binding.write({"sync_state": "to_update", "data": {"id": "foo"}})
+        self.partner_binding.write({"state": "to_export", "data": {"id": "foo"}})
         # Export index to elasticsearch should be called
-        self.se_index.batch_export()
-        # We should have 3 or 4 request...
-        # ping
-        # index exists?
-        # if not exits -> create (dependening of the elasticsearch content)
-        # export
-        self.assertGreaterEqual(len(self.cassette.requests), 3)
+        self.se_index.batch_sync()
+
+        # Ensure that call have been done to the cassette
+        self.assertTrue(self.cassette.all_played)
+
+        self.assertGreaterEqual(len(self.cassette.requests), 1)
         request = self.cassette.requests[-1]
         self.assertEqual(request.method, "POST")
         self.assertEqual(self.parse_path(request.uri), "/_bulk")
@@ -70,8 +66,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
             index_action,
             {
                 "index": {
-                    "_index": "demo_elasticsearch_backend_res_partner_"
-                    "binding_fake_en_us",
+                    "_index": "demo_elasticsearch_backend_contact_en_us",
                     "_id": "foo",
                 }
             },

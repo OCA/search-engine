@@ -9,17 +9,9 @@
     "license": "AGPL-3",
     "author": "ACSONE SA/NV, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
-    "depends": [
-        "connector_search_engine",
-        "connector",
-        "component",
-        "jsonifier",
-        "server_environment",
-    ],
+    "depends": ["connector_search_engine"],
     "data": [
-        "security/se_backend_elasticsearch.xml",
-        "views/se_backend_elasticsearch.xml",
-        "views/se_menu.xml",
+        "views/se_backend.xml",
     ],
     "demo": ["demo/backend_demo.xml"],
     # TODO: Get latest improvements from elasticsearch library

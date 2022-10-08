@@ -3,11 +3,13 @@
 
 import logging
 
-from odoo import exceptions
+from odoo import _
+from odoo.exceptions import UserError
 
-from odoo.addons.component.core import Component
+from odoo.addons.connector_search_engine.tools.adapter import SearchEngineAdapter
 
 _logger = logging.getLogger(__name__)
+
 
 try:
     import elasticsearch
@@ -22,14 +24,10 @@ def _is_delete_nonexistent_documents(elastic_exception):
     return all(b(error) for error in elastic_exception.errors)
 
 
-class ElasticsearchAdapter(Component):
-    _name = "elasticsearch.adapter"
-    _inherit = ["se.backend.adapter", "elasticsearch.se.connector"]
-    _usage = "se.backend.adapter"
-
+class ElasticSearchAdapter(SearchEngineAdapter):
     @property
     def _index_name(self):
-        return self.work.index.name.lower()
+        return self.index_record.name.lower()
 
     @property
     def _es_connection_class(self):
@@ -48,20 +46,27 @@ class ElasticsearchAdapter(Component):
             api_key=api_key,
         )
 
+    def test_connection(self):
+        es = self._get_es_client()
+        try:
+            es.security.authenticate()
+        except elasticsearch.NotFoundError as exc:
+            raise UserError(_("Unable to reach host.")) from exc
+        except elasticsearch.AuthenticationException as exc:
+            raise UserError(_("Unable to authenticate. Check credentials.")) from exc
+        except Exception as exc:
+            raise UserError(_("Unable to connect :") + "\n\n" + repr(exc)) from exc
+
     def index(self, records):
         es = self._get_es_client()
-        records_for_bulk = []
-        for record in records:
-            error = self._validate_record(record)
-            if error:
-                raise exceptions.ValidationError(error)
-            action = {
+        records_for_bulk = [
+            {
                 "_index": self._index_name,
-                "_id": record.get(self._record_id_key),
+                "_id": record["id"],
                 "_source": record,
             }
-            records_for_bulk.append(action)
-
+            for record in records
+        ]
         res = elasticsearch.helpers.bulk(es, records_for_bulk)
         # checks if number of indexed object and object in records are equal
         return len(records) - res[0] == 0
@@ -102,10 +107,10 @@ class ElasticsearchAdapter(Component):
         hits = res["hits"]["hits"]
         return [r["_source"] for r in hits]
 
-    def settings(self, force=False):
+    def settings(self):
         es = self._get_es_client()
         index_name = self._index_name
-        if not es.indices.exists(index_name) and force:
+        if not es.indices.exists(index_name):
             es.indices.create(index=index_name, body=self.work.index.config_id.body)
             msg = "Missing index %s created."
             _logger.info(msg, index_name)
