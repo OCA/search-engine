@@ -159,10 +159,13 @@ class SeIndex(models.Model):
         while bindings:
             processing = bindings[0 : self.batch_size]  # noqa: E203
             bindings = bindings[self.batch_size :]  # noqa: E203
-            description = _("Export %d records of %d for index '%s'") % (
-                len(processing),
-                bindings_count,
-                self.name,
+            description = _(
+                "Export %(processing_count)d records of %(total_count)d "
+                "for index '%(index_name)s'"
+            ) % dict(
+                processing_count=len(processing),
+                total_count=bindings_count,
+                index_name=self.name,
             )
             processing.with_delay(description=description).synchronize()
             processing.with_context(connector_no_export=True).write(
@@ -177,10 +180,12 @@ class SeIndex(models.Model):
             processing = binding_todelete_ids[0 : self.batch_size]  # noqa: E203
             binding_todelete_ids = binding_todelete_ids[self.batch_size :]  # noqa: E203
             description = _(
-                "Delete %d obsolete records of %d for index '%s'",
-                len(processing),
-                binding_todelete_count,
-                self.name,
+                "Delete %(processing_count)d obsolete records of %(total_count)d "
+                "for index '%(index_name)s'",
+            ) % dict(
+                processing_count=len(processing),
+                total_count=binding_todelete_count,
+                index_name=self.name,
             )
             processing.with_delay(description=description).synchronize()
 

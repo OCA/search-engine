@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Search Engine",
-    "version": "14.0.2.6.2",
+    "version": "16.0.0.0.0",
     "author": "Akretion,"
     "ACSONE SA/NV,"
     "Camptocamp,"
@@ -26,5 +26,5 @@
         "data/queue_job_channel_data.xml",
         "data/queue_job_function_data.xml",
     ],
-    "installable": False,
+    "installable": True,
 }

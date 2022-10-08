@@ -83,14 +83,16 @@ class SeBackend(models.Model):
 
     @api.onchange("tech_name", "index_prefix_name")
     def _onchange_tech_name(self):
-        super()._onchange_tech_name()
+        res = super()._onchange_tech_name()
         if self.index_prefix_name:
             # make sure is normalized
             self.index_prefix_name = self._normalize_tech_name(self.index_prefix_name)
         else:
             self.index_prefix_name = self.tech_name
+        return res
 
     def _handle_tech_name(self, vals):
-        super()._handle_tech_name(vals)
+        res = super()._handle_tech_name(vals)
         if not vals.get("index_prefix_name") and vals.get("tech_name"):
             vals["index_prefix_name"] = vals["tech_name"]
+        return res

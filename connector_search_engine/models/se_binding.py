@@ -54,7 +54,7 @@ class SeBinding(models.AbstractModel):
         compute="_compute_data_display",
         help="Include this in debug mode to be able to inspect index data.",
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
 
     @api.depends("data")
     def _compute_data_display(self):
