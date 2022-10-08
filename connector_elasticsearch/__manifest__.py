@@ -24,5 +24,5 @@
     "demo": ["demo/backend_demo.xml"],
     # TODO: Get latest improvements from elasticsearch library
     "external_dependencies": {"python": ["elasticsearch>=7.0.0,<=7.13.4", "requests"]},
-    "installable": True,
+    "installable": False,
 }

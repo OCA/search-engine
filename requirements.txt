@@ -1,5 +1,1 @@
 # generated from manifests external_dependencies
-algoliasearch>=2.0,<3.0
-elasticsearch>=7.0.0,<=7.13.4
-requests
-unidecode

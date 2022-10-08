@@ -1,15 +1,15 @@
 
-[![Runboat](https://img.shields.io/badge/runboat-Try%20me-875A7B.png)](https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=14.0)
-[![Pre-commit Status](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml/badge.svg?branch=14.0)](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml?query=branch%3A14.0)
-[![Build Status](https://github.com/OCA/search-engine/actions/workflows/test.yml/badge.svg?branch=14.0)](https://github.com/OCA/search-engine/actions/workflows/test.yml?query=branch%3A14.0)
-[![codecov](https://codecov.io/gh/OCA/search-engine/branch/14.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
-[![Translation Status](https://translation.odoo-community.org/widgets/search-engine-14-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/search-engine-14-0/?utm_source=widget)
+[![Runboat](https://img.shields.io/badge/runboat-Try%20me-875A7B.png)](https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=16.0)
+[![Pre-commit Status](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml/badge.svg?branch=16.0)](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml?query=branch%3A16.0)
+[![Build Status](https://github.com/OCA/search-engine/actions/workflows/test.yml/badge.svg?branch=16.0)](https://github.com/OCA/search-engine/actions/workflows/test.yml?query=branch%3A16.0)
+[![codecov](https://codecov.io/gh/OCA/search-engine/branch/16.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
+[![Translation Status](https://translation.odoo-community.org/widgets/search-engine-16-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/search-engine-16-0/?utm_source=widget)
 
 <!-- /!\ do not modify above this line -->
 
 # search-engine
 
-External search engine connectors
+TODO: add repo description.
 
 <!-- /!\ do not modify below this line -->
 
@@ -17,13 +17,7 @@ External search engine connectors
 
 [//]: # (addons)
 
-Available addons
-----------------
-addon | version | maintainers | summary
---- | --- | --- | ---
-[connector_algolia](connector_algolia/) | 14.0.2.2.0 |  | Connector For Algolia Search Engine
-[connector_elasticsearch](connector_elasticsearch/) | 14.0.2.6.0 |  | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 14.0.2.6.2 |  | Connector Search Engine
+This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
 
 [//]: # (end addons)
 
