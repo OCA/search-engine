@@ -4,6 +4,7 @@
 import logging
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -61,6 +62,19 @@ class SeIndex(models.Model):
         if self.model_id:
             domain = [("resource", "=", self.model_id.model)]
             return {"domain": {"exporter_id": domain}}
+
+    def _get_adapter_list(self):
+        return {}
+
+    def _get_adapter(self):
+        adapter_list = self._get_adapter_list()
+        adapter = adapter_list.get(self.backend_id.backend_type)
+        if adapter:
+            return adapter(self)
+        else:
+            raise UserError(
+                _("Adapter is missing for type %s") % self.backend_id.backend_type
+            )
 
     @api.model
     def recompute_all_index(self, domain=None):
@@ -193,16 +207,9 @@ class SeIndex(models.Model):
         self._batch_delete(force_export=force_export)
         return True
 
-    def _get_backend_adapter(self, backend=None, model=None, index=None, **kw):
-        backend = backend or self.backend_id
-        model = model or self._name
-        index = index or self
-        with backend.work_on(model, index=index, **kw) as work:
-            return work.component(usage="se.backend.adapter")
-
     def clear_index(self):
         self.ensure_one()
-        adapter = self._get_backend_adapter()
+        adapter = self._get_adapter()
         adapter.clear()
         return True
 

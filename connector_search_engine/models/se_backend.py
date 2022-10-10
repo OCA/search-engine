@@ -9,7 +9,6 @@ class SeBackend(models.Model):
     _name = "se.backend"
     _description = "Se Backend"
     _inherit = [
-        "connector.backend",
         "server.env.techname.mixin",
         "server.env.mixin",
     ]

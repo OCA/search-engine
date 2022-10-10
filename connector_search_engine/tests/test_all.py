@@ -18,10 +18,11 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         # Load fake models ->/
         cls.loader = FakeModelLoader(cls.env, cls.__module__)
         cls.loader.backup_registry()
-        from .models import ResPartner, SeAdapterFake, SeBackend, SeBinding
+        from .models import ResPartner, SeAdapterFake, SeBackend, SeBinding, SeIndex
 
-        cls.loader.update_registry((SeBinding, ResPartner, SeBackend))
+        cls.loader.update_registry((SeBinding, ResPartner, SeIndex, SeBackend))
         cls.binding_model = cls.env[SeBinding._name]
+        cls.se_index_model = cls.env["se.index"]
 
         cls.se_adapter_fake = SeAdapterFake
         cls._load_fixture("ir_exports_test.xml")
@@ -90,7 +91,6 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.se_adapter_fake._build_component(cls._components_registry)
         cls.backend_model = cls.env["se.backend"]
         cls.backend = cls.backend_model.create(
             {"name": "Fake SE", "tech_name": "fake_se", "backend_type": "fake"}
@@ -269,7 +269,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         with self.se_adapter_fake.mocked_calls() as calls:
             self.se_index.clear_index()
             self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
+            self.assertEqual(calls[0]["index"], self.se_index)
             self.assertEqual(calls[0]["method"], "clear")
 
     def test_recompute_json_with_error_solve(self):

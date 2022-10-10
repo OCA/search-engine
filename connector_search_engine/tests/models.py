@@ -4,7 +4,7 @@ from contextlib import contextmanager
 
 from odoo import fields, models
 
-from odoo.addons.component.core import Component
+from ..tools.adapter import SearchEngineAdapter
 
 
 class SeBackend(models.Model):
@@ -15,36 +15,31 @@ class SeBackend(models.Model):
     )
 
 
-class SeAdapterFake(Component):
-    _name = "se.adapter.fake"
-    _inherit = "se.backend.adapter"
-    _usage = "se.backend.adapter"
-    _collection = "se.backend"
-
-    def __init__(self, work_context):
-        super().__init__(work_context)
+class SeAdapterFake(SearchEngineAdapter):
+    def __init__(self, index_record):
+        super().__init__(index_record)
         if not hasattr(self, "_mocked_calls"):
             # Not using the context manager below
             self._mocked_calls = []
 
     def index(self, data):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="index", args=data)
+            dict(index=self.index_record, method="index", args=data)
         )
 
     def delete(self, binding_ids):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="delete", args=binding_ids)
+            dict(index=self.index_record, method="delete", args=binding_ids)
         )
 
     def clear(self):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="clear", args=None)
+            dict(index=self.index_record, method="clear", args=None)
         )
 
     def each(self):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="each", args=None)
+            dict(index=self.index_record, method="each", args=None)
         )
         return [{"id": 42}]
 
@@ -65,7 +60,13 @@ class SeAdapterFake(Component):
         cls._mocked_calls = []
 
 
-# Fake partner binding
+class SeIndex(models.Model):
+    _inherit = "se.index"
+
+    def _get_adapter_list(self):
+        res = super()._get_adapter_list()
+        res["fake"] = SeAdapterFake
+        return res
 
 
 class SeBinding(models.Model):

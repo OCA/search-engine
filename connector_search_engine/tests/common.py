@@ -6,8 +6,7 @@ from urllib import parse as urlparse
 
 from odoo import tools
 from odoo.modules.module import get_resource_path
-
-from odoo.addons.component.tests.common import TransactionComponentCase
+from odoo.tests.common import TransactionCase
 
 # mute `test_queue_job_no_delay` logging
 logging.getLogger("odoo.addons.queue_job.models.base").setLevel("CRITICAL")
@@ -25,7 +24,7 @@ def load_xml(env, module, filepath):
     )
 
 
-class TestSeBackendCaseBase(TransactionComponentCase):
+class TestSeBackendCaseBase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -36,7 +35,6 @@ class TestSeBackendCaseBase(TransactionComponentCase):
                 test_queue_job_no_delay=True,  # no jobs thanks
             )
         )
-        cls.se_index_model = cls.env["se.index"]
 
     @classmethod
     def _load_fixture(cls, fixture, module="connector_search_engine"):

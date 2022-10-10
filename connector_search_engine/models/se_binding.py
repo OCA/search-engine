@@ -186,19 +186,14 @@ class SeBinding(models.Model):
                 record.validation_error = ""
 
     def export_record(self):
-        export_ids = []
-        for work in self.sudo()._work_by_index():
-            exporter = work.component(usage="se.binding.exporter")
-            exporter.run()
-            export_ids += work.records.ids
-            work.records.state = "done"
-        return "Exported ids : {}".format(export_ids)
+        adapter = self.index_id._get_adapter()
+        adapter.index([record.get_export_data() for record in self])
+        self.state = "done"
+        return "Exported ids : {}".format(self.ids)
 
     def delete_record(self):
-        delete_ids = []
-        for work in self.sudo()._work_by_index():
-            deleter = work.component(usage="record.exporter.deleter")
-            deleter.run()
-            delete_ids += work.records.ids
-            work.records.unlink()
-        return "Deleted ids : {}".format(delete_ids)
+        adapter = self.index_id._get_adapter()
+        record_ids = self.ids
+        adapter.delete(record_ids)
+        self.unlink()
+        return "Deleted ids : {}".format(record_ids)
