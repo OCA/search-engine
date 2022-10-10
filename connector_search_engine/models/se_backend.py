@@ -54,7 +54,7 @@ class SeBackend(models.Model):
         # as reference (ex: Algolia use objectID)
         return "id"
 
-    def _validate_record(self, record):
+    def _validate_data(self, record):
         """Validate record for the specific search engine.
 
         :param record: a dict representing a record to index

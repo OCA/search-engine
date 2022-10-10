@@ -13,20 +13,11 @@ from odoo import _, api, fields, models
 _logger = logging.getLogger(__name__)
 
 
-class SeBinding(models.AbstractModel):
+class SeBinding(models.Model):
     _name = "se.binding"
-    _description = "Search Engine Binding"
+    _description = "Search Engine Record"
 
-    # Tech flag to identify model for SE bindings
-    _se_model = True
-    # Tech flag to identify model for SE bindings
-    # that do not require lang specific indexes.
-    # This flag does not trigger any automatic machinery.
-    # It provides a common key to provide implementers a unified way
-    # to check whether their specific binding models need or not lang spec index.
-    _se_index_lang_agnostic = False
-
-    se_backend_id = fields.Many2one(
+    backend_id = fields.Many2one(
         "se.backend", related="index_id.backend_id", string="Search Engine Backend"
     )
     index_id = fields.Many2one(
@@ -36,25 +27,44 @@ class SeBinding(models.AbstractModel):
         # TODO: shall we use 'restrict' here to preserve existing data?
         ondelete="cascade",
     )
-    sync_state = fields.Selection(
+    state = fields.Selection(
         [
-            ("new", "New"),
-            ("to_update", "To update"),
-            ("scheduled", "Scheduled"),
+            ("to_recompute", "To recompute"),
+            ("recomputing", "Recomputing"),
+            ("to_export", "To export"),
+            ("exporting", "Exporting"),
             ("done", "Done"),
-            ("to_be_checked", "To be checked"),
+            ("invalid_data", "Invalid Data"),
+            ("to_delete", "To Delete"),
+            ("deleting", "Deleting"),
         ],
-        default="new",
-        readonly=True,
+        default="to_recompute",
+        compute="_compute_state",
+        store=True,
+        readonly=False,
     )
-    date_modified = fields.Datetime(readonly=True)
+    date_recomputed = fields.Datetime(readonly=True)
     date_syncronized = fields.Datetime(readonly=True)
     data = fields.Serialized()
     data_display = fields.Text(
         compute="_compute_data_display",
         help="Include this in debug mode to be able to inspect index data.",
     )
-    active = fields.Boolean(default=True)
+    validation_error = fields.Text()
+    model_id = fields.Many2one(compute="_compute_model_id")
+
+    def _compute_model_id(self):
+        # TODO
+        pass
+
+    def _compute_state(self):
+        # TODO add the logic for invalidating the state
+        # automatically based on the exporter
+        pass
+
+    @property
+    def record_id(self):
+        return None
 
     @api.depends("data")
     def _compute_data_display(self):
@@ -64,46 +74,6 @@ class SeBinding(models.AbstractModel):
     def get_export_data(self):
         """Public method to retrieve export data."""
         return self.data
-
-    def _is_indexed(self):
-        self.ensure_one()
-        if self.sync_state == "new":
-            return False
-        elif self.sync_state == "done" and not self.active:
-            return False
-        return True
-
-    @api.model
-    def create(self, vals):
-        record = super(SeBinding, self).create(vals)
-        record.jobify_recompute_json()
-        return record
-
-    def write(self, vals):
-        not_new = self.browse()
-        if "active" in vals and not vals["active"]:
-            not_new = self.filtered(lambda x: x.sync_state != "new")
-            new_vals = vals.copy()
-            new_vals["sync_state"] = "to_update"
-            super(SeBinding, not_new).write(new_vals)
-
-        res = super(SeBinding, self - not_new).write(vals)
-        return res
-
-    def _prepare_todelete_vals(self):
-        self.ensure_one()
-        return {
-            "index_id": self.index_id.id,
-            "binding_id": self.id,
-        }
-
-    def unlink(self):
-        # Store unlinked binding ids in se.binding.todelete for a later processing
-        todelete = self.filtered(lambda rec: rec._is_indexed())
-        if todelete:
-            todelete_vals_list = [rec._prepare_todelete_vals() for rec in todelete]
-            self.env["se.binding.todelete"].sudo().create(todelete_vals_list)
-        return super().unlink()
 
     def _get_binding_to_process(self, bindings, batch_size):
         return bindings[0:batch_size], bindings[batch_size:]  # noqa: E203
@@ -161,17 +131,24 @@ class SeBinding(models.AbstractModel):
 
     def _work_by_index(self, active=True):
         self = self.exists()
-        for backend in self.mapped("se_backend_id"):
+        for backend in self.mapped("backend_id"):
             for index in self.mapped("index_id"):
                 bindings = self.filtered(
-                    lambda b, backend=backend, index=index: b.se_backend_id == backend
+                    lambda b, backend=backend, index=index: b.backend_id == backend
                     and b.index_id == index
-                    and b.active == active
                 )
                 with backend.work_on(self._name, records=bindings, index=index) as work:
                     yield work
 
-    # TODO maybe we need to add lock (todo check)
+    def _convert_to_json(self):
+        if self.index_id.lang_id:
+            self = self.with_context(lang=self.index_id.lang_id.code)
+        # TODO check if we have cache on get_json_parser
+        return self.record_id.jsonify(self.index_id.exporter_id.get_json_parser())[0]
+
+    def _validate_data(self):
+        return self.backend_id._validate_data(self.data)
+
     def _recompute_json(self, force_export=False):
         """Compute index record data as JSON."""
         # `sudo` because the recomputation can be triggered from everywhere
@@ -180,66 +157,31 @@ class SeBinding(models.AbstractModel):
         # (eg: se.backend or related records needed to compute index values).
         # All in all, this is safe because the index data should always
         # be the same no matter the access rights of the user triggering this.
-        result = []
-        validation_errors = []
-        to_be_checked = []
-        for work in self.sudo()._work_by_index():
-            mapper = work.component(usage="se.export.mapper")
-            for binding in work.records.with_context(
-                **self._recompute_json_work_ctx(work)
-            ):
-                index_record = mapper.map_record(binding).values()
-                # Validate data and track items to check
-                error = self._validate_record(work, index_record)
-                if error:
-                    msg = "{}: {}".format(str(binding), error)
-                    _logger.error(msg)
-                    validation_errors.append(msg)
-                    to_be_checked.append(binding.id)
-                    # skip record
-                    continue
-                if binding.data != index_record or force_export:
-                    vals = {"data": index_record}
-                    if binding.sync_state != "to_update":
-                        vals["sync_state"] = "to_update"
-                        vals["date_modified"] = fields.Datetime.now()
-                    binding.write(vals)
-        if validation_errors:
-            result.append(_("Validation errors") + "\n" + "\n".join(validation_errors))
-        if to_be_checked:
-            self.browse(to_be_checked).write({"sync_state": "to_be_checked"})
-        return "\n\n".join(result)
+        for record in self.sudo():
+            record.data = record._convert_to_json()
+            record.date_recomputed = fields.Datetime.now()
+            error = record._validate_data()
+            if error:
+                record.state = "invalid_data"
+                record.validation_error = error
+            else:
+                record.state = "to_export"
+                record.validation_error = ""
 
-    def _recompute_json_work_ctx(self, work):
-        ctx = {}
-        if work.index.lang_id:
-            ctx["lang"] = work.index.lang_id.code
-        return ctx
-
-    def _validate_record(self, work, index_record):
-        return work.collection._validate_record(index_record)
-
-    def synchronize(self):
-        # We volontary do the export and delete in the same transaction
-        # we try first to process it into two different process but the code
-        # was more complex and it was harder to catch/understand
-        # active/inactive case for example:
-        #
-        # 1. some body bind a product and an export job is created
-        # 2. the binding is inactivated
-        # 3. when the job runs we must exclude all inactive binding
-        #
-        # Hence in both export/delete we have to re-filter all bindings
-        # using one transaction and one sync method allow to filter only once
-        # and to do the right action as we are in a transaction.
+    def export_record(self):
         export_ids = []
-        delete_ids = []
         for work in self.sudo()._work_by_index():
-            exporter = work.component(usage="se.record.exporter")
+            exporter = work.component(usage="se.binding.exporter")
             exporter.run()
             export_ids += work.records.ids
-        for work in self.sudo()._work_by_index(active=False):
+            work.records.state = "done"
+        return "Exported ids : {}".format(export_ids)
+
+    def delete_record(self):
+        delete_ids = []
+        for work in self.sudo()._work_by_index():
             deleter = work.component(usage="record.exporter.deleter")
             deleter.run()
             delete_ids += work.records.ids
-        return "Exported ids : {}\nDeleted ids : {}".format(export_ids, delete_ids)
+            work.records.unlink()
+        return "Deleted ids : {}".format(delete_ids)

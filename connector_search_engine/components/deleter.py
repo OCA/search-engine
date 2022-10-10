@@ -1,7 +1,6 @@
 # Copyright 2018 ACSONE SA/NV (<http://acsone.eu>)
 # Copyright 2018 Akretion (http://www.akretion.com).
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-from odoo import fields
 
 from odoo.addons.component.core import Component
 
@@ -18,9 +17,6 @@ class SeDeleter(Component):
         :param records: recordset
         :return: bool
         """
-        self.work.records.write(
-            {"sync_state": "done", "date_syncronized": fields.Datetime.now()}
-        )
         record_ids = [x.record_id.id for x in self.work.records]
         if record_ids:
             return self.backend_adapter.delete(record_ids)

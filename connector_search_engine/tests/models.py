@@ -19,7 +19,7 @@ class SeAdapterFake(Component):
     _name = "se.adapter.fake"
     _inherit = "se.backend.adapter"
     _usage = "se.backend.adapter"
-    _collection = SeBackend._name
+    _collection = "se.backend"
 
     def __init__(self, work_context):
         super().__init__(work_context)
@@ -68,38 +68,44 @@ class SeAdapterFake(Component):
 # Fake partner binding
 
 
-class BindingResPartnerFake(models.Model):
-    _name = "res.partner.binding.fake"
-    _inherit = ["se.binding"]
-    _inherits = {"res.partner": "record_id"}
-    # we need to reference this model for the index
+class SeBinding(models.Model):
+    _inherit = "se.binding"
 
     # TODO: use autosetup fields to handle these fields in mixins
-    record_id = fields.Many2one(
+    partner_id = fields.Many2one(
         comodel_name="res.partner",
         string="Odoo record",
-        required=True,
         ondelete="cascade",
     )
 
-    def synchronize(self):
+    @property
+    def record_id(self):
+        if self.partner_id:
+            return self.partner_id
+        else:
+            return super().record_id()
+
+    # end of autosetup
+
+    # TODO see if we can remove this as it's for test only
+    def export_record(self):
         # You can set `call_tracking` as a list in ctx to collect the results.
-        res = super().synchronize()
+        res = super().export_record()
+        if "call_tracking" in self.env.context:
+            self.env.context["call_tracking"].append(res)
+        return res
+
+    def delete_record(self):
+        # You can set `call_tracking` as a list in ctx to collect the results.
+        res = super().delete_record()
         if "call_tracking" in self.env.context:
             self.env.context["call_tracking"].append(res)
         return res
 
 
-class ResPartnerFake(models.Model):
+class ResPartner(models.Model):
     _name = "res.partner"
-    _inherit = "res.partner"
+    _inherit = ["res.partner", "se.indexable.record"]
 
     # TODO: use autosetup fields to handle these fields in mixins
-    binding_ids = fields.One2many(
-        comodel_name=BindingResPartnerFake._name,
-        inverse_name="record_id",
-        copy=False,
-        string="Bindings",
-        context={"active_test": False},
-        manual=True,  # required to make teardown work
-    )
+    index_bind_ids = fields.One2many("se.binding", "partner_id", "Index Binding")

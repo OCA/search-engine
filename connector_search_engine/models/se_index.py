@@ -38,12 +38,7 @@ class SeIndex(models.Model):
         string="Config",
         help="Index configuration record",
     )
-    binding_todelete_ids = fields.One2many(
-        comodel_name="se.binding.todelete",
-        inverse_name="index_id",
-        string="Bindings to delete",
-        readonly=True,
-    )
+    binding_ids = fields.One2many("se.binding", "index_id", "Binding")
 
     @api.model
     def _model_id_domain(self):
@@ -51,7 +46,7 @@ class SeIndex(models.Model):
         for model in self.env:
             if self.env[model]._abstract or self.env[model]._transient:
                 continue
-            if hasattr(self.env[model], "_se_model"):
+            if hasattr(self.env[model], "_se_indexable"):
                 se_model_names.append(model)
         return [("model", "in", se_model_names)]
 
@@ -83,11 +78,9 @@ class SeIndex(models.Model):
         target_models = self.mapped("model_id.model")
         for target_model in target_models:
             indexes = self.filtered(lambda r, m=target_model: r.model_id.model == m)
-            bindings = self.env[target_model].search([("index_id", "in", indexes.ids)])
-            bindings.jobify_recompute_json(
+            indexes.binding_ids.jobify_recompute_json(
                 force_export=force_export, batch_size=batch_size
             )
-
         return True
 
     @api.depends(
@@ -127,34 +120,34 @@ class SeIndex(models.Model):
         tech_name = self.custom_tech_name or self.model_id.name or ""
         return self.backend_id._normalize_tech_name(tech_name)
 
-    def force_batch_export(self):
+    def force_batch_sync(self):
         self.ensure_one()
-        self._jobify_batch_export(force_export=True)
+        self._jobify_batch_sync(force_export=True)
 
-    def _jobify_batch_export(self, force_export=False):
+    def _jobify_batch_sync(self, force_export=False):
         self.ensure_one()
-        description = _("Prepare a batch export of index '%s'") % self.name
-        self.with_delay(description=description).batch_export(force_export)
+        description = _("Prepare a batch synchronization of index '%s'") % self.name
+        self.with_delay(description=description).batch_sync(force_export)
 
     @api.model
-    def generate_batch_export_per_index(self, domain=None):
+    def generate_batch_sync_per_index(self, domain=None):
         if domain is None:
             domain = []
         for record in self.search(domain):
-            record._jobify_batch_export()
+            record._jobify_batch_sync()
         return True
 
     def _get_domain_for_exporting_binding(self, force_export=False):
-        domain = [("index_id", "=", self.id)]
-        if not force_export:
-            domain.append(("sync_state", "=", "to_update"))
-        return domain
+        if force_export:
+            states = ["to_export", "done", "exporting"]
+        else:
+            states = ["to_export"]
+        return [("index_id", "=", self.id), ("state", "in", states)]
 
     def _batch_export(self, force_export=False):
         self.ensure_one()
         domain = self._get_domain_for_exporting_binding(force_export)
-        binding_obj = self.env[self.model_id.model]
-        bindings = binding_obj.with_context(active_test=False).search(domain)
+        bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
         while bindings:
             processing = bindings[0 : self.batch_size]  # noqa: E203
@@ -167,32 +160,40 @@ class SeIndex(models.Model):
                 total_count=bindings_count,
                 index_name=self.name,
             )
-            processing.with_delay(description=description).synchronize()
             processing.with_context(connector_no_export=True).write(
-                {"sync_state": "scheduled"}
+                {"state": "exporting"}
             )
+            processing.with_delay(description=description).export_record()
 
-    def _batch_delete(self):
+    def _get_domain_for_deleting_binding(self, force_export=False):
+        if force_export:
+            states = ["to_delete", "deleting"]
+        else:
+            states = ["to_delete"]
+        return [("index_id", "=", self.id), ("state", "in", states)]
+
+    def _batch_delete(self, force_export=True):
         self.ensure_one()
-        binding_todelete_ids = self.binding_todelete_ids
-        binding_todelete_count = len(binding_todelete_ids)
-        while binding_todelete_ids:
-            processing = binding_todelete_ids[0 : self.batch_size]  # noqa: E203
-            binding_todelete_ids = binding_todelete_ids[self.batch_size :]  # noqa: E203
+        domain = self._get_domain_for_deleting_binding(force_export)
+        bindings = self.env["se.binding"].search(domain)
+        bindings_count = len(bindings)
+        while bindings:
+            processing = bindings[0 : self.batch_size]  # noqa: E203
+            bindings = bindings[self.batch_size :]  # noqa: E203
             description = _(
                 "Delete %(processing_count)d obsolete records of %(total_count)d "
                 "for index '%(index_name)s'",
             ) % dict(
                 processing_count=len(processing),
-                total_count=binding_todelete_count,
+                total_count=bindings_count,
                 index_name=self.name,
             )
-            processing.with_delay(description=description).synchronize()
+            processing.with_delay(description=description).delete_record()
 
-    def batch_export(self, force_export=False):
+    def batch_sync(self, force_export=False):
         self.ensure_one()
         self._batch_export(force_export=force_export)
-        self._batch_delete()
+        self._batch_delete(force_export=force_export)
         return True
 
     def _get_backend_adapter(self, backend=None, model=None, index=None, **kw):
@@ -223,7 +224,7 @@ class SeIndex(models.Model):
     def export_settings(self):
         for index in self:
             with index.backend_id.work_on(index.model_id.model, index=index) as work:
-                exporter = work.component(usage="se.record.exporter")
+                exporter = work.component(usage="se.index.exporter")
                 exporter.export_settings()
 
     def resynchronize_all_bindings(self):
