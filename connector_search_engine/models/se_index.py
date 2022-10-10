@@ -42,12 +42,9 @@ class SeIndex(models.Model):
 
     @api.model
     def _model_id_domain(self):
-        se_model_names = []
-        for model in self.env:
-            if self.env[model]._abstract or self.env[model]._transient:
-                continue
-            if hasattr(self.env[model], "_se_indexable"):
-                se_model_names.append(model)
+        se_model_names = [
+            x[0] for x in self.env["se.binding"]._get_indexable_model_selection()
+        ]
         return [("model", "in", se_model_names)]
 
     _sql_constraints = [

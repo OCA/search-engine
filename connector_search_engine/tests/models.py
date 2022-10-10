@@ -71,22 +71,6 @@ class SeAdapterFake(Component):
 class SeBinding(models.Model):
     _inherit = "se.binding"
 
-    # TODO: use autosetup fields to handle these fields in mixins
-    partner_id = fields.Many2one(
-        comodel_name="res.partner",
-        string="Odoo record",
-        ondelete="cascade",
-    )
-
-    @property
-    def record_id(self):
-        if self.partner_id:
-            return self.partner_id
-        else:
-            return super().record_id()
-
-    # end of autosetup
-
     # TODO see if we can remove this as it's for test only
     def export_record(self):
         # You can set `call_tracking` as a list in ctx to collect the results.
@@ -107,5 +91,4 @@ class ResPartner(models.Model):
     _name = "res.partner"
     _inherit = ["res.partner", "se.indexable.record"]
 
-    # TODO: use autosetup fields to handle these fields in mixins
-    index_bind_ids = fields.One2many("se.binding", "partner_id", "Index Binding")
+    index_bind_ids = fields.One2many(domain=[("res_model", "=", "res.partner")])

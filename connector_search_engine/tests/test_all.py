@@ -256,6 +256,15 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(tracking, ["Exported ids : [1]"])
         self.assertEqual(self.partner_binding.state, "done")
 
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_missing_record_to_recompute(self):
+        # following case should not occure (as unlink will change the binding state)
+        # but in case of weird action like sql delete we want to make it stronger
+        self.partner_binding.state = "to_recompute"
+        self.partner_binding.res_id = 999999999
+        self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.state, "to_delete")
+
     def test_clear_index(self):
         with self.se_adapter_fake.mocked_calls() as calls:
             self.se_index.clear_index()

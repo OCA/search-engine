@@ -27,7 +27,7 @@
                     type="object"
                 />
                 <button
-                    name="force_batch_export"
+                    name="force_batch_sync"
                     help="Force the export of all binding"
                     icon="fa-upload"
                     type="object"

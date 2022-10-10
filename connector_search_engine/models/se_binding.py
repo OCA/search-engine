@@ -8,7 +8,7 @@ import logging
 import math
 import sys
 
-from odoo import _, api, fields, models
+from odoo import _, api, fields, models, tools
 
 _logger = logging.getLogger(__name__)
 
@@ -51,11 +51,21 @@ class SeBinding(models.Model):
         help="Include this in debug mode to be able to inspect index data.",
     )
     validation_error = fields.Text()
-    model_id = fields.Many2one(compute="_compute_model_id")
+    res_id = fields.Integer()
+    res_model = fields.Selection(selection=lambda s: s._get_indexable_model_selection())
 
-    def _compute_model_id(self):
-        # TODO
-        pass
+    @tools.ormcache()
+    @api.model
+    def _get_indexable_model_selection(self):
+        return [
+            (model, self.env[model]._description)
+            for model in self.env
+            if (
+                hasattr(self.env[model], "_se_indexable")
+                and not self.env[model]._abstract
+                and not self.env[model]._transient
+            )
+        ]
 
     def _compute_state(self):
         # TODO add the logic for invalidating the state
@@ -64,7 +74,7 @@ class SeBinding(models.Model):
 
     @property
     def record_id(self):
-        return None
+        return self.env[self.res_model].browse(self.res_id).exists()
 
     @api.depends("data")
     def _compute_data_display(self):
@@ -158,6 +168,13 @@ class SeBinding(models.Model):
         # All in all, this is safe because the index data should always
         # be the same no matter the access rights of the user triggering this.
         for record in self.sudo():
+            if not record.record_id.exists():
+                record.state = "to_delete"
+                _logger.error(
+                    "There is something wrong, the record do not exists "
+                    "flag the binding to be deleted"
+                )
+                continue
             record.data = record._convert_to_json()
             record.date_recomputed = fields.Datetime.now()
             error = record._validate_data()
