@@ -18,9 +18,9 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         # Load fake models ->/
         cls.loader = FakeModelLoader(cls.env, cls.__module__)
         cls.loader.backup_registry()
-        from .models import ResPartner, SeAdapterFake, SeBackend, SeBinding, SeIndex
+        from .models import ResPartner, SeAdapterFake, SeBackend, SeBinding
 
-        cls.loader.update_registry((SeBinding, ResPartner, SeIndex, SeBackend))
+        cls.loader.update_registry((SeBinding, ResPartner, SeBackend))
         cls.binding_model = cls.env[SeBinding._name]
         cls.se_index_model = cls.env["se.index"]
 

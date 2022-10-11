@@ -7,17 +7,9 @@ from odoo import fields, models
 from ..tools.adapter import SearchEngineAdapter
 
 
-class SeBackend(models.Model):
-    _inherit = "se.backend"
-
-    backend_type = fields.Selection(
-        selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
-    )
-
-
 class SeAdapterFake(SearchEngineAdapter):
-    def __init__(self, index_record):
-        super().__init__(index_record)
+    def __init__(self, *args):
+        super().__init__(*args)
         if not hasattr(self, "_mocked_calls"):
             # Not using the context manager below
             self._mocked_calls = []
@@ -60,8 +52,12 @@ class SeAdapterFake(SearchEngineAdapter):
         cls._mocked_calls = []
 
 
-class SeIndex(models.Model):
-    _inherit = "se.index"
+class SeBackend(models.Model):
+    _inherit = "se.backend"
+
+    backend_type = fields.Selection(
+        selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
+    )
 
     def _get_adapter_list(self):
         res = super()._get_adapter_list()

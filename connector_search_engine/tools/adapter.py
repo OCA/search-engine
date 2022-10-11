@@ -4,8 +4,9 @@
 
 
 class SearchEngineAdapter:
-    def __init__(self, index_record):
+    def __init__(self, backend_record, index_record):
         super().__init__()
+        self.backend_record = backend_record
         self.index_record = index_record
 
     def index(self, datas):

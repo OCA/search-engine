@@ -4,13 +4,11 @@
 import logging
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
 
 class SeIndex(models.Model):
-
     _name = "se.index"
     _description = "Se Index"
 
@@ -63,18 +61,8 @@ class SeIndex(models.Model):
             domain = [("resource", "=", self.model_id.model)]
             return {"domain": {"exporter_id": domain}}
 
-    def _get_adapter_list(self):
-        return {}
-
     def _get_adapter(self):
-        adapter_list = self._get_adapter_list()
-        adapter = adapter_list.get(self.backend_id.backend_type)
-        if adapter:
-            return adapter(self)
-        else:
-            raise UserError(
-                _("Adapter is missing for type %s") % self.backend_id.backend_type
-            )
+        return self.backend_id._get_adapter(self)
 
     @api.model
     def recompute_all_index(self, domain=None):
@@ -226,10 +214,8 @@ class SeIndex(models.Model):
         self.search([]).export_settings()
 
     def export_settings(self):
-        for index in self:
-            with index.backend_id.work_on(index.model_id.model, index=index) as work:
-                exporter = work.component(usage="se.index.exporter")
-                exporter.export_settings()
+        adapter = self._get_adapter()
+        adapter.settings()
 
     def resynchronize_all_bindings(self):
         """Force sync between Odoo records and index records.

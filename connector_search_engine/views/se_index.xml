@@ -24,18 +24,21 @@
                     name="force_recompute_all_binding"
                     help="Force to recompute all binding of the index and set them to the state 'To update'"
                     icon="fa-gears"
+                    string="Recompute all binding"
                     type="object"
                 />
                 <button
                     name="force_batch_sync"
                     help="Force the export of all binding"
                     icon="fa-upload"
+                    string="Export all binding"
                     type="object"
                 />
                 <button
                     name="clear_index"
                     help="Clear the index in the search engine"
                     icon="fa-times"
+                    string="Clear index"
                     type="object"
                     groups="connector_search_engine.group_connector_search_engine_manager"
                 />

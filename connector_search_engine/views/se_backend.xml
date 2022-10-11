@@ -8,6 +8,14 @@
         <field name="arch" type="xml">
             <form create="false" edit="false">
                 <sheet>
+                    <header>
+                        <button
+                            name="action_test_connection"
+                            type="object"
+                            string="Test Connection"
+                            icon="fa-television"
+                        />
+                    </header>
                     <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" required="1" />

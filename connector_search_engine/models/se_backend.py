@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class SeBackend(models.Model):
@@ -67,3 +68,27 @@ class SeBackend(models.Model):
                 record_key=self._record_id_key,
                 record=record,
             )
+
+    def _get_adapter_list(self):
+        return {}
+
+    def _get_adapter(self, index=None):
+        adapter_list = self._get_adapter_list()
+        adapter = adapter_list.get(self.backend_type)
+        if adapter:
+            return adapter(self, index)
+        else:
+            raise UserError(_("Adapter is missing for type %s") % self.backend_type)
+
+    def action_test_connection(self):
+        adapter = self._get_adapter()
+        adapter.test_connection()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Connection Test Succeeded!"),
+                "message": _("Everything seems properly set up!"),
+                "sticky": False,
+            },
+        }
