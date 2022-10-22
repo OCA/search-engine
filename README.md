@@ -23,7 +23,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [connector_algolia](connector_algolia/) | 14.0.2.2.0 |  | Connector For Algolia Search Engine
 [connector_elasticsearch](connector_elasticsearch/) | 14.0.2.6.0 |  | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 14.0.2.6.2 |  | Connector Search Engine
+[connector_search_engine](connector_search_engine/) | 14.0.2.6.3 |  | Connector Search Engine
 
 [//]: # (end addons)
 
