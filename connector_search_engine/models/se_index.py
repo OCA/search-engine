@@ -244,11 +244,20 @@ class SeIndex(models.Model):
             adapter = self._get_backend_adapter(backend=backend, index=index)
             binding_model = self.env[index.model_id.model]
             for index_record in adapter.each(fetch_fields=[adapter._record_id_key]):
-                ext_id = adapter.external_id(index_record)
-                binding = binding_model.browse(ext_id).exists()
+                record_id = index_record[adapter._record_id_key]
+                binding = binding_model.search(
+                    [
+                        ("index_id", "=", index.id),
+                        ("record_id", "=", record_id),
+                    ]
+                )
                 if not binding:
-                    item_ids.append(ext_id)
-            index.with_delay().delete_obsolete_item(item_ids)
+                    item_ids.append(record_id)
+            index.with_delay(
+                description=_(
+                    "Delete binding on index %s after full resync" % index.name
+                )
+            ).delete_obsolete_item(item_ids)
 
     def delete_obsolete_item(self, item_ids):
         adapter = self._get_backend_adapter()

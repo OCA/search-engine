@@ -92,7 +92,7 @@ class SeBinding(models.AbstractModel):
         self.ensure_one()
         return {
             "index_id": self.index_id.id,
-            "binding_id": self.id,
+            "binding_id": self.record_id.id,
         }
 
     def unlink(self):
