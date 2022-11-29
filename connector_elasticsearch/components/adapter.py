@@ -93,14 +93,25 @@ class ElasticsearchAdapter(Component):
         self._get_es_client()
         return res["acknowledged"]
 
-    def each(self):
+    def each(self, fetch_fields=None):
         es = self._get_es_client()
-        res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
-        if not res:
-            # eg: empty index
-            return []
-        hits = res["hits"]["hits"]
-        return [r["_source"] for r in hits]
+        body = {"size": 1000}
+        if fetch_fields:
+            body["_source"] = fetch_fields
+        result = es.search(
+            index=self._index_name,
+            filter_path=["hits.hits._source", "_scroll_id"],
+            scroll="5m",
+            body=body,
+        )
+        while result["hits"]["hits"]:
+            yield from (hit["_source"] for hit in result["hits"]["hits"])
+            result = es.scroll(
+                body={
+                    "scroll_id": result["_scroll_id"],
+                    "scroll": "5m",
+                }
+            )
 
     def settings(self, force=False):
         es = self._get_es_client()

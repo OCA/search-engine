@@ -243,7 +243,7 @@ class SeIndex(models.Model):
             backend = index.backend_id.specific_backend
             adapter = self._get_backend_adapter(backend=backend, index=index)
             binding_model = self.env[index.model_id.model]
-            for index_record in adapter.each():
+            for index_record in adapter.each(fetch_fields=[adapter._record_id_key]):
                 ext_id = adapter.external_id(index_record)
                 binding = binding_model.browse(ext_id).exists()
                 if not binding:

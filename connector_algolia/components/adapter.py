@@ -70,6 +70,9 @@ class AlgoliaAdapter(Component):
         _logger.warning("DEPRECATED: use `each` instead of `iter`.")
         return self.each()
 
-    def each(self):
+    def each(self, fetch_fields=None):
         index = self.get_index()
-        return index.browse_objects()
+        params = {}
+        if fetch_fields:
+            params["attributesToRetrieve"] = fetch_fields
+        return index.browse_objects(params)
