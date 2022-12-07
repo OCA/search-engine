@@ -45,14 +45,22 @@ msgid "Batch Size"
 msgstr ""
 
 #. module: connector_search_engine
+#: code:addons/connector_search_engine/models/se_binding.py:0
+#, python-format
+msgid ""
+"Batch of %(processing_count)s items for %(model_name)s. Previous batch "
+"raised %(exception_name)s: %(exception_value)s."
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index__batch_size
 msgid "Batch size for exporting element"
 msgstr ""
 
 #. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_index.py:0
+#: code:addons/connector_search_engine/models/se_binding.py:0
 #, python-format
-msgid "Batch task for generating %s recompute job"
+msgid "Batch task of %(processing_count)s for recomputing %(model_name)s json"
 msgstr ""
 
 #. module: connector_search_engine
@@ -278,6 +286,14 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: connector_search_engine
+#: code:addons/connector_search_engine/models/se_binding.py:0
+#, python-format
+msgid ""
+"Job have been split because of failure.\n"
+"Error: {}"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__lang_id
 msgid "Lang"
 msgstr ""
@@ -386,12 +402,6 @@ msgstr ""
 #: code:addons/connector_search_engine/models/se_index.py:0
 #, python-format
 msgid "Prepare a batch export of index '%s'"
-msgstr ""
-
-#. module: connector_search_engine
-#: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
-msgid "Recompute %s json and check if need update"
 msgstr ""
 
 #. module: connector_search_engine
