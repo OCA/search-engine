@@ -5,6 +5,8 @@ import logging
 
 from odoo import _, api, fields, models
 
+from odoo.addons.queue_job.delay import chain, group
+
 _logger = logging.getLogger(__name__)
 
 
@@ -156,6 +158,8 @@ class SeIndex(models.Model):
         binding_obj = self.env[self.model_id.model]
         bindings = binding_obj.with_context(active_test=False).search(domain)
         bindings_count = len(bindings)
+
+        groups = []
         while bindings:
             processing = bindings[0 : self.batch_size]  # noqa: E203
             bindings = bindings[self.batch_size :]  # noqa: E203
@@ -164,10 +168,14 @@ class SeIndex(models.Model):
                 bindings_count,
                 self.name,
             )
-            processing.with_delay(description=description).synchronize()
+            groups.append(
+                group(processing.delayable().set(description=description).synchronize())
+            )
             processing.with_context(connector_no_export=True).write(
                 {"sync_state": "scheduled"}
             )
+        if groups:
+            chain(*groups).delay()
 
     def _batch_delete(self):
         self.ensure_one()
