@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <tree string="Index" editable="bottom">
                 <field name="custom_tech_name" optional="hide" />
+                <field name="sequence" widget="handle" />
                 <field
                     name="backend_id"
                     invisible="context.get('from_backend_view', False)"

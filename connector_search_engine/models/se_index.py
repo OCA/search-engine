@@ -5,6 +5,8 @@ import logging
 
 from odoo import _, api, fields, models
 
+from odoo.addons.queue_job.delay import chain
+
 _logger = logging.getLogger(__name__)
 
 
@@ -12,6 +14,7 @@ class SeIndex(models.Model):
 
     _name = "se.index"
     _description = "Se Index"
+    _order = "sequence"
 
     name = fields.Char(compute="_compute_name", store=True)
     custom_tech_name = fields.Char(
@@ -44,6 +47,7 @@ class SeIndex(models.Model):
         string="Bindings to delete",
         readonly=True,
     )
+    sequence = fields.Integer("Sequence", default=10)
 
     @api.model
     def _model_id_domain(self):
@@ -81,13 +85,18 @@ class SeIndex(models.Model):
 
     def recompute_all_binding(self, force_export=False, batch_size=500):
         target_models = self.mapped("model_id.model")
+        delayables_to_chain = []
         for target_model in target_models:
             indexes = self.filtered(lambda r, m=target_model: r.model_id.model == m)
             bindings = self.env[target_model].search([("index_id", "in", indexes.ids)])
-            bindings.jobify_recompute_json(
-                force_export=force_export, batch_size=batch_size
+            delayables = bindings.jobify_recompute_json(
+                force_export=force_export, batch_size=batch_size, delay=False
             )
-
+            # The delayable could be empty
+            if delayables and bool(delayables._delayables):
+                delayables_to_chain.append(delayables)
+        if delayables_to_chain:
+            chain(*(g for g in delayables_to_chain)).delay()
         return True
 
     @api.depends(
