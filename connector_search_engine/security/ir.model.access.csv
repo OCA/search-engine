@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_se_backend,Search Engine Backend connector manager,model_se_backend,connector.group_connector_manager,1,1,1,1
-access_se_index,Search Engine Index connector manager,model_se_index,connector.group_connector_manager,1,1,1,1
-access_se_binding,Search Engine Binding connector manager,model_se_binding,connector.group_connector_manager,1,1,1,1
+access_se_backend,Search Engine Backend connector manager,model_se_backend,group_connector_search_engine_manager,1,1,1,1
+access_se_index,Search Engine Index connector manager,model_se_index,group_connector_search_engine_manager,1,1,1,1
+access_se_binding,Search Engine Binding connector manager,model_se_binding,group_connector_search_engine_manager,1,1,1,1
