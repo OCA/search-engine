@@ -59,10 +59,11 @@ class SeBackend(models.Model):
         selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
     )
 
-    def _get_adapter_list(self):
-        res = super()._get_adapter_list()
-        res["fake"] = SeAdapterFake
-        return res
+    def get_adapter_class(self):
+        if self.backend_type == "fake":
+            return SeAdapterFake
+        else:
+            return super().get_adapter_class()
 
 
 class SeBinding(models.Model):

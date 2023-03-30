@@ -69,12 +69,11 @@ class SeBackend(models.Model):
                 record=record,
             )
 
-    def _get_adapter_list(self):
-        return {}
+    def get_adapter_class(self):
+        raise NotImplementedError
 
     def _get_adapter(self, index=None):
-        adapter_list = self._get_adapter_list()
-        adapter = adapter_list.get(self.backend_type)
+        adapter = self.get_adapter_class()
         if adapter:
             return adapter(self, index)
         else:
