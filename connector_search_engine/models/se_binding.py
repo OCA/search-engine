@@ -195,7 +195,7 @@ class SeBinding(models.AbstractModel):
                 error = self._validate_record(work, index_record)
                 if error:
                     msg = "{}: {}".format(str(binding), error)
-                    _logger.error(msg)
+                    _logger.warning(msg)
                     validation_errors.append(msg)
                     to_be_checked.append(binding.id)
                     # skip record
