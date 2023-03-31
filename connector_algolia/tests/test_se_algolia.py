@@ -5,6 +5,7 @@ import json
 import os
 from time import sleep
 
+import mock
 from vcr_unittest import VCRMixin
 
 from odoo.tools import human_size, mute_logger
@@ -12,6 +13,7 @@ from odoo.tools import human_size, mute_logger
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
 from ..components.adapter import AlgoliaAdapter
+from ..utils import get_dict_bytes_size
 
 # To refresh cassets data:
 # 0. prepare your Algolia account
@@ -166,7 +168,28 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         self.assertTrue(self.partner_binding.data)
         self.assertEqual(
             self.partner_binding.data_size,
-            human_size(self.partner_binding._get_bytes_size()),
+            human_size(get_dict_bytes_size(self.partner_binding.data)),
         )
         self.partner_binding.data = {}
         self.assertEqual(self.partner_binding.data_size, "2.00 bytes")
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_recompute_json_quota_exceeed_to_be_checked(self):
+        self.assertNotEqual(self.partner_binding.sync_state, "to_be_checked")
+        result = self.partner_binding.recompute_json()
+        self.assertNotEqual(self.partner_binding.sync_state, "to_be_checked")
+        # fake data to exceeed quota
+        fake_data = {}.fromkeys(range(1100), 1)
+        fake_data["objectID"] = 1234
+        self.assertTrue(get_dict_bytes_size(fake_data) > 10000)
+        mock_path = "odoo.addons.connector.components.mapper.MapRecord"
+        with mock.patch(mock_path + ".values") as mocked:
+            mocked.return_value = fake_data
+            result = self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.sync_state, "to_be_checked")
+        self.assertEqual(
+            result,
+            "Validation errors\n"
+            "res.partner.binding.fake(%s,): Algolia record quota exceeded"
+            % self.partner_binding.id,
+        )
