@@ -5,6 +5,8 @@ import logging
 
 from odoo import _, api, fields, models
 
+from ..tools.validator import SearchEngineDefaultValidator
+
 _logger = logging.getLogger(__name__)
 
 
@@ -30,7 +32,7 @@ class SeIndex(models.Model):
         domain=lambda self: self._model_id_domain(),
         ondelete="cascade",
     )
-    exporter_id = fields.Many2one("ir.exports", string="Exporter")
+    serializer = fields.Selection([])
     batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
     config_id = fields.Many2one(
         comodel_name="se.index.config",
@@ -54,15 +56,14 @@ class SeIndex(models.Model):
         )
     ]
 
-    @api.onchange("model_id")
-    def onchange_model_id(self):
-        self.exporter_id = False
-        if self.model_id:
-            domain = [("resource", "=", self.model_id.model)]
-            return {"domain": {"exporter_id": domain}}
-
     def _get_adapter(self):
         return self.backend_id._get_adapter(self)
+
+    def get_serializer(self):
+        raise NotImplementedError
+
+    def get_validator(self):
+        return SearchEngineDefaultValidator()
 
     @api.model
     def recompute_all_index(self, domain=None):

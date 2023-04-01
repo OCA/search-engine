@@ -7,7 +7,7 @@ from odoo import fields, models
 from ..tools.adapter import SearchEngineAdapter
 
 
-class SeAdapterFake(SearchEngineAdapter):
+class FakeSeAdapter(SearchEngineAdapter):
     def __init__(self, *args):
         super().__init__(*args)
         if not hasattr(self, "_mocked_calls"):
@@ -42,7 +42,7 @@ class SeAdapterFake(SearchEngineAdapter):
 
         Usage:
 
-            with SeAdapterFake.mocked_calls() as calls:
+            with FakeSeAdapter.mocked_calls() as calls:
                 # do something, then
                 self.assertEqual(calls[0]['method'], 'clear')
                 # do more
@@ -50,6 +50,11 @@ class SeAdapterFake(SearchEngineAdapter):
         cls._mocked_calls = []
         yield cls._mocked_calls
         cls._mocked_calls = []
+
+
+class FakeSerializer:
+    def serialize(self, record):
+        return {"name": record.name, "id": record.id}
 
 
 class SeBackend(models.Model):
@@ -61,9 +66,23 @@ class SeBackend(models.Model):
 
     def get_adapter_class(self):
         if self.backend_type == "fake":
-            return SeAdapterFake
+            return FakeSeAdapter
         else:
             return super().get_adapter_class()
+
+
+class SeIndex(models.Model):
+    _inherit = "se.index"
+
+    serializer = fields.Selection(
+        selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
+    )
+
+    def get_serializer(self):
+        if self.serializer == "fake":
+            return FakeSerializer()
+        else:
+            return super().get_serializer()
 
 
 class ResPartner(models.Model):

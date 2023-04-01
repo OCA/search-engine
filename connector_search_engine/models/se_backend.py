@@ -48,27 +48,6 @@ class SeBackend(models.Model):
         # TODO: username password etc
         return {}  # pragma: no cover
 
-    @property
-    def _record_id_key(self):
-        # inherit this method if your search engine use a different key
-        # as reference (ex: Algolia use objectID)
-        return "id"
-
-    def _validate_data(self, record):
-        """Validate record for the specific search engine.
-
-        :param record: a dict representing a record to index
-        :return: error message if not validated, None if it's all good.
-        """
-        if not record:
-            return _("The record is empty")
-        if not record.get(self._record_id_key):
-            # Ensure _record_id_key is set when creating/updating records
-            return _("The key `%(record_key)s` is missing in:\n%(record)s") % dict(
-                record_key=self._record_id_key,
-                record=record,
-            )
-
     def get_adapter_class(self):
         raise NotImplementedError
 

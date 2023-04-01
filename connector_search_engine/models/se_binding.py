@@ -9,6 +9,7 @@ import math
 import sys
 
 from odoo import _, api, fields, models, tools
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -150,15 +151,6 @@ class SeBinding(models.Model):
                 with backend.work_on(self._name, records=bindings, index=index) as work:
                     yield work
 
-    def _convert_to_json(self):
-        if self.index_id.lang_id:
-            self = self.with_context(lang=self.index_id.lang_id.code)
-        # TODO check if we have cache on get_json_parser
-        return self.record_id.jsonify(self.index_id.exporter_id.get_json_parser())[0]
-
-    def _validate_data(self):
-        return self.backend_id._validate_data(self.data)
-
     def _recompute_json(self, force_export=False):
         """Compute index record data as JSON."""
         # `sudo` because the recomputation can be triggered from everywhere
@@ -167,6 +159,13 @@ class SeBinding(models.Model):
         # (eg: se.backend or related records needed to compute index values).
         # All in all, this is safe because the index data should always
         # be the same no matter the access rights of the user triggering this.
+
+        index2serializer = {}
+        index2validator = {}
+        for index in self.index_id:
+            index2serializer[index] = index.get_serializer()
+            index2validator[index] = index.get_validator()
+
         for record in self.sudo():
             if not record.record_id.exists():
                 record.state = "to_delete"
@@ -175,12 +174,18 @@ class SeBinding(models.Model):
                     "flag the binding to be deleted"
                 )
                 continue
-            record.data = record._convert_to_json()
+
+            # force the lang if needed
+            if record.index_id.lang_id:
+                record = record.with_context(lang=self.index_id.lang_id.code)
+
+            record.data = index2serializer[index].serialize(record.record_id)
             record.date_recomputed = fields.Datetime.now()
-            error = record._validate_data()
-            if error:
+            try:
+                index2validator[index].validate(record.data)
+            except ValidationError as e:
                 record.state = "invalid_data"
-                record.validation_error = error
+                record.validation_error = str(e)
             else:
                 record.state = "to_export"
                 record.validation_error = ""
