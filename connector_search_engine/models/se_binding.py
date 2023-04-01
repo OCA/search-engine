@@ -193,7 +193,7 @@ class SeBinding(models.Model):
 
     def delete_record(self):
         adapter = self.index_id._get_adapter()
-        record_ids = self.ids
+        record_ids = self.mapped("res_id")
         adapter.delete(record_ids)
         self.unlink()
         return "Deleted ids : {}".format(record_ids)

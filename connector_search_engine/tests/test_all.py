@@ -18,10 +18,10 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         # Load fake models ->/
         cls.loader = FakeModelLoader(cls.env, cls.__module__)
         cls.loader.backup_registry()
-        from .models import ResPartner, SeAdapterFake, SeBackend, SeBinding
+        from .models import ResPartner, SeAdapterFake, SeBackend
 
-        cls.loader.update_registry((SeBinding, ResPartner, SeBackend))
-        cls.binding_model = cls.env[SeBinding._name]
+        cls.loader.update_registry((ResPartner, SeBackend))
+        cls.binding_model = cls.env["se.binding"]
         cls.se_index_model = cls.env["se.index"]
 
         cls.se_adapter_fake = SeAdapterFake
@@ -102,6 +102,11 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
+    def assert_index_called(self, calls, action, ids):
+        self.assertEqual(
+            calls, [{"index": self.se_index, "method": action, "args": ids}]
+        )
 
     # TODO: the following `test_backend*` methods
     # should be splitted to a smaller test case.
@@ -201,32 +206,33 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_force_batch_sync_with_not_exportable_binding(self):
         for state in ("to_recompute", "recomputing", "invalid_data"):
             self.partner_binding.state = state
-            tracking = []
-            self.se_index.with_context(call_tracking=tracking).force_batch_sync()
-            self.assertEqual(tracking, [])
-            self.assertEqual(self.partner_binding.state, state)
+            with self.se_adapter_fake.mocked_calls() as calls:
+                self.se_index.force_batch_sync()
+                self.assertEqual(calls, [])
+                self.assertEqual(self.partner_binding.state, state)
 
     def test_force_batch_sync_with_exportable_binding(self):
+        self.partner_binding.recompute_json()
         for state in ("done", "to_export", "exporting"):
             self.partner_binding.state = state
-            tracking = []
-            self.se_index.with_context(call_tracking=tracking).force_batch_sync()
-            self.assertEqual(tracking, ["Exported ids : [1]"])
-            self.assertEqual(self.partner_binding.state, "done")
+            with self.se_adapter_fake.mocked_calls() as calls:
+                self.se_index.force_batch_sync()
+                self.assert_index_called(calls, "index", [self.partner_binding.data])
+                self.assertEqual(self.partner_binding.state, "done")
 
     def test_force_batch_sync_with_to_delete_binding(self):
         self.partner_binding.state = "to_delete"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).force_batch_sync()
-        self.assertEqual(tracking, ["Deleted ids : [1]"])
-        self.assertFalse(self.partner_binding.exists())
+        with self.se_adapter_fake.mocked_calls() as calls:
+            self.se_index.force_batch_sync()
+            self.assert_index_called(calls, "delete", [self.partner.id])
+            self.assertFalse(self.partner_binding.exists())
 
     def test_force_batch_sync_with_deleting_binding(self):
         self.partner_binding.state = "deleting"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).force_batch_sync()
-        self.assertEqual(tracking, ["Deleted ids : [1]"])
-        self.assertFalse(self.partner_binding.exists())
+        with self.se_adapter_fake.mocked_calls() as calls:
+            self.se_index.force_batch_sync()
+            self.assert_index_called(calls, "delete", [self.partner.id])
+            self.assertFalse(self.partner_binding.exists())
 
     def test_batch_sync_not_exportable(self):
         for state in (
@@ -237,24 +243,24 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             "deleting",
         ):
             self.partner_binding.state = state
-            tracking = []
-            self.se_index.with_context(call_tracking=tracking).batch_sync()
-            self.assertEqual(self.partner_binding.state, state)
-            self.assertEqual(tracking, [])
+            with self.se_adapter_fake.mocked_calls() as calls:
+                self.se_index.batch_sync()
+                self.assertEqual(self.partner_binding.state, state)
+                self.assertEqual(calls, [])
 
     def test_batch_sync_deletable(self):
         self.partner_binding.state = "to_delete"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).batch_sync()
-        self.assertEqual(tracking, ["Deleted ids : [1]"])
-        self.assertFalse(self.partner_binding.exists())
+        with self.se_adapter_fake.mocked_calls() as calls:
+            self.se_index.batch_sync()
+            self.assert_index_called(calls, "delete", [self.partner.id])
+            self.assertFalse(self.partner_binding.exists())
 
     def test_batch_sync_exportable(self):
         self.partner_binding.state = "to_export"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).batch_sync()
-        self.assertEqual(tracking, ["Exported ids : [1]"])
-        self.assertEqual(self.partner_binding.state, "done")
+        with self.se_adapter_fake.mocked_calls() as calls:
+            self.se_index.batch_sync()
+            self.assert_index_called(calls, "index", [self.partner_binding.data])
+            self.assertEqual(self.partner_binding.state, "done")
 
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_missing_record_to_recompute(self):

@@ -66,25 +66,6 @@ class SeBackend(models.Model):
             return super().get_adapter_class()
 
 
-class SeBinding(models.Model):
-    _inherit = "se.binding"
-
-    # TODO see if we can remove this as it's for test only
-    def export_record(self):
-        # You can set `call_tracking` as a list in ctx to collect the results.
-        res = super().export_record()
-        if "call_tracking" in self.env.context:
-            self.env.context["call_tracking"].append(res)
-        return res
-
-    def delete_record(self):
-        # You can set `call_tracking` as a list in ctx to collect the results.
-        res = super().delete_record()
-        if "call_tracking" in self.env.context:
-            self.env.context["call_tracking"].append(res)
-        return res
-
-
 class ResPartner(models.Model):
     _name = "res.partner"
     _inherit = ["res.partner", "se.indexable.record"]
