@@ -88,5 +88,3 @@ class SeIndex(models.Model):
 class ResPartner(models.Model):
     _name = "res.partner"
     _inherit = ["res.partner", "se.indexable.record"]
-
-    index_bind_ids = fields.One2many(domain=[("res_model", "=", "res.partner")])

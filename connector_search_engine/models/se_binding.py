@@ -55,6 +55,14 @@ class SeBinding(models.Model):
     res_id = fields.Integer()
     res_model = fields.Selection(selection=lambda s: s._get_indexable_model_selection())
 
+    _sql_constraints = [
+        (
+            "item_uniq_per_index",
+            "unique(res_id, res_model, index_id)",
+            _("A record can only be bind one time per index !"),
+        ),
+    ]
+
     @tools.ormcache()
     @api.model
     def _get_indexable_model_selection(self):
@@ -75,7 +83,9 @@ class SeBinding(models.Model):
 
     @property
     def record_id(self):
-        return self.env[self.res_model].browse(self.res_id).exists()
+        if len(set(self.mapped("res_model"))) > 1:
+            raise ValueError("All record must have the same model")
+        return self.env[self[0].res_model].browse(self.mapped("res_id")).exists()
 
     @api.depends("data")
     def _compute_data_display(self):
