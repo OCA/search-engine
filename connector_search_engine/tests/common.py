@@ -8,9 +8,6 @@ from odoo import tools
 from odoo.modules.module import get_resource_path
 from odoo.tests.common import TransactionCase
 
-# mute `test_queue_job_no_delay` logging
-logging.getLogger("odoo.addons.queue_job.models.base").setLevel("CRITICAL")
-
 
 def load_xml(env, module, filepath):
     tools.convert_file(
@@ -43,3 +40,18 @@ class TestSeBackendCaseBase(TransactionCase):
     @staticmethod
     def parse_path(url):
         return urlparse.urlparse(url).path
+
+    def setUp(self):
+        super(TestSeBackendCaseBase, self).setUp()
+        loggers = ["odoo.addons.queue_job.delay"]
+        for logger in loggers:
+            logging.getLogger(logger).addFilter(self)
+
+        # pylint: disable=unused-variable
+        @self.addCleanup
+        def un_mute_logger():
+            for logger_ in loggers:
+                logging.getLogger(logger_).removeFilter(self)
+
+    def filter(self, record):
+        return 0
