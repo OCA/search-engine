@@ -380,9 +380,8 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(self.partner_binding.sync_state, "to_be_checked")
         self.assertEqual(
             result,
-            "Validation errors\n"
-            "res.partner.binding.fake(%s,): Something wrong with data"
-            % self.partner_binding.id,
+            "Validation errors:\n\n  "
+            f"Something wrong with data - IDs: {self.partner_binding.id}",
         )
 
     def test_recompute_json_to_be_checked_rollback(self):
@@ -412,7 +411,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_missing_record_key(self):
         self.record_id_export_line.unlink()
         res = self.partner_binding.recompute_json()
-        error_string = "\n".join(
-            ["Validation errors", "{}: The key `id` is missing in:"]
-        ).format(str(self.partner_binding))
-        self.assertTrue(res.startswith(error_string))
+        self.assertEqual(
+            res,
+            f"Validation errors:\n\n  The key `id` is missing - IDs: {self.partner_binding.id}",
+        )

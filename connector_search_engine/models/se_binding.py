@@ -183,7 +183,7 @@ class SeBinding(models.AbstractModel):
         # All in all, this is safe because the index data should always
         # be the same no matter the access rights of the user triggering this.
         result = []
-        validation_errors = []
+        validation_errors = {}
         to_be_checked = []
         for work in self.sudo()._work_by_index():
             mapper = work.component(usage="se.export.mapper")
@@ -194,9 +194,7 @@ class SeBinding(models.AbstractModel):
                 # Validate data and track items to check
                 error = self._validate_record(work, index_record)
                 if error:
-                    msg = "{}: {}".format(str(binding), error)
-                    _logger.warning(msg)
-                    validation_errors.append(msg)
+                    validation_errors.setdefault(error, []).append(binding.id)
                     to_be_checked.append(binding.id)
                     # skip record
                     continue
@@ -207,10 +205,20 @@ class SeBinding(models.AbstractModel):
                         vals["date_modified"] = fields.Datetime.now()
                     binding.write(vals)
         if validation_errors:
-            result.append(_("Validation errors") + "\n" + "\n".join(validation_errors))
+            result.append(
+                self._format_recompute_json_validation_errors(validation_errors)
+            )
         if to_be_checked:
             self.browse(to_be_checked).write({"sync_state": "to_be_checked"})
         return "\n\n".join(result)
+
+    def _format_recompute_json_validation_errors(self, validation_errors):
+        res = [_("Validation errors:")]
+        for error, record_ids in validation_errors.items():
+            ids = ",".join([str(x) for x in record_ids])
+            res.append(f"\n  {error} - IDs: {ids}")
+            _logger.warning("%s: %s", error, ids)
+        return "\n".join(res)
 
     def _recompute_json_work_ctx(self, work):
         ctx = {}

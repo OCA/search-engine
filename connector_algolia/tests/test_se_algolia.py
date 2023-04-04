@@ -142,11 +142,12 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_missing_object_key(self):
         self.record_id_export_line.unlink()
-        res = self.partner_binding.recompute_json()
-        error_string = "\n".join(
-            ["Validation errors", "{}: The key `objectID` is missing in:"]
-        ).format(str(self.partner_binding))
-        self.assertTrue(res.startswith(error_string))
+        result = self.partner_binding.recompute_json()
+        self.assertEqual(
+            result,
+            "Validation errors:\n\n  "
+            f"The key `objectID` is missing - IDs: {self.partner_binding.id}",
+        )
 
     def test_added_object_key(self):
         self.assertTrue(self.partner_binding.data)
@@ -189,7 +190,6 @@ class TestAlgoliaBackend(VCRMixin, TestBindingIndexBase):
         self.assertEqual(self.partner_binding.sync_state, "to_be_checked")
         self.assertEqual(
             result,
-            "Validation errors\n"
-            "res.partner.binding.fake(%s,): Algolia record quota exceeded"
-            % self.partner_binding.id,
+            "Validation errors:\n\n  "
+            f"Algolia record quota exceeded - IDs: {self.partner_binding.id}",
         )
