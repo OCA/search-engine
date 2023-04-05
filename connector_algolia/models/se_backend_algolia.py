@@ -1,10 +1,16 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # Raphaël Valyi <raphael.valyi@akretion.com>
 # Sébastien BEAU <sebastien.beau@akretion.com>
+# Copyright 2019 Camptocamp (http://www.camptocamp.com)
+# Simone Orsi <simone.orsi@camptocamp.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from odoo import fields, models
+from odoo import _, fields, models
+
+from ..utils import get_dict_bytes_size
+
+RECORD_QUOTA = 10000  # bytes
 
 
 class SeBackendAlgolia(models.Model):
@@ -37,3 +43,12 @@ class SeBackendAlgolia(models.Model):
 
     def _get_api_credentials(self):
         return {"password": self.algolia_api_key}  # pragma: no cover
+
+    def _validate_record(self, index_record):
+        error = super()._validate_record(index_record)
+        if error:
+            return error
+        # validate size
+        size = get_dict_bytes_size(index_record)
+        if size > RECORD_QUOTA:
+            return _("Algolia record quota exceeded")

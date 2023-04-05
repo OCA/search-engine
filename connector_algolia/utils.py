@@ -1,6 +1,7 @@
-# Copyright 2017-2018 Simone Orsi
+# Copyright 2017 Simone Orsi
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 # Borrowed from cms_form.utils
+import json
 
 
 def data_merge(a, b):
@@ -42,3 +43,7 @@ def data_merge(a, b):
             '"{}" in key "{}" when merging "{}" into "{}"'.format(e, key, b, a)
         )
     return a
+
+
+def get_dict_bytes_size(data):
+    return len(json.dumps(data or {}))

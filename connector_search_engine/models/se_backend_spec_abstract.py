@@ -69,4 +69,4 @@ class SeBackendSpecAbstract(models.AbstractModel):
             return _("The record is empty")
         if not record.get(self._record_id_key):
             # Ensure _record_id_key is set when creating/updating records
-            return _("The key `%s` is missing in:\n%s") % (self._record_id_key, record)
+            return _("The key `%(key)s` is missing") % {"key": self._record_id_key}
