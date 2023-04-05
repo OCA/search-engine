@@ -517,9 +517,7 @@ msgstr ""
 #. module: connector_search_engine
 #: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:0
 #, python-format
-msgid ""
-"The key `%s` is missing in:\n"
-"%s"
+msgid "The key `%(key)s` is missing"
 msgstr ""
 
 #. module: connector_search_engine
@@ -563,5 +561,5 @@ msgstr ""
 #. module: connector_search_engine
 #: code:addons/connector_search_engine/models/se_binding.py:0
 #, python-format
-msgid "Validation errors"
+msgid "Validation errors:"
 msgstr ""
