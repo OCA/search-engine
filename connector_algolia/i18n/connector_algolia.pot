@@ -54,6 +54,12 @@ msgid "Algolia Backends"
 msgstr ""
 
 #. module: connector_algolia
+#: code:addons/connector_algolia/models/se_backend_algolia.py:0
+#, python-format
+msgid "Algolia record quota exceeded"
+msgstr ""
+
+#. module: connector_algolia
 #: model:ir.model.fields,help:connector_algolia.field_se_binding__data_size
 msgid ""
 "Computed size of the index. Algolia limits record size to 10KB and exports "
