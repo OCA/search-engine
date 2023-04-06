@@ -39,6 +39,14 @@
                     type="object"
                     groups="connector_search_engine.group_connector_search_engine_manager"
                 />
+                <button
+                    name="reindex"
+                    help="Reindex records according to the current config"
+                    icon="fa-refresh"
+                    string="Reindex"
+                    type="object"
+                    groups="connector_search_engine.group_connector_search_engine_manager"
+                />
             </tree>
         </field>
     </record>

@@ -297,6 +297,12 @@ class SeIndex(models.Model):
         adapter = self.se_adapter
         adapter.settings()
 
+    def reindex(self) -> None:
+        """Reindex records according."""
+        self.ensure_one()
+        adapter = self.se_adapter
+        adapter.reindex()
+
     def resynchronize_all_bindings(self):
         """Force sync between Odoo records and index records.
 

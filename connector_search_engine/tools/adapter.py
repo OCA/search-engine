@@ -42,6 +42,11 @@ class SearchEngineAdapter(ABC):
         """Return an iterator on the index content."""
         ...
 
+    def reindex(self) -> None:
+        """Reindex the index on the search engine side."""
+        self.clear()
+        self.index(self._get_index_data())
+
     def settings(self, force=False) -> None:
         """Update the settings of the index on the search engine side."""
 
