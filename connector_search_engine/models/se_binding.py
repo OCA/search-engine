@@ -2,14 +2,17 @@
 # Copyright 2021 Camptocamp (http://www.camptocamp.com)
 # Simone Orsi <simone.orsi@camptocamp.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 import json
 import logging
-import math
 import sys
+from typing import Any, Dict, Iterator
 
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
+
+from odoo.addons.queue_job.job import identity_exact
+
+from ..tools.json_comparer import compare_json
 
 _logger = logging.getLogger(__name__)
 
@@ -45,14 +48,18 @@ class SeBinding(models.Model):
         readonly=False,
     )
     date_recomputed = fields.Datetime(readonly=True)
-    date_syncronized = fields.Datetime(readonly=True)
-    data = fields.Serialized()
+    date_synchronized = fields.Datetime(readonly=True)
+    data = fields.Json()
     data_display = fields.Text(
         compute="_compute_data_display",
         help="Include this in debug mode to be able to inspect index data.",
     )
     validation_error = fields.Text()
-    res_id = fields.Integer()
+    res_id = fields.Many2oneReference(
+        string="Record ID",
+        help="ID of the target record in the database",
+        model_field="res_model",
+    )
     res_model = fields.Selection(selection=lambda s: s._get_indexable_model_selection())
 
     _sql_constraints = [
@@ -82,7 +89,7 @@ class SeBinding(models.Model):
         pass
 
     @property
-    def record_id(self):
+    def record(self) -> models.Model:
         if len(set(self.mapped("res_model"))) > 1:
             raise ValueError("All record must have the same model")
         return self.env[self[0].res_model].browse(self.mapped("res_id")).exists()
@@ -92,14 +99,17 @@ class SeBinding(models.Model):
         for rec in self:
             rec.data_display = json.dumps(rec.data, sort_keys=True, indent=4)
 
-    def get_export_data(self):
+    def get_export_data(self) -> Dict[str, Any]:
         """Public method to retrieve export data."""
         return self.data
 
-    def _get_binding_to_process(self, bindings, batch_size):
-        return bindings[0:batch_size], bindings[batch_size:]  # noqa: E203
+    def _batch(self, size: int) -> Iterator["SeBinding"]:
+        """Return an iterator on the records in batch of size."""
+        for i in range(0, len(self), size):
+            yield self[i : i + size]
 
-    def _jobify_get_job_description(self, processing_count):
+    def _jobify_get_job_description(self, processing_count: int) -> str:
+        """Return a human readable description to be used when creating a job."""
         # We check if we are currently handling an exception in order
         # to change the job description.
         (current_exception, current_exception_value, __) = sys.exc_info()
@@ -122,47 +132,19 @@ class SeBinding(models.Model):
                 model_name=self._name,
             )
 
-    def jobify_recompute_json(self, force_export=False, batch_size=500):
+    def jobify_recompute_json(self, force_export: bool = False):
+        """Create one job per record to recompute the json."""
         # The job creation with tracking is very costly. So disable it.
-        bindings = self.with_context(tracking_disable=True)
-        while bindings:
-            processing, bindings = self._get_binding_to_process(bindings, batch_size)
-            description = self._jobify_get_job_description(len(processing))
-            processing.with_delay(description=description).recompute_json(
-                force_export=force_export
+        for binding in self.with_context(tracking_disable=True):
+            description = _(
+                "Recompute %(name)s json and check if need update", name=self._name
             )
+            binding.with_delay(
+                description=description, identity_key=identity_exact
+            ).recompute_json(force_export=force_export)
 
-    def recompute_json(self, force_export=False):
-        try:
-            with self.env.cr.savepoint():
-                return self._recompute_json(force_export=force_export)
-        except Exception as e:
-            # If the batch fails, retry with a half len batch:
-            if len(self) > 1:
-                self.jobify_recompute_json(
-                    force_export=force_export,
-                    batch_size=math.ceil(len(self) / 2),
-                )
-                return _(
-                    "Job have been splited due to failling element.\nError: {}"
-                ) % str(e)
-            # We can't systematically reraise here, if we do the new jobs
-            # will be discarded.
-            raise
-
-    def _work_by_index(self, active=True):
-        self = self.exists()
-        for backend in self.mapped("backend_id"):
-            for index in self.mapped("index_id"):
-                bindings = self.filtered(
-                    lambda b, backend=backend, index=index: b.backend_id == backend
-                    and b.index_id == index
-                )
-                with backend.work_on(self._name, records=bindings, index=index) as work:
-                    yield work
-
-    def _recompute_json(self, force_export=False):
-        """Compute index record data as JSON."""
+    def recompute_json(self, force_export: bool = False):
+        """ "Compute index record data as JSON."""
         # `sudo` because the recomputation can be triggered from everywhere
         # (eg: an update of a product in the stock) and is not granted
         # that the user triggering it has access to all required records
@@ -170,44 +152,44 @@ class SeBinding(models.Model):
         # All in all, this is safe because the index data should always
         # be the same no matter the access rights of the user triggering this.
 
-        index2serializer = {}
-        index2validator = {}
-        for index in self.index_id:
-            index2serializer[index] = index.get_serializer()
-            index2validator[index] = index.get_validator()
-
         for record in self.sudo():
-            if not record.record_id.exists():
+            if not record.record:
                 record.state = "to_delete"
                 _logger.error(
                     "There is something wrong, the record do not exists "
                     "flag the binding to be deleted"
                 )
                 continue
-
+            index = record.index_id
             # force the lang if needed
-            if record.index_id.lang_id:
-                record = record.with_context(lang=self.index_id.lang_id.code)
+            if index.lang_id:
+                record = record.with_context(lang=index.lang_id.code)
 
-            record.data = index2serializer[index].serialize(record.record_id)
+            old_data = record.data
+            record.data = index.model_serializer.serialize(record.record)
             record.date_recomputed = fields.Datetime.now()
             try:
-                index2validator[index].validate(record.data)
+                index.json_validator.validate(record.data)
             except ValidationError as e:
                 record.state = "invalid_data"
                 record.validation_error = str(e)
             else:
-                record.state = "to_export"
+                if force_export or not compare_json(old_data or {}, record.data or {}):
+                    record.state = "to_export"
+                else:
+                    record.state = "done"
                 record.validation_error = ""
 
-    def export_record(self):
-        adapter = self.index_id._get_adapter()
+    def export_record(self) -> str:
+        self.ensure_one()
+        adapter = self.index_id.se_adapter
         adapter.index([record.get_export_data() for record in self])
         self.state = "done"
         return "Exported ids : {}".format(self.ids)
 
-    def delete_record(self):
-        adapter = self.index_id._get_adapter()
+    def delete_record(self) -> str:
+        self.ensure_one()
+        adapter = self.index_id.se_adapter
         record_ids = self.mapped("res_id")
         adapter.delete(record_ids)
         self.unlink()

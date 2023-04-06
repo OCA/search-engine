@@ -64,25 +64,25 @@ class SeBackend(models.Model):
         selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
     )
 
-    def get_adapter_class(self):
+    def _get_adapter_class(self):
         if self.backend_type == "fake":
             return FakeSeAdapter
         else:
-            return super().get_adapter_class()
+            return super()._get_adapter_class()
 
 
 class SeIndex(models.Model):
     _inherit = "se.index"
 
-    serializer = fields.Selection(
+    serializer_type = fields.Selection(
         selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
     )
 
-    def get_serializer(self):
-        if self.serializer == "fake":
+    def _get_serializer(self):
+        if self.serializer_type == "fake":
             return FakeSerializer()
         else:
-            return super().get_serializer()
+            return super()._get_serializer()
 
 
 class ResPartner(models.Model):

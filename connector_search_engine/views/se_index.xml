@@ -14,7 +14,7 @@
                 <field name="name" />
                 <field name="lang_id" />
                 <field name="model_id" />
-                <field name="serializer" required="True" />
+                <field name="serializer_type" required="True" />
                 <field name="config_id" />
                 <field name="batch_size" />
                 <button
