@@ -9,6 +9,8 @@ from odoo.tools import mute_logger
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
+from ..tools.adapter import ElasticSearchAdapter
+
 # NOTE: if you need to refresh tests, you can fire up an ElasticSearch instance
 # using `docker-compose.elasticsearch.example.yml` in this same folder.
 # If you are not running in a docker env, you'll need to add an alias
@@ -21,7 +23,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         super().setUpClass()
         cls.backend = cls.env.ref("connector_elasticsearch.backend_1")
         cls.setup_records()
-        cls.adapter = cls.se_index._get_adapter()
+        cls.adapter: ElasticSearchAdapter = cls.se_index.se_adapter
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
@@ -84,7 +86,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
-            # when we record the test we must wait for algolia
+            # when we record the test we must wait for es
             sleep(2)
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
@@ -95,11 +97,11 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
-            # when we record the test we must wait for algolia
+            # when we record the test we must wait for es
             sleep(2)
         self.adapter.delete(["foo", "foo3"])
         if self.cassette.dirty:
-            # when we record the test we must wait for algolia
+            # when we record the test we must wait for es
             sleep(2)
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
@@ -111,3 +113,23 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         Because it does not matter, it is just ignored. No exception.
         """
         self.adapter.delete(["donotexist", "donotexisteither"])
+
+    def test_index_adapter_reindex(self):
+        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
+        self.adapter.clear()
+        self.adapter.index(data)
+        index_name = self.adapter._get_current_aliased_index_name()
+        next_index_name = self.adapter._get_next_aliased_index_name(index_name)
+        if self.cassette.dirty:
+            # when we record the test we must wait for es
+            sleep(2)
+        self.adapter.reindex()
+        if self.cassette.dirty:
+            # when we record the test we must wait for es
+            sleep(2)
+        res = [x for x in self.adapter.each()]
+        res.sort(key=lambda d: d["id"])
+        self.assertListEqual(res, data)
+        self.assertEqual(
+            self.adapter._get_current_aliased_index_name(), next_index_name
+        )

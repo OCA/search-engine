@@ -11,17 +11,17 @@ interactions:
       content-type:
       - application/json
       user-agent:
-      - elasticsearch-py/7.13.4 (Python 3.9.16)
+      - elasticsearch-py/7.13.4 (Python 3.10.6)
       x-elastic-client-meta:
-      - es=7.13.4,py=3.9.16,t=7.13.4,rq=2.28.1,h=bp
+      - es=7.13.4,py=3.10.6,t=7.13.4,rq=2.28.2,h=bp
     method: POST
     uri: http://elastic:9200/_bulk
   response:
     body:
-      string: '{"took":8,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_contact_en_us","_type":"_doc","_id":"foo","_version":2,"result":"updated","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":3,"_primary_term":1,"status":200}}]}'
+      string: '{"took":12,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_contact_en_us-2","_type":"_doc","_id":"foo","_version":3,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":5,"_primary_term":1,"status":201}}]}'
     headers:
       content-length:
-      - '249'
+      - '252'
       content-type:
       - application/json; charset=UTF-8
     status:

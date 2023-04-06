@@ -19,7 +19,7 @@ class SeBackend(models.Model):
     api_key_id = fields.Char(help="Elasticsearch Api Key ID", string="Api Key ID")
     api_key = fields.Char(help="Elasticsearch Api Key")
 
-    def get_adapter_class(self):
+    def _get_adapter_class(self):
         if self.backend_type == "elasticsearch":
             return ElasticSearchAdapter
         else:
