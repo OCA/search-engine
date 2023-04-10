@@ -104,7 +104,7 @@ class ElasticsearchAdapter(Component):
             scroll="5m",
             body=body,
         )
-        while result["hits"]["hits"]:
+        while result.get("hits", {}).get("hits"):
             yield from (hit["_source"] for hit in result["hits"]["hits"])
             result = es.scroll(
                 body={
