@@ -215,7 +215,7 @@ class SeBinding(models.AbstractModel):
     def _format_recompute_json_validation_errors(self, validation_errors):
         res = [_("Validation errors:")]
         for error, record_ids in validation_errors.items():
-            ids = ",".join([str(x) for x in record_ids])
+            ids = ", ".join([str(x) for x in record_ids])
             res.append(f"\n  {error} - IDs: {ids}")
             _logger.warning("%s: %s", error, ids)
         return "\n".join(res)
