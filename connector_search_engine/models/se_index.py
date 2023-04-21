@@ -2,10 +2,15 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from typing import List
 
 from odoo import _, api, fields, models
 
-from ..tools.validator import SearchEngineDefaultValidator
+from odoo.addons.queue_job.job import identity_exact
+
+from ..tools.adapter import SearchEngineAdapter
+from ..tools.serializer import ModelSerializer
+from ..tools.validator import DefaultJsonValidator, JsonValidator
 
 _logger = logging.getLogger(__name__)
 
@@ -13,6 +18,8 @@ _logger = logging.getLogger(__name__)
 class SeIndex(models.Model):
     _name = "se.index"
     _description = "Se Index"
+
+    __slots__ = ("_se_adapter", "_model_serializer", "_json_validator")
 
     name = fields.Char(compute="_compute_name", store=True)
     custom_tech_name = fields.Char(
@@ -32,7 +39,7 @@ class SeIndex(models.Model):
         domain=lambda self: self._model_id_domain(),
         ondelete="cascade",
     )
-    serializer = fields.Selection([])
+    serializer_type = fields.Selection([])
     batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
     config_id = fields.Many2one(
         comodel_name="se.index.config",
@@ -40,6 +47,12 @@ class SeIndex(models.Model):
         help="Index configuration record",
     )
     binding_ids = fields.One2many("se.binding", "index_id", "Binding")
+
+    def __init__(self, env, ids=(), prefetch_ids=()):
+        super().__init__(env, ids, prefetch_ids)
+        self._se_adapter = None
+        self._model_serializer = None
+        self._json_validator = None
 
     @api.model
     def _model_id_domain(self):
@@ -56,37 +69,56 @@ class SeIndex(models.Model):
         )
     ]
 
-    def _get_adapter(self):
-        return self.backend_id._get_adapter(self)
+    def write(self, vals):
+        res = super().write(vals)
+        if "backend_id" in vals:
+            for index in self:
+                index._se_adapter = None
+        return res
 
-    def get_serializer(self):
+    @property
+    def se_adapter(self) -> SearchEngineAdapter:
+        if not self._se_adapter:
+            self._se_adapter = self.backend_id.get_adapter(self)
+        return self._se_adapter
+
+    @property
+    def model_serializer(self) -> ModelSerializer:
+        if not self._model_serializer:
+            self._model_serializer = self._get_serializer()
+        return self._model_serializer
+
+    @property
+    def json_validator(self) -> JsonValidator:
+        if not self._json_validator:
+            self._json_validator = self._get_validator()
+        return self._json_validator
+
+    def _get_serializer(self) -> ModelSerializer:
         raise NotImplementedError
 
-    def get_validator(self):
-        return SearchEngineDefaultValidator()
+    def _get_validator(self) -> JsonValidator:
+        return DefaultJsonValidator()
 
     @api.model
-    def recompute_all_index(self, domain=None):
+    def recompute_all_index(self, domain=None) -> None:
         if domain is None:
             domain = []
-        return self.search(domain).recompute_all_binding()
+        self.search(domain).recompute_all_binding()
 
-    def force_recompute_all_binding(self):
+    def force_recompute_all_binding(self) -> None:
         self.recompute_all_binding(force_export=True)
 
-    def recompute_all_binding(self, force_export=False, batch_size=500):
+    def recompute_all_binding(self, force_export: bool = False):
         target_models = self.mapped("model_id.model")
         for target_model in target_models:
             indexes = self.filtered(lambda r, m=target_model: r.model_id.model == m)
-            indexes.binding_ids.jobify_recompute_json(
-                force_export=force_export, batch_size=batch_size
-            )
-        return True
+            indexes.binding_ids.jobify_recompute_json(force_export=force_export)
 
     @api.depends(
         "custom_tech_name", "lang_id", "model_id", "backend_id.index_prefix_name"
     )
-    def _compute_name(self):
+    def _compute_name(self) -> None:
         for rec in self:
             if not rec.backend_id:
                 # in onchange on concrete views rec is a new Id
@@ -95,7 +127,7 @@ class SeIndex(models.Model):
             else:
                 rec.name = rec._make_name()
 
-    def _make_name(self):
+    def _make_name(self) -> str:
         """Compute the final name of the index."""
         name = ""
         backend = self.backend_id
@@ -115,94 +147,140 @@ class SeIndex(models.Model):
             name = "_".join(bits)
         return name
 
-    def _make_tech_name(self):
+    def _make_tech_name(self) -> str:
         """Compute the main part of the name of the index."""
         tech_name = self.custom_tech_name or self.model_id.name or ""
         return self.backend_id._normalize_tech_name(tech_name)
 
-    def force_batch_sync(self):
+    def force_batch_sync(self) -> None:
         self.ensure_one()
         self._jobify_batch_sync(force_export=True)
 
-    def _jobify_batch_sync(self, force_export=False):
+    def _jobify_batch_sync(self, force_export: bool = False) -> None:
         self.ensure_one()
         description = _("Prepare a batch synchronization of index '%s'") % self.name
-        self.with_delay(description=description).batch_sync(force_export)
+        self.with_delay(
+            description=description, identity_key=identity_exact
+        ).batch_sync(force_export)
+
+    def _jobify_batch_recompute(self, force_export: bool = False) -> None:
+        self.ensure_one()
+        description = _("Prepare a batch recompute of index '%s'") % self.name
+        self.with_delay(
+            description=description, identity_key=identity_exact
+        ).batch_recompute(force_export)
 
     @api.model
-    def generate_batch_sync_per_index(self, domain=None):
+    def generate_batch_sync_per_index(self, domain: list | None = None) -> None:
+        """Generate a job for each index to sync.
+
+        This method is usually called by a cron. It will generate a job for each
+        index to sync. The sync will export the bindings marked as to_export.
+        and will delete the bindings marked as to_delete.
+        """
         if domain is None:
             domain = []
         for record in self.search(domain):
             record._jobify_batch_sync()
-        return True
 
-    def _get_domain_for_exporting_binding(self, force_export=False):
+    @api.model
+    def generate_batch_recompute_per_index(self, domain: list | None = None) -> None:
+        """Generate a job for each index to recompute.
+
+        This method is usually called by a cron. It will generate a job for each
+        index to recompute. The recompute process will recompute the bindings
+        marked as to_recompute.
+        """
+        if domain is None:
+            domain = []
+        for record in self.search(domain):
+            record._jobify_batch_recompute()
+
+    def _get_domain_for_recomputing_binding(self, force_export: bool = False) -> list:
+        """Return the domain to use to find the bindings to recompute."""
+        states = ["to_recompute"]
         if force_export:
-            states = ["to_export", "done", "exporting"]
-        else:
-            states = ["to_export"]
+            states.append("recomputing")
         return [("index_id", "=", self.id), ("state", "in", states)]
 
-    def _batch_export(self, force_export=False):
+    def batch_recompute(self, force_export: bool = False) -> None:
+        """Recompute all the bindings of the index marked as to_recompute."""
+        self.ensure_one()
+        domain = self._get_domain_for_recomputing_binding(force_export)
+        bindings = self.env["se.binding"].search(domain)
+        bindings_count = len(bindings)
+        for batch in bindings._batch(self.batch_size):
+            description = _(
+                "Recompute %(processing_count)d records of %(total_count)d "
+                "for index '%(index_name)s'"
+            ) % {
+                "processing_count": len(batch),
+                "total_count": bindings_count,
+                "index_name": self.name,
+            }
+            batch.write({"state": "recomputing"})
+            batch.with_delay(description=description).recompute_json()
+
+    def _get_domain_for_exporting_binding(self, force_export: bool = False):
+        """Return the domain to use to find the bindings to export."""
+        states = ["to_export"]
+        if force_export:
+            states.extend(["done", "exporting"])
+        return [("index_id", "=", self.id), ("state", "in", states)]
+
+    def _batch_export(self, force_export: bool = False) -> None:
+        """Export all the bindings of the index marked as to_export."""
         self.ensure_one()
         domain = self._get_domain_for_exporting_binding(force_export)
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
-        while bindings:
-            processing = bindings[0 : self.batch_size]  # noqa: E203
-            bindings = bindings[self.batch_size :]  # noqa: E203
+        for batch in bindings._batch(self.batch_size):
             description = _(
                 "Export %(processing_count)d records of %(total_count)d "
                 "for index '%(index_name)s'"
             ) % dict(
-                processing_count=len(processing),
+                processing_count=len(batch),
                 total_count=bindings_count,
                 index_name=self.name,
             )
-            processing.with_context(connector_no_export=True).write(
-                {"state": "exporting"}
-            )
-            processing.with_delay(description=description).export_record()
+            batch.write({"state": "exporting"})
+            batch.with_delay(description=description).export_record()
 
-    def _get_domain_for_deleting_binding(self, force_export=False):
+    def _get_domain_for_deleting_binding(self, force_export: bool = False) -> list:
+        """Get the domain to search the bindings to delete."""
+        states = ["to_delete"]
         if force_export:
-            states = ["to_delete", "deleting"]
-        else:
-            states = ["to_delete"]
+            states.append("deleting")
         return [("index_id", "=", self.id), ("state", "in", states)]
 
-    def _batch_delete(self, force_export=True):
+    def _batch_delete(self, force_export: bool = True) -> None:
+        """Delete all the bindings of the index marked as to_delete."""
         self.ensure_one()
         domain = self._get_domain_for_deleting_binding(force_export)
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
-        while bindings:
-            processing = bindings[0 : self.batch_size]  # noqa: E203
-            bindings = bindings[self.batch_size :]  # noqa: E203
+        for batch in bindings._batch(self.batch_size):
             description = _(
                 "Delete %(processing_count)d obsolete records of %(total_count)d "
                 "for index '%(index_name)s'",
             ) % dict(
-                processing_count=len(processing),
+                processing_count=len(batch),
                 total_count=bindings_count,
                 index_name=self.name,
             )
-            processing.with_delay(description=description).delete_record()
+            batch.with_delay(description=description).delete_record()
 
-    def batch_sync(self, force_export=False):
+    def batch_sync(self, force_export: bool = False) -> None:
         self.ensure_one()
         self._batch_export(force_export=force_export)
         self._batch_delete(force_export=force_export)
-        return True
 
-    def clear_index(self):
+    def clear_index(self) -> None:
         self.ensure_one()
-        adapter = self._get_adapter()
+        adapter = self.se_adapter
         adapter.clear()
-        return True
 
-    def _get_settings(self):
+    def _get_settings(self) -> dict:
         """
         Override this method is sub modules in order to pass the adequate
         settings (like Facetting, pagination, advanced settings, etc...)
@@ -211,12 +289,19 @@ class SeIndex(models.Model):
         return {}
 
     @api.model
-    def export_all_settings(self):
+    def export_all_settings(self) -> None:
         self.search([]).export_settings()
 
-    def export_settings(self):
-        adapter = self._get_adapter()
+    def export_settings(self) -> None:
+        self.ensure_one()
+        adapter = self.se_adapter
         adapter.settings()
+
+    def reindex(self) -> None:
+        """Reindex records according."""
+        self.ensure_one()
+        adapter = self.se_adapter
+        adapter.reindex()
 
     def resynchronize_all_bindings(self):
         """Force sync between Odoo records and index records.
@@ -224,22 +309,21 @@ class SeIndex(models.Model):
         This method will iter on all item in the index of the search engine
         if the corresponding binding do not exist on odoo it will create a job
         that delete all this obsolete items.
-        You should not use this method for day to day job, it only an helper
-        for recovering your index after a dammage.
+        You should not use this method for day to day job, it's only an helper
+        for recovering your index after corruption.
         You can also drop index but this will introduce downtime, so it's
         better to force a resynchronization"""
         for index in self:
             item_ids = []
-            adapter = self._get_backend_adapter(backend=index.backend_id, index=index)
+            adapter = self.se_adapter
             binding_model = self.env[index.model_id.model]
             for index_record in adapter.each():
-                ext_id = adapter.external_id(index_record)
+                ext_id = adapter._get_odoo_id_from_index_data(index_record)
                 binding = binding_model.browse(ext_id).exists()
                 if not binding:
                     item_ids.append(ext_id)
             index.with_delay().delete_obsolete_item(item_ids)
 
-    def delete_obsolete_item(self, item_ids):
-        adapter = self._get_backend_adapter()
-        adapter.delete(item_ids)
+    def delete_obsolete_item(self, item_ids: List[int]):
+        self.se_adapter.delete(item_ids)
         return f"Deleted ids : {item_ids}"

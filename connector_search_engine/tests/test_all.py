@@ -8,6 +8,9 @@ from odoo_test_helper import FakeModelLoader
 from odoo.tests.common import Form
 from odoo.tools import mute_logger
 
+from odoo.addons.queue_job.job import identity_exact
+from odoo.addons.queue_job.tests.common import trap_jobs
+
 from .common import TestSeBackendCaseBase
 
 
@@ -31,7 +34,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         cls.se_index_model = cls.env["se.index"]
 
         cls.se_adapter = FakeSeAdapter
-        cls.serializer = FakeSerializer
+        cls.model_serializer = FakeSerializer
 
     @classmethod
     def tearDownClass(cls):
@@ -48,7 +51,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
             .search([("model", "=", "res.partner")], limit=1)
             .id,
             "lang_id": cls.env.ref("base.lang_en").id,
-            "serializer": "fake",
+            "serializer_type": "fake",
         }
 
     @classmethod
@@ -269,7 +272,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_recompute_json_missing_record_key(self):
         with mock.patch.object(
-            self.serializer, "serialize", return_value={"name": "Foo"}
+            self.model_serializer, "serialize", return_value={"name": "Foo"}
         ):
             self.partner_binding.recompute_json()
             self.assertEqual(self.partner_binding.state, "invalid_data")
@@ -277,3 +280,77 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 self.partner_binding.validation_error,
                 "The key 'id' is missing in the data",
             )
+
+    def test_life_cycle(self):
+        self.partner_binding.state = "done"
+        # we mark the partner to update
+        self.partner._se_mark_to_update()
+        self.assertEqual(self.partner_binding.state, "to_recompute")
+        # we launch the job scheduled every 5 minutes to recompute
+        # bindings to recompute
+        with trap_jobs() as trap:
+            self.se_index_model.generate_batch_recompute_per_index()
+            trap.assert_jobs_count(2)
+            trap.assert_enqueued_job(
+                self.se_index.batch_recompute,
+                args=(False,),
+                kwargs={},
+                properties=dict(
+                    identity_key=identity_exact,
+                ),
+            )
+            trap.assert_enqueued_job(
+                self.partner_binding.recompute_json,
+                args=(),
+                kwargs={},
+            )
+        # the binding is now in to_export
+        self.assertEqual(self.partner_binding.state, "to_export")
+
+        # we launch the job scheduled every 5 minutes to sync bindings
+        # with the search engine
+        # In our case, the binding is in to_export, so it should be exported
+        with trap_jobs() as trap:
+            self.se_index_model.generate_batch_sync_per_index()
+            trap.assert_jobs_count(2)
+            trap.assert_enqueued_job(
+                self.se_index.batch_sync,
+                args=(False,),
+                kwargs={},
+                properties=dict(
+                    identity_key=identity_exact,
+                ),
+            )
+            trap.assert_enqueued_job(
+                self.partner_binding.export_record,
+                args=(),
+                kwargs={},
+            )
+
+        # the binding is now in done
+        self.assertEqual(self.partner_binding.state, "done")
+
+        # if we unlink the partner, the binding should be deleted on the next
+        # batch sync
+        self.partner.unlink()
+
+        # we launch the job scheduled every 5 minutes to sync bindings
+        # with the search engine
+        # In our case, the binding is in to_delete, so it should be deleted
+        with trap_jobs() as trap:
+            self.se_index_model.generate_batch_sync_per_index()
+            trap.assert_jobs_count(2)
+            trap.assert_enqueued_job(
+                self.se_index.batch_sync,
+                args=(False,),
+                kwargs={},
+                properties=dict(
+                    identity_key=identity_exact,
+                ),
+            )
+            trap.assert_enqueued_job(
+                self.partner_binding.delete_record,
+                args=(),
+                kwargs={},
+            )
+        self.assertFalse(self.partner_binding.exists())

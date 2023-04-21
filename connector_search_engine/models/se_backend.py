@@ -1,8 +1,12 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from typing import Type
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+from ..tools.adapter import SearchEngineAdapter
 
 
 class SeBackend(models.Model):
@@ -43,23 +47,20 @@ class SeBackend(models.Model):
             vals["index_prefix_name"] = vals["tech_name"]
         return res
 
-    def _get_api_credentials(self):
-        # TODO: user self.name to retrieve creds from server env
-        # TODO: username password etc
-        return {}  # pragma: no cover
-
-    def get_adapter_class(self):
+    def _get_adapter_class(self) -> Type[SearchEngineAdapter]:
+        """Return the adapter class for this backend"""
         raise NotImplementedError
 
-    def _get_adapter(self, index=None):
-        adapter = self.get_adapter_class()
+    def get_adapter(self, index=None) -> SearchEngineAdapter:
+        """Return an instance of the adapter for this backend"""
+        adapter = self._get_adapter_class()
         if adapter:
             return adapter(self, index)
         else:
             raise UserError(_("Adapter is missing for type %s") % self.backend_type)
 
     def action_test_connection(self):
-        adapter = self._get_adapter()
+        adapter = self.get_adapter()
         adapter.test_connection()
         return {
             "type": "ir.actions.client",
