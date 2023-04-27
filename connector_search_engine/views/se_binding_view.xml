@@ -5,7 +5,6 @@
         <field name="model">se.binding</field>
         <field name="arch" type="xml">
             <tree
-                string="Binding"
                 decoration-danger="state in ('invalid_data', 'recompute_error')"
                 decoration-warning="state not in ('invalid_data', 'recompute_error', 'done')"
             >

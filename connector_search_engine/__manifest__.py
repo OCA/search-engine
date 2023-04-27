@@ -26,6 +26,7 @@
         "data/ir_cron.xml",
         "data/queue_job_channel_data.xml",
         "data/queue_job_function_data.xml",
+        "data/ir_action_data.xml",
     ],
     "installable": True,
 }

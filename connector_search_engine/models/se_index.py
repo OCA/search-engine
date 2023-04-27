@@ -41,7 +41,12 @@ class SeIndex(models.Model):
         ondelete="cascade",
     )
     serializer_type = fields.Selection([])
-    batch_size = fields.Integer(default=5000, help="Batch size for exporting element")
+    batch_exporting_size = fields.Integer(
+        default=1000, help="Batch size for exporting element"
+    )
+    batch_recomputing_size = fields.Integer(
+        default=50, help="Batch size for recomputing element"
+    )
     config_id = fields.Many2one(
         comodel_name="se.index.config",
         string="Config",
@@ -252,7 +257,7 @@ class SeIndex(models.Model):
         domain = self._get_domain_for_recomputing_binding(force_export)
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
-        for batch in bindings._batch(self.batch_size):
+        for batch in bindings._batch(self.batch_recomputing_size):
             description = _(
                 "Recompute %(processing_count)d records of %(total_count)d "
                 "for index '%(index_name)s'"
@@ -277,7 +282,7 @@ class SeIndex(models.Model):
         domain = self._get_domain_for_exporting_binding(force_export)
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
-        for batch in bindings._batch(self.batch_size):
+        for batch in bindings._batch(self.batch_exporting_size):
             description = _(
                 "Export %(processing_count)d records of %(total_count)d "
                 "for index '%(index_name)s'"
@@ -302,7 +307,7 @@ class SeIndex(models.Model):
         domain = self._get_domain_for_deleting_binding(force_export)
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
-        for batch in bindings._batch(self.batch_size):
+        for batch in bindings._batch(self.batch_exporting_size):
             description = _(
                 "Delete %(processing_count)d obsolete records of %(total_count)d "
                 "for index '%(index_name)s'",
@@ -311,6 +316,7 @@ class SeIndex(models.Model):
                 total_count=bindings_count,
                 index_name=self.name,
             )
+            batch.write({"state": "deleting"})
             batch.with_delay(description=description).delete_record()
 
     def batch_sync(self, force_export: bool = False) -> None:

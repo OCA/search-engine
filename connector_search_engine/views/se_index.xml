@@ -17,7 +17,8 @@
                 <field name="model_id" />
                 <field name="serializer_type" required="True" />
                 <field name="config_id" />
-                <field name="batch_size" />
+                <field name="batch_recomputing_size" />
+                <field name="batch_exporting_size" />
             </tree>
         </field>
     </record>

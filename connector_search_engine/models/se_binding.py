@@ -20,6 +20,12 @@ class SeBinding(models.Model):
     _name = "se.binding"
     _description = "Search Engine Record"
 
+    # when we recompute several binding we order by res_model, res_id so for a
+    # record indexed in several index all the binding will be recomputed
+    # in the same job as index have a lot of common data most of the field will
+    # be in cache after computing the first binding
+    _order = "res_model, res_id desc"
+
     backend_id = fields.Many2one(
         "se.backend",
         related="index_id.backend_id",
@@ -110,9 +116,10 @@ class SeBinding(models.Model):
             yield self[i : i + size]
 
     def jobify_recompute_json(self, force_export: bool = False):
-        """Create one job per record to recompute the json."""
+        """Create batch job for records to recompute the json."""
         # The job creation with tracking is very costly. So disable it.
-        for binding in self.with_context(tracking_disable=True):
+        size = min(self.index_id.mapped("batch_exporting_size"))
+        for binding in self.with_context(tracking_disable=True)._batch(size):
             description = _(
                 "Recompute %(name)s json and check if need update", name=self._name
             )
@@ -177,3 +184,13 @@ class SeBinding(models.Model):
         adapter.delete(record_ids)
         self.unlink()
         return "Deleted ids : {}".format(record_ids)
+
+    def recompute_from_owner(self):
+        bindings = self.search(
+            [
+                ("res_model", "=", self._context["active_model"]),
+                ("res_id", "in", self._context["active_ids"]),
+            ]
+        )
+        bindings.write({"state": "recomputing"})
+        bindings.jobify_recompute_json()
