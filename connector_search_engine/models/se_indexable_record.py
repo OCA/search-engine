@@ -3,13 +3,50 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from __future__ import annotations
 
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
-from odoo import fields, models
+from lxml import etree
+
+from odoo import api, fields, models
 
 if TYPE_CHECKING:
     from .se_binding import SeBinding
     from .se_index import SeIndex
+
+
+SMART_BUTTON = """
+<button class="oe_stat_button"
+       name="open_se_binding"
+       icon="fa-list-ul"
+       type="object">
+       <div class="o_field_widget o_stat_info">
+            <span class="o_stat_value">
+                <i attrs="{'invisible': [
+                    '|',
+                    ('count_se_binding_pending', '>', 0),
+                    ('count_se_binding_error', '>', 0)
+                   ]}"
+                   class="fa fa-thumbs-o-up text-success o_column_title"
+                   aria-hidden="true"> :
+                    <field name="count_se_binding_done"/>
+                </i>
+                <i attrs="{'invisible': [
+                    '|',
+                    ('count_se_binding_pending', '=', 0),
+                    ('count_se_binding_error', '>', 0)
+                   ]}"
+                   class="fa fa-spinner text-warning" aria-hidden="true"> :
+                    <field name="count_se_binding_pending"/>
+                </i>
+                <i attrs="{'invisible': [('count_se_binding_error', '=', 0)]}"
+                   class="fa fa-exclamation-triangle text-danger" aria-hidden="true"> :
+                    <field name="count_se_binding_error"/>
+                </i>
+            </span>
+            <span>Index</span>
+       </div>
+</button>"""
 
 
 class SeIndexableRecord(models.AbstractModel):
@@ -17,11 +54,14 @@ class SeIndexableRecord(models.AbstractModel):
     _description = "Mixin that make record indexable in a search engine"
     _se_indexable = True
 
-    binding_ids = fields.One2many(
+    se_binding_ids = fields.One2many(
         string="Seacrh Engine Bindings",
         comodel_name="se.binding",
         compute="_compute_binding_ids",
     )
+    count_se_binding_done = fields.Integer(compute="_compute_count_binding")
+    count_se_binding_pending = fields.Integer(compute="_compute_count_binding")
+    count_se_binding_error = fields.Integer(compute="_compute_count_binding")
 
     def _compute_binding_ids(self) -> None:
         binding_model = self.env["se.binding"]
@@ -37,7 +77,41 @@ class SeIndexableRecord(models.AbstractModel):
             )
         }
         for record in self:
-            record.binding_ids = binding_model.browse(values.get(record.id, []))
+            record.se_binding_ids = binding_model.browse(values.get(record.id, []))
+
+    def _compute_count_binding(self):
+        res = defaultdict(lambda: defaultdict(int))
+        data = self.env["se.binding"].read_group(
+            [
+                ("res_id", "in", self.ids),
+                ("res_model", "=", self._name),
+            ],
+            ["res_id", "state"],
+            groupby=["res_id", "state"],
+            lazy=False,
+        )
+        for item in data:
+            res[item["res_id"]][item["state"]] = item["__count"]
+
+        def get(res_id, states):
+            return sum([res[res_id][state] for state in states])
+
+        for record in self:
+            record.count_se_binding_done = get(record.id, ["done"])
+            record.count_se_binding_pending = get(
+                record.id,
+                [
+                    "to_recompute",
+                    "recomputing",
+                    "to_export",
+                    "exporting",
+                    "to_delete",
+                    "deleting",
+                ],
+            )
+            record.count_se_binding_error = get(
+                record.id, ["invalid_data", "recompute_error"]
+            )
 
     def _get_bindings(self, index: SeIndex = None) -> SeBinding:
         domain = [
@@ -99,3 +173,17 @@ class SeIndexableRecord(models.AbstractModel):
             }
         )
         return super().unlink()
+
+    @api.model
+    def _get_view(self, view_id=None, view_type="form", **options):
+        arch, view = super()._get_view(view_id=view_id, view_type=view_type, **options)
+        button_box = arch.xpath("//div[@name='button_box']")
+        if button_box:
+            button_box[0].append(etree.fromstring(SMART_BUTTON))
+        return arch, view
+
+    def open_se_binding(self):
+        action = self.env.ref("connector_search_engine.se_binding_action").read()[0]
+        action["domain"] = [("res_model", "=", self._name), ("res_id", "in", self.ids)]
+        action["context"] = "{'hide_res_model': True}"
+        return action

@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from collections import defaultdict
 from typing import List
 
 from odoo import _, api, fields, models
@@ -47,6 +48,48 @@ class SeIndex(models.Model):
         help="Index configuration record",
     )
     binding_ids = fields.One2many("se.binding", "index_id", "Binding")
+    color = fields.Integer(string="Color Index", compute="_compute_count_binding")
+    count_done = fields.Integer(compute="_compute_count_binding")
+    count_pending = fields.Integer(compute="_compute_count_binding")
+    count_error = fields.Integer(compute="_compute_count_binding")
+
+    @api.depends("binding_ids.state")
+    def _compute_count_binding(self):
+        res = defaultdict(lambda: defaultdict(int))
+        data = self.env["se.binding"].read_group(
+            [
+                ("index_id", "in", self.ids),
+            ],
+            ["index_id", "state"],
+            groupby=["index_id", "state"],
+            lazy=False,
+        )
+        for item in data:
+            res[item["index_id"][0]][item["state"]] = item["__count"]
+
+        def get(index_id, states):
+            return sum([res[index_id][state] for state in states])
+
+        for record in self:
+            record.count_done = get(record.id, ["done"])
+            record.count_pending = get(
+                record.id,
+                [
+                    "to_recompute",
+                    "recomputing",
+                    "to_export",
+                    "exporting",
+                    "to_delete",
+                    "deleting",
+                ],
+            )
+            record.count_error = get(record.id, ["invalid_data", "recompute_error"])
+            if record.count_error:
+                record.color = 1
+            elif record.count_pending:
+                record.color = 2
+            else:
+                record.color = 10
 
     def __init__(self, env, ids=(), prefetch_ids=()):
         super().__init__(env, ids, prefetch_ids)

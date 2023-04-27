@@ -186,7 +186,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         mocked.assert_called_with(force_export=True)
 
     def test_force_batch_sync_with_not_exportable_binding(self):
-        for state in ("to_recompute", "recomputing", "invalid_data"):
+        for state in ("to_recompute", "recomputing", "invalid_data", "recompute_error"):
             self.partner_binding.state = state
             with self.se_adapter.mocked_calls() as calls:
                 self.se_index.force_batch_sync()
@@ -264,10 +264,10 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         # If something was to check but it's now good,
         # the state should be back to normal
         self.partner_binding.state = "invalid_data"
-        self.partner_binding.validation_error = "Something wrong with data"
+        self.partner_binding.error = "Something wrong with data"
         self.partner_binding.recompute_json()
         self.assertEqual(self.partner_binding.state, "to_export")
-        self.assertEqual(self.partner_binding.validation_error, "")
+        self.assertEqual(self.partner_binding.error, "")
 
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_recompute_json_missing_record_key(self):
@@ -277,7 +277,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.partner_binding.recompute_json()
             self.assertEqual(self.partner_binding.state, "invalid_data")
             self.assertEqual(
-                self.partner_binding.validation_error,
+                self.partner_binding.error,
                 "The key 'id' is missing in the data",
             )
 

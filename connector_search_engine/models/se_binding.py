@@ -4,7 +4,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
 import logging
-import sys
 from typing import Any, Dict, Iterator
 
 from odoo import _, api, fields, models, tools
@@ -22,7 +21,11 @@ class SeBinding(models.Model):
     _description = "Search Engine Record"
 
     backend_id = fields.Many2one(
-        "se.backend", related="index_id.backend_id", string="Search Engine Backend"
+        "se.backend",
+        related="index_id.backend_id",
+        string="Search Engine Backend",
+        store=True,
+        readonly=True,
     )
     index_id = fields.Many2one(
         "se.index",
@@ -30,6 +33,7 @@ class SeBinding(models.Model):
         required=True,
         # TODO: shall we use 'restrict' here to preserve existing data?
         ondelete="cascade",
+        readonly=True,
     )
     state = fields.Selection(
         [
@@ -39,28 +43,30 @@ class SeBinding(models.Model):
             ("exporting", "Exporting"),
             ("done", "Done"),
             ("invalid_data", "Invalid Data"),
+            ("recompute_error", "Fail to Recompute"),
             ("to_delete", "To Delete"),
             ("deleting", "Deleting"),
         ],
         default="to_recompute",
-        compute="_compute_state",
-        store=True,
-        readonly=False,
+        readonly=True,
     )
     date_recomputed = fields.Datetime(readonly=True)
     date_synchronized = fields.Datetime(readonly=True)
-    data = fields.Json()
+    data = fields.Json(readonly=True)
     data_display = fields.Text(
         compute="_compute_data_display",
         help="Include this in debug mode to be able to inspect index data.",
     )
-    validation_error = fields.Text()
+    error = fields.Text()
     res_id = fields.Many2oneReference(
         string="Record ID",
         help="ID of the target record in the database",
         model_field="res_model",
+        readonly=True,
     )
-    res_model = fields.Selection(selection=lambda s: s._get_indexable_model_selection())
+    res_model = fields.Selection(
+        selection=lambda s: s._get_indexable_model_selection(), readonly=True
+    )
 
     _sql_constraints = [
         (
@@ -83,11 +89,6 @@ class SeBinding(models.Model):
             )
         ]
 
-    def _compute_state(self):
-        # TODO add the logic for invalidating the state
-        # automatically based on the exporter
-        pass
-
     @property
     def record(self) -> models.Model:
         if len(set(self.mapped("res_model"))) > 1:
@@ -107,30 +108,6 @@ class SeBinding(models.Model):
         """Return an iterator on the records in batch of size."""
         for i in range(0, len(self), size):
             yield self[i : i + size]
-
-    def _jobify_get_job_description(self, processing_count: int) -> str:
-        """Return a human readable description to be used when creating a job."""
-        # We check if we are currently handling an exception in order
-        # to change the job description.
-        (current_exception, current_exception_value, __) = sys.exc_info()
-        if current_exception:
-            return _(
-                "Batch of %(processing_count)s items for %(model_name)s. "
-                "Previous batch raised %(exception_name)s: %(exception_value)s."
-            ) % dict(
-                processing_count=processing_count,
-                model_name=self._name,
-                exception_name=current_exception.__name__,
-                exception_value=current_exception_value,
-            )
-        else:
-            return _(
-                "Batch task of %(processing_count)s for "
-                "recomputing %(model_name)s json"
-            ) % dict(
-                processing_count=processing_count,
-                model_name=self._name,
-            )
 
     def jobify_recompute_json(self, force_export: bool = False):
         """Create one job per record to recompute the json."""
@@ -166,19 +143,25 @@ class SeBinding(models.Model):
                 record = record.with_context(lang=index.lang_id.code)
 
             old_data = record.data
-            record.data = index.model_serializer.serialize(record.record)
-            record.date_recomputed = fields.Datetime.now()
             try:
-                index.json_validator.validate(record.data)
+                with self.env.cr.savepoint():
+                    record.data = index.model_serializer.serialize(record.record)
+                    record.date_recomputed = fields.Datetime.now()
+            except Exception as e:
+                record.state = "recompute_error"
+                record.error = str(e)
+                continue
+            try:
+                index.json_validator.validate(record.data or {})
             except ValidationError as e:
                 record.state = "invalid_data"
-                record.validation_error = str(e)
+                record.error = str(e)
             else:
                 if force_export or not compare_json(old_data or {}, record.data or {}):
                     record.state = "to_export"
                 else:
                     record.state = "done"
-                record.validation_error = ""
+                record.error = ""
 
     def export_record(self) -> str:
         self.ensure_one()

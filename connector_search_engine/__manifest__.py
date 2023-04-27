@@ -20,6 +20,7 @@
         "security/ir.model.access.csv",
         "views/se_backend.xml",
         "views/se_index.xml",
+        "views/se_binding_view.xml",
         "views/se_index_config.xml",
         "views/se_menu.xml",
         "data/ir_cron.xml",
