@@ -163,7 +163,7 @@
     <record model="ir.actions.act_window" id="se_index_act_window">
         <field name="name">Se Index</field>
         <field name="res_model">se.index</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree</field>
         <field name="domain">[]</field>
         <field name="context">{'search_default_groupby_backend': 1}</field>
     </record>

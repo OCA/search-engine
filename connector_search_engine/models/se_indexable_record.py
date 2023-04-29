@@ -79,7 +79,7 @@ class SeIndexableRecord(models.AbstractModel):
         for record in self:
             record.se_binding_ids = binding_model.browse(values.get(record.id, []))
 
-    def _compute_count_binding(self):
+    def _get_count_per_state(self):
         res = defaultdict(lambda: defaultdict(int))
         data = self.env["se.binding"].read_group(
             [
@@ -90,28 +90,27 @@ class SeIndexableRecord(models.AbstractModel):
             groupby=["res_id", "state"],
             lazy=False,
         )
+        map_state = {
+            "done": "done",
+            "to_recompute": "pending",
+            "recomputing": "pending",
+            "to_export": "pending",
+            "exporting": "pending",
+            "to_delete": "pending",
+            "deleting": "pending",
+            "invalid_data": "error",
+            "recompute_error": "error",
+        }
         for item in data:
-            res[item["res_id"]][item["state"]] = item["__count"]
+            res[item["res_id"]][map_state[item["state"]]] += item["__count"]
+        return res
 
-        def get(res_id, states):
-            return sum([res[res_id][state] for state in states])
-
+    def _compute_count_binding(self):
+        res = self._get_count_per_state()
         for record in self:
-            record.count_se_binding_done = get(record.id, ["done"])
-            record.count_se_binding_pending = get(
-                record.id,
-                [
-                    "to_recompute",
-                    "recomputing",
-                    "to_export",
-                    "exporting",
-                    "to_delete",
-                    "deleting",
-                ],
-            )
-            record.count_se_binding_error = get(
-                record.id, ["invalid_data", "recompute_error"]
-            )
+            record.count_se_binding_done = res[record.id]["done"]
+            record.count_se_binding_pending = res[record.id]["pending"]
+            record.count_se_binding_error = res[record.id]["error"]
 
     def _get_bindings(self, index: SeIndex = None) -> SeBinding:
         domain = [

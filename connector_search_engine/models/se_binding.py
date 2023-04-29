@@ -171,14 +171,12 @@ class SeBinding(models.Model):
                 record.error = ""
 
     def export_record(self) -> str:
-        self.ensure_one()
         adapter = self.index_id.se_adapter
         adapter.index([record.get_export_data() for record in self])
         self.state = "done"
         return "Exported ids : {}".format(self.ids)
 
     def delete_record(self) -> str:
-        self.ensure_one()
         adapter = self.index_id.se_adapter
         record_ids = self.mapped("res_id")
         adapter.delete(record_ids)
