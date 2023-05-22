@@ -49,11 +49,10 @@
         >se.index.tree with backend hidden (in connector_search_engine)</field>
         <field name="model">se.index</field>
         <field name="mode">primary</field>
+        <field name="priority" eval="200" />
         <field name="inherit_id" ref="connector_search_engine.se_index_tree_view" />
         <field name="arch" type="xml">
-            <field name="backend_id" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </field>
+            <field name="backend_id" position="replace" />
         </field>
     </record>
     <record model="ir.ui.view" id="se_index_search_view">
