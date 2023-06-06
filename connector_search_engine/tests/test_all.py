@@ -1,11 +1,15 @@
 # Copyright 2018 Simone Orsi - Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import mock
+from unittest import mock
+
 from odoo_test_helper import FakeModelLoader
 
 from odoo.tests.common import Form
 from odoo.tools import mute_logger
+
+from odoo.addons.queue_job.job import identity_exact
+from odoo.addons.queue_job.tests.common import trap_jobs
 
 from .common import TestSeBackendCaseBase
 
@@ -18,25 +22,19 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         cls.loader = FakeModelLoader(cls.env, cls.__module__)
         cls.loader.backup_registry()
         from .models import (
-            BindingResPartnerFake,
-            ResPartnerFake,
-            SeAdapterFake,
-            SeBackendFake,
+            FakeSeAdapter,
+            FakeSerializer,
+            ResPartner,
+            SeBackend,
+            SeIndex,
         )
 
-        cls.loader.update_registry(
-            (BindingResPartnerFake, ResPartnerFake, SeBackendFake)
-        )
-        cls.binding_model = cls.env[BindingResPartnerFake._name]
-        cls.fake_backend_model = cls.env[SeBackendFake._name]
-        # ->/ Load fake models
+        cls.loader.update_registry((ResPartner, SeBackend, SeIndex))
+        cls.binding_model = cls.env["se.binding"]
+        cls.se_index_model = cls.env["se.index"]
 
-        cls.se_adapter_fake = SeAdapterFake
-        cls._load_fixture("ir_exports_test.xml")
-        cls.exporter = cls.env.ref("connector_search_engine.ir_exp_partner_test")
-        cls.record_id_export_line = cls.env.ref(
-            "connector_search_engine.ir_exp_partner_line_test0"
-        )
+        cls.se_adapter = FakeSeAdapter
+        cls.model_serializer = FakeSerializer
 
     @classmethod
     def tearDownClass(cls):
@@ -50,10 +48,10 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
             "name": "Partner Index",
             "backend_id": backend.id,
             "model_id": cls.env["ir.model"]
-            .search([("model", "=", "res.partner.binding.fake")], limit=1)
+            .search([("model", "=", "res.partner")], limit=1)
             .id,
             "lang_id": cls.env.ref("base.lang_en").id,
-            "exporter_id": cls.exporter.id,
+            "serializer_type": "fake",
         }
 
     @classmethod
@@ -62,7 +60,7 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
         # create an index for partner model
         cls.se_index = cls.se_index_model.create(cls._prepare_index_values(backend))
         # create a binding + partner alltogether
-        cls.partner_binding = cls.binding_model.create(
+        cls.partner = cls.env["res.partner"].create(
             {
                 "name": "Marty McFly",
                 "country_id": cls.env.ref("base.us").id,
@@ -70,22 +68,21 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
                 "child_ids": [
                     (0, 0, {"name": "Doc Brown", "email": "docbrown@future.com"})
                 ],
-                "index_id": cls.se_index.id,
             }
         )
-        cls.partner = cls.partner_binding.record_id
+        cls.partner_binding = cls.partner._add_to_index(cls.se_index)
+
+        cls.partner_expected = {"id": cls.partner.id, "name": cls.partner.name}
 
 
 class TestBindingIndexBaseFake(TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.se_adapter_fake._build_component(cls._components_registry)
-
-        cls.backend_specific = cls.fake_backend_model.create(
-            {"name": "Fake SE", "tech_name": "fake_se"}
+        cls.backend_model = cls.env["se.backend"]
+        cls.backend = cls.backend_model.create(
+            {"name": "Fake SE", "tech_name": "fake_se", "backend_type": "fake"}
         )
-        cls.backend = cls.backend_specific.se_backend_id
         cls.setup_records()
 
 
@@ -94,33 +91,16 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def setUpClass(cls):
         super().setUpClass()
 
+    def assert_index_called(self, calls, action, ids):
+        self.assertEqual(
+            calls, [{"index": self.se_index, "method": action, "args": ids}]
+        )
+
     # TODO: the following `test_backend*` methods
     # should be splitted to a smaller test case.
     # ATM is not possible since the teardown of this class
     # is going to drop the fake models and make any subsequent test case fail.
     # We should find a way to run tear down at the end of ALL test cases.
-    def test_backend_specific_select(self):
-        self.assertIn(
-            self.fake_backend_model._name,
-            [x[0] for x in self.env["se.backend"]._select_specific_model()],
-        )
-
-    def test_backend_specific_records(self):
-        self.assertIn(
-            (self.fake_backend_model._name, self.backend_specific.name),
-            self.env["se.backend"]._select_specific_backend(),
-        )
-
-    def test_backend_defaults(self):
-        self.assertEqual(self.backend.specific_model, self.backend_specific._name)
-
-    def test_backend_unlink(self):
-        self.assertTrue(self.backend_specific.exists())
-        self.assertTrue(self.backend.exists())
-        self.backend_specific.unlink()
-        self.assertFalse(self.backend_specific.exists())
-        self.assertFalse(self.backend.exists())
-
     def test_backend_name(self):
         form = Form(self.env["se.backend"])
         form.name = "Á weird nämë plenty of CR@P!"
@@ -135,28 +115,35 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(form.index_prefix_name, "better_prefix")
 
     def test_backend_create_tech_defaults(self):
-        b1 = self.fake_backend_model.create({"name": "Fake 1"})
+        b1 = self.backend_model.create({"name": "Fake 1", "backend_type": "fake"})
         self.assertEqual(b1.tech_name, "fake_1")
         self.assertEqual(b1.index_prefix_name, "fake_1")
-        b2 = self.fake_backend_model.create({"name": "Fake 2", "tech_name": "test2"})
+        b2 = self.backend_model.create(
+            {"name": "Fake 2", "tech_name": "test2", "backend_type": "fake"}
+        )
         self.assertEqual(b2.tech_name, "test2")
         self.assertEqual(b2.index_prefix_name, "test2")
-        b3 = self.fake_backend_model.create(
-            {"name": "Fake 3", "tech_name": "test3", "index_prefix_name": "baz"}
+        b3 = self.backend_model.create(
+            {
+                "name": "Fake 3",
+                "tech_name": "test3",
+                "index_prefix_name": "baz",
+                "backend_type": "fake",
+            }
         )
         self.assertEqual(b3.tech_name, "test3")
         self.assertEqual(b3.index_prefix_name, "baz")
 
     def test_index_name(self):
-        self.assertEqual(self.se_index.name, "fake_se_res_partner_binding_fake_en_US")
+        self.assertEqual(self.se_index.name, "fake_se_contact_en_US")
         # control indexes' name via prefix tech name
         self.backend.index_prefix_name = "foo_baz"
         # TODO: not sure why this is needed here
-        self.se_index.invalidate_cache()
-        self.assertEqual(self.se_index.name, "foo_baz_res_partner_binding_fake_en_US")
+        self.se_index.invalidate_recordset()
+        self.assertEqual(self.se_index.name, "foo_baz_contact_en_US")
         self.se_index.lang_id = False
-        self.se_index.invalidate_cache()
-        self.assertEqual(self.se_index.name, "foo_baz_res_partner_binding_fake")
+        self.se_index.invalidate_recordset()
+        self.assertEqual(self.se_index.name, "foo_baz_contact")
 
     def test_index_custom_name(self):
         self.se_index.custom_tech_name = "something meaningful for me"
@@ -164,255 +151,206 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.se_index.name, "fake_se_something_meaningful_for_me_en_US"
         )
 
-    def test_changing_model_remove_exporter(self):
-        res = self.se_index.onchange_model_id()
-        self.assertEqual(len(self.se_index.exporter_id), 0)
-        self.assertIn("domain", res)
-        self.assertIn("exporter_id", res["domain"])
-
     def test_model_id_domain(self):
         result = self.se_index._model_id_domain()
         models = result[0][2]
-        self.assertIn("res.partner.binding.fake", models)
+        self.assertIn("res.partner", models)
+
+    def test_index_record(self):
+        self.assertEqual(self.partner_binding.state, "to_recompute")
+        self.assertFalse(self.partner_binding.date_recomputed)
+
+    def test_unindex_record(self):
+        self.partner._remove_from_index(self.se_index)
+        self.assertEqual(self.partner_binding.state, "to_delete")
+
+    def test_unlink_record(self):
+        self.partner.unlink()
+        self.assertEqual(self.partner_binding.state, "to_delete")
+
+    def test_recompute_one_record(self):
+        self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.state, "to_export")
+        self.assertEqual(self.partner_binding.get_export_data(), self.partner_expected)
+        self.assertTrue(self.partner_binding.date_recomputed)
 
     def test_recompute_all_indexes(self):
-        # on creation indexes are computed and external data stored
-        expected = {
-            "id": self.partner_binding.record_id.id,
-            "active": True,
-            "lang": "en_US",
-            "name": "Marty McFly",
-            "credit_limit": 0.0,
-            "country_id": {"code": "US", "name": "United States"},
-            "color": 0,
-            "child_ids": [
-                {
-                    "id": self.partner.child_ids[0].id,
-                    "name": "Doc Brown",
-                    "email": "docbrown@future.com",
-                    "child_ids": [],
-                    "country_id": {"code": "US", "name": "United States"},
-                }
-            ],
-        }
-        self.assertEqual(self.partner_binding.get_export_data(), expected)
-        self.assertEqual(self.partner_binding.sync_state, "to_update")
-        # on index recompute external data must be updated
-        self.partner.name = "George McFly"
-        expected["name"] = self.partner.name
         self.env["se.index"].recompute_all_index()
-        self.assertEqual(self.partner_binding.get_export_data(), expected)
-        self.assertEqual(self.partner_binding.sync_state, "to_update")
-        self.assertNotEqual(self.partner_binding.date_modified, False)
+        self.assertEqual(self.partner_binding.get_export_data(), self.partner_expected)
+        self.assertEqual(self.partner_binding.state, "to_export")
+        self.assertTrue(self.partner_binding.date_recomputed)
 
     def test_force_recompute_all_binding(self):
         with mock.patch.object(type(self.se_index), "recompute_all_binding") as mocked:
             self.se_index.force_recompute_all_binding()
         mocked.assert_called_with(force_export=True)
 
-    def test_force_batch_export(self):
-        # "new" should not be sync'ed but it will because we run forced export
-        self.partner_binding.sync_state = "new"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).force_batch_export()
-        self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
-        self.assertEqual(self.partner_binding.sync_state, "scheduled")
-        self.assertNotEqual(self.partner_binding.date_syncronized, False)
+    def test_force_batch_sync_with_not_exportable_binding(self):
+        for state in ("to_recompute", "recomputing", "invalid_data", "recompute_error"):
+            self.partner_binding.state = state
+            with self.se_adapter.mocked_calls() as calls:
+                self.se_index.force_batch_sync()
+                self.assertEqual(calls, [])
+                self.assertEqual(self.partner_binding.state, state)
 
-    def test_generate_batch_export_per_index(self):
-        tracking = []
-        self.env["se.index"].with_context(
-            call_tracking=tracking
-        ).generate_batch_export_per_index()
-        self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
+    def test_force_batch_sync_with_exportable_binding(self):
+        self.partner_binding.recompute_json()
+        for state in ("done", "to_export", "exporting"):
+            self.partner_binding.state = state
+            with self.se_adapter.mocked_calls() as calls:
+                self.se_index.force_batch_sync()
+                self.assert_index_called(calls, "index", [self.partner_binding.data])
+                self.assertEqual(self.partner_binding.state, "done")
 
-    def test_get_domain_for_exporting_binding(self):
-        expected = [
-            ("index_id", "=", self.se_index.id),
-            ("sync_state", "=", "to_update"),
-        ]
-        self.assertEqual(self.se_index._get_domain_for_exporting_binding(), expected)
+    def test_force_batch_sync_with_to_delete_binding(self):
+        self.partner_binding.state = "to_delete"
+        with self.se_adapter.mocked_calls() as calls:
+            self.se_index.force_batch_sync()
+            self.assert_index_called(calls, "delete", [self.partner.id])
+            self.assertFalse(self.partner_binding.exists())
 
-    def test_batch_export(self):
-        # state = new, nothing to export
-        self.partner_binding.sync_state = "new"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).batch_export()
-        self.assertEqual(tracking, [])
-        self.assertEqual(self.partner_binding.sync_state, "new")
+    def test_force_batch_sync_with_deleting_binding(self):
+        self.partner_binding.state = "deleting"
+        with self.se_adapter.mocked_calls() as calls:
+            self.se_index.force_batch_sync()
+            self.assert_index_called(calls, "delete", [self.partner.id])
+            self.assertFalse(self.partner_binding.exists())
 
-        # now it should find the bindings marked for update and schedule them
-        self.partner_binding.sync_state = "to_update"
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).batch_export()
-        self.assertEqual(tracking, ["Exported ids : [1]\nDeleted ids : []"])
-        self.assertEqual(self.partner_binding.sync_state, "scheduled")
+    def test_batch_sync_not_exportable(self):
+        for state in (
+            "to_recompute",
+            "recomputing",
+            "invalid_data",
+            "done",
+            "deleting",
+        ):
+            self.partner_binding.state = state
+            with self.se_adapter.mocked_calls() as calls:
+                self.se_index.batch_sync()
+                self.assertEqual(self.partner_binding.state, state)
+                self.assertEqual(calls, [])
 
-        # even if the binding is inactive it should schedule and delete them
-        self.partner_binding.sync_state = "to_update"
-        self.partner_binding.active = False
-        tracking = []
-        self.se_index.with_context(call_tracking=tracking).batch_export()
-        self.assertEqual(tracking, ["Exported ids : []\nDeleted ids : [1]"])
-        self.assertEqual(self.partner_binding.sync_state, "scheduled")
+    def test_batch_sync_deletable(self):
+        self.partner_binding.state = "to_delete"
+        with self.se_adapter.mocked_calls() as calls:
+            self.se_index.batch_sync()
+            self.assert_index_called(calls, "delete", [self.partner.id])
+            self.assertFalse(self.partner_binding.exists())
+
+    def test_batch_sync_exportable(self):
+        self.partner_binding.state = "to_export"
+        with self.se_adapter.mocked_calls() as calls:
+            self.se_index.batch_sync()
+            self.assert_index_called(calls, "index", [self.partner_binding.data])
+            self.assertEqual(self.partner_binding.state, "done")
+
+    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
+    def test_missing_record_to_recompute(self):
+        # following case should not occure (as unlink will change the binding state)
+        # but in case of weird action like sql delete we want to make it stronger
+        self.partner_binding.state = "to_recompute"
+        self.partner_binding.res_id = 999999999
+        self.partner_binding.recompute_json()
+        self.assertEqual(self.partner_binding.state, "to_delete")
 
     def test_clear_index(self):
-        with self.se_adapter_fake.mocked_calls() as calls:
+        with self.se_adapter.mocked_calls() as calls:
             self.se_index.clear_index()
             self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
+            self.assertEqual(calls[0]["index"], self.se_index)
             self.assertEqual(calls[0]["method"], "clear")
 
-    def test_synchronize_active_binding(self):
-        # when binding is active it should update it
-        with self.se_adapter_fake.mocked_calls() as calls:
-            self.partner_binding.synchronize()
-            self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(calls[0]["work_ctx"]["records"], self.partner_binding)
-            self.assertEqual(calls[0]["method"], "index")
-
-    def test_synchronize_inactive_binding(self):
-        # when binding is inactive it should delete it
-        self.partner_binding.active = False
-        with self.se_adapter_fake.mocked_calls() as calls:
-            self.partner_binding.synchronize()
-            self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(calls[0]["work_ctx"]["records"], self.partner_binding)
-            self.assertEqual(calls[0]["method"], "delete")
-
-    def test_batch_delete(self):
-        # when a binding is unlinked, it should delete it
-        partner_binding_id = self.partner_binding.id
-        self.partner_binding.unlink()
-        self.assertIn(
-            partner_binding_id,
-            self.se_index.binding_todelete_ids.mapped("binding_id"),
-            "Binding should be queued for deletion",
-        )
-        with self.se_adapter_fake.mocked_calls() as calls:
-            self.se_index.batch_export()
-            self.assertEqual(len(calls), 1)
-            self.assertEqual(calls[0]["method"], "delete")
-            self.assertEqual(calls[0]["args"], [partner_binding_id])
-        self.assertNotIn(
-            partner_binding_id,
-            self.se_index.binding_todelete_ids.mapped("binding_id"),
-            "Binding should've been removed from the delete queue",
-        )
-
-    def test_unlink_new_binding(self):
-        self.partner_binding.sync_state = "new"
-        self.partner_binding.unlink()
-        self.assertEqual(len(self.partner_binding.exists()), 0)
-
-    def test_unlink_done_inactive_binding(self):
-        self.partner_binding.active = False
-        self.partner_binding.sync_state = "done"
-        self.partner_binding.unlink()
-        self.assertEqual(len(self.partner_binding.exists()), 0)
-
-    def test_unlink_to_update_inactive_binding(self):
-        partner_binding_id = self.partner_binding.id
-        self.partner_binding.active = False
-        self.partner_binding.sync_state = "to_update"
-        self.partner_binding.unlink()
-        self.assertIn(
-            partner_binding_id, self.se_index.binding_todelete_ids.mapped("binding_id")
-        )
-        self.assertEqual(len(self.partner_binding.exists()), 0)
-
-    def test_unlink_to_upgrade_active_binding(self):
-        partner_binding_id = self.partner_binding.id
-        self.partner_binding.sync_state = "to_update"
-        self.partner_binding.unlink()
-        self.assertIn(
-            partner_binding_id, self.se_index.binding_todelete_ids.mapped("binding_id")
-        )
-        self.assertEqual(len(self.partner_binding.exists()), 0)
-
-    def test_unlink_done_active_binding(self):
-        partner_binding_id = self.partner_binding.id
-        self.partner_binding.sync_state = "done"
-        self.partner_binding.unlink()
-        self.assertIn(
-            partner_binding_id, self.se_index.binding_todelete_ids.mapped("binding_id")
-        )
-        self.assertEqual(len(self.partner_binding.exists()), 0)
-
-    def test_inactive_binding_change_state(self):
-        self.partner_binding.sync_state = "done"
-        self.partner_binding.active = False
-        self.assertEqual(self.partner_binding.sync_state, "to_update")
-
-    def test_inactive_new_binding_do_not_change_state(self):
-        self.partner_binding.sync_state = "new"
-        self.partner_binding.active = False
-        self.assertEqual(self.partner_binding.sync_state, "new")
-
-    def test_resynchronize_all_bindings(self):
-        # The iter method in the mock will return the item id 42 that do not
-        # exist as we have dropped all binding
-        # the resync method will call the delete to remove this obsolete item
-        bindings = self.binding_model.search([])
-        bindings.write({"sync_state": "new"})
-        bindings.unlink()
-        with self.se_adapter_fake.mocked_calls() as calls:
-            self.se_index.resynchronize_all_bindings()
-            self.assertEqual(len(calls), 2)
-            self.assertEqual(calls[0]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(calls[0]["method"], "each")
-            self.assertEqual(calls[1]["work_ctx"]["index"], self.se_index)
-            self.assertEqual(calls[1]["method"], "delete")
-            self.assertEqual(calls[1]["args"], [42])
-
-    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
-    def test_recompute_json_to_be_checked(self):
-        # When something goes wrong on recomputing index data
-        # the state is properly set to `to_be_checked`
-        self.assertNotEqual(self.partner_binding.sync_state, "to_be_checked")
-        with mock.patch.object(
-            type(self.partner_binding), "_validate_record"
-        ) as mocked:
-            mocked.return_value = "Something wrong with data"
-            result = self.partner_binding.recompute_json()
-        self.assertEqual(self.partner_binding.sync_state, "to_be_checked")
-        self.assertEqual(
-            result,
-            "Validation errors\n"
-            "res.partner.binding.fake(%s,): Something wrong with data"
-            % self.partner_binding.id,
-        )
-
-    def test_recompute_json_to_be_checked_rollback(self):
+    def test_recompute_json_with_error_solve(self):
         # If something was to check but it's now good,
         # the state should be back to normal
-        self.partner_binding.sync_state = "to_be_checked"
-        self.partner_binding.name = "Data changes, binding is written"
-        result = self.partner_binding.recompute_json()
-        self.assertEqual(self.partner_binding.sync_state, "to_update")
-        self.assertEqual(result, "")
-
-    def test_customize_id_key_without_target(self):
-        self.env["ir.exports.line"].create(
-            {"export_id": self.exporter.id, "name": "id"}
-        )
+        self.partner_binding.state = "invalid_data"
+        self.partner_binding.error = "Something wrong with data"
         self.partner_binding.recompute_json()
-        self.assertEqual(self.partner_binding.data["id"], self.partner_binding.id)
-
-    def test_customize_id_key_with_target(self):
-        self.env["ir.exports.line"].create(
-            {"export_id": self.exporter.id, "name": "name:id"}
-        )
-        self.partner_binding.recompute_json()
-        self.assertEqual(self.partner_binding.data["id"], "Marty McFly")
+        self.assertEqual(self.partner_binding.state, "to_export")
+        self.assertEqual(self.partner_binding.error, "")
 
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
-    def test_missing_record_key(self):
-        self.record_id_export_line.unlink()
-        res = self.partner_binding.recompute_json()
-        error_string = "\n".join(
-            ["Validation errors", "{}: The key `id` is missing in:"]
-        ).format(str(self.partner_binding))
-        self.assertTrue(res.startswith(error_string))
+    def test_recompute_json_missing_record_key(self):
+        with mock.patch.object(
+            self.model_serializer, "serialize", return_value={"name": "Foo"}
+        ):
+            self.partner_binding.recompute_json()
+            self.assertEqual(self.partner_binding.state, "invalid_data")
+            self.assertEqual(
+                self.partner_binding.error,
+                "The key 'id' is missing in the data",
+            )
+
+    def test_life_cycle(self):
+        self.partner_binding.state = "done"
+        # we mark the partner to update
+        self.partner._se_mark_to_update()
+        self.assertEqual(self.partner_binding.state, "to_recompute")
+        # we launch the job scheduled every 5 minutes to recompute
+        # bindings to recompute
+        with trap_jobs() as trap:
+            self.se_index_model.generate_batch_recompute_per_index()
+            trap.assert_jobs_count(2)
+            trap.assert_enqueued_job(
+                self.se_index.batch_recompute,
+                args=(False,),
+                kwargs={},
+                properties=dict(
+                    identity_key=identity_exact,
+                ),
+            )
+            trap.assert_enqueued_job(
+                self.partner_binding.recompute_json,
+                args=(),
+                kwargs={},
+            )
+        # the binding is now in to_export
+        self.assertEqual(self.partner_binding.state, "to_export")
+
+        # we launch the job scheduled every 5 minutes to sync bindings
+        # with the search engine
+        # In our case, the binding is in to_export, so it should be exported
+        with trap_jobs() as trap:
+            self.se_index_model.generate_batch_sync_per_index()
+            trap.assert_jobs_count(2)
+            trap.assert_enqueued_job(
+                self.se_index.batch_sync,
+                args=(False,),
+                kwargs={},
+                properties=dict(
+                    identity_key=identity_exact,
+                ),
+            )
+            trap.assert_enqueued_job(
+                self.partner_binding.export_record,
+                args=(),
+                kwargs={},
+            )
+
+        # the binding is now in done
+        self.assertEqual(self.partner_binding.state, "done")
+
+        # if we unlink the partner, the binding should be deleted on the next
+        # batch sync
+        self.partner.unlink()
+
+        # we launch the job scheduled every 5 minutes to sync bindings
+        # with the search engine
+        # In our case, the binding is in to_delete, so it should be deleted
+        with trap_jobs() as trap:
+            self.se_index_model.generate_batch_sync_per_index()
+            trap.assert_jobs_count(2)
+            trap.assert_enqueued_job(
+                self.se_index.batch_sync,
+                args=(False,),
+                kwargs={},
+                properties=dict(
+                    identity_key=identity_exact,
+                ),
+            )
+            trap.assert_enqueued_job(
+                self.partner_binding.delete_record,
+                args=(),
+                kwargs={},
+            )
+        self.assertFalse(self.partner_binding.exists())

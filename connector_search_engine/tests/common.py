@@ -6,11 +6,7 @@ from urllib import parse as urlparse
 
 from odoo import tools
 from odoo.modules.module import get_resource_path
-
-from odoo.addons.component.tests.common import SavepointComponentCase
-
-# mute `test_queue_job_no_delay` logging
-logging.getLogger("odoo.addons.queue_job.models.base").setLevel("CRITICAL")
+from odoo.tests.common import TransactionCase
 
 
 def load_xml(env, module, filepath):
@@ -25,7 +21,7 @@ def load_xml(env, module, filepath):
     )
 
 
-class TestSeBackendCaseBase(SavepointComponentCase):
+class TestSeBackendCaseBase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -36,7 +32,6 @@ class TestSeBackendCaseBase(SavepointComponentCase):
                 test_queue_job_no_delay=True,  # no jobs thanks
             )
         )
-        cls.se_index_model = cls.env["se.index"]
 
     @classmethod
     def _load_fixture(cls, fixture, module="connector_search_engine"):
@@ -45,3 +40,18 @@ class TestSeBackendCaseBase(SavepointComponentCase):
     @staticmethod
     def parse_path(url):
         return urlparse.urlparse(url).path
+
+    def setUp(self):
+        super(TestSeBackendCaseBase, self).setUp()
+        loggers = ["odoo.addons.queue_job.delay"]
+        for logger in loggers:
+            logging.getLogger(logger).addFilter(self)
+
+        # pylint: disable=unused-variable
+        @self.addCleanup
+        def un_mute_logger():
+            for logger_ in loggers:
+                logging.getLogger(logger_).removeFilter(self)
+
+    def filter(self, record):
+        return 0

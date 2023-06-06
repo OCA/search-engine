@@ -22,7 +22,7 @@ class SeIndexConfig(models.Model):
         compute="_compute_body_str",
         inverse="_inverse_body_str",
         default="{}",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     @api.depends("body")

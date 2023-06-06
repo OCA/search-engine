@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Search Engine",
-    "version": "14.0.2.6.2",
+    "version": "16.0.0.0.0",
     "author": "Akretion,"
     "ACSONE SA/NV,"
     "Camptocamp,"
@@ -12,7 +12,7 @@
     "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
     "category": "Generic Modules",
-    "depends": ["connector", "jsonifier", "server_environment"],
+    "depends": ["queue_job", "mail", "server_environment"],
     "external_dependencies": {"python": ["unidecode"]},
     "data": [
         "security/connector_search_engine_security.xml",
@@ -20,11 +20,13 @@
         "security/ir.model.access.csv",
         "views/se_backend.xml",
         "views/se_index.xml",
+        "views/se_binding_view.xml",
         "views/se_index_config.xml",
         "views/se_menu.xml",
         "data/ir_cron.xml",
         "data/queue_job_channel_data.xml",
         "data/queue_job_function_data.xml",
+        "data/ir_action_data.xml",
     ],
-    "installable": False,
+    "installable": True,
 }

@@ -4,48 +4,34 @@ from contextlib import contextmanager
 
 from odoo import fields, models
 
-from odoo.addons.component.core import Component
+from ..tools.adapter import SearchEngineAdapter
 
 
-class SeBackendFake(models.Model):
-
-    _name = "se.backend.fake"
-    _inherit = "se.backend.spec.abstract"
-    _description = "Unit Test SE Backend"
-    _search_engine_name = "FakeSE"
-    _record_id_key = "id"
-
-
-class SeAdapterFake(Component):
-    _name = "se.adapter.fake"
-    _inherit = "se.backend.adapter"
-    _usage = "se.backend.adapter"
-    _collection = SeBackendFake._name
-
-    def __init__(self, work_context):
-        super().__init__(work_context)
+class FakeSeAdapter(SearchEngineAdapter):
+    def __init__(self, *args):
+        super().__init__(*args)
         if not hasattr(self, "_mocked_calls"):
             # Not using the context manager below
             self._mocked_calls = []
 
     def index(self, data):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="index", args=data)
+            dict(index=self.index_record, method="index", args=data)
         )
 
     def delete(self, binding_ids):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="delete", args=binding_ids)
+            dict(index=self.index_record, method="delete", args=binding_ids)
         )
 
     def clear(self):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="clear", args=None)
+            dict(index=self.index_record, method="clear", args=None)
         )
 
     def each(self):
         self._mocked_calls.append(
-            dict(work_ctx=self.work.__dict__, method="each", args=None)
+            dict(index=self.index_record, method="each", args=None)
         )
         return [{"id": 42}]
 
@@ -56,7 +42,7 @@ class SeAdapterFake(Component):
 
         Usage:
 
-            with SeAdapterFake.mocked_calls() as calls:
+            with FakeSeAdapter.mocked_calls() as calls:
                 # do something, then
                 self.assertEqual(calls[0]['method'], 'clear')
                 # do more
@@ -66,41 +52,39 @@ class SeAdapterFake(Component):
         cls._mocked_calls = []
 
 
-# Fake partner binding
+class FakeSerializer:
+    def serialize(self, record):
+        return {"name": record.name, "id": record.id}
 
 
-class BindingResPartnerFake(models.Model):
-    _name = "res.partner.binding.fake"
-    _inherit = ["se.binding"]
-    _inherits = {"res.partner": "record_id"}
-    # we need to reference this model for the index
+class SeBackend(models.Model):
+    _inherit = "se.backend"
 
-    # TODO: use autosetup fields to handle these fields in mixins
-    record_id = fields.Many2one(
-        comodel_name="res.partner",
-        string="Odoo record",
-        required=True,
-        ondelete="cascade",
+    backend_type = fields.Selection(
+        selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
     )
 
-    def synchronize(self):
-        # You can set `call_tracking` as a list in ctx to collect the results.
-        res = super().synchronize()
-        if "call_tracking" in self.env.context:
-            self.env.context["call_tracking"].append(res)
-        return res
+    def _get_adapter_class(self):
+        if self.backend_type == "fake":
+            return FakeSeAdapter
+        else:
+            return super()._get_adapter_class()
 
 
-class ResPartnerFake(models.Model):
+class SeIndex(models.Model):
+    _inherit = "se.index"
+
+    serializer_type = fields.Selection(
+        selection_add=[("fake", "Fake")], ondelete={"fake": "cascade"}
+    )
+
+    def _get_serializer(self):
+        if self.serializer_type == "fake":
+            return FakeSerializer()
+        else:
+            return super()._get_serializer()
+
+
+class ResPartner(models.Model):
     _name = "res.partner"
-    _inherit = "res.partner"
-
-    # TODO: use autosetup fields to handle these fields in mixins
-    binding_ids = fields.One2many(
-        comodel_name=BindingResPartnerFake._name,
-        inverse_name="record_id",
-        copy=False,
-        string="Bindings",
-        context={"active_test": False},
-        manual=True,  # required to make teardown work
-    )
+    _inherit = ["res.partner", "se.indexable.record"]

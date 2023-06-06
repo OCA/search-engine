@@ -1,7 +1,12 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, tools
+from typing import Type
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from ..tools.adapter import SearchEngineAdapter
 
 
 class SeBackend(models.Model):
@@ -9,7 +14,6 @@ class SeBackend(models.Model):
     _name = "se.backend"
     _description = "Se Backend"
     _inherit = [
-        "connector.backend",
         "server.env.techname.mixin",
         "server.env.mixin",
     ]
@@ -19,78 +23,51 @@ class SeBackend(models.Model):
         help="Prefix for technical indexes tech name. "
         "You could use this to change index names based on current env."
     )
-    specific_model = fields.Selection(
-        string="Type", selection="_select_specific_model", required=True, readonly=True
-    )
+    backend_type = fields.Selection(selection=[], string="Type", required=True)
+
     index_ids = fields.One2many("se.index", "backend_id")
-    specific_backend = fields.Reference(
-        string="Specific backend",
-        compute="_compute_specific_backend",
-        selection="_select_specific_backend",
-        readonly=True,
-    )
 
     @property
     def _server_env_fields(self):
         return {"index_prefix_name": {}}
 
-    @property
-    def search_engine_name(self):
-        return self.specific_backend._search_engine_name
-
-    @api.model
-    @tools.ormcache("self")
-    def _select_specific_model(self):
-        """Retrieve available specific models via matchin prefix.
-
-        You can still override this to inject your own model
-        in case you use a 100% custom name for it.
-        """
-        models = self.env["ir.model"].search(
-            [
-                ("model", "like", "se.backend.%"),
-                ("model", "!=", "se.backend.spec.abstract"),
-            ]
-        )
-        # we check if the model exist in the env
-        # indeed during module upgrade the model may not exist yet
-        return [(x.model, x.name) for x in models if x.model in self.env]
-
-    @api.model
-    @tools.ormcache("self")
-    def _select_specific_backend(self):
-        """Retrieve available specific backends."""
-        res = []
-        for model, __ in self._select_specific_model():
-            res.extend([(model, record.name) for record in self.env[model].search([])])
-        return res
-
-    @api.depends("specific_model")
-    def _compute_specific_backend(self):
-        for specific_model in self.mapped("specific_model"):
-            recs = self.filtered(
-                lambda r, model=specific_model: r.specific_model == model
-            )
-            backends = self.env[specific_model].search(
-                [("se_backend_id", "in", recs.ids)]
-            )
-            backend_by_rec = {r.se_backend_id: r for r in backends}
-            for rec in recs:
-                spec_backend = backend_by_rec.get(rec)
-                rec.specific_backend = "{},{}".format(
-                    spec_backend._name, spec_backend.id
-                )
-
     @api.onchange("tech_name", "index_prefix_name")
     def _onchange_tech_name(self):
-        super()._onchange_tech_name()
+        res = super()._onchange_tech_name()
         if self.index_prefix_name:
             # make sure is normalized
             self.index_prefix_name = self._normalize_tech_name(self.index_prefix_name)
         else:
             self.index_prefix_name = self.tech_name
+        return res
 
     def _handle_tech_name(self, vals):
-        super()._handle_tech_name(vals)
+        res = super()._handle_tech_name(vals)
         if not vals.get("index_prefix_name") and vals.get("tech_name"):
             vals["index_prefix_name"] = vals["tech_name"]
+        return res
+
+    def _get_adapter_class(self) -> Type[SearchEngineAdapter]:
+        """Return the adapter class for this backend"""
+        raise NotImplementedError
+
+    def get_adapter(self, index=None) -> SearchEngineAdapter:
+        """Return an instance of the adapter for this backend"""
+        adapter = self._get_adapter_class()
+        if adapter:
+            return adapter(self, index)
+        else:
+            raise UserError(_("Adapter is missing for type %s") % self.backend_type)
+
+    def action_test_connection(self):
+        adapter = self.get_adapter()
+        adapter.test_connection()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Connection Test Succeeded!"),
+                "message": _("Everything seems properly set up!"),
+                "sticky": False,
+            },
+        }
