@@ -45,7 +45,7 @@
         <field name="name">se.backend.tree (in connector_search_engine)</field>
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
-            <tree create="false">
+            <tree>
                 <field name="tech_name" />
                 <field name="backend_type" />
             </tree>
