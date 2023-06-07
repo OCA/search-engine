@@ -13,7 +13,7 @@ class IrActions(models.Model):
     def _get_bindings(self, model_name):
         res = super()._get_bindings(model_name)
         model = self.env[model_name]
-        if hasattr(model, "_se_indexable") and model._se_indexable:
+        if hasattr(model, "_se_indexable") and model._se_indexable and "action" in res:
             res = dict(res)
             res["action"] = tuple(
                 list(res["action"])
