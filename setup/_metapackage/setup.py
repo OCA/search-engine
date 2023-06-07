@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo-addon-connector_elasticsearch>=16.0dev,<16.1dev',
         'odoo-addon-connector_search_engine>=16.0dev,<16.1dev',
+        'odoo-addon-connector_search_engine_serializer_ir_export>=16.0dev,<16.1dev',
     ],
     classifiers=[
         'Programming Language :: Python',
