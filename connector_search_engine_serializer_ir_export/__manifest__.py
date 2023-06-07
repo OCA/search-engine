@@ -5,7 +5,7 @@
 {
     "name": "Connector Search Engine Serializer Ir Export",
     "summary": "Use jsonifier as serializer for index",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "development_status": "Alpha",
     "category": "Uncategorized",
     "website": "https://github.com/OCA/search-engine",
