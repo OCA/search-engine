@@ -12,10 +12,7 @@ class SeIndex(models.Model):
     @api.constrains("config_id", "backend_id")
     def _check_config_id_required(self):
         for rec in self:
-            if (
-                rec.backend_id.specific_model == "se.backend.elasticsearch"
-                and not rec.config_id
-            ):
+            if rec.backend_id.backend_type == "elasticsearch" and not rec.config_id:
                 raise ValidationError(
                     _("An index definition is required for ElasticSearch")
                 )

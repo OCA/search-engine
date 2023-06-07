@@ -9,6 +9,8 @@ from odoo.tools import mute_logger
 
 from odoo.addons.connector_search_engine.tests.test_all import TestBindingIndexBase
 
+from ..tools.adapter import ElasticSearchAdapter
+
 # NOTE: if you need to refresh tests, you can fire up an ElasticSearch instance
 # using `docker-compose.elasticsearch.example.yml` in this same folder.
 # If you are not running in a docker env, you'll need to add an alias
@@ -19,12 +21,9 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.backend_specific = cls.env.ref("connector_elasticsearch.backend_1")
-        cls.backend = cls.backend_specific.se_backend_id
-        cls.se_index_model = cls.env["se.index"]
+        cls.backend = cls.env.ref("connector_elasticsearch.backend_1")
         cls.setup_records()
-        with cls.backend_specific.work_on("se.index", index=cls.se_index) as work:
-            cls.adapter = work.component(usage="se.backend.adapter")
+        cls.adapter: ElasticSearchAdapter = cls.se_index.se_adapter
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
@@ -39,7 +38,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         cls.se_config = cls.env["se.index.config"].create(
             {"name": "my_config", "body": {"mappings": {}}}
         )
-        super().setup_records()
+        return super().setup_records()
 
     @classmethod
     def _prepare_index_values(cls, backend):
@@ -49,15 +48,14 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
 
     def test_index_adapter(self):
         # Set partner to be updated with fake vals in data
-        self.partner_binding.write({"sync_state": "to_update", "data": {"id": "foo"}})
+        self.partner_binding.write({"state": "to_export", "data": {"id": "foo"}})
         # Export index to elasticsearch should be called
-        self.se_index.batch_export()
-        # We should have 3 or 4 request...
-        # ping
-        # index exists?
-        # if not exits -> create (dependening of the elasticsearch content)
-        # export
-        self.assertGreaterEqual(len(self.cassette.requests), 3)
+        self.se_index.batch_sync()
+
+        # Ensure that call have been done to the cassette
+        self.assertTrue(self.cassette.all_played)
+
+        self.assertGreaterEqual(len(self.cassette.requests), 1)
         request = self.cassette.requests[-1]
         self.assertEqual(request.method, "POST")
         self.assertEqual(self.parse_path(request.uri), "/_bulk")
@@ -70,8 +68,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
             index_action,
             {
                 "index": {
-                    "_index": "demo_elasticsearch_backend_res_partner_"
-                    "binding_fake_en_us",
+                    "_index": "demo_elasticsearch_backend_contact_en_us",
                     "_id": "foo",
                 }
             },
@@ -89,7 +86,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
-            # when we record the test we must wait for algolia
+            # when we record the test we must wait for es
             sleep(2)
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
@@ -100,11 +97,11 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         self.adapter.clear()
         self.adapter.index(data)
         if self.cassette.dirty:
-            # when we record the test we must wait for algolia
+            # when we record the test we must wait for es
             sleep(2)
         self.adapter.delete(["foo", "foo3"])
         if self.cassette.dirty:
-            # when we record the test we must wait for algolia
+            # when we record the test we must wait for es
             sleep(2)
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
@@ -116,3 +113,23 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         Because it does not matter, it is just ignored. No exception.
         """
         self.adapter.delete(["donotexist", "donotexisteither"])
+
+    def test_index_adapter_reindex(self):
+        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
+        self.adapter.clear()
+        self.adapter.index(data)
+        index_name = self.adapter._get_current_aliased_index_name()
+        next_index_name = self.adapter._get_next_aliased_index_name(index_name)
+        if self.cassette.dirty:
+            # when we record the test we must wait for es
+            sleep(2)
+        self.adapter.reindex()
+        if self.cassette.dirty:
+            # when we record the test we must wait for es
+            sleep(2)
+        res = [x for x in self.adapter.each()]
+        res.sort(key=lambda d: d["id"])
+        self.assertListEqual(res, data)
+        self.assertEqual(
+            self.adapter._get_current_aliased_index_name(), next_index_name
+        )

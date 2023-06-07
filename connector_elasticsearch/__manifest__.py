@@ -5,24 +5,16 @@
     "name": "connector_elasticsearch",
     "category": "Connector",
     "summary": "Connector For Elasticsearch Search Engine",
-    "version": "14.0.2.6.0",
+    "version": "16.0.0.0.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
-    "depends": [
-        "connector_search_engine",
-        "connector",
-        "component",
-        "jsonifier",
-        "server_environment",
-    ],
+    "depends": ["connector_search_engine"],
     "data": [
-        "security/se_backend_elasticsearch.xml",
-        "views/se_backend_elasticsearch.xml",
-        "views/se_menu.xml",
+        "views/se_backend.xml",
     ],
     "demo": ["demo/backend_demo.xml"],
     # TODO: Get latest improvements from elasticsearch library
     "external_dependencies": {"python": ["elasticsearch>=7.0.0,<=7.13.4", "requests"]},
-    "installable": False,
+    "installable": True,
 }
