@@ -21,7 +21,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[connector_search_engine](connector_search_engine/) | 16.0.0.0.2 |  | Connector Search Engine
+[connector_search_engine](connector_search_engine/) | 16.0.0.0.3 |  | Connector Search Engine
 
 
 Unported addons
