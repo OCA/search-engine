@@ -27,15 +27,7 @@
                         </group>
                     </group>
                     <group name="index" string="Index">
-                        <field
-                            name="index_ids"
-                            nolabel="1"
-                            colspan="2"
-                            context="{
-                                'tree_view_ref': 'connector_search_engine.se_index_tree_no_backend_view',
-                                'from_backend_view': True
-                            }"
-                        />
+                        <field name="index_ids" nolabel="1" colspan="2" />
                     </group>
                 </sheet>
             </form>

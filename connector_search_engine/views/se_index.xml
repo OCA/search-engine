@@ -10,7 +10,7 @@
                 <field name="custom_tech_name" optional="hide" />
                 <field
                     name="backend_id"
-                    invisible="context.get('from_backend_view', False)"
+                    invisible="not context.get('show_backend_id')"
                 />
                 <field name="name" />
                 <field name="lang_id" />
@@ -165,6 +165,8 @@
         <field name="res_model">se.index</field>
         <field name="view_mode">kanban,tree</field>
         <field name="domain">[]</field>
-        <field name="context">{'search_default_groupby_backend': 1}</field>
+        <field
+            name="context"
+        >{'search_default_groupby_backend': 1, 'show_backend_id': True}</field>
     </record>
 </odoo>
