@@ -15,6 +15,7 @@ msgstr ""
 
 #. module: connector_search_engine_serializer_ir_export
 #: model:ir.model.fields,field_description:connector_search_engine_serializer_ir_export.field_se_index__exporter_id
+#: model:ir.model.fields.selection,name:connector_search_engine_serializer_ir_export.selection__se_index__serializer_type__ir_exports
 msgid "Exporter"
 msgstr ""
 
@@ -22,12 +23,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/connector_search_engine_serializer_ir_export/models/se_index.py:0
 #, python-format
-msgid "Exporter is needed when using 'jsonifier' as serializer"
-msgstr ""
-
-#. module: connector_search_engine_serializer_ir_export
-#: model:ir.model.fields.selection,name:connector_search_engine_serializer_ir_export.selection__se_index__serializer_type__jsonifier
-msgid "Jsonifier"
+msgid "Exporter is needed when using 'ir_exports' as serializer"
 msgstr ""
 
 #. module: connector_search_engine_serializer_ir_export
