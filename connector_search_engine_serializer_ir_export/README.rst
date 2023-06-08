@@ -25,7 +25,7 @@ Connector Search Engine Serializer Ir Export
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
 
-Use jsonifier support as serializer for connector_search_engine
+Use Exporter (ir.exports) as serializer for connector_search_engine
 
 .. IMPORTANT::
    This is an alpha version, the data model and design can change at any time without warning.
