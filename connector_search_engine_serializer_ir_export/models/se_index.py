@@ -11,7 +11,7 @@ from ..tools.serializer import JsonifySerializer
 class SeIndex(models.Model):
     _inherit = "se.index"
 
-    serializer_type = fields.Selection(selection_add=[("jsonifier", "Jsonifier")])
+    serializer_type = fields.Selection(selection_add=[("ir_exports", "Exporter")])
     exporter_id = fields.Many2one(
         "ir.exports",
         string="Exporter",
@@ -24,9 +24,9 @@ class SeIndex(models.Model):
     @api.constrains("serializer_type", "exporter_id")
     def _check_need_exporter(self):
         for record in self:
-            if record.serializer_type == "jsonifier" and not record.exporter_id:
+            if record.serializer_type == "ir_exports" and not record.exporter_id:
                 raise ValidationError(
-                    _("Exporter is needed when using 'jsonifier' as serializer")
+                    _("Exporter is needed when using 'ir_exports' as serializer")
                 )
 
     @api.depends("serializer_type", "model_id")
@@ -34,15 +34,15 @@ class SeIndex(models.Model):
         for record in self:
             # reset exporter_id if needed
             if (
-                record.serializer_type == "jsonifier"
+                record.serializer_type == "ir_exports"
                 and record.exporter_id
                 and record.exporter_id.resource != record.model_id.model
-                or record.serializer_type != "jsonifier"
+                or record.serializer_type != "ir_exports"
             ):
                 record.exporter_id = False
 
     def _get_serializer(self):
-        if self.serializer_type == "jsonifier":
+        if self.serializer_type == "ir_exports":
             parser = self.exporter_id.get_json_parser()
             return JsonifySerializer(parser)
         else:

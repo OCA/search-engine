@@ -38,6 +38,7 @@
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="name" />
                 <field name="tech_name" />
                 <field name="backend_type" />
             </tree>

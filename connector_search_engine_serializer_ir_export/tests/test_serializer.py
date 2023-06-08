@@ -21,7 +21,7 @@ class TestSerializer(TestBindingIndexBaseFake):
         )
         cls.se_index.write(
             {
-                "serializer_type": "jsonifier",
+                "serializer_type": "ir_exports",
                 "exporter_id": cls.exporter.id,
             }
         )
