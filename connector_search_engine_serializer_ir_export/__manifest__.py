@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Search Engine Serializer Ir Export",
-    "summary": "Use jsonifier as serializer for index",
+    "summary": "Use Exporter (ir.exports) as serializer for index",
     "version": "16.0.1.0.1",
     "development_status": "Alpha",
     "category": "Uncategorized",
