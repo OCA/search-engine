@@ -118,6 +118,9 @@ class SeBinding(models.Model):
     def jobify_recompute_json(self, force_export: bool = False):
         """Create batch job for records to recompute the json."""
         # The job creation with tracking is very costly. So disable it.
+        if not self:
+            # Nothing to do
+            return
         size = min(self.index_id.mapped("batch_exporting_size"))
         for binding in self.with_context(tracking_disable=True)._batch(size):
             description = _(
