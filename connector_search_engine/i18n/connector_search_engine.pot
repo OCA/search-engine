@@ -14,11 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
-msgid " Env Default"
-msgstr ""
-
-#. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_binding.py:0
 #: model:ir.model.constraint,message:connector_search_engine.constraint_se_binding_item_uniq_per_index
@@ -351,6 +346,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name
 msgid "Index Prefix Name"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
+msgid "Index Prefix Name Env Default"
 msgstr ""
 
 #. module: connector_search_engine
