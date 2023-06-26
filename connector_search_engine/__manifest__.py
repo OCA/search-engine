@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Search Engine",
-    "version": "16.0.0.0.4",
+    "version": "16.0.0.0.5",
     "author": "Akretion,"
     "ACSONE SA/NV,"
     "Camptocamp,"
