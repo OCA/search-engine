@@ -145,6 +145,12 @@ msgid "Name"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/components/adapter.py:0
+#, python-format
+msgid "No ElasticSearch host defined"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name
 msgid ""
 "Prefix for technical indexes tech name. You could use this to change index "
