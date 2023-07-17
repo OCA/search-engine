@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import exceptions
+from odoo import _, exceptions
 
 from odoo.addons.component.core import Component
 
@@ -42,6 +42,10 @@ class ElasticsearchAdapter(Component):
             if backend.api_key_id and backend.api_key
             else None
         )
+        if not backend.es_server_host:
+            raise exceptions.UserError(_("No ElasticSearch host defined"))
+            # UserError to be consistent with
+            # se_backend_elasticsearch.py
         return elasticsearch.Elasticsearch(
             [backend.es_server_host],
             connection_class=self._es_connection_class,
