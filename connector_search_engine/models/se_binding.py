@@ -130,6 +130,13 @@ class SeBinding(models.Model):
                 description=description, identity_key=identity_exact
             ).recompute_json(force_export=force_export)
 
+    def _contextualize(self, record):
+        ctx = {"index_id": record.index_id.id}
+        # force the lang if needed
+        if record.index_id.lang_id:
+            ctx["lang"] = record.index_id.lang_id.code
+        return record.with_context(**ctx)
+
     def recompute_json(self, force_export: bool = False):
         """ "Compute index record data as JSON."""
         # `sudo` because the recomputation can be triggered from everywhere
@@ -147,10 +154,9 @@ class SeBinding(models.Model):
                     "flag the binding to be deleted"
                 )
                 continue
+
+            record = self._contextualize(record)
             index = record.index_id
-            # force the lang if needed
-            if index.lang_id:
-                record = record.with_context(lang=index.lang_id.code)
 
             old_data = record.data
             try:
