@@ -463,7 +463,7 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr ""
 
 #. module: connector_search_engine
