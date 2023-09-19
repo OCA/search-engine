@@ -21,6 +21,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[connector_elasticsearch](connector_elasticsearch/) | 15.0.1.0.0 |  | Connector For Elasticsearch Search Engine
 [connector_search_engine](connector_search_engine/) | 15.0.1.0.0 |  | Connector Search Engine
 
 [//]: # (end addons)
