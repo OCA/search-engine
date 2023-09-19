@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,6 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
+msgid " Env Default"
+msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_needaction
@@ -92,7 +97,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_uid
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_uid
@@ -101,7 +105,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_date
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_date
@@ -136,13 +139,13 @@ msgstr ""
 #. module: connector_search_engine
 #: code:addons/connector_search_engine/models/se_index.py:0
 #, python-format
-msgid "Delete %d obsolete records of %d for index '%s'"
+msgid ""
+"Delete %(len_processing)d obsolete records of %(binding_todelete_count)d for"
+" index '%(name)s'"
 msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__display_name
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__display_name
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__display_name
@@ -162,7 +165,8 @@ msgstr ""
 #. module: connector_search_engine
 #: code:addons/connector_search_engine/models/se_index.py:0
 #, python-format
-msgid "Export %d records of %d for index '%s'"
+msgid ""
+"Export %(len_processing)d records of %(bindings_count)d for index '%(name)s'"
 msgstr ""
 
 #. module: connector_search_engine
@@ -173,11 +177,6 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_follower_ids
 msgid "Followers"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_channel_ids
-msgid "Followers (Channels)"
 msgstr ""
 
 #. module: connector_search_engine
@@ -203,9 +202,12 @@ msgid "Group By..."
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__id
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__id
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__id
@@ -220,7 +222,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_error
-#: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -231,11 +232,9 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_ids
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_ids
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__index_id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__index_id
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
-#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid "Index"
 msgstr ""
 
@@ -246,14 +245,7 @@ msgid "Index Prefix Name"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name_env_default
-msgid "Index Prefix Name Env Default"
-msgstr ""
-
-#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_is_editable
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name_env_is_editable
 msgid "Index Prefix Name Env Is Editable"
 msgstr ""
 
@@ -289,8 +281,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config____last_update
@@ -299,7 +289,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_uid
@@ -308,7 +297,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_date
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_date
@@ -338,7 +326,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__name
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__name
 msgid "Name"
@@ -376,6 +363,7 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name_env_default
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend_spec_abstract__index_prefix_name
 msgid ""
 "Prefix for technical indexes tech name. You could use this to change index "
@@ -391,12 +379,7 @@ msgstr ""
 #. module: connector_search_engine
 #: code:addons/connector_search_engine/models/se_binding.py:0
 #, python-format
-msgid "Recompute %s json and check if need update"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_has_sms_error
-msgid "SMS Delivery error"
+msgid "Recompute %(name)s json and check if need update"
 msgstr ""
 
 #. module: connector_search_engine
@@ -475,14 +458,12 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__server_env_defaults
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__server_env_defaults
 msgid "Server Env Defaults"
 msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__specific_backend
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__specific_backend
-msgid "Specific backend"
+msgid "Specific Backend"
 msgstr ""
 
 #. module: connector_search_engine
@@ -500,7 +481,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__tech_name
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__tech_name
 msgid "Tech Name"
 msgstr ""
 
@@ -508,8 +488,8 @@ msgstr ""
 #: code:addons/connector_search_engine/models/se_backend_spec_abstract.py:0
 #, python-format
 msgid ""
-"The key `%s` is missing in:\n"
-"%s"
+"The key `%(record_id_key)s` is missing in:\n"
+"%(record)s"
 msgstr ""
 
 #. module: connector_search_engine
@@ -530,13 +510,11 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__specific_model
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend_spec_abstract__specific_model
 msgid "Type"
 msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__tech_name
-#: model:ir.model.fields,help:connector_search_engine.field_se_backend_spec_abstract__tech_name
 msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
 
