@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,6 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_default
+msgid " Env Default"
+msgstr ""
 
 #. module: connector_elasticsearch
 #: code:addons/connector_elasticsearch/models/se_index.py:0
@@ -47,13 +52,17 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__display_name
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host
 msgid "ElasticSearch host"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host_env_default
+msgid "ElasticSearch host Env Default"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -77,11 +86,6 @@ msgid "Elasticsearch Backends"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host_env_default
-msgid "Es Server Host Env Default"
-msgstr ""
-
-#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host_env_is_editable
 msgid "Es Server Host Env Is Editable"
 msgstr ""
@@ -99,7 +103,6 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__id
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__id
 msgid "ID"
 msgstr ""
 
@@ -114,18 +117,12 @@ msgid "Index Prefix Name"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_default
-msgid "Index Prefix Name Env Default"
-msgstr ""
-
-#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_is_editable
 msgid "Index Prefix Name Env Is Editable"
 msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch____last_update
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -173,7 +170,7 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__specific_backend
-msgid "Specific backend"
+msgid "Specific Backend"
 msgstr ""
 
 #. module: connector_elasticsearch
