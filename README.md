@@ -17,7 +17,11 @@ TODO: add repo description.
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[connector_search_engine](connector_search_engine/) | 15.0.1.0.0 |  | Connector Search Engine
 
 [//]: # (end addons)
 
