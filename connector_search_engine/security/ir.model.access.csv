@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_se_backend,Search Engine Backend connector manager,model_se_backend,connector.group_connector_manager,1,1,1,1
+access_se_index,Search Engine Index connector manager,model_se_index,connector.group_connector_manager,1,1,1,1
+access_se_binding_todelete,Search Engine Binding To Delete,model_se_binding_todelete,connector.group_connector_manager,1,1,1,1

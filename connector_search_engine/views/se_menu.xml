@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="se_root_menu"
+        parent="connector.menu_connector_root"
+        name="Search Engine Connector"
+        sequence="10"
+        groups="connector.group_connector_manager"
+    />
+    <menuitem
+        id="se_backend_menu"
+        name="Backends"
+        parent="se_root_menu"
+        action="se_backend_act_window"
+    />
+    <menuitem
+        id="se_index_menu"
+        name="Indexes"
+        parent="se_root_menu"
+        action="se_index_act_window"
+    />
+    <menuitem
+        id="se_index_config_menu"
+        name="Index configurations"
+        parent="se_root_menu"
+        action="se_index_config_act_window"
+    />
+</odoo>
