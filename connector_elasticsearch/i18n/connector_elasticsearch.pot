@@ -1,0 +1,220 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_elasticsearch
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_index.py:0
+#, python-format
+msgid "An index definition is required for ElasticSearch"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__api_key
+msgid "Api Key"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__api_key_id
+msgid "Api Key ID"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Connection Test Succeeded!"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__display_name
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host
+msgid "ElasticSearch host"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__api_key
+msgid "Elasticsearch Api Key"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__api_key_id
+msgid "Elasticsearch Api Key ID"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model,name:connector_elasticsearch.model_se_backend_elasticsearch
+msgid "Elasticsearch Backend"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.ui.menu,name:connector_elasticsearch.se_backend_elasticsearch_menu
+msgid "Elasticsearch Backends"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host_env_default
+msgid "Es Server Host Env Default"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__es_server_host_env_is_editable
+msgid "Es Server Host Env Is Editable"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Everything seems properly set up!"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
+msgid "Host"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__id
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index__id
+msgid "ID"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_ids
+msgid "Index"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name
+msgid "Index Prefix Name"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_default
+msgid "Index Prefix Name Env Default"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name_env_is_editable
+msgid "Index Prefix Name Env Is Editable"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch____last_update
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_index____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__name
+msgid "Name"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__index_prefix_name
+msgid ""
+"Prefix for technical indexes tech name. You could use this to change index "
+"names based on current env."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__se_backend_id
+msgid "Se Backend"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model,name:connector_elasticsearch.model_se_index
+msgid "Se Index"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.actions.act_window,name:connector_elasticsearch.se_backend_elasticsearch_act_window
+msgid "Search Engine Backend"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__server_env_defaults
+msgid "Server Env Defaults"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__specific_backend
+msgid "Specific backend"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__tech_name
+msgid "Tech Name"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
+msgid "Test Connection"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend_elasticsearch__specific_model
+msgid "Type"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Unable to authenticate. Check credentials."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Unable to connect to ElasticSearch:"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: code:addons/connector_elasticsearch/models/se_backend_elasticsearch.py:0
+#, python-format
+msgid "Unable to reach host."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend_elasticsearch__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_elasticsearch_form_view
+msgid "http://elastic:9200"
+msgstr ""

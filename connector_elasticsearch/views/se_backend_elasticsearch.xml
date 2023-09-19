@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="se_backend_elasticsearch_form_view">
+        <field name="name">se.backend.elasticsearch (in connector_search_engine)</field>
+        <field name="model">se.backend.elasticsearch</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
+        <field name="priority" eval="99" />
+        <field name="arch" type="xml">
+            <form position="attributes">
+                <attribute name="create">true</attribute>
+                <attribute name="edit">true</attribute>
+            </form>
+            <field name="specific_backend" position="replace" />
+            <group name="se-main" position="inside">
+                <field
+                    name="es_server_host"
+                    string="Host"
+                    placeholder="http://elastic:9200"
+                />
+                <field name="api_key_id" />
+                <field name="api_key" />
+            </group>
+            <group name="se-main" position="after">
+                <group name="se-buttons" colspan="4" col="1">
+                    <button
+                        name="action_test_connection"
+                        type="object"
+                        string="Test Connection"
+                        icon="fa-television"
+                        attrs="{'invisible': [('es_server_host', '=', False)]}"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="se_backend_elasticsearch_tree_view">
+        <field
+            name="name"
+        >se.backend.elasticsearch.tree (in connector_elasticsearch)</field>
+        <field name="model">se.backend.elasticsearch</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="se_backend_elasticsearch_act_window">
+        <field name="name">Search Engine Backend</field>
+        <field name="res_model">se.backend.elasticsearch</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

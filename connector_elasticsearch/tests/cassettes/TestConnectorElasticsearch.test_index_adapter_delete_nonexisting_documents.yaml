@@ -1,0 +1,105 @@
+interactions:
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: GET
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: "{\n  \"name\" : \"5a678e6db91d\",\n  \"cluster_name\" : \"docker-cluster\"\
+        ,\n  \"cluster_uuid\" : \"Gy8zjpFwT8Wnj3eijSzN0g\",\n  \"version\" : {\n \
+        \   \"number\" : \"7.0.0\",\n    \"build_flavor\" : \"default\",\n    \"build_type\"\
+        \ : \"docker\",\n    \"build_hash\" : \"b7e28a7\",\n    \"build_date\" : \"\
+        2019-04-05T22:55:32.697037Z\",\n    \"build_snapshot\" : false,\n    \"lucene_version\"\
+        \ : \"8.0.0\",\n    \"minimum_wire_compatibility_version\" : \"6.7.0\",\n\
+        \    \"minimum_index_compatibility_version\" : \"6.0.0-beta1\"\n  },\n  \"\
+        tagline\" : \"You Know, for Search\"\n}\n"
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '427'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"delete":{"_id":"donotexist","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      {"delete":{"_id":"donotexisteither","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      '
+    headers:
+      Content-Length:
+      - '208'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0,h=bp
+    method: POST
+    uri: http://elastic:9200/_bulk
+  response:
+    body:
+      string: '{"took":5,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":5,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":6,"_primary_term":1,"status":404}}]}'
+    headers:
+      content-length:
+      - '523'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1

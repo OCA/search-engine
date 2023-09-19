@@ -1,0 +1,410 @@
+interactions:
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: GET
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: "{\n  \"name\" : \"5a678e6db91d\",\n  \"cluster_name\" : \"docker-cluster\"\
+        ,\n  \"cluster_uuid\" : \"Gy8zjpFwT8Wnj3eijSzN0g\",\n  \"version\" : {\n \
+        \   \"number\" : \"7.0.0\",\n    \"build_flavor\" : \"default\",\n    \"build_type\"\
+        \ : \"docker\",\n    \"build_hash\" : \"b7e28a7\",\n    \"build_date\" : \"\
+        2019-04-05T22:55:32.697037Z\",\n    \"build_snapshot\" : false,\n    \"lucene_version\"\
+        \ : \"8.0.0\",\n    \"minimum_wire_compatibility_version\" : \"6.7.0\",\n\
+        \    \"minimum_index_compatibility_version\" : \"6.0.0-beta1\"\n  },\n  \"\
+        tagline\" : \"You Know, for Search\"\n}\n"
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '427'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Content-Length:
+      - '0'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: DELETE
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: '{"acknowledged":true}'
+    headers:
+      content-length:
+      - '21'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: GET
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: "{\n  \"name\" : \"5a678e6db91d\",\n  \"cluster_name\" : \"docker-cluster\"\
+        ,\n  \"cluster_uuid\" : \"Gy8zjpFwT8Wnj3eijSzN0g\",\n  \"version\" : {\n \
+        \   \"number\" : \"7.0.0\",\n    \"build_flavor\" : \"default\",\n    \"build_type\"\
+        \ : \"docker\",\n    \"build_hash\" : \"b7e28a7\",\n    \"build_date\" : \"\
+        2019-04-05T22:55:32.697037Z\",\n    \"build_snapshot\" : false,\n    \"lucene_version\"\
+        \ : \"8.0.0\",\n    \"minimum_wire_compatibility_version\" : \"6.7.0\",\n\
+        \    \"minimum_index_compatibility_version\" : \"6.0.0-beta1\"\n  },\n  \"\
+        tagline\" : \"You Know, for Search\"\n}\n"
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '671'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{}'
+    headers:
+      Content-Length:
+      - '2'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: PUT
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}'
+    headers:
+      content-length:
+      - '116'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: GET
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: "{\n  \"name\" : \"5a678e6db91d\",\n  \"cluster_name\" : \"docker-cluster\"\
+        ,\n  \"cluster_uuid\" : \"Gy8zjpFwT8Wnj3eijSzN0g\",\n  \"version\" : {\n \
+        \   \"number\" : \"7.0.0\",\n    \"build_flavor\" : \"default\",\n    \"build_type\"\
+        \ : \"docker\",\n    \"build_hash\" : \"b7e28a7\",\n    \"build_date\" : \"\
+        2019-04-05T22:55:32.697037Z\",\n    \"build_snapshot\" : false,\n    \"lucene_version\"\
+        \ : \"8.0.0\",\n    \"minimum_wire_compatibility_version\" : \"6.7.0\",\n\
+        \    \"minimum_index_compatibility_version\" : \"6.0.0-beta1\"\n  },\n  \"\
+        tagline\" : \"You Know, for Search\"\n}\n"
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '333'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"index":{"_id":"foo","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      {"id":"foo"}
+
+      {"index":{"_id":"foo2","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      {"id":"foo2"}
+
+      {"index":{"_id":"foo3","_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us"}}
+
+      {"id":"foo3"}
+
+      '
+    headers:
+      Content-Length:
+      - '322'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0,h=bp
+    method: POST
+    uri: http://elastic:9200/_bulk
+  response:
+    body:
+      string: '{"took":26,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo2","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_binding_fake_en_us","_type":"_doc","_id":"foo3","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":2,"_primary_term":1,"status":201}}]}'
+    headers:
+      content-length:
+      - '731'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: GET
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: "{\n  \"name\" : \"5a678e6db91d\",\n  \"cluster_name\" : \"docker-cluster\"\
+        ,\n  \"cluster_uuid\" : \"Gy8zjpFwT8Wnj3eijSzN0g\",\n  \"version\" : {\n \
+        \   \"number\" : \"7.0.0\",\n    \"build_flavor\" : \"default\",\n    \"build_type\"\
+        \ : \"docker\",\n    \"build_hash\" : \"b7e28a7\",\n    \"build_date\" : \"\
+        2019-04-05T22:55:32.697037Z\",\n    \"build_snapshot\" : false,\n    \"lucene_version\"\
+        \ : \"8.0.0\",\n    \"minimum_wire_compatibility_version\" : \"6.7.0\",\n\
+        \    \"minimum_index_compatibility_version\" : \"6.0.0-beta1\"\n  },\n  \"\
+        tagline\" : \"You Know, for Search\"\n}\n"
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '508'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '427'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Content-Length:
+      - '0'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.14.0a1 (Python 3.7.3)
+      x-elastic-client-meta:
+      - es=7.14.0p,py=3.7.3,t=7.14.0p,rq=2.21.0
+    method: POST
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_binding_fake_en_us/_search?filter_path=hits.hits._source
+  response:
+    body:
+      string: '{"hits":{"hits":[{"_source":{"id":"foo"}},{"_source":{"id":"foo2"}},{"_source":{"id":"foo3"}}]}}'
+    headers:
+      content-length:
+      - '96'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1
