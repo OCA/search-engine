@@ -176,9 +176,12 @@ class SeIndexableRecord(models.AbstractModel):
     @api.model
     def _get_view(self, view_id=None, view_type="form", **options):
         arch, view = super()._get_view(view_id=view_id, view_type=view_type, **options)
-        button_box = arch.xpath("//div[@name='button_box']")
-        if button_box:
-            button_box[0].append(etree.fromstring(SMART_BUTTON))
+        if view_type == "form" and self.env.user.has_group(
+            "connector_search_engine.group_connector_search_engine_user"
+        ):
+            button_box = arch.xpath("//div[@name='button_box']")
+            if button_box:
+                button_box[0].append(etree.fromstring(SMART_BUTTON))
         return arch, view
 
     def open_se_binding(self):
