@@ -112,16 +112,16 @@ class SeIndexableRecord(models.AbstractModel):
             record.count_se_binding_pending = res[record.id]["pending"]
             record.count_se_binding_error = res[record.id]["error"]
 
-    def _get_bindings(self, index: SeIndex = None) -> SeBinding:
+    def _get_bindings(self, indexes: SeIndex = None) -> SeBinding:
         domain = [
             ("res_model", "=", self._name),
             ("res_id", "in", self.ids),
         ]
-        if index:
-            domain.append(("index_id", "=", index.id))
+        if indexes:
+            domain.append(("index_id", "in", indexes.ids))
         return self.env["se.binding"].search(domain)
 
-    def _add_to_index(self, index: SeIndex) -> SeBinding:
+    def _add_to_index(self, indexes: SeIndex) -> SeBinding:
         """Add the record to the index.
 
         It will create a binding for each record that is not already
@@ -130,7 +130,7 @@ class SeIndexableRecord(models.AbstractModel):
         :param index: The index where the record should be added
         :return: The binding recordset
         """
-        bindings = self._get_bindings(index)
+        bindings = self._get_bindings(indexes)
         bindings.filtered(lambda s: s.state == "to_delete").write(
             {"state": "to_recompute"}
         )
@@ -145,22 +145,23 @@ class SeIndexableRecord(models.AbstractModel):
                 "res_model": self._name,
             }
             for record in todo
+            for index in indexes
         ]
         return bindings | self.env["se.binding"].create(vals_list)
 
-    def _remove_from_index(self, index: SeIndex) -> None:
+    def _remove_from_index(self, indexes: SeIndex) -> None:
         """Remove the record from the index.
 
         It will mark the binding to be deleted.
         Once the data will be removed from the index, the binding will be
         deleted.
         """
-        bindings = self._get_bindings(index)
+        bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_delete"})
 
-    def _se_mark_to_update(self, index: SeIndex | None = None) -> None:
+    def _se_mark_to_update(self, indexes: SeIndex | None = None) -> None:
         """Mark the record to be updated in the index."""
-        bindings = self._get_bindings(index)
+        bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_recompute"})
 
     def unlink(self):
