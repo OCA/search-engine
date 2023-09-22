@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 ACSONE SA/NV
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record model="ir.ui.view" id="se_index_form_view">
+        <field name="name">se.index.form</field>
+        <field name="model">se.index</field>
+        <field name="inherit_id" ref="connector_search_engine.se_index_form_view" />
+        <field name="arch" type="xml">
+            <group name="config" position="after">
+                <group
+                    name="image_field_thumbnail_size_ids"
+                    string="Thumbnail Sizes"
+                    colspan="4"
+                >
+                    <field
+                        name="image_field_thumbnail_size_ids"
+                        nolabel="1"
+                        colspan="2"
+                        context="{'hide_backend': 1}"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>
