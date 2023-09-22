@@ -19,8 +19,10 @@ SMART_BUTTON = """
 <button class="oe_stat_button"
        name="open_se_binding"
        icon="fa-list-ul"
-       type="object">
+       type="object"
+       attrs="{'invisible': [('count_se_binding_total', '=', 0)]}">
        <div class="o_field_widget o_stat_info">
+            <field name="count_se_binding_total" invisible="1"/>
             <span class="o_stat_value">
                 <i attrs="{'invisible': [
                     '|',
@@ -59,6 +61,7 @@ class SeIndexableRecord(models.AbstractModel):
         comodel_name="se.binding",
         compute="_compute_binding_ids",
     )
+    count_se_binding_total = fields.Integer(compute="_compute_count_binding")
     count_se_binding_done = fields.Integer(compute="_compute_count_binding")
     count_se_binding_pending = fields.Integer(compute="_compute_count_binding")
     count_se_binding_error = fields.Integer(compute="_compute_count_binding")
@@ -111,17 +114,22 @@ class SeIndexableRecord(models.AbstractModel):
             record.count_se_binding_done = res[record.id]["done"]
             record.count_se_binding_pending = res[record.id]["pending"]
             record.count_se_binding_error = res[record.id]["error"]
+            record.count_se_binding_total = (
+                res[record.id]["done"]
+                + res[record.id]["pending"]
+                + res[record.id]["error"]
+            )
 
-    def _get_bindings(self, index: SeIndex = None) -> SeBinding:
+    def _get_bindings(self, indexes: SeIndex = None) -> SeBinding:
         domain = [
             ("res_model", "=", self._name),
             ("res_id", "in", self.ids),
         ]
-        if index:
-            domain.append(("index_id", "=", index.id))
+        if indexes:
+            domain.append(("index_id", "in", indexes.ids))
         return self.env["se.binding"].search(domain)
 
-    def _add_to_index(self, index: SeIndex) -> SeBinding:
+    def _add_to_index(self, indexes: SeIndex) -> SeBinding:
         """Add the record to the index.
 
         It will create a binding for each record that is not already
@@ -130,7 +138,7 @@ class SeIndexableRecord(models.AbstractModel):
         :param index: The index where the record should be added
         :return: The binding recordset
         """
-        bindings = self._get_bindings(index)
+        bindings = self._get_bindings(indexes)
         bindings.filtered(lambda s: s.state == "to_delete").write(
             {"state": "to_recompute"}
         )
@@ -145,22 +153,23 @@ class SeIndexableRecord(models.AbstractModel):
                 "res_model": self._name,
             }
             for record in todo
+            for index in indexes
         ]
         return bindings | self.env["se.binding"].create(vals_list)
 
-    def _remove_from_index(self, index: SeIndex) -> None:
+    def _remove_from_index(self, indexes: SeIndex) -> None:
         """Remove the record from the index.
 
         It will mark the binding to be deleted.
         Once the data will be removed from the index, the binding will be
         deleted.
         """
-        bindings = self._get_bindings(index)
+        bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_delete"})
 
-    def _se_mark_to_update(self, index: SeIndex | None = None) -> None:
+    def _se_mark_to_update(self, indexes: SeIndex | None = None) -> None:
         """Mark the record to be updated in the index."""
-        bindings = self._get_bindings(index)
+        bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_recompute"})
 
     def unlink(self):
@@ -176,9 +185,12 @@ class SeIndexableRecord(models.AbstractModel):
     @api.model
     def _get_view(self, view_id=None, view_type="form", **options):
         arch, view = super()._get_view(view_id=view_id, view_type=view_type, **options)
-        button_box = arch.xpath("//div[@name='button_box']")
-        if button_box:
-            button_box[0].append(etree.fromstring(SMART_BUTTON))
+        if view_type == "form" and self.env.user.has_group(
+            "connector_search_engine.group_connector_search_engine_user"
+        ):
+            button_box = arch.xpath("//div[@name='button_box']")
+            if button_box:
+                button_box[0].append(etree.fromstring(SMART_BUTTON))
         return arch, view
 
     def open_se_binding(self):

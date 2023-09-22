@@ -15,9 +15,19 @@ class SeBackend(models.Model):
         string="Type",
         required=True,
     )
-    es_server_host = fields.Char(string="ElasticSearch host")
-    api_key_id = fields.Char(help="Elasticsearch Api Key ID", string="Api Key ID")
-    api_key = fields.Char(help="Elasticsearch Api Key")
+    es_server_host = fields.Char(
+        string="ElasticSearch host",
+        groups="connector_search_engine.group_connector_search_engine_manager",
+    )
+    api_key_id = fields.Char(
+        help="Elasticsearch Api Key ID",
+        string="Api Key ID",
+        groups="connector_search_engine.group_connector_search_engine_manager",
+    )
+    api_key = fields.Char(
+        help="Elasticsearch Api Key",
+        groups="connector_search_engine.group_connector_search_engine_manager",
+    )
 
     def _get_adapter_class(self):
         if self.backend_type == "elasticsearch":
