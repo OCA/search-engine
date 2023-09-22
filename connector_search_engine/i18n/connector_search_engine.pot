@@ -158,6 +158,11 @@ msgid "Count Se Binding Pending"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_indexable_record__count_se_binding_total
+msgid "Count Se Binding Total"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_uid
@@ -584,6 +589,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:res.groups,name:connector_search_engine.group_connector_search_engine_manager
 msgid "Search Engine Connector Manager"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:res.groups,name:connector_search_engine.group_connector_search_engine_user
+msgid "Search Engine Connector User"
 msgstr ""
 
 #. module: connector_search_engine
