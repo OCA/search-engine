@@ -19,8 +19,10 @@ SMART_BUTTON = """
 <button class="oe_stat_button"
        name="open_se_binding"
        icon="fa-list-ul"
-       type="object">
+       type="object"
+       attrs="{'invisible': [('count_se_binding_total', '=', 0)]}">
        <div class="o_field_widget o_stat_info">
+            <field name="count_se_binding_total" invisible="1"/>
             <span class="o_stat_value">
                 <i attrs="{'invisible': [
                     '|',
@@ -59,6 +61,7 @@ class SeIndexableRecord(models.AbstractModel):
         comodel_name="se.binding",
         compute="_compute_binding_ids",
     )
+    count_se_binding_total = fields.Integer(compute="_compute_count_binding")
     count_se_binding_done = fields.Integer(compute="_compute_count_binding")
     count_se_binding_pending = fields.Integer(compute="_compute_count_binding")
     count_se_binding_error = fields.Integer(compute="_compute_count_binding")
@@ -111,6 +114,11 @@ class SeIndexableRecord(models.AbstractModel):
             record.count_se_binding_done = res[record.id]["done"]
             record.count_se_binding_pending = res[record.id]["pending"]
             record.count_se_binding_error = res[record.id]["error"]
+            record.count_se_binding_total = (
+                res[record.id]["done"]
+                + res[record.id]["pending"]
+                + res[record.id]["error"]
+            )
 
     def _get_bindings(self, indexes: SeIndex = None) -> SeBinding:
         domain = [
