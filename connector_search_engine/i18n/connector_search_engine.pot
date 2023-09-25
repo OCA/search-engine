@@ -290,7 +290,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Job have been split because of failure.\n"
-"Error: {}"
+"Error: {exception}"
 msgstr ""
 
 #. module: connector_search_engine
