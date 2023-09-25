@@ -153,7 +153,9 @@ class SeBinding(models.AbstractModel):
                     force_export=force_export,
                     batch_size=math.ceil(len(self) / 2),
                 )
-                return _("Job have been split because of failure.\nError: {}") % str(e)
+                return _(
+                    "Job have been split because of failure.\nError: {exception}"
+                ).format(exception=str(e))
             # We can't systematically reraise here, if we do the new jobs
             # will be discarded.
             raise
