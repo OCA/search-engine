@@ -1,4 +1,5 @@
 # generated from manifests external_dependencies
 elasticsearch>=7.0.0,<=7.13.4
+pydantic
 requests
 unidecode
