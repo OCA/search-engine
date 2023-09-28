@@ -3,6 +3,68 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
 
+    <record model="ir.ui.view" id="se_index_form_view">
+        <field name="name">se.index.form</field>
+        <field name="model">se.index</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="force_recompute_all_binding"
+                        type="object"
+                        string="Recompute all binding"
+                        icon="fa-gears"
+                        help="Force to recompute all binding of the index and set them to the state 'To update'"
+                    />
+                    <button
+                        name="force_batch_sync"
+                        type="object"
+                        string="Export all binding"
+                        icon="fa-upload"
+                        help="Force the export of all binding"
+                    />
+                    <button
+                        name="clear_index"
+                        type="object"
+                        string="Clear index"
+                        icon="fa-times"
+                        help="Clear the index in the search engine"
+                        groups="connector_search_engine.group_connector_search_engine_manager"
+                    />
+                    <button
+                        name="reindex"
+                        type="object"
+                        string="Reindex"
+                        icon="fa-refresh"
+                        help="Reindex records according to the current config"
+                        groups="connector_search_engine.group_connector_search_engine_manager"
+                    />
+                </header>
+                <sheet>
+                    <label for="name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" class="oe_inline" required="1" />
+                    </h1>
+                    <group name="config" string="Configuration">
+                        <group name="config_left">
+                            <field name="custom_tech_name" />
+                            <field name="backend_id" />
+                            <field name="model_id" />
+                            <field name="lang_id" />
+                            <field name="model_id" />
+                            <field name="serializer_type" required="True" />
+                        </group>
+                        <group name="config_right">
+                            <field name="config_id" />
+                            <field name="batch_recomputing_size" />
+                            <field name="batch_exporting_size" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="se_index_tree_view">
         <field name="model">se.index</field>
         <field name="arch" type="xml">
@@ -94,6 +156,13 @@
                                      </a>
                                      <div class="dropdown-menu" role="menu">
                                             <a
+                                                class="dropdown-item"
+                                                t-if="widget.editable"
+                                                type="edit"
+                                                icon="fa-pencil-square-o"
+                                            >Configuration
+                                            </a>
+                                            <a
                                                 name="force_recompute_all_binding"
                                                 role="menuitem"
                                                 class="dropdown-item"
@@ -163,7 +232,7 @@
     <record model="ir.actions.act_window" id="se_index_act_window">
         <field name="name">Se Index</field>
         <field name="res_model">se.index</field>
-        <field name="view_mode">kanban,tree</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[]</field>
         <field
             name="context"

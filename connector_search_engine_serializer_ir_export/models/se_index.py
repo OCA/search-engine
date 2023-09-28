@@ -19,7 +19,7 @@ class SeIndex(models.Model):
         readonly=False,
         store=True,
     )
-    model_name = fields.Char(related="model_id.model")
+    model_name = fields.Char(string="Model name", related="model_id.model")
 
     @api.constrains("serializer_type", "exporter_id")
     def _check_need_exporter(self):
