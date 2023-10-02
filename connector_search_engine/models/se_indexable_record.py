@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from lxml import etree
 
@@ -167,7 +167,7 @@ class SeIndexableRecord(models.AbstractModel):
         bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_delete"})
 
-    def _se_mark_to_update(self, indexes: SeIndex | None = None) -> None:
+    def _se_mark_to_update(self, indexes: Union[SeIndex, None] = None) -> None:
         """Mark the record to be updated in the index."""
         bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_recompute"})

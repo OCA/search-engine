@@ -3,7 +3,7 @@
 
 import logging
 from collections import defaultdict
-from typing import List
+from typing import List, Union
 
 from odoo import _, api, fields, models
 
@@ -219,7 +219,7 @@ class SeIndex(models.Model):
         ).batch_recompute(force_export)
 
     @api.model
-    def generate_batch_sync_per_index(self, domain: list | None = None) -> None:
+    def generate_batch_sync_per_index(self, domain: Union[list, None] = None) -> None:
         """Generate a job for each index to sync.
 
         This method is usually called by a cron. It will generate a job for each
@@ -232,7 +232,9 @@ class SeIndex(models.Model):
             record._jobify_batch_sync()
 
     @api.model
-    def generate_batch_recompute_per_index(self, domain: list | None = None) -> None:
+    def generate_batch_recompute_per_index(
+        self, domain: Union[list, None] = None
+    ) -> None:
         """Generate a job for each index to recompute.
 
         This method is usually called by a cron. It will generate a job for each
