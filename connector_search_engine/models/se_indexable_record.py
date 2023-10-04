@@ -69,7 +69,7 @@ class SeIndexableRecord(models.AbstractModel):
     def _compute_binding_ids(self) -> None:
         binding_model = self.env["se.binding"]
         values = {
-            read["res_id"][0]: read["ids"]
+            read["res_id"]: read["ids"]
             for read in binding_model.read_group(
                 domain=[
                     ("res_model", "=", self._name),
