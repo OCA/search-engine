@@ -28,7 +28,7 @@ msgstr ""
 
 #. module: connector_search_engine_serializer_ir_export
 #: model:ir.model.fields,field_description:connector_search_engine_serializer_ir_export.field_se_index__model_name
-msgid "Model"
+msgid "Model name"
 msgstr ""
 
 #. module: connector_search_engine_serializer_ir_export
