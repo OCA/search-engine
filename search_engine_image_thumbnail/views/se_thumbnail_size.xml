@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 ACSONE SA/NV
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+
+    <record model="ir.ui.view" id="se_thumbnail_size_search_view">
+        <field name="name">se.thumbnail.size.search</field>
+        <field name="model">se.thumbnail.size</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="key" />
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="se_thumbnail_size_tree_view">
+        <field name="name">se.thumbnail.size.tree</field>
+        <field name="model">se.thumbnail.size</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" />
+                <field name="key" />
+                <field name="size_x" />
+                <field name="size_y" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="se_thumbnail_size_act_window">
+        <field name="name">Thumbnail Sizes</field>
+        <field name="res_model">se.thumbnail.size</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record model="ir.ui.menu" id="se_thumbnail_size_menu">
+        <field name="name">Thumbnail Sizes</field>
+        <field name="parent_id" ref="se_thumbnails_menu" />
+        <field name="action" ref="se_thumbnail_size_act_window" />
+        <field name="sequence" eval="8" />
+    </record>
+
+</odoo>
