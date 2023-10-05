@@ -95,11 +95,13 @@ msgid "Body Str"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Clear index"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Clear the index in the search engine"
 msgstr ""
@@ -117,6 +119,8 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.ui.menu,name:connector_search_engine.se_root_config
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Configuration"
 msgstr ""
 
@@ -264,6 +268,7 @@ msgid ""
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Export all binding"
 msgstr ""
@@ -289,11 +294,13 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Force the export of all binding"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid ""
 "Force to recompute all binding of the index and set them to the state 'To "
@@ -520,6 +527,7 @@ msgid "Recompute Search Index"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Recompute all binding"
 msgstr ""
@@ -535,11 +543,13 @@ msgid "Record ID"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Reindex"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Reindex records according to the current config"
 msgstr ""
