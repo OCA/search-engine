@@ -5,3 +5,4 @@ access_manager_se_binding,Search Engine Binding connector manager,model_se_bindi
 access_user_se_backend,Search Engine Backend connector user,model_se_backend,group_connector_search_engine_user,1,0,0,0
 access_user_se_index,Search Engine Index connector user,model_se_index,group_connector_search_engine_user,1,0,0,0
 access_user_se_binding,Search Engine Binding connector user,model_se_binding,group_connector_search_engine_user,1,0,0,0
+access_manager_se_binding_state_updater,Search Engine Binding State Updater,model_se_binding_state_updater,group_connector_search_engine_manager,1,1,1,1
