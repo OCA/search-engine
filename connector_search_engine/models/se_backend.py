@@ -26,6 +26,20 @@ class SeBackend(models.Model):
     backend_type = fields.Selection(selection=[], string="Type", required=True)
 
     index_ids = fields.One2many("se.index", "backend_id")
+    binding_ids = fields.One2many("se.binding", "backend_id")
+
+    binding_count = fields.Integer(compute="_compute_binding_count")
+
+    @api.depends("binding_ids")
+    def _compute_binding_count(self):
+        res = self.env["se.binding"].read_group(
+            [("backend_id", "in", self.ids)],
+            ["backend_id"],
+            ["backend_id"],
+        )
+        mapped_data = {r["backend_id"][0]: r["backend_id_count"] for r in res}
+        for record in self:
+            record.binding_count = mapped_data.get(record.id, 0)
 
     @property
     def _server_env_fields(self):
@@ -71,3 +85,9 @@ class SeBackend(models.Model):
                 "sticky": False,
             },
         }
+
+    def action_open_bindings(self):
+        self.ensure_one()
+        action = self.env.ref("connector_search_engine.se_binding_action").read()[0]
+        action["domain"] = [("backend_id", "=", self.id)]
+        return action
