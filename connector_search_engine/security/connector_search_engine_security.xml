@@ -7,7 +7,10 @@
 
     <record id="group_connector_search_engine_manager" model="res.groups">
         <field name="name">Search Engine Connector Manager</field>
-        <field name="users" eval="[Command.link(ref('base.user_root'))]" />
+        <field
+            name="users"
+            eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"
+        />
         <field
             name="implied_ids"
             eval="[Command.link(ref('group_connector_search_engine_user'))]"
