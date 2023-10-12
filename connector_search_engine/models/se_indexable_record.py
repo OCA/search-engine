@@ -121,13 +121,10 @@ class SeIndexableRecord(models.AbstractModel):
             )
 
     def _get_bindings(self, indexes: SeIndex = None) -> SeBinding:
-        domain = [
-            ("res_model", "=", self._name),
-            ("res_id", "in", self.ids),
-        ]
+        bindings = self.se_binding_ids
         if indexes:
-            domain.append(("index_id", "in", indexes.ids))
-        return self.env["se.binding"].search(domain)
+            bindings = bindings.filtered(lambda s: s.index_id in indexes)
+        return bindings
 
     def _add_to_index(self, indexes: SeIndex) -> SeBinding:
         """Add the record to the index.
