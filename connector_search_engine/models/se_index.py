@@ -70,11 +70,11 @@ class SeIndex(models.Model):
             groupby=["index_id", "state"],
             lazy=False,
         )
-        all = 0
+        _all = 0
         for item in data:
             count = item["__count"]
             res[item["index_id"][0]][item["state"]] = count
-            all += count
+            _all += count
 
         def get(index_id, states):
             return sum([res[index_id][state] for state in states])
@@ -93,7 +93,7 @@ class SeIndex(models.Model):
                 ],
             )
             record.count_error = get(record.id, ["invalid_data", "recompute_error"])
-            record.count_all = all
+            record.count_all = _all
             if record.count_error:
                 record.color = 1
             elif record.count_pending:

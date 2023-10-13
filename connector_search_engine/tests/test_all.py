@@ -354,3 +354,10 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 kwargs={},
             )
         self.assertFalse(self.partner_binding.exists())
+
+    def test_binding_ids_on_record(self):
+        self.assertEqual(self.partner.se_binding_ids, self.partner_binding)
+        self.partner_binding.unlink()
+        self.assertFalse(self.partner.se_binding_ids)
+        partner_binding = self.partner._add_to_index(self.se_index)
+        self.assertEqual(self.partner.se_binding_ids, partner_binding)
