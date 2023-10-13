@@ -33,10 +33,17 @@
                     <field name="res_id" />
                 </group>
                 <group string="Error" attrs="{'invisible': [('error', '=', False)]}">
-                    <field name="error" nolabel="1" />
+                    <field name="error" nolabel="1" colspan="4" />
                 </group>
                 <group string="Data">
-                    <field name="data_display" nolabel="1" />
+                    <field
+                        name="data_display"
+                        nolabel="1"
+                        colspan="4"
+                        widget="ace"
+                        options="{'mode': 'python'}"
+                    />
+
                 </group>
             </form>
         </field>

@@ -15,6 +15,7 @@
     "depends": ["queue_job", "mail", "server_environment"],
     "external_dependencies": {"python": ["unidecode"]},
     "data": [
+        "wizards/se_binding_state_updater.xml",
         "security/connector_search_engine_security.xml",
         "security/se_index_config.xml",
         "security/ir.model.access.csv",

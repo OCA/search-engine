@@ -15,6 +15,28 @@
                     />
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_open_bindings"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-list-ul"
+                            context="{'search_default_groupby_model': 1}"
+                        >
+
+                            <div class="o_stat_info">
+                                <field name="binding_count" class="o_stat_value" />
+                                <span
+                                    class="o_stat_text"
+                                    attrs="{'invisible': [('binding_count', '&lt;', 2)]}"
+                                > Bindings</span>
+                                <span
+                                    class="o_stat_text"
+                                    attrs="{'invisible': [('binding_count', '&gt;', 1)]}"
+                                > Binding</span>
+                            </div>
+                        </button>
+                    </div>
                     <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" required="1" />

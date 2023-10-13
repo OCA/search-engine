@@ -57,6 +57,7 @@ class SeIndex(models.Model):
     count_done = fields.Integer(compute="_compute_count_binding")
     count_pending = fields.Integer(compute="_compute_count_binding")
     count_error = fields.Integer(compute="_compute_count_binding")
+    count_all = fields.Integer(compute="_compute_count_binding")
 
     @api.depends("binding_ids.state")
     def _compute_count_binding(self):
@@ -69,8 +70,11 @@ class SeIndex(models.Model):
             groupby=["index_id", "state"],
             lazy=False,
         )
+        all = 0
         for item in data:
-            res[item["index_id"][0]][item["state"]] = item["__count"]
+            count = item["__count"]
+            res[item["index_id"][0]][item["state"]] = count
+            all += count
 
         def get(index_id, states):
             return sum([res[index_id][state] for state in states])
@@ -89,6 +93,7 @@ class SeIndex(models.Model):
                 ],
             )
             record.count_error = get(record.id, ["invalid_data", "recompute_error"])
+            record.count_all = all
             if record.count_error:
                 record.color = 1
             elif record.count_pending:
@@ -376,3 +381,9 @@ class SeIndex(models.Model):
     def delete_obsolete_item(self, item_ids: List[int]):
         self.se_adapter.delete(item_ids)
         return f"Deleted ids : {item_ids}"
+
+    def action_open_bindings(self):
+        self.ensure_one()
+        action = self.env.ref("connector_search_engine.se_binding_action").read()[0]
+        action["domain"] = [("index_id", "=", self.id)]
+        return action

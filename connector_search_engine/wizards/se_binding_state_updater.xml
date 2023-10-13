@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 ACSONE SA/NV
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record model="ir.ui.view" id="se_binding_state_updater_form_view">
+        <field
+            name="name"
+        >se.binding.state.updater.form (in connector_search_engine)</field>
+        <field name="model">se.binding.state.updater</field>
+        <field name="arch" type="xml">
+            <form string="Se Binding State Updater">
+                <group>
+                    <field name="state" />
+                </group>
+                <footer>
+                    <button name="doit" string="OK" class="btn-primary" type="object" />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_record_bind" model="ir.actions.act_window">
+        <field name="name">Update state</field>
+        <field name="res_model">se.binding.state.updater</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="se_binding_state_updater_form_view" />
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="connector_search_engine.model_se_binding" />
+    </record>
+
+</odoo>
