@@ -7,7 +7,7 @@
   This action allows you to update the state of selected records on the tree view.
 
   Add a smart button to quickly access to the bound records from the
-  *Search Engine Backend* and *Search Engine Record* views. (`#162 <https://github.com/OCA/search-engine/issues/162>`_)
+  *Search Engine Backend* and *Search Engine Record* views. (`#162 <https://github.com/OCA/search-engine/issues/162>`__)
 
 
 **Bugfixes**
@@ -15,7 +15,7 @@
 - Fix Search Engine Binding form view. The fields data and error are now
   properly displayed and fit the width of the form.
 
-  Makes the Odoo's admin user a member of the *Search Engine Connector Manager* group. (`#162 <https://github.com/OCA/search-engine/issues/162>`_)
+  Makes the Odoo's admin user a member of the *Search Engine Connector Manager* group. (`#162 <https://github.com/OCA/search-engine/issues/162>`__)
 
 
 12.0.x.y.z (YYYY-MM-DD)
