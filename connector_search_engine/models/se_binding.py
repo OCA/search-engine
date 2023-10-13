@@ -4,7 +4,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
 import logging
+from collections import defaultdict
 from typing import Any, Dict, Iterator
+
+from typing_extensions import Self
 
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
@@ -201,3 +204,35 @@ class SeBinding(models.Model):
         )
         bindings.write({"state": "recomputing"})
         bindings.jobify_recompute_json()
+
+    @api.model_create_multi
+    def create(self, vals_list) -> Self:
+        """Create a binding and compute its JSON."""
+        records = super().create(vals_list)
+        records._invalidate_bindings_in_references()
+        return records
+
+    def write(self, vals) -> bool:
+        """Write a binding and compute its JSON."""
+        if "res_model" in vals or "res_id" in vals:
+            # invalidate bindings in current references
+            self._invalidate_bindings_in_references()
+        res = super().write(vals)
+        if "res_model" in vals or "res_id" in vals:
+            # invalidate bindings in new references
+            self._invalidate_bindings_in_references()
+        return res
+
+    def unlink(self):
+        self._invalidate_bindings_in_references()
+        return super().unlink()
+
+    def _invalidate_bindings_in_references(self):
+        """Invalidate the binding_ids field on the records referenced by the
+        bindings.
+        """
+        ids_by_model = defaultdict(list)
+        for binding in self:
+            ids_by_model[binding.res_model].append(binding.res_id)
+        for model, ids in ids_by_model.items():
+            self.env[model].browse(ids).invalidate_recordset(["se_binding_ids"])
