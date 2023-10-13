@@ -1,3 +1,15 @@
+16.0.0.1.1 (2023-10-13)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Fixes cache issue with the *se_binding_ids* field on the *s.indexable.record*
+  model. When a binding is created or updated or deleted, the cache for the
+  *se_binding_ids* field for referenced records is now invalidated. That way,
+  the next time the field is accessed after such an operation, the value is
+  recomputed to reflect the change. (`#163 <https://github.com/OCA/search-engine/issues/163>`_)
+
+
 16.0.0.1.0 (2023-10-13)
 ~~~~~~~~~~~~~~~~~~~~~~~
 

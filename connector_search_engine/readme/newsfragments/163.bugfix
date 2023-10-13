@@ -1,5 +1,0 @@
-Fixes cache issue with the *se_binding_ids* field on the *s.indexable.record*
-model. When a binding is created or updated or deleted, the cache for the
-*se_binding_ids* field for referenced records is now invalidated. That way,
-the next time the field is accessed after such an operation, the value is
-recomputed to reflect the change.
