@@ -1,4 +1,0 @@
-Fix Search Engine Binding form view. The fields data and error are now
-properly displayed and fit the width of the form.
-
-Makes the Odoo's admin user a member of the *Search Engine Connector Manager* group.
