@@ -14,6 +14,20 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
+msgid ""
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', 2)]}\"> Bindings</span>\n"
+"                                <span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
+msgid ""
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', 2)]}\"> Bindings</span>\n"
+"                                <span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+msgstr ""
+
+#. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_binding.py:0
 #: model:ir.model.constraint,message:connector_search_engine.constraint_se_binding_item_uniq_per_index
@@ -77,11 +91,17 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.act_window,name:connector_search_engine.se_binding_action
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__binding_ids
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__binding_ids
 #: model:ir.ui.menu,name:connector_search_engine.se_binding_menu
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_search
 msgid "Binding"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__binding_count
+msgid "Binding Count"
 msgstr ""
 
 #. module: connector_search_engine
@@ -92,6 +112,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__body_str
 msgid "Body Str"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_state_updater_form_view
+msgid "Cancel"
 msgstr ""
 
 #. module: connector_search_engine
@@ -132,6 +157,11 @@ msgid "Connection Test Succeeded!"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_index__count_all
+msgid "Count All"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__count_done
 msgid "Count Done"
 msgstr ""
@@ -169,6 +199,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__create_uid
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_uid
 msgid "Created by"
@@ -177,6 +208,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__create_date
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__create_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__create_date
 msgid "Created on"
@@ -225,6 +257,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__display_name
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__display_name
 msgid "Display Name"
@@ -321,6 +354,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__id
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__id
 msgid "ID"
@@ -408,6 +442,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding____last_update
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index____last_update
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config____last_update
 msgid "Last Modified on"
@@ -416,6 +451,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__write_uid
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_uid
 msgid "Last Updated by"
@@ -424,6 +460,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__write_date
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_date
 msgid "Last Updated on"
@@ -464,6 +501,11 @@ msgid "Name"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__state
+msgid "New state"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_needaction_counter
 msgid "Number of Actions"
 msgstr ""
@@ -481,6 +523,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_error_counter
 msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_state_updater_form_view
+msgid "OK"
 msgstr ""
 
 #. module: connector_search_engine
@@ -567,6 +614,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model,name:connector_search_engine.model_se_backend
 msgid "Se Backend"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_state_updater_form_view
+msgid "Se Binding State Updater"
 msgstr ""
 
 #. module: connector_search_engine
@@ -694,4 +746,14 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__tech_name
 msgid "Unique name for technical purposes. Eg: server env keys."
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.actions.act_window,name:connector_search_engine.action_record_bind
+msgid "Update state"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model,name:connector_search_engine.model_se_binding_state_updater
+msgid "se.binding.state.updater"
 msgstr ""
