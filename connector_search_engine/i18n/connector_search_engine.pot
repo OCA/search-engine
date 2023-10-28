@@ -372,7 +372,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_error
-#: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -604,11 +603,6 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__res_model
 msgid "Res Model"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: connector_search_engine
