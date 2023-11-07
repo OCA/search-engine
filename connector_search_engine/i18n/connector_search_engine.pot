@@ -228,7 +228,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_error
-#: model:ir.model.fields,help:connector_search_engine.field_se_index_config__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -243,7 +242,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__index_id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__index_id
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
-#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid "Index"
 msgstr ""
 
@@ -402,11 +400,6 @@ msgstr ""
 #: code:addons/connector_search_engine/models/se_index.py:0
 #, python-format
 msgid "Prepare a batch export of index '%s'"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: connector_search_engine
