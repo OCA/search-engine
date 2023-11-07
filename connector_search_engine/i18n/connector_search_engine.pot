@@ -242,7 +242,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__index_id
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_todelete__index_id
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
-#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_tree_view
 msgid "Index"
 msgstr ""
 
