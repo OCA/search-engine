@@ -5,7 +5,10 @@
         <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
         <field name="arch" type="xml">
             <group name="se-main" position="after">
-                <group name="elasticsearch" attrs="{'invisible': [('backend_type', '!=', 'typesense')]}">
+                <group
+                    name="typesense"
+                    attrs="{'invisible': [('backend_type', '!=', 'typesense')]}"
+                >
                     <field
                         name="ts_server_host"
                         string="Host"

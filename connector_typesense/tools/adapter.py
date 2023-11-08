@@ -70,19 +70,22 @@ class TypesenseAdapter(SearchEngineAdapter):
         try:
             ts.collections.retrieve()
         except typesense.exceptions.ObjectNotFound as exc:
-            raise UserError(_("Not Found - The requested resource is not found.")) from exc
+            raise UserError(
+                _("Not Found - The requested resource is not found.")
+            ) from exc
         except typesense.RequestUnauthorized as exc:
             raise UserError(_("Unauthorized - Your API key is wrong.")) from exc
         except typesense.TypesenseClientError as exc:
             raise UserError(_("Unable to connect :") + "\n\n" + repr(exc)) from exc
 
     def index(self, records) -> None:
-        """
-        """
+        """ """
         ts = self._ts_client
         records_for_bulk = "\n".join(records)
         pprint(records_for_bulk)
-        res = ts.collections[self._index_name].documents.import_(records_for_bulk, {'action': 'create'})
+        res = ts.collections[self._index_name].documents.import_(
+            records_for_bulk, {"action": "create"}
+        )
         print(res)
         res = res.split("\n")
         # res = elasticsearch.helpers.bulk(es, records_for_bulk)
@@ -99,11 +102,12 @@ class TypesenseAdapter(SearchEngineAdapter):
             )
 
     def delete(self, binding_ids) -> None:
-        """
-        """
+        """ """
         ts = self._ts_client
         print(f"delete ids: {binding_ids}")
-        res = ts.collections[self._index_name].documents.delete({"filter_by=id": binding_ids})
+        res = ts.collections[self._index_name].documents.delete(
+            {"filter_by=id": binding_ids}
+        )
         print(f"deleted: {res}")
 
         # records_for_bulk = []
@@ -125,8 +129,7 @@ class TypesenseAdapter(SearchEngineAdapter):
         #     _logger.info(msg, e)
 
     def clear(self) -> None:
-        """
-        """
+        """ """
         ts = self._ts_client
         index_name = self._get_current_aliased_index_name() or self._index_name
         res = ts.collections[index_name].delete()
@@ -143,13 +146,14 @@ class TypesenseAdapter(SearchEngineAdapter):
         #     )
 
     def each(self) -> Iterator[dict[str, Any]]:
-        """
-        """
+        """ """
         ts = self._ts_client
         # res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
-        res = ts.collections[self._index_name].documents.search({
-            "q": "*",
-        })
+        res = ts.collections[self._index_name].documents.search(
+            {
+                "q": "*",
+            }
+        )
         pprint(res)
         if not res:
             # eg: empty index
@@ -168,12 +172,16 @@ class TypesenseAdapter(SearchEngineAdapter):
             aliased_index_name = self._get_next_aliased_index_name()
             # index_name / collection_name is part of the schema defined in self._index_config
             index_config = self._index_config
-            index_config.update({
-                "name": aliased_index_name,
-            })
+            index_config.update(
+                {
+                    "name": aliased_index_name,
+                }
+            )
             client.collections.create(index_config)
             # client.indices.create(index=aliased_index_name, body=self._index_config)
-            client.aliases.upsert(self._index_name, {"collection_name": aliased_index_name})
+            client.aliases.upsert(
+                self._index_name, {"collection_name": aliased_index_name}
+            )
             # client.indices.put_alias(index=aliased_index_name, name=self._index_name)
             msg = "Missing index %s created."
             _logger.info(msg, self._index_name)
