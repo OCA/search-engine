@@ -24,6 +24,14 @@
                         help="Force the export of all binding"
                     />
                     <button
+                        name="export_settings"
+                        type="object"
+                        string="Export settings"
+                        icon="fa-upload"
+                        help="Export settings"
+                        groups="connector_search_engine.group_connector_search_engine_manager"
+                    />
+                    <button
                         name="clear_index"
                         type="object"
                         string="Clear index"
@@ -200,6 +208,14 @@
                                                 icon="fa-upload"
                                                 type="object"
                                             >Export all binding</a>
+                                            <a
+                                                name="export_settings"
+                                                role="menuitem"
+                                                class="dropdown-item"
+                                                help="Update or initialize index settings"
+                                                icon="fa-upload"
+                                                type="object"
+                                            >Export settings</a>
                                             <a
                                                 name="clear_index"
                                                 role="menuitem"
