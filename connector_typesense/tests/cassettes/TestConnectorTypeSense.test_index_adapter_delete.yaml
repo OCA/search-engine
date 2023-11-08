@@ -1,0 +1,297 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: GET
+    uri: http://localhost:8108/aliases/demo_sale_channel_typesense_contact_en_us
+  response:
+    body:
+      string: '{"collection_name":"demo_sale_channel_typesense_contact_en_us-2","name":"demo_sale_channel_typesense_contact_en_us"}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '116'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: DELETE
+    uri: http://localhost:8108/collections/demo_sale_channel_typesense_contact_en_us-2
+  response:
+    body:
+      string: '{"created_at":1747351443,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"type":"string"}],"name":"demo_sale_channel_typesense_contact_en_us-2","num_documents":4,"symbols_to_index":[],"token_separators":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '322'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: GET
+    uri: http://localhost:8108/collections/demo_sale_channel_typesense_contact_en_us
+  response:
+    body:
+      string: '{"message": "Not Found"}'
+    headers:
+      Connection:
+      - keep-alive
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"name": "demo_sale_channel_typesense_contact_en_us-1", "fields": [{"name":
+      "id", "type": "string"}, {"name": "name", "type": "string"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '137'
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: POST
+    uri: http://localhost:8108/collections
+  response:
+    body:
+      string: '{"created_at":1747351545,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"type":"string"}],"name":"demo_sale_channel_typesense_contact_en_us-1","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+    status:
+      code: 201
+      message: Created
+- request:
+    body: '{"collection_name": "demo_sale_channel_typesense_contact_en_us-1"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '66'
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: PUT
+    uri: http://localhost:8108/aliases/demo_sale_channel_typesense_contact_en_us
+  response:
+    body:
+      string: '{"collection_name":"demo_sale_channel_typesense_contact_en_us-1","name":"demo_sale_channel_typesense_contact_en_us"}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '116'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"id": "1", "name": "Foo"}
+
+      {"id": "2", "name": "Bar"}
+
+      {"id": "3", "name": "Baz"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '80'
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: POST
+    uri: http://localhost:8108/collections/demo_sale_channel_typesense_contact_en_us/documents/import?action=upsert
+  response:
+    body:
+      string: '{"success":true}
+
+        {"success":true}
+
+        {"success":true}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '50'
+      content-type:
+      - text/plain; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: DELETE
+    uri: http://localhost:8108/collections/demo_sale_channel_typesense_contact_en_us/documents/?filter_by=id%3A%5B1%2C+3%5D
+  response:
+    body:
+      string: '{"num_deleted":2}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '17'
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: GET
+    uri: http://localhost:8108/collections/demo_sale_channel_typesense_contact_en_us/documents/search?q=%2A
+  response:
+    body:
+      string: '{"facet_counts":[],"found":1,"hits":[{"document":{"id":"2","name":"Bar"},"highlight":{},"highlights":[]}],"out_of":1,"page":1,"request_params":{"collection_name":"demo_sale_channel_typesense_contact_en_us-1","per_page":10,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '272'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+version: 1

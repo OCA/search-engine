@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="se_backend_form_view">
+        <field name="model">se.backend</field>
+        <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
+        <field name="arch" type="xml">
+            <group name="se-main" position="after">
+                <group
+                    name="typesense"
+                    attrs="{'invisible': [('backend_type', '!=', 'typesense')]}"
+                >
+                    <field
+                        name="ts_server_host"
+                        string="Host"
+                        placeholder="localhost"
+                        attrs="{'required': [('backend_type', '=', 'typesense')]}"
+                    />
+                    <field
+                        name="ts_server_port"
+                        string="Port"
+                        placeholder="8108"
+                        attrs="{'required': [('backend_type', '=', 'typesense')]}"
+                    />
+                    <field
+                        name="ts_server_protocol"
+                        string="Protocol"
+                        placeholder="http"
+                        attrs="{'required': [('backend_type', '=', 'typesense')]}"
+                    />
+                    <field
+                        name="ts_api_key"
+                        string="Typesense API Key"
+                        placeholder="xyz"
+                        attrs="{'required': [('backend_type', '=', 'typesense')]}"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

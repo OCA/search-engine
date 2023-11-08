@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.25.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: DELETE
+    uri: http://localhost:8108/collections/demo_sale_channel_typesense_contact_en_us/documents/?filter_by=id%3A%5B%27donotexist%27%2C+%27donotexisteither%27%5D
+  response:
+    body:
+      string: '{"num_deleted":0}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '17'
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+version: 1
