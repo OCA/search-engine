@@ -114,6 +114,8 @@ class SeImageFieldThumbnailSize(models.Model):
             return True
         if not field.comodel_name:
             return False
+        if field.comodel_name not in self.env:
+            return False
         abstract = self.env["fs.image.relation.mixin"]
         model = self.env[field.comodel_name]
         return isinstance(model, abstract.__class__)
