@@ -51,16 +51,22 @@ class ElasticSearchAdapter(SearchEngineAdapter):
 
     def _get_es_client(self):
         backend = self.backend_record
-        api_key = (
-            (backend.api_key_id, backend.api_key)
-            if backend.api_key_id and backend.api_key
-            else None
-        )
-        return elasticsearch.Elasticsearch(
-            [backend.es_server_host],
-            connection_class=self._es_connection_class,
-            api_key=api_key,
-        )
+        if backend.auth_type == "api_key":
+            api_key = (
+                (backend.api_key_id, backend.api_key)
+                if backend.api_key_id and backend.api_key
+                else None
+            )
+            return elasticsearch.Elasticsearch(
+                [backend.es_server_host],
+                connection_class=self._es_connection_class,
+                api_key=api_key,
+            )
+        if backend.auth_type == "http":
+            auth = (backend.es_user, backend.es_password)
+            return elasticsearch.Elasticsearch(
+                [backend.es_server_host], http_auth=auth, use_ssl=backend.ssl
+            )
 
     def test_connection(self):
         es = self._es_client
