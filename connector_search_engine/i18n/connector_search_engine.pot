@@ -749,5 +749,5 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model,name:connector_search_engine.model_se_binding_state_updater
-msgid "se.binding.state.updater"
+msgid "Update state of SE bindings"
 msgstr ""
