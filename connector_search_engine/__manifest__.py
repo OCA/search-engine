@@ -12,7 +12,7 @@
     "website": "https://github.com/OCA/search-engine",
     "license": "AGPL-3",
     "category": "Generic Modules",
-    "depends": ["queue_job", "mail", "server_environment"],
+    "depends": ["queue_job", "mail", "server_environment", "base_partition"],
     "external_dependencies": {"python": ["unidecode"]},
     "data": [
         "wizards/se_binding_state_updater.xml",
