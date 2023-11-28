@@ -1,3 +1,15 @@
+16.0.0.1.2 (2023-11-28)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Add missing description on the "se.binding.state.updater" model. As well as
+  ensuring consistency in the model definition, this change removes a
+  warning message from the server logs at registry load time.
+
+  Prevent warning message in server logs when running tests. (`#172 <https://github.com/OCA/search-engine/issues/172>`_)
+
+
 16.0.0.1.1 (2023-10-13)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
