@@ -29,7 +29,7 @@ class TestSeBackendCaseBase(TransactionCase):
             context=dict(
                 cls.env.context,
                 tracking_disable=True,  # speed up tests
-                test_queue_job_no_delay=True,  # no jobs thanks
+                queue_job__no_delay=True,  # no jobs thanks
             )
         )
 
@@ -43,7 +43,7 @@ class TestSeBackendCaseBase(TransactionCase):
 
     def setUp(self):
         super(TestSeBackendCaseBase, self).setUp()
-        loggers = ["odoo.addons.queue_job.delay"]
+        loggers = ["odoo.addons.queue_job.utils"]
         for logger in loggers:
             logging.getLogger(logger).addFilter(self)
 
