@@ -1,0 +1,3 @@
+Add missing description on the "se.binding.state.updater" model.
+
+As well as ensuring consistency in the model definition, this change removes a warning message from the server logs.

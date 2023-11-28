@@ -7,6 +7,7 @@ from odoo import fields, models
 class SeBindingStateUpdater(models.TransientModel):
 
     _name = "se.binding.state.updater"
+    _description = "Update state of SE bindings"
 
     state = fields.Selection(
         string="New state",
