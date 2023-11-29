@@ -361,3 +361,23 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertFalse(self.partner.se_binding_ids)
         partner_binding = self.partner._add_to_index(self.se_index)
         self.assertEqual(self.partner.se_binding_ids, partner_binding)
+
+    def test_binding_multi_backend_index(self):
+        backend2 = self.backend_model.create(
+            {"name": "Fake 2", "tech_name": "fake_se_2", "backend_type": "fake"}
+        )
+        index2_vals = self._prepare_index_values(backend2)
+        index2_vals.update(
+            {"name": "Partner Index 2", "lang_id": self.env.ref("base.lang_fr").id}
+        )
+        index2 = self.se_index_model.create(index2_vals)
+        binding1 = self.partner._add_to_index(self.se_index)
+        binding2 = self.partner._add_to_index(index2)
+        bindings = binding1 | binding2
+        self.assertEqual(self.partner.se_binding_ids, bindings)
+        bindings.recompute_json()
+        self.assertEqual(self.partner_binding.mapped("state"), ["to_export"])
+        bindings.export_record()
+        self.assertEqual(self.partner_binding.mapped("state"), ["done"])
+        bindings.delete_record()
+        self.assertFalse(self.partner_binding.exists())
