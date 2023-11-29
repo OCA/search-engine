@@ -38,6 +38,22 @@ class SeBackend(models.Model):
         help="Verify SSL certificates. Only set to False in development environments.",
     )
 
+    @property
+    def _server_env_fields(self):
+        env_fields = super()._server_env_fields
+        env_fields.update(
+            {
+                "es_server_host": {},
+                "auth_type": {},
+                "es_user": {},
+                "es_password": {},
+                "ssl": {},
+                "api_key_id": {},
+                "api_key": {},
+            }
+        )
+        return env_fields
+
     def _get_adapter_class(self):
         if self.backend_type == "elasticsearch":
             return ElasticSearchAdapter

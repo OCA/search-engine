@@ -43,7 +43,7 @@ class SeBackend(models.Model):
 
     @property
     def _server_env_fields(self):
-        return {"index_prefix_name": {}}
+        return {"index_prefix_name": {}, "backend_type": {}}
 
     @api.onchange("tech_name", "index_prefix_name")
     def _onchange_tech_name(self):
