@@ -14,6 +14,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__api_key
+msgid "API key"
+msgstr ""
+
+#. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/models/se_index.py:0
 #, python-format
@@ -28,6 +33,11 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__api_key_id
 msgid "Api Key ID"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__auth_type
+msgid "Auth Type"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -51,8 +61,29 @@ msgid "Elasticsearch Api Key ID"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_password
+msgid "Es Password"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_user
+msgid "Es User"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__http
+msgid "HTTP"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "Host"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_password
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_user
+msgid "Leave blank if not using http authentication."
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -63,6 +94,11 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_index
 msgid "Se Index"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__ssl
+msgid "Ssl"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -105,6 +141,12 @@ msgstr ""
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
 #, python-format
 msgid "Unable to reach host."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__ssl
+msgid ""
+"Verify SSL certificates. Only set to False in development environments."
 msgstr ""
 
 #. module: connector_elasticsearch
