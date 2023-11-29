@@ -11,7 +11,7 @@ class SeIndex(models.Model):
     image_field_thumbnail_size_ids = fields.One2many(
         string="Thumbnail Sizes",
         comodel_name="se.image.field.thumbnail.size",
-        compute="_compute_image_field_thumbnail_size_ids",
+        related="backend_id.image_field_thumbnail_size_ids",
     )
 
     @api.depends("backend_id.image_field_thumbnail_size_ids", "model_id")
@@ -23,9 +23,9 @@ class SeIndex(models.Model):
                 )
             )
 
-    def _get_thumbnail_sizes(self, field_name):
+    def _get_thumbnail_sizes(self, record, field_name):
         """Return a list of thumbnail sizes for the given field_name"""
         self.ensure_one()
         return self.image_field_thumbnail_size_ids.filtered(
-            lambda r: r.field_name == field_name
+            lambda r: r.field_name == field_name and r.model == record._name
         ).mapped("size_ids")

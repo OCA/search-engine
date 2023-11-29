@@ -111,7 +111,7 @@ class SeIndexableRecord(models.AbstractModel):
             value is the thumbnail size record
         """
         self.ensure_one()
-        sizes = index._get_thumbnail_sizes(field_name)
+        sizes = index._get_thumbnail_sizes(self, field_name)
         if not sizes:
             raise UserError(
                 _(

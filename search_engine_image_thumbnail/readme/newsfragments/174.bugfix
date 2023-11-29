@@ -1,0 +1,10 @@
+Fixes image sizes lookups.
+
+When serializing a record and generating thumbnails, the thumbnail sizes are looked
+up on the index. Prior to this change, only sizes defined for the model
+associated with the current index were looked up. This means that if you tried
+to serialize a nested record that had an image field that was defined on a different
+model, the thumbnail size was not found and an error was thrown. The lookup method
+takes now the record for which the thumbnail is being generated as an argument, so
+that the correct model can be used to look up the thumbnail size. You still need
+to define the thumbnail sizes for each model serialized in the index.
