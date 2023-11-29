@@ -1,4 +1,4 @@
-Fixes image sizes lookups.
+*Fixes image sizes lookups.*
 
 When serializing a record and generating thumbnails, the thumbnail sizes are looked
 up on the index. Prior to this change, only sizes defined for the model
@@ -8,3 +8,11 @@ model, the thumbnail size was not found and an error was thrown. The lookup meth
 takes now the record for which the thumbnail is being generated as an argument, so
 that the correct model can be used to look up the thumbnail size. You still need
 to define the thumbnail sizes for each model serialized in the index.
+
+
+*Fixes UI error when creating a new thumbnail size.*
+
+When creating a new record, the UI was throwing an error. This was due to the
+computations of the domain to apply to restrict the choices of the possible
+image fields. When the record is new, no model is set, so the domain for the
+field must be empty. This is now handled correctly.
