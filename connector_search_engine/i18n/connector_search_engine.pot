@@ -65,6 +65,11 @@ msgid "Backend"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type_env_is_editable
+msgid "Backend Type Env Is Editable"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.ui.menu,name:connector_search_engine.se_backend_menu
 msgid "Backends"
 msgstr ""
@@ -735,6 +740,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type
 msgid "Type"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type_env_default
+msgid "Type Env Default"
 msgstr ""
 
 #. module: connector_search_engine
