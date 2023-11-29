@@ -12,8 +12,27 @@
                         placeholder="http://elastic:9200"
                         attrs="{'required': [('backend_type', '=', 'elasticsearch')]}"
                     />
-                    <field name="api_key_id" />
-                    <field name="api_key" />
+                    <field name="auth_type" />
+                    <field
+                        name="es_user"
+                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                    />
+                    <field
+                        name="es_password"
+                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                    />
+                    <field
+                        name="ssl"
+                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                    />
+                    <field
+                        name="api_key_id"
+                        attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
+                    />
+                    <field
+                        name="api_key"
+                        attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
+                    />
                 </group>
             </group>
         </field>

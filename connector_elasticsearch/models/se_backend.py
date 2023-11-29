@@ -19,6 +19,9 @@ class SeBackend(models.Model):
         string="ElasticSearch host",
         groups="connector_search_engine.group_connector_search_engine_manager",
     )
+    auth_type = fields.Selection(
+        selection=[("http", "HTTP"), ("api_key", "API key")], default="api_key"
+    )
     api_key_id = fields.Char(
         help="Elasticsearch Api Key ID",
         string="Api Key ID",
@@ -28,6 +31,28 @@ class SeBackend(models.Model):
         help="Elasticsearch Api Key",
         groups="connector_search_engine.group_connector_search_engine_manager",
     )
+    es_user = fields.Char(help="Leave blank if not using http authentication.")
+    es_password = fields.Char(help="Leave blank if not using http authentication.")
+    ssl = fields.Boolean(
+        default=True,
+        help="Verify SSL certificates. Only set to False in development environments.",
+    )
+
+    @property
+    def _server_env_fields(self):
+        env_fields = super()._server_env_fields
+        env_fields.update(
+            {
+                "es_server_host": {},
+                "auth_type": {},
+                "es_user": {},
+                "es_password": {},
+                "ssl": {},
+                "api_key_id": {},
+                "api_key": {},
+            }
+        )
+        return env_fields
 
     def _get_adapter_class(self):
         if self.backend_type == "elasticsearch":
