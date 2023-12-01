@@ -88,3 +88,8 @@ class SeIndex(models.Model):
 class ResPartner(models.Model):
     _name = "res.partner"
     _inherit = ["res.partner", "se.indexable.record"]
+
+
+class ResUsers(models.Model):
+    _name = "res.users"
+    _inherit = ["res.users", "se.indexable.record"]

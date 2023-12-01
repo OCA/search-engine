@@ -5,6 +5,7 @@ from unittest import mock
 
 from odoo_test_helper import FakeModelLoader
 
+from odoo.exceptions import ValidationError
 from odoo.tests.common import Form
 from odoo.tools import mute_logger
 
@@ -25,11 +26,12 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
             FakeSeAdapter,
             FakeSerializer,
             ResPartner,
+            ResUsers,
             SeBackend,
             SeIndex,
         )
 
-        cls.loader.update_registry((ResPartner, SeBackend, SeIndex))
+        cls.loader.update_registry((ResPartner, ResUsers, SeBackend, SeIndex))
         cls.binding_model = cls.env["se.binding"]
         cls.se_index_model = cls.env["se.index"]
 
@@ -381,3 +383,11 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(self.partner_binding.mapped("state"), ["done"])
         bindings.delete_record()
         self.assertFalse(self.partner_binding.exists())
+
+    def test_binding_wrong_model(self):
+        # Try to add a 'res.users' record to a 'res.partner' index
+        user = self.env["res.users"].search([], limit=1)
+        with self.assertRaisesRegex(
+            ValidationError, "Binding model must be equal to the index model"
+        ):
+            user._add_to_index(self.se_index)
