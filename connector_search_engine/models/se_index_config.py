@@ -31,4 +31,6 @@ class SeIndexConfig(models.Model):
 
     def _inverse_body_str(self):
         for rec in self:
-            rec.body = json.loads(rec.body_str or "{}")
+            rec.body = json.loads(
+                rec.body_str.strip() or "{}" if rec.body_str else "{}"
+            )
