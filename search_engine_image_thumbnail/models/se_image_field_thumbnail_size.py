@@ -97,6 +97,10 @@ class SeImageFieldThumbnailSize(models.Model):
     @api.depends("model_id")
     def _compute_field_id_domain(self):
         for record in self:
+            if not record.model_id:
+                # Eg: NewId
+                record.field_id_domain = FALSE_DOMAIN
+                continue
             model = self.env[record.model_id.model]
             names = []
             for field in model._fields.values():
