@@ -7,12 +7,11 @@ from odoo import api, fields, models
 from odoo.addons.base_sparse_field.models.fields import Serialized
 
 
-# TODO: this part is copied from Elasticsearch but should stay in base module
 class SeIndexConfig(models.Model):
 
     _name = "se.index.config"
     _inherit = ["mail.thread"]
-    _description = "Elasticsearch index configuration"
+    _description = "Search engine index configuration"
 
     name = fields.Char(required=True)
     body = Serialized(required=True, default={})
@@ -32,4 +31,6 @@ class SeIndexConfig(models.Model):
 
     def _inverse_body_str(self):
         for rec in self:
-            rec.body = json.loads(rec.body_str or "{}")
+            rec.body = json.loads(
+                rec.body_str.strip() or "{}" if rec.body_str else "{}"
+            )
