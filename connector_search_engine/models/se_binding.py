@@ -86,6 +86,17 @@ class SeBinding(models.Model):
         ),
     ]
 
+    @api.constrains("res_model", "index_id")
+    def _check_model(self):
+        for binding in self:
+            if (
+                binding.res_model
+                and binding.res_model != binding.index_id.model_id.model
+            ):
+                raise ValidationError(
+                    _("Binding model must be equal to the index model")
+                )
+
     @tools.ormcache()
     @api.model
     def _get_indexable_model_selection(self):
