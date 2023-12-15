@@ -110,6 +110,13 @@ msgid "Binding Count"
 msgstr ""
 
 #. module: connector_search_engine
+#. odoo-python
+#: code:addons/connector_search_engine/models/se_binding.py:0
+#, python-format
+msgid "Binding model must be equal to the index model"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__body
 msgid "Body"
 msgstr ""
