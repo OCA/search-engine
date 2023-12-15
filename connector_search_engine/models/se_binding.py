@@ -62,7 +62,7 @@ class SeBinding(models.Model):
     )
     date_recomputed = fields.Datetime(readonly=True)
     date_synchronized = fields.Datetime(readonly=True)
-    data = fields.Json(readonly=True)
+    data = fields.Json(readonly=True, prefetch=False)
     data_display = fields.Text(
         compute="_compute_data_display",
         help="Include this in debug mode to be able to inspect index data.",
