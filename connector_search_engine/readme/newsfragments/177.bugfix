@@ -1,7 +1,0 @@
-Ensure that the record's model is compatible with the index's model before
-adding a new record to the index.
-
-Before this change, the index would silently ignore records that were not
-compatible with the index's model. This could lead to unexpected behavior and
-errors when the record was later used to be serialized to JSON and exported to
-a search engine.

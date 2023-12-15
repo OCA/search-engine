@@ -1,5 +1,0 @@
-Lower memory consumption by disabling prefetch for the field 'data' on the binding model.
-
-The field 'data' is a json field that is not used in the view or common management
-operations of the binding model. This json field can be very large. By disabling
-the prefetch, we avoid to overload the database and Odoo with useless data.

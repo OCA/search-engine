@@ -1,3 +1,22 @@
+16.0.0.1.7 (2023-12-15)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Ensure that the record's model is compatible with the index's model before
+  adding a new record to the index.
+
+  Before this change, the index would silently ignore records that were not
+  compatible with the index's model. This could lead to unexpected behavior and
+  errors when the record was later used to be serialized to JSON and exported to
+  a search engine. (`#177 <https://github.com/OCA/search-engine/issues/177>`_)
+- Lower memory consumption by disabling prefetch for the field 'data' on the binding model.
+
+  The field 'data' is a json field that is not used in the view or common management
+  operations of the binding model. This json field can be very large. By disabling
+  the prefetch, we avoid to overload the database and Odoo with useless data. (`#179 <https://github.com/OCA/search-engine/issues/179>`_)
+
+
 16.0.0.1.4 (2023-11-29)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
