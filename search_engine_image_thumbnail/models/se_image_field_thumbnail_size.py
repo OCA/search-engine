@@ -5,8 +5,6 @@ import json
 from odoo import api, fields, models, tools
 from odoo.osv.expression import FALSE_DOMAIN
 
-from odoo.addons.base_sparse_field.models.fields import Serialized
-
 
 class SeImageFieldThumbnailSize(models.Model):
 
@@ -46,7 +44,7 @@ class SeImageFieldThumbnailSize(models.Model):
         readonly=True,
         store=True,
     )
-    field_id_domain = Serialized(
+    field_id_domain = fields.Binary(
         string="Domain to select images field",
         compute="_compute_field_id_domain",
         readonly=True,
