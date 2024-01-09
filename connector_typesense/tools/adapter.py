@@ -1,4 +1,4 @@
-# Copyright 2023 Derico
+# Copyright 2024 Derico
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import json
@@ -82,6 +82,7 @@ class TypesenseAdapter(SearchEngineAdapter):
         ts = self._ts_client
         records_for_bulk = ""
         for record in records:
+            print(f"record: {record}")
             if "id" in record:
                 record["id"] = str(record["id"])
             records_for_bulk += f"{json.dumps(record)}\n"
