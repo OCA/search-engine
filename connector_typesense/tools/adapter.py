@@ -3,7 +3,6 @@
 
 import json
 import logging
-import time
 from typing import Any, Iterator
 
 from odoo import _
@@ -55,9 +54,9 @@ class TypesenseAdapter(SearchEngineAdapter):
             {
                 "nodes": [
                     {
-                        "host": backend.ts_server_host,  # For Typesense Cloud use xxx.a1.typesense.net
-                        "port": backend.ts_server_port,  # For Typesense Cloud use 443
-                        "protocol": backend.ts_server_protocol,  # For Typesense Cloud use https
+                        "host": backend.ts_server_host,
+                        "port": backend.ts_server_port,
+                        "protocol": backend.ts_server_protocol,
                     }
                 ],
                 "api_key": backend.api_key,
@@ -107,17 +106,18 @@ class TypesenseAdapter(SearchEngineAdapter):
     def delete(self, binding_ids) -> None:
         """ """
         ts = self._ts_client
-        _logger.info(f"Delete binding_ids: {', '.join(binding_ids)} from collection '{self.index_name}'.")
-        res = ts.collections[self._index_name].documents.delete(
-            {"filter_by=id": binding_ids}
+        _logger.info(
+            f"Delete binding_ids: {', '.join(binding_ids)} from collection "
+            f"'{self.index_name}'."
         )
+        ts.collections[self._index_name].documents.delete({"filter_by=id": binding_ids})
 
     def clear(self) -> None:
         """ """
         ts = self._ts_client
         index_name = self._get_current_aliased_index_name() or self._index_name
         _logger.info(f"Clear current_aliased_index_name '{index_name}'.")
-        res = ts.collections[index_name].delete()
+        ts.collections[index_name].delete()
         self.settings()
 
     def each(self) -> Iterator[dict[str, Any]]:
@@ -138,12 +138,13 @@ class TypesenseAdapter(SearchEngineAdapter):
     def settings(self) -> None:
         ts = self._ts_client
         try:
-            collection = ts.collections[self._index_name].retrieve()
-        except typesense.exceptions.ObjectNotFound as e:
+            ts.collections[self._index_name].retrieve()
+        except typesense.exceptions.ObjectNotFound:
             client = self._ts_client
             # To allow rolling updates, we work with index aliases
             aliased_index_name = self._get_next_aliased_index_name()
-            # index_name / collection_name is part of the schema defined in self._index_config
+            # index_name / collection_name is part of the schema defined in
+            # self._index_config
             index_config = self._index_config
             index_config.update(
                 {
@@ -152,7 +153,10 @@ class TypesenseAdapter(SearchEngineAdapter):
             )
             _logger.info(f"Create aliased_index_name '{aliased_index_name}'...")
             client.collections.create(index_config)
-            _logger.info(f"Set collection alias '{self._index_name}' >> aliased_index_name '{aliased_index_name}'.")
+            _logger.info(
+                f"Set collection alias '{self._index_name}' >> aliased_index_name "
+                f"'{aliased_index_name}'."
+            )
             client.aliases.upsert(
                 self._index_name, {"collection_name": aliased_index_name}
             )
@@ -199,11 +203,14 @@ class TypesenseAdapter(SearchEngineAdapter):
             current_aliased_index_name
         )
         try:
-            collection = client.collections[next_aliased_index_name].retrieve()
-        except typesense.exceptions.ObjectNotFound as e:
+            client.collections[next_aliased_index_name].retrieve()
+        except typesense.exceptions.ObjectNotFound:
             # To allow rolling updates, we work with index aliases
-            # index_name / collection_name is part of the schema defined in self._index_config
-            _logger.info(f"Create new_aliased_index_name '{next_aliased_index_name}'...")
+            # index_name / collection_name is part of the schema defined
+            # in self._index_config
+            _logger.info(
+                f"Create new_aliased_index_name '{next_aliased_index_name}'..."
+            )
             index_config = self._index_config
             index_config.update(
                 {
@@ -211,25 +218,38 @@ class TypesenseAdapter(SearchEngineAdapter):
                 }
             )
             client.collections.create(index_config)
-            _logger.info(f"Import existing data into new_aliased_index_name '{next_aliased_index_name}'...")
+            _logger.info(
+                f"Import existing data into new_aliased_index_name "
+                f"'{next_aliased_index_name}'..."
+            )
             client.collections[next_aliased_index_name].documents.import_(
                 data.encode("utf-8"), {"action": "create"}
             )
 
             try:
-                collection = client.collections[next_aliased_index_name].retrieve()
+                client.collections[next_aliased_index_name].retrieve()
             except typesense.exceptions.ObjectNotFound as e:
-                _logger.warn(f"New aliased_index_name not found, skip updating alias and not removing old index (collection)!\n\n{e}")
+                _logger.warn(
+                    f"New aliased_index_name not found, skip updating alias and "
+                    f"not removing old index (collection)!\n\n{e}"
+                )
             else:
-                _logger.info(f"Set collection alias '{self._index_name}' >> new_aliased_index_name '{next_aliased_index_name}'.")
+                _logger.info(
+                    f"Set collection alias '{self._index_name}' >> "
+                    f"new_aliased_index_name '{next_aliased_index_name}'."
+                )
                 client.aliases.upsert(
                     self._index_name, {"collection_name": next_aliased_index_name}
                 )
-                _logger.info(f"Remove old aliased index (collection) '{current_aliased_index_name}'.")
-                res = client.collections[current_aliased_index_name].delete()
+                _logger.info(
+                    f"Remove old aliased index (collection) "
+                    f"'{current_aliased_index_name}'."
+                )
+                client.collections[current_aliased_index_name].delete()
 
         else:
-            _logger.warning(f"next_aliased_index_name '{next_aliased_index_name}' already exists, skip!", self._index_name)
-
-
-
+            _logger.warning(
+                f"next_aliased_index_name '{next_aliased_index_name}' "
+                f"already exists, skip!",
+                self._index_name,
+            )

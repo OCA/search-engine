@@ -48,3 +48,10 @@ search for all products:
 
 curl -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" \
 "http://localhost:8108/collections/typesense_backend_1_product_variant_en_us/documents/search?q=*" | jq
+
+
+Typesense GUI
+-------------
+
+a nice UI is also available here: https://github.com/bfritscher/typesense-dashboard/releases
+
