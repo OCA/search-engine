@@ -11,7 +11,7 @@
     "website": "https://github.com/OCA/search-engine",
     "depends": ["connector_search_engine"],
     "data": [
-        "views/ts_backend.xml",
+        "views/se_backend.xml",
     ],
     # "demo": ["demo/backend_demo.xml"],
     # TODO: Get latest improvements from elasticsearch library
