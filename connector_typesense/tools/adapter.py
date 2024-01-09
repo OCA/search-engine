@@ -1,13 +1,13 @@
 # Copyright 2023 Derico
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
 import logging
 import time
 from typing import Any, Iterator
 
 from odoo import _
 from odoo.exceptions import UserError
-from pprint import pprint
 
 from odoo.addons.connector_search_engine.tools.adapter import SearchEngineAdapter
 
@@ -81,14 +81,17 @@ class TypesenseAdapter(SearchEngineAdapter):
     def index(self, records) -> None:
         """ """
         ts = self._ts_client
-        records_for_bulk = "\n".join(records)
-        pprint(records_for_bulk)
+        records_for_bulk = ""
+        for record in records:
+            if "id" in record:
+                record["id"] = str(record["id"])
+            records_for_bulk += f"{json.dumps(record)}\n"
+
+        _logger.info(f"Bulk import records into {self._index_name}'...")
         res = ts.collections[self._index_name].documents.import_(
             records_for_bulk, {"action": "create"}
         )
-        print(res)
         res = res.split("\n")
-        # res = elasticsearch.helpers.bulk(es, records_for_bulk)
         # checks if number of indexed object and object in records are equal
         if not len(res) == len(records):
             raise SystemError(
@@ -104,57 +107,27 @@ class TypesenseAdapter(SearchEngineAdapter):
     def delete(self, binding_ids) -> None:
         """ """
         ts = self._ts_client
-        print(f"delete ids: {binding_ids}")
+        _logger.info(f"Delete binding_ids: {', '.join(binding_ids)} from collection '{self.index_name}'.")
         res = ts.collections[self._index_name].documents.delete(
             {"filter_by=id": binding_ids}
         )
-        print(f"deleted: {res}")
-
-        # records_for_bulk = []
-        # for binding_id in binding_ids:
-        #     action = {
-        #         "_op_type": "delete",
-        #         "_index": self._index_name,
-        #         "_id": binding_id,
-        #     }
-        #     records_for_bulk.append(action)
-        # try:
-        #     elasticsearch.helpers.bulk(es, records_for_bulk)
-        # except elasticsearch.helpers.errors.BulkIndexError as e:
-        #     # if the document we are trying to delete does not exist,
-        #     # we can consider deletion a success (there is nothing to do).
-        #     if not _is_delete_nonexistent_documents(e):
-        #         raise e
-        #     msg = "Trying to delete non-existent documents. Ignored: %s"
-        #     _logger.info(msg, e)
 
     def clear(self) -> None:
         """ """
         ts = self._ts_client
         index_name = self._get_current_aliased_index_name() or self._index_name
+        _logger.info(f"Clear current_aliased_index_name '{index_name}'.")
         res = ts.collections[index_name].delete()
-        print(f"tpyesense clear: {res}")
-        # res = es.indices.delete(index=index_name, ignore=[400, 404])
         self.settings()
-        # if not res["acknowledged"]:
-        #     raise SystemError(
-        #         _(
-        #             "Unable to clear index %(index_name)s: %(result)",
-        #             index_name=index_name,
-        #             result=res,
-        #         )
-        #     )
 
     def each(self) -> Iterator[dict[str, Any]]:
         """ """
         ts = self._ts_client
-        # res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
         res = ts.collections[self._index_name].documents.search(
             {
                 "q": "*",
             }
         )
-        pprint(res)
         if not res:
             # eg: empty index
             return
@@ -177,14 +150,12 @@ class TypesenseAdapter(SearchEngineAdapter):
                     "name": aliased_index_name,
                 }
             )
+            _logger.info(f"Create aliased_index_name '{aliased_index_name}'...")
             client.collections.create(index_config)
-            # client.indices.create(index=aliased_index_name, body=self._index_config)
+            _logger.info(f"Set collection alias '{self._index_name}' >> aliased_index_name '{aliased_index_name}'.")
             client.aliases.upsert(
                 self._index_name, {"collection_name": aliased_index_name}
             )
-            # client.indices.put_alias(index=aliased_index_name, name=self._index_name)
-            msg = "Missing index %s created."
-            _logger.info(msg, self._index_name)
 
     def _get_current_aliased_index_name(self) -> str:
         """Get the current aliased index name if any"""
@@ -210,61 +181,55 @@ class TypesenseAdapter(SearchEngineAdapter):
             next_version = int(aliased_index_name.split("-")[-1]) + 1
         return f"{self._index_name}-{next_version}"
 
-    # def reindex(self) -> None:
-    #     """Reindex records according to the current config
-    #     This method is useful to allows a rolling update of index
-    #     configuration.
-    #     This process is based on the following steps:
-    #     1. create a new index with the current config
-    #     2. trigger a reindex into SE from the current index to the new one
-    #     3. Update the index alias to point to the new index
-    #     4. Drop the old index.
-    #     """
-    #     client = self._ts_client
-    #     current_aliased_index_name = self._get_current_aliased_index_name()
-    #     next_aliased_index_name = self._get_next_aliased_index_name(
-    #         current_aliased_index_name
-    #     )
-    #     # create new idx
-    #     client.indices.create(index=next_aliased_index_name, body=self._index_config)
-    #     task_def = client.reindex(
-    #         {
-    #             "source": {"index": self._index_name},
-    #             "dest": {"index": next_aliased_index_name},
-    #         },
-    #         request_timeout=9999999,
-    #         wait_for_completion=False,
-    #     )
-    #     while True:
-    #         time.sleep(5)
-    #         _logger.info("Waiting for task completion %s", task_def)
-    #         task = client.tasks.get(task_id=task_def["task"], wait_for_completion=False)
-    #         if task.get("completed"):
-    #             break
-    #     if current_aliased_index_name:
-    #         client.indices.update_aliases(
-    #             body={
-    #                 "actions": [
-    #                     {
-    #                         "remove": {
-    #                             "index": current_aliased_index_name,
-    #                             "alias": self._index_name,
-    #                         },
-    #                     },
-    #                     {
-    #                         "add": {
-    #                             "index": next_aliased_index_name,
-    #                             "alias": self._index_name,
-    #                         }
-    #                     },
-    #                 ]
-    #             }
-    #         )
-    #         client.indices.delete(index=current_aliased_index_name, ignore=[400, 404])
-    #     else:
-    #         # This code will only be triggered the first time the reindex is
-    #         # called on an index created before the use of index aliases.
-    #         client.indices.delete(index=self._index_name, ignore=[400, 404])
-    #         client.indices.put_alias(
-    #             index=next_aliased_index_name, name=self._index_name
-    #         )
+    def reindex(self) -> None:
+        """Reindex records according to the current config
+        This method is useful to allows a rolling update of index
+        configuration.
+        This process is based on the following steps:
+        1. export data from current aliased index
+        2. create a new index (collection) with the current config
+        3. import data into new aliased index (collection)
+        4. Update the index alias to point to the new aliased index (collection)
+        5. Drop the old index.
+        """
+        client = self._ts_client
+        current_aliased_index_name = self._get_current_aliased_index_name()
+        data = client.collections[current_aliased_index_name].documents.export()
+        next_aliased_index_name = self._get_next_aliased_index_name(
+            current_aliased_index_name
+        )
+        try:
+            collection = client.collections[next_aliased_index_name].retrieve()
+        except typesense.exceptions.ObjectNotFound as e:
+            # To allow rolling updates, we work with index aliases
+            # index_name / collection_name is part of the schema defined in self._index_config
+            _logger.info(f"Create new_aliased_index_name '{next_aliased_index_name}'...")
+            index_config = self._index_config
+            index_config.update(
+                {
+                    "name": next_aliased_index_name,
+                }
+            )
+            client.collections.create(index_config)
+            _logger.info(f"Import existing data into new_aliased_index_name '{next_aliased_index_name}'...")
+            client.collections[next_aliased_index_name].documents.import_(
+                data.encode("utf-8"), {"action": "create"}
+            )
+
+            try:
+                collection = client.collections[next_aliased_index_name].retrieve()
+            except typesense.exceptions.ObjectNotFound as e:
+                _logger.warn(f"New aliased_index_name not found, skip updating alias and not removing old index (collection)!\n\n{e}")
+            else:
+                _logger.info(f"Set collection alias '{self._index_name}' >> new_aliased_index_name '{next_aliased_index_name}'.")
+                client.aliases.upsert(
+                    self._index_name, {"collection_name": next_aliased_index_name}
+                )
+                _logger.info(f"Remove old aliased index (collection) '{current_aliased_index_name}'.")
+                res = client.collections[current_aliased_index_name].delete()
+
+        else:
+            _logger.warning(f"next_aliased_index_name '{next_aliased_index_name}' already exists, skip!", self._index_name)
+
+
+
