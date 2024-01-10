@@ -6,127 +6,129 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2024-01-10 14:36+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__api_key
 msgid "API key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/models/se_index.py:0
 #, python-format
 msgid "An index definition is required for ElasticSearch"
-msgstr ""
+msgstr "È richiesta la definizione di un indice per ElasticSearch"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__api_key
 msgid "Api Key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__api_key_id
 msgid "Api Key ID"
-msgstr ""
+msgstr "ID chiave API"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__auth_type
 msgid "Auth Type"
-msgstr ""
+msgstr "Tipo autorizzazione"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__backend_type__elasticsearch
 msgid "ElasticSearch"
-msgstr ""
+msgstr "ElasticSearch"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_server_host
 msgid "ElasticSearch host"
-msgstr ""
+msgstr "Host ElasticSearch"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__api_key
 msgid "Elasticsearch Api Key"
-msgstr ""
+msgstr "Chiave API ElasticSearch"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__api_key_id
 msgid "Elasticsearch Api Key ID"
-msgstr ""
+msgstr "ID chiave API ElasticSearch"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_password
 msgid "Es Password"
-msgstr ""
+msgstr "Password ES"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_user
 msgid "Es User"
-msgstr ""
+msgstr "Utente ES"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__http
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_password
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_user
 msgid "Leave blank if not using http authentication."
-msgstr ""
+msgstr "Lasciare vuot se non si utilizza l'autenticazione HTTP."
 
 #. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_backend
 msgid "Se Backend"
-msgstr ""
+msgstr "Backend SE"
 
 #. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_index
 msgid "Se Index"
-msgstr ""
+msgstr "Indice SE"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__ssl
 msgid "Ssl"
-msgstr ""
+msgstr "SSL"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__backend_type
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
 #, python-format
 msgid "Unable to authenticate. Check credentials."
-msgstr ""
+msgstr "Impossibile autenticare, Controllare le credenziali."
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
 #, python-format
 msgid "Unable to clear index %(index_name)s: %(result)"
-msgstr ""
+msgstr "Impossibile cancellare l'indice %(index_name)s: %(result)"
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
 #, python-format
 msgid "Unable to connect :"
-msgstr ""
+msgstr "Impossibile connettersi:"
 
 #. module: connector_elasticsearch
 #. odoo-python
@@ -136,21 +138,25 @@ msgid ""
 "Unable to index all records. (indexed: %(indexed)s, total: %(total)s)\n"
 "%(result)s"
 msgstr ""
+"Impossibile indicizzare tutti i record. (indicizzati: %(indexed)s, totale: "
+"%(total)s)\n"
+"%(result)s"
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
 #, python-format
 msgid "Unable to reach host."
-msgstr ""
+msgstr "Impossibile contattare l'host."
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__ssl
 msgid ""
 "Verify SSL certificates. Only set to False in development environments."
 msgstr ""
+"Verifica certificati SSL. Impostare a False solo in ambienti di sviluppo."
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "http://elastic:9200"
-msgstr ""
+msgstr "http://elastic:9200"
