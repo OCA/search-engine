@@ -22,6 +22,7 @@
                         string="Password"
                         name="es_password"
                         attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                        password="1"
                     />
                     <field
                         string="SSL"
