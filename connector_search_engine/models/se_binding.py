@@ -68,10 +68,9 @@ class SeBinding(models.Model):
         help="Include this in debug mode to be able to inspect index data.",
     )
     error = fields.Text()
-    res_id = fields.Many2oneReference(
+    res_id = fields.Integer(
         string="Record ID",
         help="ID of the target record in the database",
-        model_field="res_model",
         readonly=True,
     )
     res_model = fields.Selection(
