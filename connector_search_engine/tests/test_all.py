@@ -170,6 +170,17 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.partner.unlink()
         self.assertEqual(self.partner_binding.state, "to_delete")
 
+    def test_archive_record(self):
+        self.partner.active = False
+        self.assertEqual(self.partner_binding.state, "to_delete")
+
+    def test_archive_unarchive_record(self):
+        self.partner.active = False
+        self.assertEqual(self.partner_binding.state, "to_delete")
+        # IT the binding is not yet deleted it's nice to keep it on unarchive
+        self.partner.active = True
+        self.assertEqual(self.partner_binding.state, "to_recompute")
+
     def test_recompute_one_record(self):
         self.partner_binding.recompute_json()
         self.assertEqual(self.partner_binding.state, "to_export")
