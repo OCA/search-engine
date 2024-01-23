@@ -314,6 +314,12 @@ msgid "Export all binding"
 msgstr ""
 
 #. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
+msgid "Export settings"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__exporting
 msgid "Exporting"
 msgstr ""
@@ -757,6 +763,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__tech_name
 msgid "Unique name for technical purposes. Eg: server env keys."
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
+msgid "Update or initialize index settings"
 msgstr ""
 
 #. module: connector_search_engine
