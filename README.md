@@ -22,7 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [connector_elasticsearch](connector_elasticsearch/) | 16.0.0.0.3 |  | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 16.0.0.1.7 |  | Connector Search Engine
+[connector_search_engine](connector_search_engine/) | 16.0.0.1.8 |  | Connector Search Engine
 [connector_search_engine_serializer_ir_export](connector_search_engine_serializer_ir_export/) | 16.0.1.0.2 |  | Use Exporter (ir.exports) as serializer for index
 [search_engine_image_thumbnail](search_engine_image_thumbnail/) | 16.0.1.0.3 | [![lmignon](https://github.com/lmignon.png?size=30px)](https://github.com/lmignon) | Generate thumbnails for binded record
 [search_engine_serializer_pydantic](search_engine_serializer_pydantic/) | 16.0.1.0.0 | [![lmignon](https://github.com/lmignon.png?size=30px)](https://github.com/lmignon) | Defines base class for pydantic baser serializer
