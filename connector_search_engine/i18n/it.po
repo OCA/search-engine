@@ -19,24 +19,28 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', 2)]}\"> Bindings</span>\n"
-"                                <span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
+"2)]}\"> Bindings</span>\n"
+"                                <span class=\"o_stat_text\" attrs="
+"\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
 "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
 "2)]}\"> Collegamenti</span>\n"
-"                                <span class=\"o_stat_text\" attrs=\""
-"{'invisible': [('binding_count', '&gt;', 1)]}\"> Collegamento</span>"
+"                                <span class=\"o_stat_text\" attrs="
+"\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Collegamento</span>"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', 2)]}\"> Bindings</span>\n"
-"                                <span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
+"2)]}\"> Bindings</span>\n"
+"                                <span class=\"o_stat_text\" attrs="
+"\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', 2)]}"
-"\"> Collegamenti</span>\n"
-"                                <span class=\"o_stat_text\" attrs=\""
-"{'invisible': [('count_all', '&gt;', 1)]}\"> Collegamento</span>"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
+"2)]}\"> Collegamenti</span>\n"
+"                                <span class=\"o_stat_text\" attrs="
+"\"{'invisible': [('count_all', '&gt;', 1)]}\"> Collegamento</span>"
 
 #. module: connector_search_engine
 #. odoo-python
@@ -327,6 +331,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Export all binding"
 msgstr "Esporta tutti i collegamenti"
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
+msgid "Export settings"
+msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__exporting
@@ -732,8 +742,8 @@ msgstr "Stato"
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index__custom_tech_name
 msgid ""
-"Take control of index technical name. The final index name is still computed"
-" and contains in any case: backend index name prefix and language if given. "
+"Take control of index technical name. The final index name is still computed "
+"and contains in any case: backend index name prefix and language if given. "
 "If no custom name is provided, model's normalized name will be used."
 msgstr ""
 "Ottenere il controllo del nome tecnico dell'indice. Il nome finale "
@@ -787,6 +797,11 @@ msgstr "Tipo ambiente predefinito"
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__tech_name
 msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr "Nome univoco per motivi tecnici. Es: chiavi server ambiente."
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
+msgid "Update or initialize index settings"
+msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.act_window,name:connector_search_engine.action_record_bind
