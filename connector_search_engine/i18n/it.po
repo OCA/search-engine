@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-10 14:36+0000\n"
+"PO-Revision-Date: 2024-01-24 17:33+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -336,7 +336,7 @@ msgstr "Esporta tutti i collegamenti"
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Export settings"
-msgstr ""
+msgstr "Esporta Impostazioni"
 
 #. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__exporting
@@ -801,7 +801,7 @@ msgstr "Nome univoco per motivi tecnici. Es: chiavi server ambiente."
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Update or initialize index settings"
-msgstr ""
+msgstr "Aggiornare o inizializzare impostazioni indice"
 
 #. module: connector_search_engine
 #: model:ir.actions.act_window,name:connector_search_engine.action_record_bind
