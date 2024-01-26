@@ -182,7 +182,7 @@ class SeIndexableRecord(models.AbstractModel):
     def write(self, vals):
         res = super().write(vals)
         if "active" in vals:
-            bindings = self._get_bindings()
+            bindings = self.sudo()._get_bindings()
             # if the record is archived then unarchived while the binding
             # are not already deleted we reset the state to_recompute
             new_state = "to_recompute" if vals["active"] else "to_delete"
