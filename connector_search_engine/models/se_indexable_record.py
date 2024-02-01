@@ -179,6 +179,21 @@ class SeIndexableRecord(models.AbstractModel):
         )
         return super().unlink()
 
+    def write(self, vals):
+        res = super().write(vals)
+        if "active" in vals:
+            bindings = self.sudo()._get_bindings()
+            # if the record is archived then unarchived while the binding
+            # are not already deleted we reset the state to_recompute
+            new_state = "to_recompute" if vals["active"] else "to_delete"
+            bindings.write(
+                {
+                    "state": new_state,
+                }
+            )
+
+        return res
+
     @api.model
     def _get_view(self, view_id=None, view_type="form", **options):
         arch, view = super()._get_view(view_id=view_id, view_type=view_type, **options)
