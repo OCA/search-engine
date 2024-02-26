@@ -11,7 +11,13 @@
         <field name="arch" type="xml">
             <form string="Se Binding State Updater">
                 <group>
-                    <field name="state" />
+                    <group colspan="2">
+                      <field name="state" />
+                      <field
+                            name="do_it_now"
+                            attrs="{'invisible': [('state', '!=', 'to_recompute')]}"
+                        />
+                    </group>
                 </group>
                 <footer>
                     <button name="doit" string="OK" class="btn-primary" type="object" />

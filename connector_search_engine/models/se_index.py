@@ -216,12 +216,14 @@ class SeIndex(models.Model):
             description=description, identity_key=identity_exact
         ).batch_sync(force_export)
 
-    def _jobify_batch_recompute(self, force_export: bool = False) -> None:
+    def _jobify_batch_recompute(
+        self, force_export: bool = False, binding_ids: list | None = None
+    ) -> None:
         self.ensure_one()
         description = _("Prepare a batch recompute of index '%s'") % self.name
         self.with_delay(
             description=description, identity_key=identity_exact
-        ).batch_recompute(force_export)
+        ).batch_recompute(force_export, binding_ids=binding_ids)
 
     @api.model
     def generate_batch_sync_per_index(self, domain: list | None = None) -> None:
@@ -256,11 +258,16 @@ class SeIndex(models.Model):
             states.append("recomputing")
         return [("index_id", "=", self.id), ("state", "in", states)]
 
-    def batch_recompute(self, force_export: bool = False) -> None:
+    def batch_recompute(
+        self, force_export: bool = False, binding_ids: list | None = None
+    ) -> None:
         """Recompute all the bindings of the index marked as to_recompute."""
         self.ensure_one()
-        domain = self._get_domain_for_recomputing_binding(force_export)
-        bindings = self.env["se.binding"].search(domain)
+        if binding_ids:
+            bindings = self.env["se.binding"].browse(binding_ids)
+        else:
+            domain = self._get_domain_for_recomputing_binding(force_export)
+            bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
         for batch in bindings._batch(self.batch_recomputing_size):
             description = _(
