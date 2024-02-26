@@ -239,7 +239,7 @@ class SeIndex(models.Model):
             binding_model = self.env[index.model_id.model]
             for index_record in adapter.each():
                 ext_id = adapter.external_id(index_record)
-                binding = binding_model.browse(ext_id).exists()
+                binding = binding_model.search([("record_id", "=", ext_id)], limit=1)
                 if not binding:
                     item_ids.append(ext_id)
             index.with_delay().delete_obsolete_item(item_ids)
