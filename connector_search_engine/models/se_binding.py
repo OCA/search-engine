@@ -11,6 +11,7 @@ import sys
 from odoo import _, api, fields, models
 
 _logger = logging.getLogger(__name__)
+CONFIG_KEY = "connector_search_engine.batch_size"
 
 
 class SeBinding(models.AbstractModel):
@@ -132,7 +133,17 @@ class SeBinding(models.AbstractModel):
                 model_name=self._name,
             )
 
-    def jobify_recompute_json(self, force_export=False, batch_size=500):
+    def jobify_recompute_json(self, force_export=False, batch_size=False):
+        config_parameter = self.env["ir.config_parameter"].sudo()
+        raw_batch_size = config_parameter.get_param(CONFIG_KEY, False)
+        if (
+            not batch_size
+            and raw_batch_size
+            and raw_batch_size.isnumeric()
+            and int(raw_batch_size) > 0
+        ):
+            batch_size = int(raw_batch_size)
+        batch_size = batch_size or 500  # Previous default value
         # The job creation with tracking is very costly. So disable it.
         bindings = self.with_context(tracking_disable=True)
         while bindings:

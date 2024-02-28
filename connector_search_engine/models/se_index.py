@@ -5,6 +5,8 @@ import logging
 
 from odoo import _, api, fields, models
 
+from .se_binding import CONFIG_KEY
+
 _logger = logging.getLogger(__name__)
 
 
@@ -79,7 +81,17 @@ class SeIndex(models.Model):
     def force_recompute_all_binding(self):
         self.recompute_all_binding(force_export=True)
 
-    def recompute_all_binding(self, force_export=False, batch_size=500):
+    def recompute_all_binding(self, force_export=False, batch_size=False):
+        config_parameter = self.env["ir.config_parameter"].sudo()
+        raw_batch_size = config_parameter.get_param(CONFIG_KEY, False)
+        if (
+            not batch_size
+            and raw_batch_size
+            and raw_batch_size.isnumeric()
+            and int(raw_batch_size) > 0
+        ):
+            batch_size = int(raw_batch_size)
+        batch_size = batch_size or 500  # Previous default value
         target_models = self.mapped("model_id.model")
         for target_model in target_models:
             indexes = self.filtered(lambda r, m=target_model: r.model_id.model == m)
