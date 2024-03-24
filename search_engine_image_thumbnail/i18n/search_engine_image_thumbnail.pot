@@ -62,6 +62,11 @@ msgid "Domain to select images field"
 msgstr ""
 
 #. module: search_engine_image_thumbnail
+#: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
+msgid "Fail if no thumbnail size"
+msgstr ""
+
+#. module: search_engine_image_thumbnail
 #: model_terms:ir.ui.view,arch_db:search_engine_image_thumbnail.se_image_field_thumbnail_size_search_view
 msgid "Group By"
 msgstr ""
@@ -71,6 +76,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_thumbnail__id
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_thumbnail_size__id
 msgid "ID"
+msgstr ""
+
+#. module: search_engine_image_thumbnail
+#: model:ir.model.fields,help:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
+msgid ""
+"If checked, the export will fail if no thumbnail sizes is found for the "
+"model and field for which thumbnails are requested."
 msgstr ""
 
 #. module: search_engine_image_thumbnail
