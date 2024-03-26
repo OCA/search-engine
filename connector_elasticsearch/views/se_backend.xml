@@ -14,22 +14,28 @@
                     />
                     <field name="auth_type" />
                     <field
+                        string="User"
                         name="es_user"
                         attrs="{'invisible': [('auth_type', '!=', 'http')]}"
                     />
                     <field
+                        string="Password"
                         name="es_password"
                         attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                        password="1"
                     />
                     <field
+                        string="SSL"
                         name="ssl"
                         attrs="{'invisible': [('auth_type', '!=', 'http')]}"
                     />
                     <field
+                        string="API key ID"
                         name="api_key_id"
                         attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
                     />
                     <field
+                        string="API key"
                         name="api_key"
                         attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
                     />
