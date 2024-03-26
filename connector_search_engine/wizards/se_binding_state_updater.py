@@ -14,7 +14,11 @@ class SeBindingStateUpdater(models.TransientModel):
         selection=lambda self: self.env["se.binding"]._fields["state"].selection,
         required=True,
     )
+    do_it_now = fields.Boolean(help="Don't wait for the cron to process these records")
 
     def doit(self):
         res_ids = self.env.context.get("active_ids")
-        self.env["se.binding"].browse(res_ids).write({"state": self.state})
+        bindings = self.env["se.binding"].browse(res_ids)
+        bindings.write({"state": self.state})
+        if self.do_it_now and self.state == "to_recompute":
+            bindings.index_id._jobify_batch_recompute(binding_ids=bindings.ids)
