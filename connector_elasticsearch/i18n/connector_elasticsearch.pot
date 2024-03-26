@@ -15,7 +15,13 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__api_key
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "API key"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "API key ID"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -87,6 +93,16 @@ msgid "Leave blank if not using http authentication."
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "Password"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "SSL"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_backend
 msgid "Se Backend"
 msgstr ""
@@ -141,6 +157,11 @@ msgstr ""
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
 #, python-format
 msgid "Unable to reach host."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "User"
 msgstr ""
 
 #. module: connector_elasticsearch
