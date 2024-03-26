@@ -18,8 +18,14 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__api_key
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "API key"
 msgstr "Chiave API"
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "API key ID"
+msgstr ""
 
 #. module: connector_elasticsearch
 #. odoo-python
@@ -90,6 +96,16 @@ msgid "Leave blank if not using http authentication."
 msgstr "Lasciare vuot se non si utilizza l'autenticazione HTTP."
 
 #. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "Password"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "SSL"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_backend
 msgid "Se Backend"
 msgstr "Backend SE"
@@ -150,9 +166,13 @@ msgid "Unable to reach host."
 msgstr "Impossibile contattare l'host."
 
 #. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "User"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__ssl
-msgid ""
-"Verify SSL certificates. Only set to False in development environments."
+msgid "Verify SSL certificates. Only set to False in development environments."
 msgstr ""
 "Verifica certificati SSL. Impostare a False solo in ambienti di sviluppo."
 
