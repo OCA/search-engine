@@ -13,3 +13,9 @@ class SeBackend(models.Model):
         comodel_name="se.image.field.thumbnail.size",
         inverse_name="backend_id",
     )
+    fails_if_no_thumbail_size = fields.Boolean(
+        string="Fail if no thumbnail size",
+        help="If checked, the export will fail if no thumbnail sizes is found for the "
+        "model and field for which thumbnails are requested.",
+        default=False,
+    )
