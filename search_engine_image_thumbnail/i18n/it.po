@@ -65,6 +65,11 @@ msgid "Domain to select images field"
 msgstr "Dminio per selezionare il campo immagine"
 
 #. module: search_engine_image_thumbnail
+#: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
+msgid "Fail if no thumbnail size"
+msgstr ""
+
+#. module: search_engine_image_thumbnail
 #: model_terms:ir.ui.view,arch_db:search_engine_image_thumbnail.se_image_field_thumbnail_size_search_view
 msgid "Group By"
 msgstr "Raggruppa per"
@@ -75,6 +80,13 @@ msgstr "Raggruppa per"
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_thumbnail_size__id
 msgid "ID"
 msgstr "ID"
+
+#. module: search_engine_image_thumbnail
+#: model:ir.model.fields,help:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
+msgid ""
+"If checked, the export will fail if no thumbnail sizes is found for the "
+"model and field for which thumbnails are requested."
+msgstr ""
 
 #. module: search_engine_image_thumbnail
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_thumbnail__image
@@ -217,11 +229,14 @@ msgstr "Il nome base dell'immagIne anteprima (senza estensione)"
 #. module: search_engine_image_thumbnail
 #: model:ir.model.fields,help:search_engine_image_thumbnail.field_se_thumbnail__base_name
 msgid ""
-"The thumbnail image will be named as base_name + _ + size_x + _ + size_y + . + extension.\n"
-"If not set, the base name will be the name of the original image.This base name is used to find all existing thumbnail of an image generated for the same base name."
+"The thumbnail image will be named as base_name + _ + size_x + _ + size_y + . "
+"+ extension.\n"
+"If not set, the base name will be the name of the original image.This base "
+"name is used to find all existing thumbnail of an image generated for the "
+"same base name."
 msgstr ""
-"L'immagine anteprima verrà denominata come "
-"nome_bae+_+dimensione_x+dimensione_y+.+estensione.\n"
+"L'immagine anteprima verrà denominata come nome_bae+_+dimensione_x"
+"+dimensione_y+.+estensione.\n"
 "Se non impostato, il nome base sarà il nome dell'immagine originale. Questo "
 "nome base è utilizzato per trovare tutte le anteprime di una immagine "
 "generate per lo stesso nome base."
