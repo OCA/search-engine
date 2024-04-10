@@ -14,6 +14,7 @@
                     string="Thumbnail Sizes"
                     colspan="4"
                 >
+                    <field name="fails_if_no_thumbail_size" />
                     <field
                         name="image_field_thumbnail_size_ids"
                         nolabel="1"
