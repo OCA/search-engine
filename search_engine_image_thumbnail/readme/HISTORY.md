@@ -1,3 +1,13 @@
+## 16.0.1.0.5 (2024-04-10)
+
+#### Bugfixes
+
+- Add new config parameter on the search engine backend to allow the user
+  to specify if the serialization of a record should fail if thumbnails are
+  requested but no thumbnail sizes are defined for the model and field for
+  which it' requested. Defaults to False (i.e. don't fail). ([#176](https://github.com/OCA/search-engine/issues/176))
+
+
 ## 16.0.1.0.4 (2024-04-09)
 
 #### Bugfixes
