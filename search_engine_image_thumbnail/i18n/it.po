@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-10 14:36+0000\n"
+"PO-Revision-Date: 2024-04-15 10:37+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -67,7 +67,7 @@ msgstr "Dminio per selezionare il campo immagine"
 #. module: search_engine_image_thumbnail
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
 msgid "Fail if no thumbnail size"
-msgstr ""
+msgstr "Fallisce se non c'è la misura miniatura"
 
 #. module: search_engine_image_thumbnail
 #: model_terms:ir.ui.view,arch_db:search_engine_image_thumbnail.se_image_field_thumbnail_size_search_view
@@ -87,6 +87,8 @@ msgid ""
 "If checked, the export will fail if no thumbnail sizes is found for the "
 "model and field for which thumbnails are requested."
 msgstr ""
+"Se selezionata, l'esportazione fallirà se non viene trovata una dimensione "
+"miniatura per il modello e campo per il quale la miniatura è richiesta."
 
 #. module: search_engine_image_thumbnail
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_thumbnail__image
