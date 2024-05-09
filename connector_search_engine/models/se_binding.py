@@ -203,6 +203,7 @@ class SeBinding(models.AbstractModel):
                         vals["date_modified"] = fields.Datetime.now()
                     if error:
                         vals["sync_state"] = "to_be_checked"
+                        vals["data"]["__error__"] = error
                     binding.write(vals)
         if validation_errors:
             result.append(
