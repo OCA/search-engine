@@ -5,7 +5,7 @@
     "name": "connector_elasticsearch",
     "category": "Connector",
     "summary": "Connector For Elasticsearch Search Engine",
-    "version": "16.0.0.0.4",
+    "version": "16.0.0.1.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
