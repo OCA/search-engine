@@ -13,7 +13,7 @@
     "license": "AGPL-3",
     "category": "Generic Modules",
     "depends": ["queue_job", "mail", "server_environment", "base_partition"],
-    "external_dependencies": {"python": ["unidecode"]},
+    "external_dependencies": {"python": ["unidecode", "typing-extensions"]},
     "data": [
         "wizards/se_binding_state_updater.xml",
         "security/connector_search_engine_security.xml",
