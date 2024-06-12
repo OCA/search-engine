@@ -170,13 +170,10 @@ class SeBinding(models.Model):
                 continue
 
             record = self._contextualize(record)
-            index = record.index_id
-
             old_data = record.data
             try:
                 with self.env.cr.savepoint():
-                    record.data = index.model_serializer.serialize(record.record)
-                    record.date_recomputed = fields.Datetime.now()
+                    record._recompute_data()
             except Error as pg_error:
                 # PG error could make the cursor unusable
                 raise pg_error
@@ -185,7 +182,7 @@ class SeBinding(models.Model):
                 record.error = str(e)
                 continue
             try:
-                index.json_validator.validate(record.data or {})
+                record._validate_data()
             except ValidationError as e:
                 record.state = "invalid_data"
                 record.error = str(e)
@@ -195,6 +192,13 @@ class SeBinding(models.Model):
                 else:
                     record.state = "done"
                 record.error = ""
+
+    def _recompute_data(self):
+        self.date_recomputed = fields.Datetime.now()
+        self.data = self.index_id.model_serializer.serialize(self.record)
+
+    def _validate_data(self):
+        self.index_id.json_validator.validate(self.data or {})
 
     def export_record(self) -> str:
         for _backend, bindings in self.partition("backend_id").items():
