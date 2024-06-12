@@ -195,7 +195,9 @@ class SeBinding(models.Model):
 
     def _recompute_data(self):
         self.date_recomputed = fields.Datetime.now()
-        self.data = self.index_id.model_serializer.serialize(self.record)
+        data = self.index_id.model_serializer.serialize(self.record)
+        data["updated_on"] = fields.Datetime.to_string(self.date_recomputed)
+        self.data = data
 
     def _validate_data(self):
         self.index_id.json_validator.validate(self.data or {})
