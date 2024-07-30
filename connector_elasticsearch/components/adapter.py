@@ -40,7 +40,8 @@ class ElasticsearchAdapter(Component):
         backend = self.backend_record
 
         es = elasticsearch.Elasticsearch(
-            [backend.es_server_host], connection_class=self._es_connection_class
+            [backend.es_server_host], connection_class=self._es_connection_class,
+            api_key=(backend.api_key_id, backend.api_key) if backend.api_key_id and backend.api_key else None
         )
 
         if not es.ping():  # pragma: no cover
