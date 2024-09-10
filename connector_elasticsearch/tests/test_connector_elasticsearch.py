@@ -110,6 +110,20 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         res.sort(key=lambda d: d["id"])
         self.assertListEqual(res, [{"id": "foo2"}])
 
+    def test_index_adapter_delete_already_done(self):
+        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
+        already_deleted_msg = self.adapter.clear()
+        self.assertEqual(already_deleted_msg.get("type"), "ir.actions.client")
+        self.assertEqual(
+            already_deleted_msg.get("params").get("message"),
+            "There was nothing to clear!",
+        )
+        self.adapter.index(data)
+        self.adapter.delete(["foo", "foo3"])
+        res = [x for x in self.adapter.each()]
+        res.sort(key=lambda d: d["id"])
+        self.assertListEqual(res, [{"id": "foo2"}])
+
     @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_index_adapter_delete_nonexisting_documents(self):
         """We try to delete records that do not exist.
