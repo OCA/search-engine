@@ -200,8 +200,8 @@ class SeIndex(models.Model):
     def clear_index(self):
         self.ensure_one()
         adapter = self._get_backend_adapter()
-        adapter.clear()
-        return True
+        msg = adapter.clear()
+        return msg
 
     def _get_settings(self):
         """

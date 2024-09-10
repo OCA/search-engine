@@ -95,6 +95,16 @@ class ElasticsearchAdapter(Component):
         res = es.indices.delete(index=self._index_name, ignore=[400, 404])
         # recreate the index
         self._get_es_client()
+        if "error" in res.keys() and res["error"].get("index_uuid") == "_na_":
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": _("Already cleared!"),
+                    "message": _("There was nothing to clear!"),
+                    "sticky": False,
+                },
+            }
         return res["acknowledged"]
 
     def each(self):
