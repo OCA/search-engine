@@ -35,7 +35,6 @@ class SeImageFieldThumbnailSize(models.Model):
         "ir.model.fields",
         string="Images field",
         required=True,
-        domain="[('model_id', '=', model_id)]",
         ondelete="cascade",
     )
     field_name = fields.Char(
@@ -44,10 +43,10 @@ class SeImageFieldThumbnailSize(models.Model):
         readonly=True,
         store=True,
     )
-    field_id_domain = fields.Binary(
-        string="Domain to select images field",
-        compute="_compute_field_id_domain",
-        readonly=True,
+    allowed_field_ids = fields.Many2many(
+        "ir.model.fields",
+        string="Images fields",
+        compute="_compute_allowed_field_ids"
     )
     backend_id = fields.Many2one(
         "se.backend",
@@ -93,26 +92,22 @@ class SeImageFieldThumbnailSize(models.Model):
         return False
 
     @api.depends("model_id")
-    def _compute_field_id_domain(self):
+    def _compute_allowed_field_ids(self):
         for record in self:
-            if not record.model_id:
-                # Eg: NewId
-                record.field_id_domain = FALSE_DOMAIN
-                continue
             domain_fields = []
             if record.model_id:
                 model = self.env[record.model_id.model]
                 domain_fields = model._fields.values()
+            
             names = []
             for field in domain_fields:
                 if self._is_field_valid_for_thumbnail(field):
                     names.append(field.name)
-            record.field_id_domain = json.dumps(
-                [("name", "in", names), ("model_id", "=", record.model_id.id)]
-                if names
-                else FALSE_DOMAIN
-            )
-
+            
+            domain = [('name', 'in', names)]
+            records = self.env['ir.model.fields'].search(domain)
+            record.allowed_field_ids = records
+    
     @api.model
     def _is_field_valid_for_thumbnail(self, field: fields.Field):
         if isinstance(field, fields.Image) or field.type == "fs_image":

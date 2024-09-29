@@ -16,17 +16,6 @@ class TestSeMultiImageThumbnail(TestSeMultiImageThumbnailCase):
         domain = self.env["se.image.field.thumbnail.size"]._model_id_domain()
         self.assertEqual(domain, expected)
 
-    def test_thumbnail_zise_field_domain(self):
-        model_id = self.test_multi_image_model_id
-        se_thumbnail_size = self.env["se.image.field.thumbnail.size"].new(
-            {"model_id": model_id}
-        )
-        field_id_domain = se_thumbnail_size.field_id_domain
-        self.assertEqual(
-            field_id_domain,
-            f'[["name", "in", ["image_ids"]], ["model_id", "=", {model_id}]]'.encode(),
-        )
-
     def test_multi_image_record_create_thumbnail(self):
         thumbnails = self.test_multi_image._get_or_create_thumbnails_for_multi_images(
             self.index_multi_image, "image_ids"

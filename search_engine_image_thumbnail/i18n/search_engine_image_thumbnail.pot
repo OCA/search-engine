@@ -57,11 +57,6 @@ msgid "Display Name"
 msgstr ""
 
 #. module: search_engine_image_thumbnail
-#: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_image_field_thumbnail_size__field_id_domain
-msgid "Domain to select images field"
-msgstr ""
-
-#. module: search_engine_image_thumbnail
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
 msgid "Fail if no thumbnail size"
 msgstr ""
@@ -98,6 +93,11 @@ msgstr ""
 #. module: search_engine_image_thumbnail
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_image_field_thumbnail_size__field_name
 msgid "Images field name"
+msgstr ""
+
+#. module: search_engine_image_thumbnail
+#: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_image_field_thumbnail_size__allowed_field_ids
+msgid "Images fields"
 msgstr ""
 
 #. module: search_engine_image_thumbnail

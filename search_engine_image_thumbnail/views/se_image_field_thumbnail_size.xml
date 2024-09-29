@@ -35,8 +35,8 @@
             <tree editable="top">
                 <field name="backend_id" invisible="context.get('hide_backend', 0)" />
                 <field name="model_id" />
-                <field name="field_id" domain="field_id_domain" />
-                <field name="field_id_domain" invisible="1" />
+                <field name="field_id" domain="[('id', 'in', allowed_field_ids), ('model_id', '=', model_id)]"/>
+                <field name="allowed_field_ids" widget="many2many_tags" invisible="1" />
                 <field name="size_ids" widget="many2many_tags" />
             </tree>
         </field>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-15 10:37+0000\n"
+"PO-Revision-Date: 2024-10-07 18:22+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -60,11 +60,6 @@ msgid "Display Name"
 msgstr "Nome visualizzato"
 
 #. module: search_engine_image_thumbnail
-#: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_image_field_thumbnail_size__field_id_domain
-msgid "Domain to select images field"
-msgstr "Dminio per selezionare il campo immagine"
-
-#. module: search_engine_image_thumbnail
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_backend__fails_if_no_thumbail_size
 msgid "Fail if no thumbnail size"
 msgstr "Fallisce se non c'è la misura miniatura"
@@ -104,6 +99,11 @@ msgstr "Campo immagine"
 #: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_image_field_thumbnail_size__field_name
 msgid "Images field name"
 msgstr "Nome campo immagine"
+
+#. module: search_engine_image_thumbnail
+#: model:ir.model.fields,field_description:search_engine_image_thumbnail.field_se_image_field_thumbnail_size__allowed_field_ids
+msgid "Images fields"
+msgstr ""
 
 #. module: search_engine_image_thumbnail
 #: model:ir.model,name:search_engine_image_thumbnail.model_se_image_field_thumbnail_size
