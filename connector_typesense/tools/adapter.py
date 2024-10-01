@@ -79,17 +79,18 @@ class TypesenseAdapter(SearchEngineAdapter):
 
     def index(self, records) -> None:
         """ """
+        print(">>>>>> run TS index method")
         ts = self._ts_client
         records_for_bulk = ""
         for record in records:
-            print(f"record: {record}")
+            print(f">>> record: {record}")
             if "id" in record:
                 record["id"] = str(record["id"])
             records_for_bulk += f"{json.dumps(record)}\n"
 
         _logger.info(f"Bulk import records into {self._index_name}'...")
         res = ts.collections[self._index_name].documents.import_(
-            records_for_bulk, {"action": "create"}
+            records_for_bulk, {"action": "emplace"}
         )
         res = res.split("\n")
         # checks if number of indexed object and object in records are equal

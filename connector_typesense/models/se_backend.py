@@ -45,4 +45,4 @@ class SeBackend(models.Model):
         if self.backend_type == "typesense":
             return TypesenseAdapter
         else:
-            return super().get_adapter_class()
+            return super()._get_adapter_class()
