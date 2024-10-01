@@ -219,6 +219,8 @@ class SeIndex(models.Model):
     def _jobify_batch_recompute(self, force_export: bool = False) -> None:
         self.ensure_one()
         description = _("Prepare a batch recompute of index '%s'") % self.name
+        print(">>> run _jobify_batch_recompute")
+        # breakpoint()
         self.with_delay(
             description=description, identity_key=identity_exact
         ).batch_recompute(force_export)
@@ -231,9 +233,12 @@ class SeIndex(models.Model):
         index to sync. The sync will export the bindings marked as to_export.
         and will delete the bindings marked as to_delete.
         """
+        print(">>>>>  run generate_batch_sync_per_index")
         if domain is None:
             domain = []
         for record in self.search(domain):
+            print(domain)
+            print(record)
             record._jobify_batch_sync()
 
     @api.model
@@ -244,9 +249,12 @@ class SeIndex(models.Model):
         index to recompute. The recompute process will recompute the bindings
         marked as to_recompute.
         """
+        print(">>>>>  run generate_batch_recompute_per_index")
         if domain is None:
             domain = []
         for record in self.search(domain):
+            print(domain)
+            print(record)
             record._jobify_batch_recompute()
 
     def _get_domain_for_recomputing_binding(self, force_export: bool = False) -> list:
@@ -259,6 +267,7 @@ class SeIndex(models.Model):
     def batch_recompute(self, force_export: bool = False) -> None:
         """Recompute all the bindings of the index marked as to_recompute."""
         self.ensure_one()
+        print("###### >>> run batch_recompute")
         domain = self._get_domain_for_recomputing_binding(force_export)
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
@@ -272,6 +281,7 @@ class SeIndex(models.Model):
                 "index_name": self.name,
             }
             batch.write({"state": "recomputing"})
+            print(description)
             batch.with_delay(description=description).recompute_json()
 
     def _get_domain_for_exporting_binding(self, force_export: bool = False):
