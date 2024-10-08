@@ -23,8 +23,8 @@ class TestSeMultiImageThumbnail(TestSeMultiImageThumbnailCase):
         )
         field_id_domain = se_thumbnail_size.field_id_domain
         self.assertEqual(
-            field_id_domain,
-            f'[["name", "in", ["image_ids"]], ["model_id", "=", {model_id}]]'.encode(),
+            f"{field_id_domain}",
+            f"[('name', 'in', ['image_ids']), ('model_id', '=', {model_id})]",
         )
 
     def test_multi_image_record_create_thumbnail(self):
