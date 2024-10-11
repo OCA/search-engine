@@ -1,6 +1,5 @@
 # Copyright 2023 ACSONE SA/NV
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-import json
 
 from odoo import api, fields, models, tools
 from odoo.osv.expression import FALSE_DOMAIN
@@ -107,7 +106,7 @@ class SeImageFieldThumbnailSize(models.Model):
             for field in domain_fields:
                 if self._is_field_valid_for_thumbnail(field):
                     names.append(field.name)
-            record.field_id_domain = json.dumps(
+            record.field_id_domain = (
                 [("name", "in", names), ("model_id", "=", record.model_id.id)]
                 if names
                 else FALSE_DOMAIN
