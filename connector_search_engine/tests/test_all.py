@@ -184,12 +184,16 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_recompute_one_record(self):
         self.partner_binding.recompute_json()
         self.assertEqual(self.partner_binding.state, "to_export")
-        self.assertEqual(self.partner_binding.get_export_data(), self.partner_expected)
+        data = self.partner_binding.get_export_data()
+        data.pop("updated_on")
+        self.assertEqual(data, self.partner_expected)
         self.assertTrue(self.partner_binding.date_recomputed)
 
     def test_recompute_all_indexes(self):
         self.env["se.index"].recompute_all_index()
-        self.assertEqual(self.partner_binding.get_export_data(), self.partner_expected)
+        data = self.partner_binding.get_export_data()
+        data.pop("updated_on")
+        self.assertEqual(data, self.partner_expected)
         self.assertEqual(self.partner_binding.state, "to_export")
         self.assertTrue(self.partner_binding.date_recomputed)
 

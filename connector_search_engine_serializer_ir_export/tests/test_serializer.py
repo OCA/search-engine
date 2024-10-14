@@ -33,8 +33,10 @@ class TestSerializer(TestBindingIndexBaseFake):
 
     def test_serialize(self):
         self.partner_binding.recompute_json()
+        data = self.partner_binding.data
+        data.pop("updated_on")
         self.assertEqual(
-            self.partner_binding.data,
+            data,
             {
                 "active": True,
                 "child_ids": [
