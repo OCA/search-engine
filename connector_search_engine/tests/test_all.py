@@ -307,7 +307,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             trap.assert_enqueued_job(
                 self.se_index.batch_recompute,
                 args=(False,),
-                kwargs={},
+                kwargs={"binding_ids": None},
                 properties=dict(
                     identity_key=identity_exact,
                 ),
