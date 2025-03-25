@@ -383,6 +383,9 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             "Validation errors:\n\n  "
             f"Something wrong with data - IDs: {self.partner_binding.id}",
         )
+        self.assertEqual(
+            self.partner_binding.data["__error__"], "Something wrong with data"
+        )
 
     def test_recompute_json_to_be_checked_rollback(self):
         # If something was to check but it's now good,

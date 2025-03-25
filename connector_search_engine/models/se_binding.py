@@ -186,7 +186,6 @@ class SeBinding(models.AbstractModel):
         # be the same no matter the access rights of the user triggering this.
         result = []
         validation_errors = {}
-        to_be_checked = []
         for work in self.sudo()._work_by_index():
             mapper = work.component(usage="se.export.mapper")
             for binding in work.records.with_context(
@@ -197,21 +196,19 @@ class SeBinding(models.AbstractModel):
                 error = self._validate_record(work, index_record)
                 if error:
                     validation_errors.setdefault(error, []).append(binding.id)
-                    to_be_checked.append(binding.id)
-                    # skip record
-                    continue
-                if binding.data != index_record or force_export:
+                if binding.data != index_record or force_export or error:
                     vals = {"data": index_record}
                     if binding.sync_state != "to_update":
                         vals["sync_state"] = "to_update"
                         vals["date_modified"] = fields.Datetime.now()
+                    if error:
+                        vals["sync_state"] = "to_be_checked"
+                        vals["data"]["__error__"] = error
                     binding.write(vals)
         if validation_errors:
             result.append(
                 self._format_recompute_json_validation_errors(validation_errors)
             )
-        if to_be_checked:
-            self.browse(to_be_checked).write({"sync_state": "to_be_checked"})
         return "\n\n".join(result)
 
     def _format_recompute_json_validation_errors(self, validation_errors):
