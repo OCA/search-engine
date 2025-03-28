@@ -18,8 +18,24 @@
                     string="Host"
                     placeholder="http://elastic:9200"
                 />
-                <field name="api_key_id" />
-                <field name="api_key" />
+                <field name="is_http_authentication" />
+                <field
+                    name="es_user"
+                    attrs="{'invisible':[('is_http_authentication','=',False)]}"
+                />
+                <field
+                    name="es_password"
+                    password="True"
+                    attrs="{'invisible':[('is_http_authentication','=',False)]}"
+                />
+                <field
+                    name="api_key_id"
+                    attrs="{'invisible':[('is_http_authentication','=',True)]}"
+                />
+                <field
+                    name="api_key"
+                    attrs="{'invisible':[('is_http_authentication','=',True)]}"
+                />
             </group>
             <group name="se-main" position="after">
                 <group name="se-buttons" colspan="4" col="1">
