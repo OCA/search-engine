@@ -136,6 +136,8 @@ class SeIndexableRecord(models.AbstractModel):
         :param index: The index where the record should be added
         :return: The binding recordset
         """
+        if not indexes:
+            raise ValueError("Indexes are mandatory")
         bindings = self._get_bindings(indexes)
         bindings.filtered(lambda s: s.state == "to_delete").write(
             {"state": "to_recompute"}
@@ -162,6 +164,8 @@ class SeIndexableRecord(models.AbstractModel):
         Once the data will be removed from the index, the binding will be
         deleted.
         """
+        if not indexes:
+            raise ValueError("Indexes are mandatory")
         bindings = self._get_bindings(indexes)
         bindings.write({"state": "to_delete"})
 
