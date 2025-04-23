@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t
+        t-name="typesense_ir_exports.IrExportWidget"
+        t-inherit="web.Many2OneField"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('o_field_many2one_extra')]" position="after">
+            <div>
+                <button
+                    t-on-click="openIrExport"
+                    icon="fa-check"
+                    class="btn btn-link p-0 text-left"
+                >
+                    Select Fields to Index
+                </button>
+            </div>
+        </xpath>
+    </t>
+    <t
+        t-name="typesense_ir_exports.CustomExportDataDialog"
+        t-inherit="web.ExportDataDialog"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('o_import_compat')]" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_export_format')]" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set-slot='footer']" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+
+        <xpath
+            expr="//button[@t-on-click.stop='onCancelExportTemplate']"
+            position="after"
+        >
+            <button
+                t-if="state.templateId != 'new_template'"
+                type="button"
+                class="btn btn-secondary ms-1 o_save_list_btn"
+                t-on-click.stop="onUpdateExportTemplate"
+            >
+                <i class="fa fa-floppy-o" />
+            </button>
+        </xpath>
+    </t>
+</templates>

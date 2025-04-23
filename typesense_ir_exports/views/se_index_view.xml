@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="se_index_form_view" model="ir.ui.view">
+        <field name="model">se.index</field>
+        <field name="inherit_id" ref="connector_search_engine.se_index_form_view" />
+        <field name="arch" type="xml">
+            <field name="exporter_id" position="attributes">
+                <attribute name="widget">ir_export_widget</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>

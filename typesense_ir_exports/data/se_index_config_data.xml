@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+  <record id="se_index_config_product" model="se.index.config">
+    <field name="name">TS Product Dynamic Fields Config</field>
+    <field name="body">{}</field>
+    <field name="body_str">
+{
+  "name": "ts_products_collection",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": ".*",
+      "type": "auto",
+      "optional": true
+    }
+  ],
+  "enable_nested_fields": true
+}
+    </field>
+  </record>
+</odoo>
