@@ -4,6 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
 import logging
+import traceback
 from collections import defaultdict
 from typing import Any, Dict, Iterator
 
@@ -198,7 +199,15 @@ class SeBinding(models.Model):
                 raise pg_error
             except Exception as e:
                 record.state = "recompute_error"
-                record.error = str(e)
+                stack = traceback.format_exc()
+                error = f"{e} \n\n {stack}"
+                record.error = error
+                _logger.exception(
+                    "Error while recomputing the json for %s %s: %s",
+                    record.res_model,
+                    record.res_id,
+                    record.record_id.display_name,
+                )
                 continue
             try:
                 index.json_validator.validate(record.data or {})
