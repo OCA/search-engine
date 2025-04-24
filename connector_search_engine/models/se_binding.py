@@ -76,6 +76,11 @@ class SeBinding(models.Model):
     res_model = fields.Selection(
         selection=lambda s: s._get_indexable_model_selection(), readonly=True
     )
+    record_id = fields.Reference(
+        selection=lambda s: s._get_indexable_model_selection(),
+        compute="_compute_record_id",
+        readonly=True,
+    )
 
     _sql_constraints = [
         (
@@ -114,6 +119,17 @@ class SeBinding(models.Model):
         if len(set(self.mapped("res_model"))) > 1:
             raise ValueError("All record must have the same model")
         return self.env[self[0].res_model].browse(self.mapped("res_id")).exists()
+
+    @api.depends("res_model", "res_id")
+    def _compute_record_id(self):
+        """Compute the record field."""
+        for binding in self:
+            if binding.res_model and binding.res_id:
+                binding.record_id = (
+                    self.env[binding.res_model].browse(binding.res_id).exists()
+                )
+            else:
+                binding.record_id = False
 
     @api.depends("data")
     def _compute_data_display(self):

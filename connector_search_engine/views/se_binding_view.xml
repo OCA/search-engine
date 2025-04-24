@@ -15,6 +15,7 @@
                 <field name="date_synchronized" />
                 <field name="res_model" invisible="context.get('hide_res_model')" />
                 <field name="res_id" invisible="context.get('hide_res_model')" />
+                <field name="record_id" invisible="context.get('hide_res_model')" />
             </tree>
         </field>
     </record>
@@ -31,6 +32,7 @@
                     <field name="date_synchronized" />
                     <field name="res_model" />
                     <field name="res_id" />
+                    <field name="record_id" />
                 </group>
                 <group string="Error" attrs="{'invisible': [('error', '=', False)]}">
                     <field name="error" nolabel="1" colspan="4" />
