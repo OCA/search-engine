@@ -21,26 +21,26 @@ msgstr ""
 msgid ""
 "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
 "2)]}\"> Bindings</span>\n"
-"                                <span class=\"o_stat_text\" attrs="
-"\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+"                                <span class=\"o_stat_text\" "
+"attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
 "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
 "2)]}\"> Collegamenti</span>\n"
-"                                <span class=\"o_stat_text\" attrs="
-"\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Collegamento</span>"
+"                                <span class=\"o_stat_text\" "
+"attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Collegamento</span>"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid ""
 "<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
 "2)]}\"> Bindings</span>\n"
-"                                <span class=\"o_stat_text\" attrs="
-"\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+"                                <span class=\"o_stat_text\" "
+"attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
 "<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
 "2)]}\"> Collegamenti</span>\n"
-"                                <span class=\"o_stat_text\" attrs="
-"\"{'invisible': [('count_all', '&gt;', 1)]}\"> Collegamento</span>"
+"                                <span class=\"o_stat_text\" "
+"attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Collegamento</span>"
 
 #. module: connector_search_engine
 #. odoo-python
@@ -621,6 +621,11 @@ msgstr "Ricalcola tutti i collegamenti"
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__recomputing
 msgid "Recomputing"
 msgstr "Ricalcolo"
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__record_id
+msgid "Record"
+msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__res_id

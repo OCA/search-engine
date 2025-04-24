@@ -19,15 +19,19 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', 2)]}\"> Bindings</span>\n"
-"                                <span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
+"2)]}\"> Bindings</span>\n"
+"                                <span class=\"o_stat_text\" "
+"attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', 2)]}\"> Bindings</span>\n"
-"                                <span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
+"2)]}\"> Bindings</span>\n"
+"                                <span class=\"o_stat_text\" "
+"attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
 
 #. module: connector_search_engine
@@ -600,6 +604,11 @@ msgid "Recomputing"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__record_id
+msgid "Record"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__res_id
 msgid "Record ID"
 msgstr ""
@@ -716,8 +725,8 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index__custom_tech_name
 msgid ""
-"Take control of index technical name. The final index name is still computed"
-" and contains in any case: backend index name prefix and language if given. "
+"Take control of index technical name. The final index name is still computed "
+"and contains in any case: backend index name prefix and language if given. "
 "If no custom name is provided, model's normalized name will be used."
 msgstr ""
 
