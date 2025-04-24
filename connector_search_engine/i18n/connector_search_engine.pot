@@ -597,6 +597,11 @@ msgid "Recomputing"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__record_id
+msgid "Record"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__res_id
 msgid "Record ID"
 msgstr ""
