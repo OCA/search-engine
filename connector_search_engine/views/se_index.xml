@@ -79,7 +79,6 @@
                         <group name="config_left">
                             <field name="custom_tech_name" />
                             <field name="backend_id" />
-                            <field name="model_id" />
                             <field name="lang_id" />
                             <field name="model_id" />
                             <field name="serializer_type" required="True" />
