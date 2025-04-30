@@ -5,3 +5,5 @@ unidecode
 
 # tests
 vcrpy-unittest
+
+odoo-addon-connector_search_engine @ git+https://github.com/OCA/search-engine.git@refs/pull/207/head#subdirectory=setup/connector_search_engine
