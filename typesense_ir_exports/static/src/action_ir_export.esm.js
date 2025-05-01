@@ -9,14 +9,22 @@ import {Many2OneField} from "@web/views/fields/many2one/many2one_field";
 import {ExportDataDialog} from "@web/views/view_dialogs/export_data_dialog";
 import {useService} from "@web/core/utils/hooks";
 
+const {onWillDestroy} = owl;
+
 class CustomExportDataDialog extends ExportDataDialog {
     setup() {
         super.setup();
         this.title = this.env._t("Select Data for Indexing");
+        // We hack the current model from props obj to avoid patching other methods
+        this.swapResModel = this.props.root.resModel;
         this.props.root.resModel = this.props.context.resModel;
         if (this.props.context.exporter_id) {
             this.state.templateId = this.props.context.exporter_id[0];
         }
+        // Once we destroy the dialog we return the original value back
+        onWillDestroy(() => {
+            this.props.root.resModel = this.swapResModel;
+        });
     }
     async onUpdateExportTemplate() {
         const oldRec = await this.orm.read(
