@@ -6,7 +6,7 @@
         owl="1"
     >
         <xpath expr="//div[hasclass('o_field_many2one_extra')]" position="after">
-            <div>
+            <div t-if="props.value">
                 <button
                     t-on-click="openIrExport"
                     icon="fa-check"

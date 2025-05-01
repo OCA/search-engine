@@ -13,6 +13,12 @@ class JsonifySerializer(ModelSerializer):
         self.parser = parser
         self.index = index
 
+    # typesense search engine requires id to be string
+    def stringify_id(self, obj):
+        if obj.get("id"):
+            obj["id"] = f"{obj['id']}"
+        return obj
+
     def serialize(self, record):
         ################################
         # Validating populated json data
@@ -22,7 +28,12 @@ class JsonifySerializer(ModelSerializer):
         for key, value in data.items():
             if isinstance(value, bytes):
                 data[key] = base64.b64encode(value).decode("utf-8")
-        # typesense search engine requires id to be string
-        if data.get("id"):
-            data["id"] = f"{data['id']}"
+            if isinstance(value, dict):
+                data[key] = self.stringify_id(value)
+            if isinstance(value, list):
+                for i in range(len(value)):
+                    if isinstance(value[i], dict):
+                        value[i] = self.stringify_id(value[i])
+                data[key] = value
+        data = self.stringify_id(data)
         return data

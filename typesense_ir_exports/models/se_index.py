@@ -4,6 +4,7 @@
 
 from odoo import models
 
+from ..tools.resolver import IrExportsResolver
 from ..tools.serializer import JsonifySerializer
 
 
@@ -16,6 +17,7 @@ class SeIndex(models.Model):
             and self.backend_id.backend_type == "typesense"
         ):
             parser = self.exporter_id.get_json_parser()
-            return JsonifySerializer(parser=parser, index=self)
+            resolved_parser = IrExportsResolver(parser).resolved_parser
+            return JsonifySerializer(parser=resolved_parser, index=self)
         else:
             return super()._get_serializer()
