@@ -6,6 +6,11 @@ import base64
 
 from odoo.addons.connector_search_engine.tools.serializer import ModelSerializer
 
+try:
+    from odoo.addons.fs_image.fields import FSImageValue
+except ImportError:
+    FSImageValue = None
+
 
 class JsonifySerializer(ModelSerializer):
     def __init__(self, parser, index):
@@ -26,8 +31,12 @@ class JsonifySerializer(ModelSerializer):
         data = record.jsonify(self.parser, one=True)
         # Should convert binary data to string as data field is of type json
         for key, value in data.items():
+            # Convert binary fields into string json
             if isinstance(value, bytes):
                 data[key] = base64.b64encode(value).decode("utf-8")
+            # Convert FS images into url string if fs_image is installed
+            if FSImageValue and isinstance(value, FSImageValue):
+                data[key] = value.url_path or value.url or value.internal_url
             if isinstance(value, dict):
                 data[key] = self.stringify_id(value)
             if isinstance(value, list):
