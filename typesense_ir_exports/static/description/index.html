@@ -371,10 +371,14 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Alpha" src="https://img.shields.io/badge/maturity-Alpha-red.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/search-engine/tree/16.0/typesense_ir_exports"><img alt="OCA/search-engine" src="https://img.shields.io/badge/github-OCA%2Fsearch--engine-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/search-engine-16-0/search-engine-16-0-typesense_ir_exports"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/search-engine&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
 <p>Use Exporter (ir.exports) as serializer for connector_typesense</p>
-<p>Each ir.exports records is converted into JSON and JSON data get indexed into the Search Engine.</p>
-<p>Data can be String, Integer, Float, Lists, and Relations in the form of Object.</p>
-<p>Thnaks to the dynamic Schema configuration we can add new fields or remove without breaking the Schema.</p>
-<p>Binary data like images are sent as string, but better if we use external filestore to use images related external urls.</p>
+<p>Each ir.exports records is converted into JSON and JSON data get indexed
+into the Search Engine.</p>
+<p>Data can be String, Integer, Float, Lists, and Relations in the form of
+Object.</p>
+<p>Thnaks to the dynamic Schema configuration we can add new fields or
+remove without breaking the Schema.</p>
+<p>Binary data like images are sent as string, but better if we use
+external filestore to use images related external urls.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p class="last">This is an alpha version, the data model and design can change at any time without warning.
@@ -384,17 +388,122 @@ Only for development or testing purpose, do not use in production.
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#bug-tracker" id="toc-entry-1">Bug Tracker</a></li>
-<li><a class="reference internal" href="#credits" id="toc-entry-2">Credits</a><ul>
-<li><a class="reference internal" href="#authors" id="toc-entry-3">Authors</a></li>
-<li><a class="reference internal" href="#contributors" id="toc-entry-4">Contributors</a></li>
-<li><a class="reference internal" href="#maintainers" id="toc-entry-5">Maintainers</a></li>
+<li><a class="reference internal" href="#configuration" id="toc-entry-1">Configuration</a><ul>
+<li><a class="reference internal" href="#se-index-config" id="toc-entry-2">SE Index Config</a></li>
+<li><a class="reference internal" href="#se-backend" id="toc-entry-3">SE Backend</a></li>
+<li><a class="reference internal" href="#media" id="toc-entry-4">Media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage" id="toc-entry-5">Usage</a><ul>
+<li><a class="reference internal" href="#simple-quick-user-friendly-usage" id="toc-entry-6">Simple Quick User Friendly Usage</a></li>
+<li><a class="reference internal" href="#media-1" id="toc-entry-7">Media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bug-tracker" id="toc-entry-8">Bug Tracker</a></li>
+<li><a class="reference internal" href="#credits" id="toc-entry-9">Credits</a><ul>
+<li><a class="reference internal" href="#authors" id="toc-entry-10">Authors</a></li>
+<li><a class="reference internal" href="#contributors" id="toc-entry-11">Contributors</a></li>
+<li><a class="reference internal" href="#maintainers" id="toc-entry-12">Maintainers</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<div class="section" id="configuration">
+<h1><a class="toc-backref" href="#toc-entry-1">Configuration</a></h1>
+<p>You need to have typesense search engine running and successfully
+connected to odoo.</p>
+<p>Make sure to have <tt class="docutils literal">connector_search_engine</tt> and
+<tt class="docutils literal">connector_typesense</tt> modules installed.</p>
+<div class="section" id="se-index-config">
+<h2><a class="toc-backref" href="#toc-entry-2">SE Index Config</a></h2>
+<p>Transition to: Search Engine &gt; Configuration &gt; Index configurations</p>
+<p>Make sure to have this search index configuration in a new record:</p>
+<pre class="literal-block">
+- Name: give it a unigue name
+- Body Str:
+</pre>
+<pre class="code json literal-block">
+<span class="p">{</span><span class="w">
+  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ts_products_collection&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span><span class="w">
+      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w">
+      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.*&quot;</span><span class="p">,</span><span class="w">
+      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auto&quot;</span><span class="p">,</span><span class="w">
+      </span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">&quot;enable_nested_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span>
+</pre>
+</div>
+<div class="section" id="se-backend">
+<h2><a class="toc-backref" href="#toc-entry-3">SE Backend</a></h2>
+<p>Transition to: Search Engine &gt; Configuration &gt; Backends</p>
+<p>Create a backend record, and create an index line with values:</p>
+<pre class="literal-block">
+- Model: select the model you want to index
+- Serializer Type: Exporter
+- Exporter: select or create a new one and set
+    - Resource: model technical name you want to index
+    - Index lines: each line a technical name of the field of interest
+- Config: select or create the config se index record mentioned above
+</pre>
+<p>You can create and manage exporter templates through a button in the
+tree view once you click on the exporter or the button under the
+<tt class="docutils literal">exporter_id</tt> field in the se.index form view.</p>
+</div>
+<div class="section" id="media">
+<h2><a class="toc-backref" href="#toc-entry-4">Media</a></h2>
+<p><img alt="Backend Configuration" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/backend.png" />{width=300}</p>
+<p><img alt="Exporter Dialog Button in Tree View" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_dialog_button.png" />{width=300}</p>
+<p><img alt="Exporter Form View View" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_form_view.png" />{width=300}</p>
+<p><img alt="Exporter Dialog" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_dialog.png" />{width=300}</p>
+</div>
+</div>
+<div class="section" id="usage">
+<h1><a class="toc-backref" href="#toc-entry-5">Usage</a></h1>
+<div class="section" id="simple-quick-user-friendly-usage">
+<h2><a class="toc-backref" href="#toc-entry-6">Simple Quick User Friendly Usage</a></h2>
+<p>The key of the module is the user friendly usage of ir.exports to
+serialize data and resolve it for JSON.</p>
+<p>Behind the scene everything is managed to jsonify:</p>
+<pre class="literal-block">
+- images bytes into string
+- images thumbnail into urls external or internal (any of them in sequence)
+- many2one relation into string
+- many2one inner fileds into object of key value pairs
+- many2many into list of inner strings or objects
+- intergers are indexed as integers
+- floats are indexed as floats
+- id is ESSENIALLY indexed as string and not as integer (typesene only)
+</pre>
+<p>If relational field has inner relational field and that also has inner
+relational field or data, no worries everything is managed smoothly.</p>
+<p>Selecting fields and relations and inner relations is friendly handled
+by the exporter dialog.</p>
+<p>You can remove or add fields as you wish, as indexing is updated, and if
+necessary recreated.</p>
+<p>(recreating a collection only if a data type changes from string into
+object or vice versa, like having many2one relation and then having the
+same relation with inner fields of it)</p>
+</div>
+<div class="section" id="media-1">
+<h2><a class="toc-backref" href="#toc-entry-7">Media</a></h2>
+<p><img alt="se index form view with exporter button" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/se_index_form_with_exporter_button.png" /></p>
+<p><img alt="exporter dialog complicated tree" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/dialog_tree_content.png" /></p>
+<p><img alt="serialized json data from exporter related record" src="https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/serialized_data_from_exporter.png" /></p>
+</div>
+</div>
 <div class="section" id="bug-tracker">
-<h1><a class="toc-backref" href="#toc-entry-1">Bug Tracker</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-8">Bug Tracker</a></h1>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/search-engine/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
@@ -402,21 +511,21 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
-<h1><a class="toc-backref" href="#toc-entry-2">Credits</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-9">Credits</a></h1>
 <div class="section" id="authors">
-<h2><a class="toc-backref" href="#toc-entry-3">Authors</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-10">Authors</a></h2>
 <ul class="simple">
 <li>Kencove</li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h2><a class="toc-backref" href="#toc-entry-4">Contributors</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-11">Contributors</a></h2>
 <ul class="simple">
-<li>Mohamed Alkobrosli &lt;<a class="reference external" href="mailto:malkobrosly&#64;kencove.com">malkobrosly&#64;kencove.com</a>&gt;</li>
+<li>Mohamed Alkobrosli <a class="reference external" href="mailto:malkobrosly&#64;kencove.com">malkobrosly&#64;kencove.com</a></li>
 </ul>
 </div>
 <div class="section" id="maintainers">
-<h2><a class="toc-backref" href="#toc-entry-5">Maintainers</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-12">Maintainers</a></h2>
 <p>This module is maintained by the OCA.</p>
 <a class="reference external image-reference" href="https://odoo-community.org">
 <img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" />

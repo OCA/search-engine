@@ -30,13 +30,17 @@ Typesense Serializer Ir Export
 
 Use Exporter (ir.exports) as serializer for connector_typesense
 
-Each ir.exports records is converted into JSON and JSON data get indexed into the Search Engine.
+Each ir.exports records is converted into JSON and JSON data get indexed
+into the Search Engine.
 
-Data can be String, Integer, Float, Lists, and Relations in the form of Object.
+Data can be String, Integer, Float, Lists, and Relations in the form of
+Object.
 
-Thnaks to the dynamic Schema configuration we can add new fields or remove without breaking the Schema.
+Thnaks to the dynamic Schema configuration we can add new fields or
+remove without breaking the Schema.
 
-Binary data like images are sent as string, but better if we use external filestore to use images related external urls.
+Binary data like images are sent as string, but better if we use
+external filestore to use images related external urls.
 
 .. IMPORTANT::
    This is an alpha version, the data model and design can change at any time without warning.
@@ -47,6 +51,133 @@ Binary data like images are sent as string, but better if we use external filest
 
 .. contents::
    :local:
+
+Configuration
+=============
+
+You need to have typesense search engine running and successfully
+connected to odoo.
+
+Make sure to have ``connector_search_engine`` and
+``connector_typesense`` modules installed.
+
+SE Index Config
+---------------
+
+Transition to: Search Engine > Configuration > Index configurations
+
+Make sure to have this search index configuration in a new record:
+
+::
+
+   - Name: give it a unigue name
+   - Body Str:
+
+.. code:: json
+
+   {
+     "name": "ts_products_collection",
+     "fields": [
+       {
+         "name": "id",
+         "type": "string"
+       },
+       {
+         "name": "name",
+         "type": "string"
+       },
+       {
+         "name": ".*",
+         "type": "auto",
+         "optional": true
+       }
+     ],
+     "enable_nested_fields": true
+   }
+
+SE Backend
+----------
+
+Transition to: Search Engine > Configuration > Backends
+
+Create a backend record, and create an index line with values:
+
+::
+
+   - Model: select the model you want to index
+   - Serializer Type: Exporter
+   - Exporter: select or create a new one and set
+       - Resource: model technical name you want to index
+       - Index lines: each line a technical name of the field of interest
+   - Config: select or create the config se index record mentioned above
+
+You can create and manage exporter templates through a button in the
+tree view once you click on the exporter or the button under the
+``exporter_id`` field in the se.index form view.
+
+Media
+-----
+
+|Backend Configuration|\ {width=300}
+
+|Exporter Dialog Button in Tree View|\ {width=300}
+
+|Exporter Form View View|\ {width=300}
+
+|Exporter Dialog|\ {width=300}
+
+.. |Backend Configuration| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/backend.png
+.. |Exporter Dialog Button in Tree View| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_dialog_button.png
+.. |Exporter Form View View| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_form_view.png
+.. |Exporter Dialog| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_dialog.png
+
+Usage
+=====
+
+Simple Quick User Friendly Usage
+--------------------------------
+
+The key of the module is the user friendly usage of ir.exports to
+serialize data and resolve it for JSON.
+
+Behind the scene everything is managed to jsonify:
+
+::
+
+   - images bytes into string
+   - images thumbnail into urls external or internal (any of them in sequence)
+   - many2one relation into string
+   - many2one inner fileds into object of key value pairs
+   - many2many into list of inner strings or objects
+   - intergers are indexed as integers
+   - floats are indexed as floats
+   - id is ESSENIALLY indexed as string and not as integer (typesene only)
+
+If relational field has inner relational field and that also has inner
+relational field or data, no worries everything is managed smoothly.
+
+Selecting fields and relations and inner relations is friendly handled
+by the exporter dialog.
+
+You can remove or add fields as you wish, as indexing is updated, and if
+necessary recreated.
+
+(recreating a collection only if a data type changes from string into
+object or vice versa, like having many2one relation and then having the
+same relation with inner fields of it)
+
+Media
+-----
+
+|se index form view with exporter button|
+
+|exporter dialog complicated tree|
+
+|serialized json data from exporter related record|
+
+.. |se index form view with exporter button| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/se_index_form_with_exporter_button.png
+.. |exporter dialog complicated tree| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/dialog_tree_content.png
+.. |serialized json data from exporter related record| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/serialized_data_from_exporter.png
 
 Bug Tracker
 ===========
@@ -62,17 +193,17 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Kencove
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Mohamed Alkobrosli <malkobrosly@kencove.com>
+- Mohamed Alkobrosli malkobrosly@kencove.com
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
