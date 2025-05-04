@@ -28,6 +28,8 @@ class IrExportsResolver:
         if parser.get("fields") and isinstance(parser["fields"], list):
             fields = parser["fields"]
         self.resolved_parser = [self.convert(field) for field in fields]
+        # Remove elements from the list if they are empty lists
+        self.resolved_parser = [item for item in self.resolved_parser if item]
 
     def get_dict_key(self, field):
         if isinstance(field, dict) and "name" in field:
@@ -35,15 +37,25 @@ class IrExportsResolver:
         else:
             return field
 
-    def convert(self, field):
-        if isinstance(field, dict):
-            return self.get_dict_key(field)
-        elif isinstance(field, tuple) and len(field) == 2:
+    def resolve_tuple_field(self, field):
+        if isinstance(field, tuple) and len(field) == 2:
             parent, children = field
             if isinstance(parent, dict):
                 return (
                     self.get_dict_key(parent),
-                    [self.get_dict_key(child) for child in children],
+                    [
+                        self.get_dict_key(child)
+                        if isinstance(child, dict)
+                        else self.resolve_tuple_field(child)
+                        for child in children
+                    ],
                 )
+        # Safeguarding the structure result if the branch is broken,
+        # assign this branch empty list to protect other branches and the root
+        return []
+
+    def convert(self, field):
+        if isinstance(field, dict):
+            return self.get_dict_key(field)
         else:
-            return field
+            return self.resolve_tuple_field(field)

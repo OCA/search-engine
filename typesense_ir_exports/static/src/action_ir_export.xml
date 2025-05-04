@@ -31,7 +31,17 @@
         <xpath expr="//t[@t-set-slot='footer']" position="attributes">
             <attribute name="t-if">false</attribute>
         </xpath>
-
+        <xpath expr="//Dialog" position="inside">
+            <t t-set-slot="footer" t-if="state.showApplyTemplatetButton">
+                <button
+                    class="btn btn-primary o_select_button"
+                    data-hotkey="v"
+                    t-on-click.stop="onClickApplyTemplatetButton"
+                    t-att-disabled="state.disabled"
+                >Apply selected template and close
+                </button>
+            </t>
+        </xpath>
         <xpath
             expr="//button[@t-on-click.stop='onCancelExportTemplate']"
             position="after"

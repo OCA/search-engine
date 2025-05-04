@@ -14,6 +14,9 @@ const {onWillDestroy} = owl;
 class CustomExportDataDialog extends ExportDataDialog {
     setup() {
         super.setup();
+        Object.assign(this.state, {
+            showApplyTemplatetButton: false,
+        });
         this.title = this.env._t("Select Data for Indexing");
         // We hack the current model from props obj to avoid patching other methods
         this.swapResModel = this.props.root.resModel;
@@ -25,6 +28,29 @@ class CustomExportDataDialog extends ExportDataDialog {
         onWillDestroy(() => {
             this.props.root.resModel = this.swapResModel;
         });
+    }
+    async onChangeExportList(ev) {
+        this.loadExportList(ev.target.value);
+        // Show button only when there is selected saved template with different id
+        if (
+            this.state.templateId === this.props.context.exporter_id[0] ||
+            this.state.templateId === "new_template"
+        ) {
+            this.state.showApplyTemplatetButton = false;
+        } else {
+            this.state.showApplyTemplatetButton = true;
+        }
+    }
+    onQuickOverlap(templ) {
+        this.props.context.overlap(templ);
+    }
+    onClickApplyTemplatetButton() {
+        const arrayOfTemplates = this.templates.map(({id, name}) => [id, name]);
+        const templ = arrayOfTemplates.find(
+            (subArray) => subArray[0] === this.state.templateId
+        );
+        this.onQuickOverlap(templ);
+        this.props.close();
     }
     async onUpdateExportTemplate() {
         const oldRec = await this.orm.read(
@@ -80,6 +106,11 @@ class IrExportWidget extends Many2OneField {
         this.rpc = useService("rpc");
         this.orm = useService("orm");
         this.dialogService = useService("dialog");
+        this.quickOverlap = (templ) => {
+            if (templ && templ[0] && templ[1]) {
+                return this.props.update(templ);
+            }
+        };
     }
     async downloadExport() {
         return true;
@@ -97,7 +128,10 @@ class IrExportWidget extends Many2OneField {
             context: {
                 ...this.props.record.context,
                 resModel: this.props.record.data.model_name,
-                exporter_id: this.props.record.data.exporter_id,
+                exporter_id: this.props.value,
+                overlap: (templ) => {
+                    this.quickOverlap(templ);
+                },
             },
             defaultExportList: [],
             download: this.downloadExport.bind(this),
