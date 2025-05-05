@@ -7,6 +7,9 @@
         <field name="arch" type="xml">
             <field name="exporter_id" position="attributes">
                 <attribute name="widget">ir_export_widget</attribute>
+                <attribute
+                    name="options"
+                >{'no_open': True, 'no_create': True}</attribute>
             </field>
         </field>
     </record>
@@ -17,6 +20,9 @@
         <field name="arch" type="xml">
             <field name="exporter_id" position="attributes">
                 <attribute name="widget">ir_export_widget</attribute>
+                <attribute
+                    name="options"
+                >{'no_open': True, 'no_create': True}</attribute>
             </field>
         </field>
     </record>

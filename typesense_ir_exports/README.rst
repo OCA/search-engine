@@ -106,29 +106,24 @@ Create a backend record, and create an index line with values:
 
    - Model: select the model you want to index
    - Serializer Type: Exporter
-   - Exporter: select or create a new one and set
-       - Resource: model technical name you want to index
-       - Index lines: each line a technical name of the field of interest
+   - Exporter: select or create a new exporter template by clicking on "Open Exporter" button
    - Config: select or create the config se index record mentioned above
 
-You can create and manage exporter templates through a button in the
-tree view once you click on the exporter or the button under the
+You can create, update and delete exporter templates through a button in
+the tree view once you click on the exporter or the button under the
 ``exporter_id`` field in the se.index form view.
 
 Media
 -----
 
-|Backend Configuration|\ {width=300}
+|Backend Configuration|
 
-|Exporter Dialog Button in Tree View|\ {width=300}
+|Exporter Dialog Button in Tree View|
 
-|Exporter Form View View|\ {width=300}
-
-|Exporter Dialog|\ {width=300}
+|Exporter Dialog|
 
 .. |Backend Configuration| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/backend.png
 .. |Exporter Dialog Button in Tree View| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_dialog_button.png
-.. |Exporter Form View View| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_form_view.png
 .. |Exporter Dialog| image:: https://raw.githubusercontent.com/OCA/search-engine/16.0/typesense_ir_exports/static/img/exporter_dialog.png
 
 Usage

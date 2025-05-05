@@ -116,7 +116,6 @@ class IrExportWidget extends Many2OneField {
         return true;
     }
     async getExportedFields(model, import_compat, parentParams) {
-        model = this.props.record.data.model_name;
         return await this.rpc("/web/export/get_fields", {
             ...parentParams,
             model,

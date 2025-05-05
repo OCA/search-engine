@@ -12,7 +12,7 @@
                     icon="fa-check"
                     class="btn btn-link p-0 text-left"
                 >
-                    Select Fields to Index
+                    Open Exporter
                 </button>
             </div>
         </xpath>
