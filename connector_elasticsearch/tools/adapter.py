@@ -61,6 +61,9 @@ class ElasticSearchAdapter(SearchEngineAdapter):
                 [backend.es_server_host],
                 connection_class=self._es_connection_class,
                 api_key=api_key,
+                timeout=max(backend.es_timeout, 1),
+                retry_on_timeout=backend.es_retry_on_timeout,
+                max_retries=max(0, backend.es_max_retries),
             )
         if backend.auth_type == "http":
             auth = (backend.es_user, backend.es_password)
