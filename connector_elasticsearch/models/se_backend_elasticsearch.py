@@ -27,6 +27,22 @@ class SeBackendElasticsearch(models.Model):
     )
     api_key_id = fields.Char(help="Elasticsearch Api Key ID", string="Api Key ID")
     api_key = fields.Char(help="Elasticsearch Api Key")
+    es_timeout = fields.Integer(
+        string="Elasticsearch timeout",
+        default=10,
+        help="Elastic Search request timeout",
+    )
+    es_max_retries = fields.Integer(
+        string="Elasticsearch max retries",
+        default=0,
+        help="Number of retries, when an occurs. "
+        "0 or negative means no retries and the exception is raised.",
+    )
+    es_retry_on_timeout = fields.Boolean(
+        string="Elasticsearch retry on timeout",
+        help="If set, retry when a connection timeout occurs. "
+        "Otherwise, the retries are only on other errors",
+    )
 
     @property
     def _server_env_fields(self):
