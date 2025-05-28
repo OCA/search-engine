@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-04-02 11:44+0000\n"
+"PO-Revision-Date: 2025-05-28 11:25+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__auth_type__api_key
@@ -52,7 +52,7 @@ msgstr "Tipo autorizzazione"
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_timeout
 msgid "Elastic Search request timeout"
-msgstr ""
+msgstr "Timeout richiesta Elastic Search"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__backend_type__elasticsearch
@@ -77,17 +77,17 @@ msgstr "ID chiave API ElasticSearch"
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_max_retries
 msgid "Elasticsearch max retries"
-msgstr ""
+msgstr "Tentativi massimi Elastic Search"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_retry_on_timeout
 msgid "Elasticsearch retry on timeout"
-msgstr ""
+msgstr "Ripetizione al timeout Elastic Search"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_timeout
 msgid "Elasticsearch timeout"
-msgstr ""
+msgstr "Timeout Elastic Search"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_password
@@ -115,6 +115,8 @@ msgid ""
 "If set, retry when a connection timeout occurs. Otherwise, the retries are "
 "only on other errors"
 msgstr ""
+"Se impostata, ritenta quando al timeout di una connessione. Altrimenti, i "
+"tentativi sono solo su errori"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_password
@@ -125,7 +127,7 @@ msgstr "Lasciare vuot se non si utilizza l'autenticazione HTTP."
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "Max retries"
-msgstr ""
+msgstr "Massimo tentativi"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_max_retries
@@ -133,6 +135,8 @@ msgid ""
 "Number of retries, when an occurs. 0 or negative means no retries and the "
 "exception is raised."
 msgstr ""
+"Numero di tentativi, quando si presentano. 0 o negativo indica nessun "
+"tentativo e si attiva l'eccezione."
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
@@ -142,7 +146,7 @@ msgstr "Password"
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "Retry on timeout"
-msgstr ""
+msgstr "Ritenta al timeout"
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
@@ -167,7 +171,7 @@ msgstr "SSL"
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "Timeout"
-msgstr ""
+msgstr "Timeout"
 
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__backend_type
@@ -177,7 +181,7 @@ msgstr "Tipo"
 #. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__backend_type_env_default
 msgid "Type Env Default"
-msgstr ""
+msgstr "Tipo ambiente predefinito"
 
 #. module: connector_elasticsearch
 #. odoo-python
