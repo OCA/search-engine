@@ -43,6 +43,11 @@
                         attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
                     />
                 </group>
+                <group name="se-params">
+                    <field string="Max retries" name="es_max_retries" />
+                    <field string="Retry on timeout" name="es_retry_on_timeout" />
+                    <field string="Timeout" name="es_timeout" />
+                </group>
             </group>
         </field>
     </record>
