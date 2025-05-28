@@ -47,6 +47,11 @@ msgid "Auth Type"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_timeout
+msgid "Elastic Search request timeout"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields.selection,name:connector_elasticsearch.selection__se_backend__backend_type__elasticsearch
 msgid "ElasticSearch"
 msgstr ""
@@ -64,6 +69,21 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__api_key_id
 msgid "Elasticsearch Api Key ID"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_max_retries
+msgid "Elasticsearch max retries"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_retry_on_timeout
+msgid "Elasticsearch retry on timeout"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__es_timeout
+msgid "Elasticsearch timeout"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -87,6 +107,13 @@ msgid "Host"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_retry_on_timeout
+msgid ""
+"If set, retry when a connection timeout occurs. Otherwise, the retries are "
+"only on other errors"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_password
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_user
 msgid "Leave blank if not using http authentication."
@@ -94,7 +121,24 @@ msgstr ""
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "Max retries"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_max_retries
+msgid ""
+"Number of retries, when an occurs. 0 or negative means no retries and the "
+"exception is raised."
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "Password"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "Retry on timeout"
 msgstr ""
 
 #. module: connector_elasticsearch
@@ -118,8 +162,18 @@ msgid "Ssl"
 msgstr ""
 
 #. module: connector_elasticsearch
+#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
+msgid "Timeout"
+msgstr ""
+
+#. module: connector_elasticsearch
 #: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__backend_type
 msgid "Type"
+msgstr ""
+
+#. module: connector_elasticsearch
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__backend_type_env_default
+msgid "Type Env Default"
 msgstr ""
 
 #. module: connector_elasticsearch
