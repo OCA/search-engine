@@ -45,7 +45,7 @@ class SeBackend(models.Model):
     es_max_retries = fields.Integer(
         string="Elasticsearch max retries",
         default=0,
-        help="Number of retries, when an occurs. "
+        help="Number of retries, when an error occurs. "
         "0 or negative means no retries and the exception is raised.",
     )
     es_retry_on_timeout = fields.Boolean(
