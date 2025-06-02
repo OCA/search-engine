@@ -127,8 +127,8 @@ msgstr ""
 #. module: connector_elasticsearch
 #: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__es_max_retries
 msgid ""
-"Number of retries, when an occurs. 0 or negative means no retries and the "
-"exception is raised."
+"Number of retries, when an error occurs. 0 or negative means no retries and "
+"the exception is raised."
 msgstr ""
 
 #. module: connector_elasticsearch
