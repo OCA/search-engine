@@ -282,6 +282,7 @@ Contributors
 * Laurent Mignon <laurent.mignon@acsone.eu>
 * Simone Orsi <simone.orsi@camptocamp.com>
 * Raphaël Reverdy <raphael.reverdy@akretion.com>
+* Mohamed Alkobrosli <malkobrosly@kencove.com>
 
 Maintainers
 ~~~~~~~~~~~
