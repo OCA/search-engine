@@ -344,7 +344,8 @@ class SeIndex(models.Model):
 
     @api.model
     def export_all_settings(self) -> None:
-        self.search([]).export_settings()
+        for rec in self.search([]):
+            rec.export_settings()
 
     def export_settings(self) -> None:
         self.ensure_one()
