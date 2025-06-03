@@ -166,6 +166,10 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.partner._remove_from_index(self.se_index)
         self.assertEqual(self.partner_binding.state, "to_delete")
 
+    def test_remove_from_index_no_values(self):
+        with self.assertRaisesRegex(ValueError, "Indexes are mandatory"):
+            self.partner._remove_from_index(self.env["se.index"])
+
     def test_unlink_record(self):
         self.partner.unlink()
         self.assertEqual(self.partner_binding.state, "to_delete")
@@ -402,3 +406,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             ValidationError, "Binding model must be equal to the index model"
         ):
             user._add_to_index(self.se_index)
+
+    def test_add_to_index_no_values(self):
+        with self.assertRaisesRegex(ValueError, "Indexes are mandatory"):
+            self.partner._add_to_index(self.env["se.index"])
