@@ -5,6 +5,8 @@ import json
 import logging
 from typing import Any, Iterator
 
+import requests
+
 from odoo import _
 from odoo.exceptions import UserError
 
@@ -33,10 +35,6 @@ class TypesenseAdapter(SearchEngineAdapter):
     @property
     def _index_name(self):
         return self.index_record.name.lower()
-
-    # @property
-    # def _es_connection_class(self):
-    #     return elasticsearch.RequestsHttpConnection
 
     @property
     def _ts_client(self):
@@ -72,18 +70,19 @@ class TypesenseAdapter(SearchEngineAdapter):
             raise UserError(
                 _("Not Found - The requested resource is not found.")
             ) from exc
-        except typesense.RequestUnauthorized as exc:
+        except typesense.exceptions.RequestUnauthorized as exc:
             raise UserError(_("Unauthorized - Your API key is wrong.")) from exc
-        except typesense.TypesenseClientError as exc:
+        except requests.exceptions.ConnectionError as exc:
             raise UserError(_("Unable to connect :") + "\n\n" + repr(exc)) from exc
+        except requests.exceptions.InvalidURL as exc:
+            raise UserError(
+                _("Invalid URL - No host supplied") + "\n\n" + repr(exc)
+            ) from exc
 
     def index(self, records) -> None:
-        """ """
-        print(">>>>>> run TS index method")
         ts = self._ts_client
         records_for_bulk = ""
         for record in records:
-            print(f">>> record: {record}")
             if "id" in record:
                 record["id"] = str(record["id"])
             records_for_bulk += f"{json.dumps(record)}\n"
@@ -106,24 +105,18 @@ class TypesenseAdapter(SearchEngineAdapter):
             )
 
     def delete(self, binding_ids) -> None:
-        """ """
         ts = self._ts_client
-        _logger.info(
-            f"Delete binding_ids: {', '.join(binding_ids)} from collection "
-            f"'{self.index_name}'."
+        ts.collections[self._index_name].documents.delete(
+            {"filter_by": f"id:{binding_ids}"}
         )
-        ts.collections[self._index_name].documents.delete({"filter_by=id": binding_ids})
 
     def clear(self) -> None:
-        """ """
         ts = self._ts_client
         index_name = self._get_current_aliased_index_name() or self._index_name
-        _logger.info(f"Clear current_aliased_index_name '{index_name}'.")
         ts.collections[index_name].delete()
         self.settings()
 
     def each(self) -> Iterator[dict[str, Any]]:
-        """ """
         ts = self._ts_client
         res = ts.collections[self._index_name].documents.search(
             {
@@ -231,7 +224,7 @@ class TypesenseAdapter(SearchEngineAdapter):
             try:
                 client.collections[next_aliased_index_name].retrieve()
             except typesense.exceptions.ObjectNotFound as e:
-                _logger.warn(
+                _logger.warning(
                     f"New aliased_index_name not found, skip updating alias and "
                     f"not removing old index (collection)!\n\n{e}"
                 )

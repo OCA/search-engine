@@ -31,12 +31,7 @@ class SeBackend(models.Model):
         string="Typesense server timeout",
         groups="connector_search_engine.group_connector_search_engine_manager",
     )
-    api_key_id = fields.Char(
-        help="Typesense Api Key ID",
-        string="Api Key ID",
-        groups="connector_search_engine.group_connector_search_engine_manager",
-    )
-    api_key = fields.Char(
+    ts_api_key = fields.Char(
         help="Typesense Api Key",
         groups="connector_search_engine.group_connector_search_engine_manager",
     )

@@ -24,11 +24,15 @@
                     <field
                         name="ts_server_protocol"
                         string="Protocol"
-                        placeholder="http://"
+                        placeholder="http"
                         attrs="{'required': [('backend_type', '=', 'typesense')]}"
                     />
-                    <!-- <field name="api_key_id" /> -->
-                    <field name="api_key" />
+                    <field
+                        name="ts_api_key"
+                        string="Typesense API Key"
+                        placeholder="xyz"
+                        attrs="{'required': [('backend_type', '=', 'typesense')]}"
+                    />
                 </group>
             </group>
         </field>

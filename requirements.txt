@@ -2,6 +2,6 @@
 elasticsearch>=7.0.0,<=7.13.4
 pydantic
 requests
+typesense==1.0.3
 typing-extensions
-typesense
 unidecode

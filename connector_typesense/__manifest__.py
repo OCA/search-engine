@@ -5,16 +5,16 @@
     "name": "connector_typesense",
     "category": "Connector",
     "summary": "Connector For Typesense Search Engine",
-    "version": "16.0.0.0.2",
+    "version": "16.0.1.0.0",
     "license": "AGPL-3",
-    "author": "Derico, Odoo Community Association (OCA)",
+    "author": "Derico, Kencove, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
+    "maintainers": [],
     "depends": ["connector_search_engine"],
     "data": [
-        "views/se_backend.xml",
+        "views/ts_backend.xml",
     ],
-    # "demo": ["demo/backend_demo.xml"],
-    # TODO: Get latest improvements from elasticsearch library
-    "external_dependencies": {"python": ["typesense", "requests"]},
+    "demo": ["demo/se_index_config_demo.xml", "demo/backend_demo.xml"],
+    "external_dependencies": {"python": ["typesense==1.0.3", "requests"]},
     "installable": True,
 }
