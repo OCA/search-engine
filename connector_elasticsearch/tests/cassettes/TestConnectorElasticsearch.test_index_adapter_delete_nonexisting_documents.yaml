@@ -89,10 +89,10 @@ interactions:
       code: 404
       message: Not Found
 - request:
-    body: '{}'
+    body: '{"mappings":{}}'
     headers:
       Content-Length:
-      - '2'
+      - '15'
       content-type:
       - application/json
       user-agent:
@@ -169,7 +169,7 @@ interactions:
     uri: http://elastic:9200/_bulk
   response:
     body:
-      string: '{"took":32,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":404}}]}'
+      string: '{"took":2,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":404}}]}'
     headers:
       Warning:
       - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
@@ -179,7 +179,7 @@ interactions:
       X-elastic-product:
       - Elasticsearch
       content-length:
-      - '494'
+      - '493'
       content-type:
       - application/json; charset=UTF-8
     status:

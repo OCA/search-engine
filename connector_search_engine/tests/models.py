@@ -13,6 +13,7 @@ class FakeSeAdapter(SearchEngineAdapter):
         if not hasattr(self, "_mocked_calls"):
             # Not using the context manager below
             self._mocked_calls = []
+            self._response = {}
 
     def index(self, data):
         self._mocked_calls.append(
@@ -29,15 +30,15 @@ class FakeSeAdapter(SearchEngineAdapter):
             dict(index=self.index_record, method="clear", args=None)
         )
 
-    def each(self):
+    def each(self, fetch_fields=None):
         self._mocked_calls.append(
             dict(index=self.index_record, method="each", args=None)
         )
-        return [{"id": 42}]
+        return self._response.get("each", {})
 
     @classmethod
     @contextmanager
-    def mocked_calls(cls):
+    def mocked_calls(cls, response=None):
         """Handle mocking of calls.
 
         Usage:
@@ -48,8 +49,11 @@ class FakeSeAdapter(SearchEngineAdapter):
                 # do more
         """
         cls._mocked_calls = []
+        if response:
+            cls._response = response
         yield cls._mocked_calls
         cls._mocked_calls = []
+        cls._response = {}
 
 
 class FakeSerializer:

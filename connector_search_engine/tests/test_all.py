@@ -342,3 +342,31 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         )
         self.assertDictEqual(config.body, {"mappings": {"1": 1}})
         self.assertEqual(config.body_str, '{"mappings": {"1":1}}')
+
+    def test_resynchronize_all_bindings(self):
+        self.partners = self.env["res.partner"].create(
+            [
+                {"name": "Foo"},
+                {"name": "Bar"},
+            ]
+        )
+        self.partners._add_to_index(self.se_index)
+
+        index_data = [{"id": p.id, "name": p.name} for p in self.partners]
+
+        none_existing_partner_id = (
+            self.env["res.partner"].search([], limit=1, order="id desc").id + 1
+        )
+
+        index_data += [
+            {"id": none_existing_partner_id, "name": "I do not exist"},
+            {"id": "wtf", "name": "id is not a integer"},
+        ]
+
+        with self.se_adapter.mocked_calls({"each": index_data}) as calls:
+
+            self.se_index.resynchronize_all_bindings()
+
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[1]["method"], "delete")
+            self.assertEqual(calls[1]["args"], [none_existing_partner_id, "wtf"])

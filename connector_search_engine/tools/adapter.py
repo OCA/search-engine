@@ -38,7 +38,7 @@ class SearchEngineAdapter(ABC):
         ...
 
     @abstractmethod
-    def each(self) -> Iterator[dict[str, Any]]:
+    def each(self, fetch_fields: list[str] | None = None) -> Iterator[dict[str, Any]]:
         """Return an iterator on the index content."""
         ...
 
@@ -55,11 +55,3 @@ class SearchEngineAdapter(ABC):
 
         It should raise an exception if the connection is not working.
         """
-
-    def _get_odoo_id_from_index_data(self, record: dict[str, Any]) -> int:
-        """Return the odoo id from data stored into the index.
-
-        Whatever the data stored into the index, it should be possible to
-        retrieve the odoo id as an integer.
-        """
-        return int(record["id"])

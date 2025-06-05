@@ -1,6 +1,7 @@
 # Copyright 2018 Simone Orsi - Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import json
 import logging
 from time import sleep
 from urllib import parse as urlparse
@@ -166,7 +167,10 @@ class CommonTestAdapter(VCRMixin):
 
     @classmethod
     def setup_records(cls):
-        cls.se_config = cls.env["se.index.config"].create(cls._se_index_config())
+        vals = cls._se_index_config()
+        # As body_str have a default value we can not write directly in body
+        vals["body_str"] = json.dumps(vals.pop("body"))
+        cls.se_config = cls.env["se.index.config"].create(vals)
         return super().setup_records()
 
     def setUp(self):
@@ -195,11 +199,14 @@ class CommonTestAdapter(VCRMixin):
             sleep(2)
 
     def test_index_adapter_index_and_iter(self):
-        self.adapter.index(self.data)
+        data = []
+        for _id in range(1, 2000):
+            data.append({"id": _id, "name": f"My name is {_id}"})
+        self.adapter.index(data)
         self._wait_search_engine()
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
-        self.assertListEqual(res, self.data)
+        self.assertListEqual(res, data)
 
     def test_index_adapter_delete(self):
         self.adapter.index(self.data)

@@ -3,7 +3,6 @@
 
 import logging
 import time
-from typing import Any, Iterator
 
 from odoo import _
 from odoo.exceptions import UserError
@@ -139,15 +138,38 @@ class ElasticSearchAdapter(SearchEngineAdapter):
                 )
             )
 
-    def each(self) -> Iterator[dict[str, Any]]:
-        es = self._es_client
-        res = es.search(index=self._index_name, filter_path=["hits.hits._source"])
-        if not res:
-            # eg: empty index
-            return
-        hits = res["hits"]["hits"]
-        for hit in hits:
-            yield hit["_source"]
+    def each(self, fetch_fields=None):
+        es = self._get_es_client()
+        body = {"size": 1000}
+        if fetch_fields:
+            body["_source"] = fetch_fields
+        result = es.search(
+            index=self._index_name,
+            filter_path=["hits.hits._source", "_scroll_id", "hits.hits._id"],
+            scroll="5m",
+            body=body,
+        )
+        while result.get("hits", {}).get("hits"):
+            items = []
+            for item in result["hits"]["hits"]:
+                # In elastic the real id is "_id", so we force it
+                try:
+                    real_id = int(item["_id"])
+                except ValueError:
+                    # In that case there is something wrong
+                    # normally we should only have integer
+                    # but we still set the _id like that
+                    # so the resynchronize mecanism will fix it
+                    real_id = item["_id"]
+                item["_source"]["id"] = real_id
+                items.append(item["_source"])
+            yield from items
+            result = es.scroll(
+                body={
+                    "scroll_id": result["_scroll_id"],
+                    "scroll": "5m",
+                }
+            )
 
     def settings(self) -> None:
         es = self._es_client
