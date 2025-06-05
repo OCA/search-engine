@@ -3,8 +3,6 @@
 
 from unittest import mock
 
-from odoo_test_helper import FakeModelLoader
-
 from odoo.exceptions import ValidationError
 from odoo.tests.common import Form
 from odoo.tools import mute_logger
@@ -12,80 +10,7 @@ from odoo.tools import mute_logger
 from odoo.addons.queue_job.job import identity_exact
 from odoo.addons.queue_job.tests.common import trap_jobs
 
-from .common import TestSeBackendCaseBase
-
-
-class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        # Load fake models ->/
-        cls.loader = FakeModelLoader(cls.env, cls.__module__)
-        cls.loader.backup_registry()
-        from .models import (
-            FakeSeAdapter,
-            FakeSerializer,
-            ResPartner,
-            ResUsers,
-            SeBackend,
-            SeIndex,
-        )
-
-        cls.loader.update_registry((ResPartner, ResUsers, SeBackend, SeIndex))
-        cls.binding_model = cls.env["se.binding"]
-        cls.se_index_model = cls.env["se.index"]
-
-        cls.se_adapter = FakeSeAdapter
-        cls.model_serializer = FakeSerializer
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.loader.restore_registry()
-        super().tearDownClass()
-
-    @classmethod
-    def _prepare_index_values(cls, backend=None):
-        backend = backend or cls.backend
-        return {
-            "name": "Partner Index",
-            "backend_id": backend.id,
-            "model_id": cls.env["ir.model"]
-            .search([("model", "=", "res.partner")], limit=1)
-            .id,
-            "lang_id": cls.env.ref("base.lang_en").id,
-            "serializer_type": "fake",
-        }
-
-    @classmethod
-    def setup_records(cls, backend=None):
-        backend = backend or cls.backend
-        # create an index for partner model
-        cls.se_index = cls.se_index_model.create(cls._prepare_index_values(backend))
-        # create a binding + partner alltogether
-        cls.partner = cls.env["res.partner"].create(
-            {
-                "name": "Marty McFly",
-                "country_id": cls.env.ref("base.us").id,
-                "email": "marty.mcfly@future.com",
-                "child_ids": [
-                    (0, 0, {"name": "Doc Brown", "email": "docbrown@future.com"})
-                ],
-            }
-        )
-        cls.partner_binding = cls.partner._add_to_index(cls.se_index)
-
-        cls.partner_expected = {"id": cls.partner.id, "name": cls.partner.name}
-
-
-class TestBindingIndexBaseFake(TestBindingIndexBase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.backend_model = cls.env["se.backend"]
-        cls.backend = cls.backend_model.create(
-            {"name": "Fake SE", "tech_name": "fake_se", "backend_type": "fake"}
-        )
-        cls.setup_records()
+from .common import TestBindingIndexBaseFake
 
 
 class TestBindingIndex(TestBindingIndexBaseFake):
