@@ -335,3 +335,10 @@ class TestBindingIndex(TestBindingIndexBaseFake):
     def test_add_to_index_no_values(self):
         with self.assertRaisesRegex(ValueError, "Indexes are mandatory"):
             self.partner._add_to_index(self.env["se.index"])
+
+    def test_index_config_as_str(self):
+        config = self.env["se.index.config"].create(
+            {"name": "foo", "body_str": '{"mappings": {"1":1}}'}
+        )
+        self.assertDictEqual(config.body, {"mappings": {"1": 1}})
+        self.assertEqual(config.body_str, '{"mappings": {"1":1}}')

@@ -134,7 +134,10 @@ class TestBindingIndexBaseFake(TestBindingIndexBase):
         cls.setup_records()
 
 
-class CommonTestAdapter(VCRMixin, TestBindingIndexBase):
+class CommonTestAdapter(VCRMixin):
+    """All adapter should behave exactly the same, whatever search engine
+    we use, adapter should have the same input and same output"""
+
     _backend_xml_id = None
 
     @classmethod
@@ -143,11 +146,16 @@ class CommonTestAdapter(VCRMixin, TestBindingIndexBase):
         cls.backend = cls.env.ref(cls._backend_xml_id)
         cls.setup_records()
         cls.adapter = cls.se_index.se_adapter
+        cls.data = [
+            {"id": 1, "name": "foo"},
+            {"id": 2, "name": "bar"},
+            {"id": 3, "name": "joe"},
+        ]
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
             "record_mode": "one",
-            "match_on": ["method", "path", "query"],
+            "match_on": ["method", "path", "query", "raw_body"],
             "filter_headers": ["Authorization"],
             "decode_compressed_response": True,
         }
@@ -161,51 +169,46 @@ class CommonTestAdapter(VCRMixin, TestBindingIndexBase):
         cls.se_config = cls.env["se.index.config"].create(cls._se_index_config())
         return super().setup_records()
 
+    def setUp(self):
+        super().setUp()
+        # Always start with a clean index
+        self.adapter.clear()
+
     @classmethod
     def _prepare_index_values(cls, backend):
         values = super()._prepare_index_values(backend)
         values.update({"config_id": cls.se_config.id})
         return values
 
-    def test_index_adapter(self):
-        # Set partner to be updated with fake vals in data
-        self.partner_binding.write({"state": "to_export", "data": {"id": "foo"}})
-        # Export index to elasticsearch should be called
-        self.se_index.batch_sync()
+    def tearDown(self):
+        super().tearDown()
+        # Ensure all call have been done to the cassette
+        # when we are replaying it
+        if not self.cassette.dirty:
+            self.assertTrue(
+                self.cassette.all_played, "All cassettes have been not played"
+            )
 
-        # Ensure that call have been done to the cassette
-        self.assertTrue(self.cassette.all_played)
-
-    def test_index_config_as_str(self):
-        self.se_config.write({"body_str": '{"mappings": {"1":1}}'})
-        self.assertDictEqual(self.se_config.body, {"mappings": {"1": 1}})
-        self.assertEqual(self.se_config.body_str, '{"mappings": {"1":1}}')
-
-    def test_index_adapter_iter(self):
-        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
-        self.adapter.clear()
-        self.adapter.index(data)
+    def _wait_search_engine(self):
         if self.cassette.dirty:
-            # when we record the test we must wait for es
+            # when we record the test we must wait for the search engine
             sleep(2)
+
+    def test_index_adapter_index_and_iter(self):
+        self.adapter.index(self.data)
+        self._wait_search_engine()
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
-        self.assertListEqual(res, data)
+        self.assertListEqual(res, self.data)
 
     def test_index_adapter_delete(self):
-        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
-        self.adapter.clear()
-        self.adapter.index(data)
-        if self.cassette.dirty:
-            # when we record the test we must wait for es
-            sleep(2)
-        self.adapter.delete(["foo", "foo3"])
-        if self.cassette.dirty:
-            # when we record the test we must wait for es
-            sleep(2)
+        self.adapter.index(self.data)
+        self._wait_search_engine()
+        self.adapter.delete([1, 2])
+        self._wait_search_engine()
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
-        self.assertListEqual(res, [{"id": "foo2"}])
+        self.assertListEqual(res, [{"id": 3, "name": "joe"}])
 
     def test_index_adapter_delete_nonexisting_documents(self):
         """We try to delete records that do not exist.
@@ -214,21 +217,15 @@ class CommonTestAdapter(VCRMixin, TestBindingIndexBase):
         self.adapter.delete(["donotexist", "donotexisteither"])
 
     def test_index_adapter_reindex(self):
-        data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
-        self.adapter.clear()
-        self.adapter.index(data)
+        self.adapter.index(self.data)
         index_name = self.adapter._get_current_aliased_index_name()
         next_index_name = self.adapter._get_next_aliased_index_name(index_name)
-        if self.cassette.dirty:
-            # when we record the test we must wait for es
-            sleep(2)
+        self._wait_search_engine()
         self.adapter.reindex()
-        if self.cassette.dirty:
-            # when we record the test we must wait for es
-            sleep(2)
+        self._wait_search_engine()
         res = [x for x in self.adapter.each()]
         res.sort(key=lambda d: d["id"])
-        self.assertListEqual(res, data)
+        self.assertListEqual(res, self.data)
         self.assertEqual(
             self.adapter._get_current_aliased_index_name(), next_index_name
         )
