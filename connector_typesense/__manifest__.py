@@ -14,7 +14,9 @@
     "data": [
         "views/ts_backend.xml",
     ],
-    "demo": ["demo/se_index_config_demo.xml", "demo/backend_demo.xml"],
-    "external_dependencies": {"python": ["typesense==1.0.3", "requests"]},
+    "demo": [
+        "demo/backend_demo.xml",
+    ],
+    "external_dependencies": {"python": ["typesense>=1.1.0", "requests"]},
     "installable": True,
 }

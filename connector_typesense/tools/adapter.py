@@ -1,7 +1,6 @@
 # Copyright 2024 Derico
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import json
 import logging
 from typing import Any, Iterator
 
@@ -21,12 +20,6 @@ except ImportError:
     _logger.debug("Can not import typesense")
 
 
-# def _is_delete_nonexistent_documents(elastic_exception):
-#     """True iff all errors in this exception are deleting a nonexisting document."""
-#     b = lambda d: "delete" in d and d["delete"]["status"] == 404  # noqa
-#     return all(b(error) for error in elastic_exception.errors)
-
-
 class TypesenseAdapter(SearchEngineAdapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,8 +36,8 @@ class TypesenseAdapter(SearchEngineAdapter):
         return self.__ts_client
 
     @property
-    def _index_config(self):
-        return self.index_record.config_id.body
+    def _collections(self):
+        return self._ts_client.collections
 
     def _get_ts_client(self):
         backend = self.backend_record
@@ -57,15 +50,14 @@ class TypesenseAdapter(SearchEngineAdapter):
                         "protocol": backend.ts_server_protocol,
                     }
                 ],
-                "api_key": backend.api_key,
+                "api_key": backend.ts_api_key,
                 "connection_timeout_seconds": int(backend.ts_server_timeout) or 300,
             }
         )
 
     def test_connection(self):
-        ts = self._ts_client
         try:
-            ts.collections.retrieve()
+            self._collections.retrieve()
         except typesense.exceptions.ObjectNotFound as exc:
             raise UserError(
                 _("Not Found - The requested resource is not found.")
@@ -80,23 +72,30 @@ class TypesenseAdapter(SearchEngineAdapter):
             ) from exc
 
     def index(self, records) -> None:
-        ts = self._ts_client
-        records_for_bulk = ""
+        # With typesense id must be a string so we have to convert
+        # the id into a string
+        items = []
         for record in records:
-            if "id" in record:
-                record["id"] = str(record["id"])
-            records_for_bulk += f"{json.dumps(record)}\n"
+            item = record.copy()
+            item["id"] = str(item["id"])
+            items.append(item)
+        try:
+            res = self._collections[self._index_name].documents.import_(
+                items, {"action": "upsert"}
+            )
+        except typesense.exceptions.ObjectNotFound as e:
+            _logger.warning(
+                f"{self._index_name} not found, creating a new index (collection)!"
+                f" and index records\n\n{e}"
+            )
+            self.settings()
+            self.index(items)
 
-        _logger.info(f"Bulk import records into {self._index_name}'...")
-        res = ts.collections[self._index_name].documents.import_(
-            records_for_bulk, {"action": "emplace"}
-        )
-        res = res.split("\n")
-        # checks if number of indexed object and object in records are equal
-        if not len(res) == len(records):
-            raise SystemError(
+        errors = len([item for item in res if not item.get("success")])
+        if errors:
+            raise UserError(
                 _(
-                    "Unable to index all records. (indexed: %(indexed)s, "
+                    "Unable to index all records. (nbr errors: %(errors)s, "
                     "total: %(total)s)\n%(result)s",
                     indexed=len(res),
                     total=len(records),
@@ -105,146 +104,75 @@ class TypesenseAdapter(SearchEngineAdapter):
             )
 
     def delete(self, binding_ids) -> None:
-        ts = self._ts_client
-        ts.collections[self._index_name].documents.delete(
+        self._collections[self._index_name].documents.delete(
             {"filter_by": f"id:{binding_ids}"}
         )
 
     def clear(self) -> None:
-        ts = self._ts_client
-        index_name = self._get_current_aliased_index_name() or self._index_name
-        ts.collections[index_name].delete()
+        try:
+            self._collections[self._index_name].delete()
+        except typesense.exceptions.ObjectNotFound:
+            _logger.debug(
+                "Index %s do not exist, no need to clear it" % self._index_name
+            )
         self.settings()
 
-    def each(self) -> Iterator[dict[str, Any]]:
-        ts = self._ts_client
-        res = ts.collections[self._index_name].documents.search(
-            {
-                "q": "*",
-            }
-        )
-        if not res:
-            # eg: empty index
-            return
-        hits = res["hits"]["documents"]
-        for hit in hits:
-            yield hit
+    def each(self, fetch_fields=None) -> Iterator[dict[str, Any]]:
+        params = {"per_page": 250, "q": "*", "page": 1}
+        if fetch_fields:
+            params["include_fields"] = fetch_fields
+        res = self._collections[self._index_name].documents.search(params)
+        while True:
+            for hit in res["hits"]:
+                try:
+                    hit["document"]["id"] = int(hit["document"]["id"])
+                except ValueError:
+                    _logger.warning(
+                        "Fail to convert id %s into an integer" % hit["document"]["id"]
+                    )
+                    # In that case there is something wrong
+                    # normally we should only have integer
+                    # let's the resynchronize mecanism fix it
+                yield hit["document"]
+            if len(res["hits"]) < 250:
+                break
+            params["page"] += 1
+            res = self._collections[self._index_name].documents.search(params)
+
+    def _prepare_params_for_new_config(self, new_config, current_config):
+        """We choose to have a simple implementation of update of the configuration
+        Typesense have a great UI https://github.com/bfritscher/typesense-dashboard
+        So the best is to manage advanced config their.
+        So we only support adding new field. No remove, no update
+        if you want to do it you can inherit this method
+        """
+        existing_fields = {field["name"] for field in current_config["fields"]}
+        fields_to_add = [
+            field
+            for field in new_config["fields"]
+            if field["name"] not in existing_fields
+        ]
+        if fields_to_add:
+            return {"fields": fields_to_add}
+        else:
+            return {}
 
     def settings(self) -> None:
-        ts = self._ts_client
+        config = self.index_record.config_id.body
         try:
-            ts.collections[self._index_name].retrieve()
+            res = self._collections[self._index_name].retrieve()
         except typesense.exceptions.ObjectNotFound:
-            client = self._ts_client
-            # To allow rolling updates, we work with index aliases
-            aliased_index_name = self._get_next_aliased_index_name()
-            # index_name / collection_name is part of the schema defined in
-            # self._index_config
-            index_config = self._index_config
-            index_config.update(
-                {
-                    "name": aliased_index_name,
-                }
-            )
-            _logger.info(f"Create aliased_index_name '{aliased_index_name}'...")
-            client.collections.create(index_config)
-            _logger.info(
-                f"Set collection alias '{self._index_name}' >> aliased_index_name "
-                f"'{aliased_index_name}'."
-            )
-            client.aliases.upsert(
-                self._index_name, {"collection_name": aliased_index_name}
-            )
-
-    def _get_current_aliased_index_name(self) -> str:
-        """Get the current aliased index name if any"""
-        current_aliased_index_name = None
-        alias = self._ts_client.aliases[self._index_name].retrieve()
-        if "collection_name" in alias:
-            current_aliased_index_name = alias["collection_name"]
-        return current_aliased_index_name
-
-    def _get_next_aliased_index_name(
-        self, aliased_index_name: str | None = None
-    ) -> str:
-        """Get the next aliased index name
-
-        The next aliased index name is based on the current aliased index name.
-        It's the current aliased index name incremented by 1.
-
-        :param aliased_index_name: the current aliased index name
-        :return: the next aliased index name
-        """
-        next_version = 1
-        if aliased_index_name:
-            next_version = int(aliased_index_name.split("-")[-1]) + 1
-        return f"{self._index_name}-{next_version}"
+            config["name"] = self._index_name
+            self._collections.create(config)
+        else:
+            config = self._prepare_params_for_new_config(config, res)
+            if config:
+                self._collections[self._index_name].update(config)
 
     def reindex(self) -> None:
-        """Reindex records according to the current config
-        This method is useful to allows a rolling update of index
-        configuration.
-        This process is based on the following steps:
-        1. export data from current aliased index
-        2. create a new index (collection) with the current config
-        3. import data into new aliased index (collection)
-        4. Update the index alias to point to the new aliased index (collection)
-        5. Drop the old index.
-        """
-        client = self._ts_client
-        current_aliased_index_name = self._get_current_aliased_index_name()
-        data = client.collections[current_aliased_index_name].documents.export()
-        next_aliased_index_name = self._get_next_aliased_index_name(
-            current_aliased_index_name
+        raise UserError(
+            _(
+                "Reindexing is not needed with TypeSense, as schema can be updated. "
+                "So you just need to export the setting after changing them"
+            )
         )
-        try:
-            client.collections[next_aliased_index_name].retrieve()
-        except typesense.exceptions.ObjectNotFound:
-            # To allow rolling updates, we work with index aliases
-            # index_name / collection_name is part of the schema defined
-            # in self._index_config
-            _logger.info(
-                f"Create new_aliased_index_name '{next_aliased_index_name}'..."
-            )
-            index_config = self._index_config
-            index_config.update(
-                {
-                    "name": next_aliased_index_name,
-                }
-            )
-            client.collections.create(index_config)
-            _logger.info(
-                f"Import existing data into new_aliased_index_name "
-                f"'{next_aliased_index_name}'..."
-            )
-            client.collections[next_aliased_index_name].documents.import_(
-                data.encode("utf-8"), {"action": "create"}
-            )
-
-            try:
-                client.collections[next_aliased_index_name].retrieve()
-            except typesense.exceptions.ObjectNotFound as e:
-                _logger.warning(
-                    f"New aliased_index_name not found, skip updating alias and "
-                    f"not removing old index (collection)!\n\n{e}"
-                )
-            else:
-                _logger.info(
-                    f"Set collection alias '{self._index_name}' >> "
-                    f"new_aliased_index_name '{next_aliased_index_name}'."
-                )
-                client.aliases.upsert(
-                    self._index_name, {"collection_name": next_aliased_index_name}
-                )
-                _logger.info(
-                    f"Remove old aliased index (collection) "
-                    f"'{current_aliased_index_name}'."
-                )
-                client.collections[current_aliased_index_name].delete()
-
-        else:
-            _logger.warning(
-                f"next_aliased_index_name '{next_aliased_index_name}' "
-                f"already exists, skip!",
-                self._index_name,
-            )

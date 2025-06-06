@@ -3,10 +3,10 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="backend_1" model="se.backend">
-        <field name="name">Demo Sale Channel Typesense</field>
-        <field name="tech_name">demo_sale_channel_typesense</field>
+        <field name="name">Demo Typesense Backend</field>
+        <field name="tech_name">demo_typesense_backend</field>
         <field name="backend_type">typesense</field>
-        <field name="ts_server_host">localhost</field>
+        <field name="ts_server_host">typesense</field>
         <field name="ts_server_port">8108</field>
         <field name="ts_server_protocol">http</field>
         <field name="ts_api_key">xyz</field>
