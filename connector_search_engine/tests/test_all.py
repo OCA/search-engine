@@ -370,3 +370,22 @@ class TestBindingIndex(TestBindingIndexBaseFake):
             self.assertEqual(len(calls), 2)
             self.assertEqual(calls[1]["method"], "delete")
             self.assertEqual(calls[1]["args"], [none_existing_partner_id, "wtf"])
+
+    def test_se_mark_to_update(self):
+        self.partners = self.env["res.partner"].create(
+            [
+                {"name": "Foo"},
+                {"name": "Bar"},
+            ]
+        )
+        self.partners._add_to_index(self.se_index)
+
+        # Now for some reason the first partner is removed from the index
+        self.partners[0]._remove_from_index(self.se_index)
+
+        # And something (like a write) trigger an "_se_mark_to_update"
+        self.partners._se_mark_to_update()
+
+        # We ensure that the binding is still in "to_delete"
+        self.assertEqual(self.partners[0].se_binding_ids.state, "to_delete")
+        self.assertEqual(self.partners[1].se_binding_ids.state, "to_recompute")
