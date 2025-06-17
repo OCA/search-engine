@@ -68,7 +68,12 @@ class ElasticSearchAdapter(SearchEngineAdapter):
         if backend.auth_type == "http":
             auth = (backend.es_user, backend.es_password)
             return elasticsearch.Elasticsearch(
-                [backend.es_server_host], http_auth=auth, use_ssl=backend.ssl
+                [backend.es_server_host],
+                http_auth=auth,
+                use_ssl=backend.ssl,
+                timeout=max(backend.es_timeout, 1),
+                retry_on_timeout=backend.es_retry_on_timeout,
+                max_retries=max(0, backend.es_max_retries),
             )
 
     def test_connection(self):
