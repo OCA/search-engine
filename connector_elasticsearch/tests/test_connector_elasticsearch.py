@@ -57,7 +57,7 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
 
         self.assertGreaterEqual(len(self.cassette.requests), 1)
         request = self.cassette.requests[-1]
-        self.assertEqual(request.method, "POST")
+        self.assertEqual(request.method, "PUT")
         self.assertEqual(self.parse_path(request.uri), "/_bulk")
         body = request.body.decode("utf-8")
         lines = [line for line in filter(lambda line: line, body.split("\n"))]
@@ -107,13 +107,13 @@ class TestConnectorElasticsearch(VCRMixin, TestBindingIndexBase):
         res.sort(key=lambda d: d["id"])
         self.assertListEqual(res, [{"id": "foo2"}])
 
-    @mute_logger("odoo.addons.connector_search_engine.models.se_binding")
     def test_index_adapter_delete_nonexisting_documents(self):
         """We try to delete records that do not exist.
         Because it does not matter, it is just ignored. No exception.
         """
         self.adapter.delete(["donotexist", "donotexisteither"])
 
+    @mute_logger("py.warnings")  # mute GeneralAvailabilityWarning
     def test_index_adapter_reindex(self):
         data = [{"id": "foo"}, {"id": "foo2"}, {"id": "foo3"}]
         self.adapter.clear()

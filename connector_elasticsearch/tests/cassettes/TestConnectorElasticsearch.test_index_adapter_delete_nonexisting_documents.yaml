@@ -14,7 +14,7 @@ interactions:
       - elasticsearch-py/7.13.4 (Python 3.10.6)
       x-elastic-client-meta:
       - es=7.13.4,py=3.10.6,t=7.13.4,rq=2.28.2,h=bp
-    method: POST
+    method: PUT
     uri: http://elastic:9200/_bulk
   response:
     body:
@@ -24,6 +24,8 @@ interactions:
       - '494'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK

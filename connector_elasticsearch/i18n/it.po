@@ -149,11 +149,6 @@ msgid "Retry on timeout"
 msgstr "Ritenta al timeout"
 
 #. module: connector_elasticsearch
-#: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
-msgid "SSL"
-msgstr "SSL"
-
-#. module: connector_elasticsearch
 #: model:ir.model,name:connector_elasticsearch.model_se_backend
 msgid "Se Backend"
 msgstr "Backend SE"
@@ -162,11 +157,6 @@ msgstr "Backend SE"
 #: model:ir.model,name:connector_elasticsearch.model_se_index
 msgid "Se Index"
 msgstr "Indice SE"
-
-#. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__ssl
-msgid "Ssl"
-msgstr "SSL"
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
@@ -227,12 +217,6 @@ msgstr "Impossibile contattare l'host."
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view
 msgid "User"
 msgstr "Utente"
-
-#. module: connector_elasticsearch
-#: model:ir.model.fields,help:connector_elasticsearch.field_se_backend__ssl
-msgid "Verify SSL certificates. Only set to False in development environments."
-msgstr ""
-"Verifica certificati SSL. Impostare a False solo in ambienti di sviluppo."
 
 #. module: connector_elasticsearch
 #: model_terms:ir.ui.view,arch_db:connector_elasticsearch.se_backend_form_view

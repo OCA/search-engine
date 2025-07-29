@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 =======================
 connector_elasticsearch
 =======================
@@ -17,7 +13,7 @@ connector_elasticsearch
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fsearch--engine-lightgray.png?logo=github
@@ -44,6 +40,12 @@ Elasticsearch_ indexes.
 
 Changelog
 =========
+
+16.0.0.3.0
+~~~~~~~~~~
+
+* elasticsearch v8 compatibility: The connector now supports Elasticsearch
+  v8.*.* versions.
 
 12.0.?.?.? (unreleased)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,6 +80,7 @@ Contributors
 * Raphaël Reverdy <raphael.reverdy@akretion.com>
 * Simone Orsi <simone.orsi@camptocamp.com>
 * Iván Todorovich <ivan.todorovich@camptocamp.com>
+* Thomas Binsfeld <thomas.binsfeld@acsone.eu>
 
 Maintainers
 ~~~~~~~~~~~

@@ -1,3 +1,9 @@
+16.0.0.3.0
+~~~~~~~~~~
+
+* elasticsearch v8 compatibility: The connector now supports Elasticsearch
+  v8.*.* versions.
+
 12.0.?.?.? (unreleased)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
