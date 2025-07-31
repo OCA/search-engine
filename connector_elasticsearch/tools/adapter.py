@@ -18,6 +18,10 @@ try:
     import elasticsearch.helpers
 except ImportError:
     _logger.debug("Can not import elasticsearch")
+try:
+    from elastic_transport import RequestsHttpNode
+except ImportError:
+    _logger.debug("Can not import from elastic_transport")
 
 
 def _is_delete_nonexistent_documents(elastic_exception):
@@ -37,7 +41,7 @@ class ElasticSearchAdapter(SearchEngineAdapter):
 
     @property
     def _es_connection_class(self):
-        return elasticsearch.RequestsHttpConnection
+        return RequestsHttpNode
 
     @property
     def _es_client(self):
@@ -51,30 +55,28 @@ class ElasticSearchAdapter(SearchEngineAdapter):
 
     def _get_es_client(self):
         backend = self.backend_record
+        es_params = {
+            "hosts": [backend.es_server_host],
+        }
+        es_options = {
+            "request_timeout": max(backend.es_timeout, 1),
+            "retry_on_timeout": backend.es_retry_on_timeout,
+            "max_retries": max(0, backend.es_max_retries),
+        }
         if backend.auth_type == "api_key":
             api_key = (
                 (backend.api_key_id, backend.api_key)
                 if backend.api_key_id and backend.api_key
                 else None
             )
-            return elasticsearch.Elasticsearch(
-                [backend.es_server_host],
-                connection_class=self._es_connection_class,
-                api_key=api_key,
-                timeout=max(backend.es_timeout, 1),
-                retry_on_timeout=backend.es_retry_on_timeout,
-                max_retries=max(0, backend.es_max_retries),
-            )
+            es_params["node_class"] = self._es_connection_class
+            es_options["api_key"] = api_key
         if backend.auth_type == "http":
             auth = (backend.es_user, backend.es_password)
-            return elasticsearch.Elasticsearch(
-                [backend.es_server_host],
-                http_auth=auth,
-                use_ssl=backend.ssl,
-                timeout=max(backend.es_timeout, 1),
-                retry_on_timeout=backend.es_retry_on_timeout,
-                max_retries=max(0, backend.es_max_retries),
-            )
+            es_params["http_auth"] = auth
+        client = elasticsearch.Elasticsearch(**es_params)
+        client.options(**es_options)
+        return client
 
     def test_connection(self):
         es = self._es_client
@@ -133,7 +135,8 @@ class ElasticSearchAdapter(SearchEngineAdapter):
     def clear(self) -> None:
         es = self._es_client
         index_name = self._get_current_aliased_index_name() or self._index_name
-        res = es.indices.delete(index=index_name, ignore=[400, 404])
+        es.options(ignore_status=[400, 404])
+        res = es.indices.delete(index=index_name)
         self.settings()
         if not res["acknowledged"]:
             raise SystemError(
@@ -156,7 +159,7 @@ class ElasticSearchAdapter(SearchEngineAdapter):
 
     def settings(self) -> None:
         es = self._es_client
-        if not es.indices.exists(self._index_name):
+        if not es.indices.exists(index=self._index_name):
             client = self._es_client
             # To allow rolling updates, we work with index aliases
             aliased_index_name = self._get_next_aliased_index_name()
@@ -172,9 +175,9 @@ class ElasticSearchAdapter(SearchEngineAdapter):
     def _get_current_aliased_index_name(self) -> str:
         """Get the current aliased index name if any"""
         current_aliased_index_name = None
-        alias = self._es_client.indices.get_alias(
-            name=self._index_name, ignore=[400, 404]
-        )
+        client = self._es_client
+        client.options(ignore_status=[400, 404])
+        alias = client.indices.get_alias(name=self._index_name)
         if "error" not in alias:
             current_aliased_index_name = next(iter(alias))  # get the first key
         return current_aliased_index_name
@@ -213,11 +216,11 @@ class ElasticSearchAdapter(SearchEngineAdapter):
         # create new idx
         client.indices.create(index=next_aliased_index_name, body=self._index_config)
         task_def = client.reindex(
-            {
+            body={
                 "source": {"index": self._index_name},
                 "dest": {"index": next_aliased_index_name},
             },
-            request_timeout=9999999,
+            timeout="9999999",
             wait_for_completion=False,
         )
         while True:
@@ -245,11 +248,14 @@ class ElasticSearchAdapter(SearchEngineAdapter):
                     ]
                 }
             )
-            client.indices.delete(index=current_aliased_index_name, ignore=[400, 404])
+            client.options(ignore_status=[400, 404])
+            client.indices.delete(index=current_aliased_index_name)
         else:
             # This code will only be triggered the first time the reindex is
             # called on an index created before the use of index aliases.
-            client.indices.delete(index=self._index_name, ignore=[400, 404])
+            client.options(ignore_status=[400, 404])
+            client.indices.delete(index=self._index_name)
+            client.options(ignore_status=[])
             client.indices.put_alias(
                 index=next_aliased_index_name, name=self._index_name
             )

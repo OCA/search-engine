@@ -33,10 +33,6 @@ class SeBackend(models.Model):
     )
     es_user = fields.Char(help="Leave blank if not using http authentication.")
     es_password = fields.Char(help="Leave blank if not using http authentication.")
-    ssl = fields.Boolean(
-        default=True,
-        help="Verify SSL certificates. Only set to False in development environments.",
-    )
     es_timeout = fields.Integer(
         string="Elasticsearch timeout",
         default=10,
@@ -63,7 +59,6 @@ class SeBackend(models.Model):
                 "auth_type": {},
                 "es_user": {},
                 "es_password": {},
-                "ssl": {},
                 "api_key_id": {},
                 "api_key": {},
             }

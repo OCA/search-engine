@@ -28,11 +28,6 @@
                         password="1"
                     />
                     <field
-                        string="SSL"
-                        name="ssl"
-                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
-                    />
-                    <field
                         string="API key ID"
                         name="api_key_id"
                         attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"

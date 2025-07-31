@@ -18,6 +18,8 @@ interactions:
       - '106'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK
@@ -42,6 +44,8 @@ interactions:
       - '21'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK
@@ -64,6 +68,8 @@ interactions:
       - '569'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 404
       message: Not Found
@@ -88,6 +94,8 @@ interactions:
       - '101'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK
@@ -112,6 +120,8 @@ interactions:
       - '21'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK
@@ -138,7 +148,7 @@ interactions:
       - elasticsearch-py/7.13.4 (Python 3.10.6)
       x-elastic-client-meta:
       - es=7.13.4,py=3.10.6,t=7.13.4,rq=2.28.2,h=bp
-    method: POST
+    method: PUT
     uri: http://elastic:9200/_bulk
   response:
     body:
@@ -148,6 +158,8 @@ interactions:
       - '686'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK
@@ -172,6 +184,8 @@ interactions:
       - '96'
       content-type:
       - application/json; charset=UTF-8
+      x-elastic-product:
+        - Elasticsearch
     status:
       code: 200
       message: OK

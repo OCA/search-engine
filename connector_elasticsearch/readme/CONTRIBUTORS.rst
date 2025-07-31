@@ -3,3 +3,4 @@
 * Raphaël Reverdy <raphael.reverdy@akretion.com>
 * Simone Orsi <simone.orsi@camptocamp.com>
 * Iván Todorovich <ivan.todorovich@camptocamp.com>
+* Thomas Binsfeld <thomas.binsfeld@acsone.eu>
