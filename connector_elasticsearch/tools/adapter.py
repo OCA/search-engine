@@ -150,7 +150,6 @@ class ElasticSearchAdapter(SearchEngineAdapter):
             body=body,
         )
         while result.get("hits", {}).get("hits"):
-            items = []
             for item in result["hits"]["hits"]:
                 # In elastic the real id is "_id", so we force it
                 try:
@@ -161,9 +160,9 @@ class ElasticSearchAdapter(SearchEngineAdapter):
                     # but we still set the _id like that
                     # so the resynchronize mecanism will fix it
                     real_id = item["_id"]
-                item["_source"]["id"] = real_id
-                items.append(item["_source"])
-            yield from items
+                info = item["_source"]
+                info["id"] = real_id
+                yield info
             result = es.scroll(
                 body={
                     "scroll_id": result["_scroll_id"],
