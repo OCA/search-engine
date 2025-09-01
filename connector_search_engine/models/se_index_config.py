@@ -15,8 +15,11 @@ class SeIndexConfig(models.Model):
 
     name = fields.Char(required=True)
     body = Serialized(required=True, default={})
+    # TODO create a Widget for editing Serialized field or native Json field
     # This field is used since no widget exists to edit a serialized field
     # into the web fontend
+    # As the body_str have a default value, you can not create a SeIndexConfig
+    # by passing directly the body, you have to pass the body_str
     body_str = fields.Text(
         compute="_compute_body_str",
         inverse="_inverse_body_str",

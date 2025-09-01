@@ -1,5 +1,156 @@
 interactions:
 - request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.13.4 (Python 3.10.12)
+      x-elastic-client-meta:
+      - es=7.13.4,py=3.10.12,t=7.13.4,rq=2.28.1
+    method: GET
+    uri: http://elastic:9200/_alias/demo_elasticsearch_backend_contact_en_us
+  response:
+    body:
+      string: '{"demo_elasticsearch_backend_contact_en_us-1":{"aliases":{"demo_elasticsearch_backend_contact_en_us":{}}}}'
+    headers:
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      X-elastic-product:
+      - Elasticsearch
+      content-length:
+      - '106'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Content-Length:
+      - '0'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.13.4 (Python 3.10.12)
+      x-elastic-client-meta:
+      - es=7.13.4,py=3.10.12,t=7.13.4,rq=2.28.1
+    method: DELETE
+    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1
+  response:
+    body:
+      string: '{"acknowledged":true}'
+    headers:
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      X-elastic-product:
+      - Elasticsearch
+      content-length:
+      - '21'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.13.4 (Python 3.10.12)
+      x-elastic-client-meta:
+      - es=7.13.4,py=3.10.12,t=7.13.4,rq=2.28.1
+    method: HEAD
+    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      X-elastic-product:
+      - Elasticsearch
+      content-length:
+      - '569'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"mappings":{}}'
+    headers:
+      Content-Length:
+      - '15'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.13.4 (Python 3.10.12)
+      x-elastic-client-meta:
+      - es=7.13.4,py=3.10.12,t=7.13.4,rq=2.28.1
+    method: PUT
+    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1
+  response:
+    body:
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_contact_en_us-1"}'
+    headers:
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      X-elastic-product:
+      - Elasticsearch
+      content-length:
+      - '101'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Content-Length:
+      - '0'
+      content-type:
+      - application/json
+      user-agent:
+      - elasticsearch-py/7.13.4 (Python 3.10.12)
+      x-elastic-client-meta:
+      - es=7.13.4,py=3.10.12,t=7.13.4,rq=2.28.1
+    method: PUT
+    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1/_alias/demo_elasticsearch_backend_contact_en_us
+  response:
+    body:
+      string: '{"acknowledged":true}'
+    headers:
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      X-elastic-product:
+      - Elasticsearch
+      content-length:
+      - '21'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
     body: '{"delete":{"_id":"donotexist","_index":"demo_elasticsearch_backend_contact_en_us"}}
 
       {"delete":{"_id":"donotexisteither","_index":"demo_elasticsearch_backend_contact_en_us"}}
@@ -11,17 +162,24 @@ interactions:
       content-type:
       - application/json
       user-agent:
-      - elasticsearch-py/7.13.4 (Python 3.10.6)
+      - elasticsearch-py/7.13.4 (Python 3.10.12)
       x-elastic-client-meta:
-      - es=7.13.4,py=3.10.6,t=7.13.4,rq=2.28.2,h=bp
+      - es=7.13.4,py=3.10.12,t=7.13.4,rq=2.28.1,h=bp
     method: POST
     uri: http://elastic:9200/_bulk
   response:
     body:
-      string: '{"took":20,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":5,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":6,"_primary_term":1,"status":404}}]}'
+      string: '{"took":2,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":404}}]}'
     headers:
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      X-elastic-product:
+      - Elasticsearch
       content-length:
-      - '494'
+      - '493'
       content-type:
       - application/json; charset=UTF-8
     status:

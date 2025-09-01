@@ -372,11 +372,14 @@ class SeIndex(models.Model):
             item_ids = []
             adapter = self.se_adapter
             binding_model = self.env[index.model_id.model]
-            for index_record in adapter.each():
-                ext_id = adapter._get_odoo_id_from_index_data(index_record)
-                binding = binding_model.browse(ext_id).exists()
-                if not binding:
-                    item_ids.append(ext_id)
+            for index_record in adapter.each(fetch_fields=["id"]):
+                _id = index_record["id"]
+                if isinstance(_id, int):
+                    binding = binding_model.browse(_id).exists()
+                    if not binding:
+                        item_ids.append(_id)
+                else:
+                    item_ids.append(_id)
             index.with_delay().delete_obsolete_item(item_ids)
 
     def delete_obsolete_item(self, item_ids: List[int]):
