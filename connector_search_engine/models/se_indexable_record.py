@@ -172,7 +172,9 @@ class SeIndexableRecord(models.AbstractModel):
     def _se_mark_to_update(self, indexes: SeIndex | None = None) -> None:
         """Mark the record to be updated in the index."""
         bindings = self._get_bindings(indexes)
-        bindings.write({"state": "to_recompute"})
+        bindings.filtered(lambda s: s.state != "to_delete").write(
+            {"state": "to_recompute"}
+        )
 
     def unlink(self):
         bindings = self.sudo()._get_bindings()
