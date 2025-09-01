@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  typesense-server:
+    image: typesense/typesense:0.25.2
+    container_name: typesense-server
+    ports:
+      - "8108:8108"
+    volumes:
+      - /tmp/typesense-data:/data
+    command: >
+      --data-dir /data --api-key=xyz --listen-port=8108 --enable-cors
+    restart: unless-stopped

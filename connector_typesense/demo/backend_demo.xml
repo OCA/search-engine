@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 Kencove
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="backend_1" model="se.backend">
+        <field name="name">Demo Typesense Backend</field>
+        <field name="tech_name">demo_typesense_backend</field>
+        <field name="backend_type">typesense</field>
+        <field name="ts_server_host">typesense</field>
+        <field name="ts_server_port">8108</field>
+        <field name="ts_server_protocol">http</field>
+        <field name="ts_api_key">xyz</field>
+    </record>
+</odoo>

@@ -1,0 +1,222 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.28.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: DELETE
+    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us
+  response:
+    body:
+      string: '{"created_at":1749219703,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"stem_dictionary":"","store":true,"type":"string"},{"facet":false,"index":true,"infix":false,"locale":"","name":"title","optional":false,"sort":false,"stem":false,"stem_dictionary":"","store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '525'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: GET
+    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us
+  response:
+    body:
+      string: '{"message": "Not Found"}'
+    headers:
+      Connection:
+      - keep-alive
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"fields": [{"name": "name", "type": "string"}], "name": "demo_typesense_backend_contact_en_us"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      User-Agent:
+      - python-requests/2.28.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: POST
+    uri: http://typesense:8108/collections
+  response:
+    body:
+      string: '{"created_at":1749219766,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"stem_dictionary":"","store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+    status:
+      code: 201
+      message: Created
+- request:
+    body: '{"id": "1", "name": "foo"}
+
+      {"id": "2", "name": "bar"}
+
+      {"id": "3", "name": "joe"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '80'
+      User-Agent:
+      - python-requests/2.28.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: POST
+    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us/documents/import?action=upsert
+  response:
+    body:
+      string: '{"success":true}
+
+        {"success":true}
+
+        {"success":true}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '50'
+      content-type:
+      - text/plain; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.28.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: DELETE
+    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us/documents/?filter_by=id%3A%5B1%2C+2%5D
+  response:
+    body:
+      string: '{"num_deleted":2}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '17'
+      content-type:
+      - application/json
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      X-TYPESENSE-API-KEY:
+      - xyz
+    method: GET
+    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us/documents/search?per_page=250&q=%2A&page=1
+  response:
+    body:
+      string: '{"facet_counts":[],"found":1,"hits":[{"document":{"id":"3","name":"joe"},"highlight":{},"highlights":[]}],"out_of":1,"page":1,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
+    headers:
+      Connection:
+      - keep-alive
+      accept-ranges:
+      - none
+      access-control-allow-origin:
+      - '*'
+      content-length:
+      - '280'
+      content-type:
+      - application/json; charset=utf-8
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: OK
+version: 1
