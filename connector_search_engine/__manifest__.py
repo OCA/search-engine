@@ -29,5 +29,5 @@
         "data/queue_job_function_data.xml",
         "data/ir_action_data.xml",
     ],
-    "installable": True,
+    "installable": False,
 }

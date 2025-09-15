@@ -30,4 +30,5 @@
         "views/se_thumbnail_size.xml",
     ],
     "demo": [],
+    "installable": False,
 }

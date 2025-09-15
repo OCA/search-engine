@@ -1,15 +1,15 @@
 
-[![Runboat](https://img.shields.io/badge/runboat-Try%20me-875A7B.png)](https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=16.0)
-[![Pre-commit Status](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml/badge.svg?branch=16.0)](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml?query=branch%3A16.0)
-[![Build Status](https://github.com/OCA/search-engine/actions/workflows/test.yml/badge.svg?branch=16.0)](https://github.com/OCA/search-engine/actions/workflows/test.yml?query=branch%3A16.0)
-[![codecov](https://codecov.io/gh/OCA/search-engine/branch/16.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
-[![Translation Status](https://translation.odoo-community.org/widgets/search-engine-16-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/search-engine-16-0/?utm_source=widget)
+[![Runboat](https://img.shields.io/badge/runboat-Try%20me-875A7B.png)](https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=18.0)
+[![Pre-commit Status](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml/badge.svg?branch=18.0)](https://github.com/OCA/search-engine/actions/workflows/pre-commit.yml?query=branch%3A18.0)
+[![Build Status](https://github.com/OCA/search-engine/actions/workflows/test.yml/badge.svg?branch=18.0)](https://github.com/OCA/search-engine/actions/workflows/test.yml?query=branch%3A18.0)
+[![codecov](https://codecov.io/gh/OCA/search-engine/branch/18.0/graph/badge.svg)](https://codecov.io/gh/OCA/search-engine)
+[![Translation Status](https://translation.odoo-community.org/widgets/search-engine-18-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/search-engine-18-0/?utm_source=widget)
 
 <!-- /!\ do not modify above this line -->
 
 # search-engine
 
-TODO: add repo description.
+search-engine
 
 <!-- /!\ do not modify below this line -->
 
@@ -17,23 +17,7 @@ TODO: add repo description.
 
 [//]: # (addons)
 
-Available addons
-----------------
-addon | version | maintainers | summary
---- | --- | --- | ---
-[connector_elasticsearch](connector_elasticsearch/) | 16.0.1.0.0 |  | Connector For Elasticsearch Search Engine
-[connector_search_engine](connector_search_engine/) | 16.0.1.0.1 |  | Connector Search Engine
-[connector_search_engine_serializer_ir_export](connector_search_engine_serializer_ir_export/) | 16.0.1.0.2 |  | Use Exporter (ir.exports) as serializer for index
-[connector_typesense](connector_typesense/) | 16.0.1.0.0 |  | Connector For Typesense Search Engine
-[search_engine_image_thumbnail](search_engine_image_thumbnail/) | 16.0.1.0.7 | <a href='https://github.com/lmignon'><img src='https://github.com/lmignon.png' width='32' height='32' style='border-radius:50%;' alt='lmignon'/></a> | Generate thumbnails for binded record
-[search_engine_serializer_pydantic](search_engine_serializer_pydantic/) | 16.0.1.0.0 | <a href='https://github.com/lmignon'><img src='https://github.com/lmignon.png' width='32' height='32' style='border-radius:50%;' alt='lmignon'/></a> | Defines base class for pydantic baser serializer
-
-
-Unported addons
----------------
-addon | version | maintainers | summary
---- | --- | --- | ---
-[connector_algolia](connector_algolia/) | 14.0.2.2.0 (unported) |  | Connector For Algolia Search Engine
+This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
 
 [//]: # (end addons)
 

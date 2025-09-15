@@ -23,4 +23,5 @@
         "views/se_index_view.xml",
     ],
     "demo": [],
+    "installable": False,
 }

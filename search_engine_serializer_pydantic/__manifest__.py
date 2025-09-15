@@ -23,4 +23,5 @@
             "pydantic",
         ],
     },
+    "installable": False,
 }
