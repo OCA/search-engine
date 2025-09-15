@@ -218,7 +218,8 @@ class SeBinding(models.Model):
                 if force_export or not compare_json(old_data or {}, record.data or {}):
                     record.state = "to_export"
                 else:
-                    record.state = "done"
+                    if record.state not in ("to_export", "exporting"):
+                        record.state = "done"
                 record.error = ""
 
     def export_record(self) -> str:
