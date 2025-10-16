@@ -24,29 +24,52 @@
         <field name="model">se.binding</field>
         <field name="arch" type="xml">
             <form string="Binding">
-                <group>
-                    <field name="backend_id" />
-                    <field name="index_id" />
-                    <field name="state" />
-                    <field name="date_recomputed" />
-                    <field name="date_synchronized" />
-                    <field name="res_model" />
-                    <field name="res_id" />
-                    <field name="record_id" />
-                </group>
-                <group string="Error" attrs="{'invisible': [('error', '=', False)]}">
-                    <field name="error" nolabel="1" colspan="4" />
-                </group>
-                <group string="Data">
-                    <field
-                        name="data_display"
-                        nolabel="1"
-                        colspan="4"
-                        widget="ace"
-                        options="{'mode': 'python'}"
+                <header>
+                    <button
+                        name="recompute_json"
+                        type="object"
+                        string="Force Recompute"
+                        attrs="{'invisible': [('state', 'in', ('to_delete', 'deleting'))]}"
                     />
+                    <button
+                        name="export_record"
+                        type="object"
+                        string="Force Export"
+                        attrs="{'invisible': [('state', 'not in', ('done', 'to_export', 'exporting'))]}"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="to_recompute,recomputing,to_export,exporting,done"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="backend_id" />
+                        <field name="index_id" />
+                        <field name="date_recomputed" />
+                        <field name="date_synchronized" />
+                        <field name="res_model" />
+                        <field name="res_id" />
+                        <field name="record_id" />
+                    </group>
+                    <group
+                        string="Error"
+                        attrs="{'invisible': [('error', '=', False)]}"
+                    >
+                        <field name="error" nolabel="1" colspan="4" />
+                    </group>
+                    <group string="Data">
+                        <field
+                            name="data_display"
+                            nolabel="1"
+                            colspan="4"
+                            widget="ace"
+                            options="{'mode': 'python'}"
+                        />
 
-                </group>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
