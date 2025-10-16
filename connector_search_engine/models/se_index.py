@@ -244,7 +244,7 @@ class SeIndex(models.Model):
             adapter = self._get_backend_adapter(backend=backend, index=index)
             binding_model = self.env[index.model_id.model]
             for index_record in adapter.each(fetch_fields=[adapter._record_id_key]):
-                record_id = index_record[adapter._record_id_key]
+                record_id = int(index_record[adapter._record_id_key])
                 binding = binding_model.search(
                     [
                         ("index_id", "=", index.id),
