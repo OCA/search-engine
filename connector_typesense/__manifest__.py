@@ -5,7 +5,7 @@
     "name": "connector_typesense",
     "category": "Connector",
     "summary": "Connector For Typesense Search Engine",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "license": "AGPL-3",
     "author": "Derico, Kencove, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
