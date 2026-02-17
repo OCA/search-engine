@@ -246,6 +246,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 args=(),
                 kwargs={},
             )
+            trap.perform_enqueued_jobs()
         # the binding is now in to_export
         self.assertEqual(self.partner_binding.state, "to_export")
 
@@ -268,6 +269,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 args=(),
                 kwargs={},
             )
+            trap.perform_enqueued_jobs()
 
         # the binding is now in done
         self.assertEqual(self.partner_binding.state, "done")
@@ -295,6 +297,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 args=(),
                 kwargs={},
             )
+            trap.perform_enqueued_jobs()
         self.assertFalse(self.partner_binding.exists())
 
     def test_binding_ids_on_record(self):
@@ -364,7 +367,6 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         ]
 
         with self.se_adapter.mocked_calls({"each": index_data}) as calls:
-
             self.se_index.resynchronize_all_bindings()
 
             self.assertEqual(len(calls), 2)
