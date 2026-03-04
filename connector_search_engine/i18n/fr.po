@@ -28,8 +28,8 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
-"2)]}\"> Bindings</span>\n"
+"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', 2)]}"
+"\"> Bindings</span>\n"
 "                                <span class=\"o_stat_text\" "
 "attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
 msgstr ""
@@ -280,6 +280,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__display_name
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__do_it_now
+msgid "Do It Now"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,help:connector_search_engine.field_se_binding_state_updater__do_it_now
+msgid "Don't wait for the cron to process these records"
 msgstr ""
 
 #. module: connector_search_engine
