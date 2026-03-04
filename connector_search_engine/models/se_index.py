@@ -217,7 +217,7 @@ class SeIndex(models.Model):
         ).batch_sync(force_export)
 
     def _jobify_batch_recompute(
-        self, force_export: bool = False, binding_ids: list | None = None
+        self, force_export: bool = False, binding_ids: list[int] | None = None
     ) -> None:
         self.ensure_one()
         description = _("Prepare a batch recompute of index '%s'") % self.name
@@ -259,7 +259,7 @@ class SeIndex(models.Model):
         return [("index_id", "=", self.id), ("state", "in", states)]
 
     def batch_recompute(
-        self, force_export: bool = False, binding_ids: list | None = None
+        self, force_export: bool = False, binding_ids: list[int] | None = None
     ) -> None:
         """Recompute all the bindings of the index marked as to_recompute."""
         self.ensure_one()
