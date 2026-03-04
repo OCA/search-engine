@@ -276,6 +276,16 @@ msgid "Display Name"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__do_it_now
+msgid "Do It Now"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,help:connector_search_engine.field_se_binding_state_updater__do_it_now
+msgid "Don't wait for the cron to process these records"
+msgstr ""
+
+#. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__done
 msgid "Done"
 msgstr ""
