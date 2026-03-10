@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [connector_search_engine](connector_search_engine/) | 18.0.1.0.0 |  | Connector Search Engine
 [connector_typesense](connector_typesense/) | 18.0.1.0.0 |  | Connector For Typesense Search Engine
+[search_engine_serializer_pydantic](search_engine_serializer_pydantic/) | 18.0.1.0.0 | <a href='https://github.com/lmignon'><img src='https://github.com/lmignon.png' width='32' height='32' style='border-radius:50%;' alt='lmignon'/></a> | Defines base class for pydantic baser serializer
 
 
 Unported addons
@@ -34,7 +35,6 @@ addon | version | maintainers | summary
 [connector_elasticsearch](connector_elasticsearch/) | 16.0.1.0.0 (unported) |  | Connector For Elasticsearch Search Engine
 [connector_search_engine_serializer_ir_export](connector_search_engine_serializer_ir_export/) | 16.0.1.0.2 (unported) |  | Use Exporter (ir.exports) as serializer for index
 [search_engine_image_thumbnail](search_engine_image_thumbnail/) | 16.0.1.0.7 (unported) | <a href='https://github.com/lmignon'><img src='https://github.com/lmignon.png' width='32' height='32' style='border-radius:50%;' alt='lmignon'/></a> | Generate thumbnails for binded record
-[search_engine_serializer_pydantic](search_engine_serializer_pydantic/) | 16.0.1.0.0 (unported) | <a href='https://github.com/lmignon'><img src='https://github.com/lmignon.png' width='32' height='32' style='border-radius:50%;' alt='lmignon'/></a> | Defines base class for pydantic baser serializer
 
 [//]: # (end addons)
 
