@@ -1,8 +1,9 @@
 [project]
 name = "odoo-addons-oca-search-engine"
-version = "18.0.20260310.0"
+version = "18.0.20260310.1"
 dependencies = [
     "odoo-addon-connector_search_engine==18.0.*",
+    "odoo-addon-connector_typesense==18.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
