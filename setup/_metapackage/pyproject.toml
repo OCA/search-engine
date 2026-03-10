@@ -1,0 +1,11 @@
+[project]
+name = "odoo-addons-oca-search-engine"
+version = "18.0.20260310.0"
+dependencies = [
+    "odoo-addon-connector_search_engine==18.0.*",
+]
+classifiers=[
+    "Programming Language :: Python",
+    "Framework :: Odoo",
+    "Framework :: Odoo :: 18.0",
+]
