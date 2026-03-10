@@ -2,17 +2,19 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from typing import Any, Iterator
+from collections.abc import Iterator
+from typing import Any
 
 import requests
 
-from odoo import _
 from odoo.exceptions import UserError
+from odoo.tools.translate import LazyTranslate
 
 from odoo.addons.connector_search_engine.tools.adapter import SearchEngineAdapter
 
 _logger = logging.getLogger(__name__)
 
+_lt = LazyTranslate(__name__, default_lang="en_US")
 
 try:
     import typesense
@@ -60,15 +62,15 @@ class TypesenseAdapter(SearchEngineAdapter):
             self._collections.retrieve()
         except typesense.exceptions.ObjectNotFound as exc:
             raise UserError(
-                _("Not Found - The requested resource is not found.")
+                _lt("Not Found - The requested resource is not found.")
             ) from exc
         except typesense.exceptions.RequestUnauthorized as exc:
-            raise UserError(_("Unauthorized - Your API key is wrong.")) from exc
+            raise UserError(_lt("Unauthorized - Your API key is wrong.")) from exc
         except requests.exceptions.ConnectionError as exc:
-            raise UserError(_("Unable to connect :") + "\n\n" + repr(exc)) from exc
+            raise UserError(_lt("Unable to connect :") + "\n\n" + repr(exc)) from exc
         except requests.exceptions.InvalidURL as exc:
             raise UserError(
-                _("Invalid URL - No host supplied") + "\n\n" + repr(exc)
+                _lt("Invalid URL - No host supplied") + "\n\n" + repr(exc)
             ) from exc
 
     def index(self, records) -> None:
@@ -89,15 +91,15 @@ class TypesenseAdapter(SearchEngineAdapter):
                 f" and index records\n\n{e}"
             )
             self.settings()
-            self.index(items)
+            return self.index(items)
 
         errors = len([item for item in res if not item.get("success")])
         if errors:
             raise UserError(
-                _(
+                _lt(
                     "Unable to index all records. (nbr errors: %(errors)s, "
                     "total: %(total)s)\n%(result)s",
-                    indexed=len(res),
+                    errors=len(res),
                     total=len(records),
                     result=res,
                 )
@@ -112,9 +114,7 @@ class TypesenseAdapter(SearchEngineAdapter):
         try:
             self._collections[self._index_name].delete()
         except typesense.exceptions.ObjectNotFound:
-            _logger.debug(
-                "Index %s do not exist, no need to clear it" % self._index_name
-            )
+            _logger.debug(f"Index {self._index_name} do not exist, no need to clear it")
         self.settings()
 
     def each(self, fetch_fields=None) -> Iterator[dict[str, Any]]:
@@ -128,7 +128,7 @@ class TypesenseAdapter(SearchEngineAdapter):
                     hit["document"]["id"] = int(hit["document"]["id"])
                 except ValueError:
                     _logger.warning(
-                        "Fail to convert id %s into an integer" % hit["document"]["id"]
+                        f"Fail to convert id {hit['document']['id']} into an integer"
                     )
                     # In that case there is something wrong
                     # normally we should only have integer
@@ -149,7 +149,7 @@ class TypesenseAdapter(SearchEngineAdapter):
         existing_fields = {field["name"] for field in current_config["fields"]}
         fields_to_add = [
             field
-            for field in new_config["fields"]
+            for field in new_config.get("fields", [])
             if field["name"] not in existing_fields
         ]
         if fields_to_add:
@@ -171,7 +171,7 @@ class TypesenseAdapter(SearchEngineAdapter):
 
     def reindex(self) -> None:
         raise UserError(
-            _(
+            _lt(
                 "Reindexing is not needed with TypeSense, as schema can be updated. "
                 "So you just need to export the setting after changing them"
             )
