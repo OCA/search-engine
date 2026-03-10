@@ -3,9 +3,8 @@
 
 {
     "name": "Search Engine Serilizer Pydantic",
-    "summary": """
-        Defines base class for pydantic baser serializer""",
-    "version": "16.0.1.0.0",
+    "summary": "Defines base class for pydantic baser serializer",
+    "version": "18.0.1.0.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "maintainers": ["lmignon"],
@@ -17,11 +16,10 @@
     "data": [
         "views/se_index.xml",
     ],
-    "demo": [],
     "external_dependencies": {
         "python": [
             "pydantic",
         ],
     },
-    "installable": False,
+    "installable": True,
 }
