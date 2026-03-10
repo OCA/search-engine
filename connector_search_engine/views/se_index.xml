@@ -2,7 +2,6 @@
 <!-- Copyright 2019 ACSONE SA/NV
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-
     <record model="ir.ui.view" id="se_index_form_view">
         <field name="name">se.index.form</field>
         <field name="model">se.index</field>
@@ -57,16 +56,15 @@
                             icon="fa-list-ul"
                             context="{'search_default_groupby_state': 1}"
                         >
-
                             <div class="o_stat_info">
                                 <field name="count_all" class="o_stat_value" />
                                 <span
                                     class="o_stat_text"
-                                    attrs="{'invisible': [('count_all', '&lt;', 2)]}"
+                                    invisible="count_all &lt; 2"
                                 > Bindings</span>
                                 <span
                                     class="o_stat_text"
-                                    attrs="{'invisible': [('count_all', '&gt;', 1)]}"
+                                    invisible="count_all &gt; 1"
                                 > Binding</span>
                             </div>
                         </button>
@@ -97,7 +95,7 @@
     <record model="ir.ui.view" id="se_index_tree_view">
         <field name="model">se.index</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <field name="custom_tech_name" optional="hide" />
                 <field
                     name="backend_id"
@@ -110,7 +108,7 @@
                 <field name="config_id" />
                 <field name="batch_recomputing_size" />
                 <field name="batch_exporting_size" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -141,38 +139,40 @@
     </record>
 
     <record model="ir.ui.view" id="se_index_kanban_view">
-    <field name="model">se.index</field>
-    <field name="arch" type="xml">
-        <kanban
+        <field name="model">se.index</field>
+        <field name="arch" type="xml">
+            <kanban
                 create="false"
                 quick_create="false"
                 group_delete="false"
                 group_create="false"
                 records_draggable="false"
             >
-            <field name="name" />
-            <field name="model_id" />
-            <field name="backend_id" />
-            <field name="color" />
-            <templates>
-                <t t-name="kanban-box">
-                    <div
+                <field name="name" />
+                <field name="model_id" />
+                <field name="backend_id" />
+                <field name="color" />
+                <templates>
+                    <t t-name="card">
+                        <div
                             t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click"
                         >
-                         <div class="oe_kanban_content">
-                             <div class="o_kanban_record_top">
-                                 <div class="o_kanban_record_headings">
-                                     <strong class="o_kanban_record_title">
-                                         <field name="model_id" />
-                                     </strong>
-                                     <p><field name="lang_id" /></p>
-                                 </div>
-                                 <div
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="model_id" />
+                                        </strong>
+                                        <p>
+                                            <field name="lang_id" />
+                                        </p>
+                                    </div>
+                                    <div
                                         class="o_dropdown_kanban dropdown"
                                         t-if="!selection_mode"
                                         groups="base.group_user"
                                     >
-                                     <a
+                                        <a
                                             role="button"
                                             class="dropdown-toggle o-no-caret btn"
                                             data-bs-toggle="dropdown"
@@ -181,9 +181,9 @@
                                             aria-label="Dropdown menu"
                                             title="Dropdown menu"
                                         >
-                                         <span class="fa fa-ellipsis-v" />
-                                     </a>
-                                     <div class="dropdown-menu" role="menu">
+                                            <span class="fa fa-ellipsis-v" />
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
                                             <a
                                                 class="dropdown-item"
                                                 t-if="widget.editable"
@@ -233,43 +233,41 @@
                                                 type="object"
                                                 groups="connector_search_engine.group_connector_search_engine_manager"
                                             >Reindex</a>
-
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="o_kanban_record_body">
-                                 <div>
-                                    <i
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div>
+                                        <i
                                             class="fa fa-thumbs-o-up text-success o_column_title"
                                             aria-hidden="true"
                                         > : <field name="count_done" /></i>
-                                 </div>
-                                 <div t-if="record.count_pending.raw_value">
-                                 <i
+                                    </div>
+                                    <div t-if="record.count_pending.raw_value">
+                                        <i
                                             class="fa fa-spinner text-warning"
                                             aria-hidden="true"
                                         > : <field name="count_pending" /></i>
-                                 </div>
-                                 <div t-if="record.count_error.raw_value">
-                                 <i
+                                    </div>
+                                    <div t-if="record.count_error.raw_value">
+                                        <i
                                             class="fa fa-exclamation-triangle text-danger"
                                             aria-hidden="true"
                                         > : <field name="count_error" /></i>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </t>
-                 </templates>
-             </kanban>
-         </field>
-     </record>
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
     <record model="ir.actions.act_window" id="se_index_act_window">
         <field name="name">Se Index</field>
         <field name="res_model">se.index</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="domain">[]</field>
         <field
             name="context"

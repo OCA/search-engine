@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-
     <record id="se_binding_view_tree" model="ir.ui.view">
         <field name="model">se.binding</field>
         <field name="arch" type="xml">
-            <tree
+            <list
                 decoration-danger="state in ('invalid_data', 'recompute_error')"
                 decoration-warning="state not in ('invalid_data', 'recompute_error', 'done')"
             >
@@ -16,7 +15,7 @@
                 <field name="res_model" invisible="context.get('hide_res_model')" />
                 <field name="res_id" invisible="context.get('hide_res_model')" />
                 <field name="record_id" invisible="context.get('hide_res_model')" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -29,13 +28,13 @@
                         name="recompute_json"
                         type="object"
                         string="Force Recompute"
-                        attrs="{'invisible': [('state', 'in', ('to_delete', 'deleting'))]}"
+                        invisible="state in ('to_delete', 'deleting')"
                     />
                     <button
                         name="export_record"
                         type="object"
                         string="Force Export"
-                        attrs="{'invisible': [('state', 'not in', ('done', 'to_export', 'exporting'))]}"
+                        invisible="state not in ('done', 'to_export', 'exporting')"
                     />
                     <field
                         name="state"
@@ -53,10 +52,7 @@
                         <field name="res_id" />
                         <field name="record_id" />
                     </group>
-                    <group
-                        string="Error"
-                        attrs="{'invisible': [('error', '=', False)]}"
-                    >
+                    <group string="Error" invisible="not error">
                         <field name="error" nolabel="1" colspan="4" />
                     </group>
                     <group string="Data">
@@ -67,7 +63,6 @@
                             widget="ace"
                             options="{'mode': 'python'}"
                         />
-
                     </group>
                 </sheet>
             </form>
@@ -82,34 +77,32 @@
                 <field name="index_id" />
                 <field name="state" />
                 <field name="res_model" />
-                    <group expand="0" string="Group By...">
-                        <filter
+                <group expand="0" string="Group By...">
+                    <filter
                         string="Backend"
                         name="groupby_backend"
                         domain="[]"
                         context="{'group_by':'backend_id'}"
                     />
-                        <filter
+                    <filter
                         string="Index"
                         name="groupby_index"
                         domain="[]"
                         context="{'group_by':'index_id'}"
                     />
-                        <filter
+                    <filter
                         string="State"
                         name="groupby_state"
                         domain="[]"
                         context="{'group_by':'state'}"
                     />
-                        <filter
+                    <filter
                         string="Model"
                         name="groupby_model"
                         domain="[]"
                         context="{'group_by':'res_model'}"
                     />
-
-                    </group>
-
+                </group>
             </search>
         </field>
     </record>
@@ -118,10 +111,9 @@
         <field name="name">Binding</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">se.binding</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="se_binding_view_search" />
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
-
 </odoo>

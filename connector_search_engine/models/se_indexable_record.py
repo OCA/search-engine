@@ -16,38 +16,31 @@ if TYPE_CHECKING:
 
 
 SMART_BUTTON = """
-<button class="oe_stat_button"
-       name="open_se_binding"
-       icon="fa-list-ul"
-       type="object"
-       attrs="{'invisible': [('count_se_binding_total', '=', 0)]}">
-       <div class="o_field_widget o_stat_info">
-            <field name="count_se_binding_total" invisible="1"/>
-            <span class="o_stat_value">
-                <i attrs="{'invisible': [
-                    '|',
-                    ('count_se_binding_pending', '>', 0),
-                    ('count_se_binding_error', '>', 0)
-                   ]}"
-                   class="fa fa-thumbs-o-up text-success o_column_title"
-                   aria-hidden="true"> :
-                    <field name="count_se_binding_done"/>
-                </i>
-                <i attrs="{'invisible': [
-                    '|',
-                    ('count_se_binding_pending', '=', 0),
-                    ('count_se_binding_error', '>', 0)
-                   ]}"
-                   class="fa fa-spinner text-warning" aria-hidden="true"> :
-                    <field name="count_se_binding_pending"/>
-                </i>
-                <i attrs="{'invisible': [('count_se_binding_error', '=', 0)]}"
-                   class="fa fa-exclamation-triangle text-danger" aria-hidden="true"> :
-                    <field name="count_se_binding_error"/>
-                </i>
-            </span>
-            <span>Index</span>
-       </div>
+<button
+    class="oe_stat_button"
+    name="open_se_binding"
+    icon="fa-list-ul"
+    type="object"
+    invisible="count_se_binding_total == 0"
+>
+    <div class="o_field_widget o_stat_info">
+        <span class="o_stat_value">
+            <i invisible="count_se_binding_pending > 0 or count_se_binding_error > 0"
+                class="fa fa-thumbs-o-up text-success o_column_title"
+                aria-hidden="true"> :
+                <field name="count_se_binding_done"/>
+            </i>
+            <i invisible="count_se_binding_pending == 0 or count_se_binding_error > 0"
+                class="fa fa-spinner text-warning" aria-hidden="true"> :
+                <field name="count_se_binding_pending"/>
+            </i>
+            <i invisible="count_se_binding_error == 0"
+                class="fa fa-exclamation-triangle text-danger" aria-hidden="true"> :
+                <field name="count_se_binding_error"/>
+            </i>
+        </span>
+        <span>Index</span>
+    </div>
 </button>"""
 
 
@@ -70,14 +63,14 @@ class SeIndexableRecord(models.AbstractModel):
     def _compute_binding_ids(self) -> None:
         binding_model = self.env["se.binding"]
         values = {
-            read["res_id"]: read["ids"]
-            for read in binding_model.read_group(
+            res_id: ids
+            for res_id, ids in binding_model._read_group(
                 domain=[
                     ("res_model", "=", self._name),
                     ("res_id", "in", self.ids),
                 ],
-                fields=["ids:array_agg(id)"],
                 groupby=["res_id"],
+                aggregates=["id:array_agg"],
             )
         }
         for record in self:
@@ -85,14 +78,13 @@ class SeIndexableRecord(models.AbstractModel):
 
     def _get_count_per_state(self):
         res = defaultdict(lambda: defaultdict(int))
-        data = self.env["se.binding"].read_group(
+        data = self.env["se.binding"]._read_group(
             [
                 ("res_id", "in", self.ids),
                 ("res_model", "=", self._name),
             ],
             ["res_id", "state"],
-            groupby=["res_id", "state"],
-            lazy=False,
+            aggregates=["__count"],
         )
         map_state = {
             "done": "done",
@@ -105,8 +97,8 @@ class SeIndexableRecord(models.AbstractModel):
             "invalid_data": "error",
             "recompute_error": "error",
         }
-        for item in data:
-            res[item["res_id"]][map_state[item["state"]]] += item["__count"]
+        for res_id, state, count in data:
+            res[res_id][map_state[state]] += count
         return res
 
     def _compute_count_binding(self):
@@ -121,7 +113,7 @@ class SeIndexableRecord(models.AbstractModel):
                 + res[record.id]["error"]
             )
 
-    def _get_bindings(self, indexes: SeIndex = None) -> SeBinding:
+    def _get_bindings(self, indexes: SeIndex | None = None) -> SeBinding:
         bindings = self.se_binding_ids
         if indexes:
             bindings = bindings.filtered(lambda s: s.index_id in indexes)

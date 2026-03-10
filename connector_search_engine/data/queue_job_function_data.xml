@@ -42,5 +42,4 @@
         <field name="method">delete_obsolete_item</field>
         <field name="channel_id" ref="channel_search_engine_synchronize" />
     </record>
-
 </odoo>
