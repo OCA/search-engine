@@ -1,6 +1,8 @@
 # Copyright 2025 Akretion (https://www.akretion.com).
 # @author Sébastien BEAU <sebastien.beau@akretion.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import warnings
+
 from odoo.exceptions import UserError
 
 from odoo.addons.connector_search_engine.tests.common import (
@@ -16,6 +18,11 @@ from odoo.addons.connector_search_engine.tests.common import (
 
 class TestConnectorTypesense(CommonTestAdapter, TestBindingIndexBase):
     _backend_xml_id = "connector_typesense.backend_1"
+
+    def setUp(self):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            super().setUp()
 
     @classmethod
     def _se_index_config(cls):

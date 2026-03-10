@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -8,17 +8,17 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '0'
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: DELETE
     uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us
   response:
     body:
-      string: '{"created_at":1749219770,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"stem_dictionary":"","store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
+      string: '{"created_at":1771323421,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
     headers:
       Connection:
       - keep-alive
@@ -27,7 +27,7 @@ interactions:
       access-control-allow-origin:
       - '*'
       content-length:
-      - '362'
+      - '341'
       content-type:
       - application/json; charset=utf-8
       transfer-encoding:
@@ -38,7 +38,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -46,8 +46,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -78,15 +80,17 @@ interactions:
       - keep-alive
       Content-Length:
       - '96'
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: POST
     uri: http://typesense:8108/collections
   response:
     body:
-      string: '{"created_at":1749219771,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"stem_dictionary":"","store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
+      string: '{"created_at":1771323421,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
     headers:
       Connection:
       - keep-alive
@@ -4106,8 +4110,10 @@ interactions:
       - keep-alive
       Content-Length:
       - '81743'
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: POST
@@ -8130,7 +8136,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -8138,8 +8144,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -8396,7 +8404,7 @@ interactions:
         name is 1753"},"highlight":{},"highlights":[]},{"document":{"id":"1752","name":"My
         name is 1752"},"highlight":{},"highlights":[]},{"document":{"id":"1751","name":"My
         name is 1751"},"highlight":{},"highlights":[]},{"document":{"id":"1750","name":"My
-        name is 1750"},"highlight":{},"highlights":[]}],"out_of":1999,"page":1,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":1}'
+        name is 1750"},"highlight":{},"highlights":[]}],"out_of":1999,"page":1,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -8416,7 +8424,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -8424,8 +8432,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -8682,7 +8692,7 @@ interactions:
         name is 1503"},"highlight":{},"highlights":[]},{"document":{"id":"1502","name":"My
         name is 1502"},"highlight":{},"highlights":[]},{"document":{"id":"1501","name":"My
         name is 1501"},"highlight":{},"highlights":[]},{"document":{"id":"1500","name":"My
-        name is 1500"},"highlight":{},"highlights":[]}],"out_of":1999,"page":2,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":1}'
+        name is 1500"},"highlight":{},"highlights":[]}],"out_of":1999,"page":2,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -8702,7 +8712,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -8710,8 +8720,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -8968,7 +8980,7 @@ interactions:
         name is 1253"},"highlight":{},"highlights":[]},{"document":{"id":"1252","name":"My
         name is 1252"},"highlight":{},"highlights":[]},{"document":{"id":"1251","name":"My
         name is 1251"},"highlight":{},"highlights":[]},{"document":{"id":"1250","name":"My
-        name is 1250"},"highlight":{},"highlights":[]}],"out_of":1999,"page":3,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":1}'
+        name is 1250"},"highlight":{},"highlights":[]}],"out_of":1999,"page":3,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -8988,7 +9000,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -8996,8 +9008,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -9254,7 +9268,7 @@ interactions:
         name is 1003"},"highlight":{},"highlights":[]},{"document":{"id":"1002","name":"My
         name is 1002"},"highlight":{},"highlights":[]},{"document":{"id":"1001","name":"My
         name is 1001"},"highlight":{},"highlights":[]},{"document":{"id":"1000","name":"My
-        name is 1000"},"highlight":{},"highlights":[]}],"out_of":1999,"page":4,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":1}'
+        name is 1000"},"highlight":{},"highlights":[]}],"out_of":1999,"page":4,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -9274,7 +9288,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -9282,8 +9296,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -9540,7 +9556,7 @@ interactions:
         name is 753"},"highlight":{},"highlights":[]},{"document":{"id":"752","name":"My
         name is 752"},"highlight":{},"highlights":[]},{"document":{"id":"751","name":"My
         name is 751"},"highlight":{},"highlights":[]},{"document":{"id":"750","name":"My
-        name is 750"},"highlight":{},"highlights":[]}],"out_of":1999,"page":5,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":2}'
+        name is 750"},"highlight":{},"highlights":[]}],"out_of":1999,"page":5,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -9560,7 +9576,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -9568,8 +9584,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -9826,7 +9844,7 @@ interactions:
         name is 503"},"highlight":{},"highlights":[]},{"document":{"id":"502","name":"My
         name is 502"},"highlight":{},"highlights":[]},{"document":{"id":"501","name":"My
         name is 501"},"highlight":{},"highlights":[]},{"document":{"id":"500","name":"My
-        name is 500"},"highlight":{},"highlights":[]}],"out_of":1999,"page":6,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":2}'
+        name is 500"},"highlight":{},"highlights":[]}],"out_of":1999,"page":6,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -9846,7 +9864,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -9854,8 +9872,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -10112,7 +10132,7 @@ interactions:
         name is 253"},"highlight":{},"highlights":[]},{"document":{"id":"252","name":"My
         name is 252"},"highlight":{},"highlights":[]},{"document":{"id":"251","name":"My
         name is 251"},"highlight":{},"highlights":[]},{"document":{"id":"250","name":"My
-        name is 250"},"highlight":{},"highlights":[]}],"out_of":1999,"page":7,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":4}'
+        name is 250"},"highlight":{},"highlights":[]}],"out_of":1999,"page":7,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
@@ -10132,7 +10152,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: ''
     headers:
       Accept:
       - '*/*'
@@ -10140,8 +10160,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - typesense:8108
       User-Agent:
-      - python-requests/2.28.1
+      - python-httpx/0.28.1
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
@@ -10397,7 +10419,7 @@ interactions:
         name is 4"},"highlight":{},"highlights":[]},{"document":{"id":"3","name":"My
         name is 3"},"highlight":{},"highlights":[]},{"document":{"id":"2","name":"My
         name is 2"},"highlight":{},"highlights":[]},{"document":{"id":"1","name":"My
-        name is 1"},"highlight":{},"highlights":[]}],"out_of":1999,"page":8,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":2}'
+        name is 1"},"highlight":{},"highlights":[]}],"out_of":1999,"page":8,"request_params":{"collection_name":"demo_typesense_backend_contact_en_us","first_q":"*","per_page":250,"q":"*"},"search_cutoff":false,"search_time_ms":0}'
     headers:
       Connection:
       - keep-alive
