@@ -1,16 +1,14 @@
 # Copyright 2013 Akretion (http://www.akretion.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from typing import Type
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 from ..tools.adapter import SearchEngineAdapter
 
 
 class SeBackend(models.Model):
-
     _name = "se.backend"
     _description = "Se Backend"
     _inherit = [
@@ -32,12 +30,12 @@ class SeBackend(models.Model):
 
     @api.depends("binding_ids")
     def _compute_binding_count(self):
-        res = self.env["se.binding"].read_group(
+        res = self.env["se.binding"]._read_group(
             [("backend_id", "in", self.ids)],
             ["backend_id"],
-            ["backend_id"],
+            ["__count"],
         )
-        mapped_data = {r["backend_id"][0]: r["backend_id_count"] for r in res}
+        mapped_data = {backend_id: count for backend_id, count in res}
         for record in self:
             record.binding_count = mapped_data.get(record.id, 0)
 
@@ -61,7 +59,7 @@ class SeBackend(models.Model):
             vals["index_prefix_name"] = vals["tech_name"]
         return res
 
-    def _get_adapter_class(self) -> Type[SearchEngineAdapter]:
+    def _get_adapter_class(self) -> type[SearchEngineAdapter]:
         """Return the adapter class for this backend"""
         raise NotImplementedError
 
@@ -71,7 +69,9 @@ class SeBackend(models.Model):
         if adapter:
             return adapter(self, index)
         else:
-            raise UserError(_("Adapter is missing for type %s") % self.backend_type)
+            raise UserError(
+                self.env._("Adapter is missing for type %s") % self.backend_type
+            )
 
     def action_test_connection(self):
         adapter = self.get_adapter()
@@ -80,8 +80,8 @@ class SeBackend(models.Model):
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
-                "title": _("Connection Test Succeeded!"),
-                "message": _("Everything seems properly set up!"),
+                "title": self.env._("Connection Test Succeeded!"),
+                "message": self.env._("Everything seems properly set up!"),
                 "sticky": False,
             },
         }

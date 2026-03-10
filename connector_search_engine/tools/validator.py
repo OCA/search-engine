@@ -4,8 +4,10 @@
 
 from abc import ABC, abstractmethod
 
-from odoo import _
 from odoo.exceptions import ValidationError
+from odoo.tools.translate import LazyTranslate
+
+_lt = LazyTranslate(__name__)
 
 
 class JsonValidator(ABC):
@@ -28,4 +30,4 @@ class DefaultJsonValidator(JsonValidator):
 
     def validate(self, data) -> None:
         if not data.get("id"):
-            raise ValidationError(_("The key 'id' is missing in the data"))
+            raise ValidationError(_lt("The key 'id' is missing in the data"))

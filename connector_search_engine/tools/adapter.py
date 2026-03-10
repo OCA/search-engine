@@ -4,7 +4,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Iterator
+from collections.abc import Iterator
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ..models.backend import SearchEngineBackend
@@ -49,9 +50,11 @@ class SearchEngineAdapter(ABC):
 
     def settings(self, force=False) -> None:
         """Update the settings of the index on the search engine side."""
+        return
 
     def test_connection(self) -> None:
         """Test the connection to the search engine.
 
         It should raise an exception if the connection is not working.
         """
+        return

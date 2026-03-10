@@ -4,7 +4,7 @@
 from unittest import mock
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import Form
+from odoo.tests import Form
 from odoo.tools import mute_logger
 
 from odoo.addons.queue_job.job import identity_exact
@@ -14,10 +14,6 @@ from .common import TestBindingIndexBaseFake
 
 
 class TestBindingIndex(TestBindingIndexBaseFake):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-
     def assert_index_called(self, calls, action, ids):
         self.assertEqual(
             calls, [{"index": self.se_index, "method": action, "args": ids}]
@@ -246,6 +242,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 args=(),
                 kwargs={},
             )
+            trap.perform_enqueued_jobs()
         # the binding is now in to_export
         self.assertEqual(self.partner_binding.state, "to_export")
 
@@ -268,6 +265,7 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 args=(),
                 kwargs={},
             )
+            trap.perform_enqueued_jobs()
 
         # the binding is now in done
         self.assertEqual(self.partner_binding.state, "done")
@@ -295,6 +293,8 @@ class TestBindingIndex(TestBindingIndexBaseFake):
                 args=(),
                 kwargs={},
             )
+            trap.perform_enqueued_jobs()
+
         self.assertFalse(self.partner_binding.exists())
 
     def test_binding_ids_on_record(self):
@@ -364,7 +364,6 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         ]
 
         with self.se_adapter.mocked_calls({"each": index_data}) as calls:
-
             self.se_index.resynchronize_all_bindings()
 
             self.assertEqual(len(calls), 2)

@@ -40,14 +40,14 @@ class TestSeBackendCaseBase(TransactionCase):
 
     @classmethod
     def _load_fixture(cls, fixture, module="connector_search_engine"):
-        load_xml(cls.env, module, "tests/fixtures/%s" % fixture)
+        load_xml(cls.env, module, f"tests/fixtures/{fixture}")
 
     @staticmethod
     def parse_path(url):
         return urlparse.urlparse(url).path
 
     def setUp(self):
-        super(TestSeBackendCaseBase, self).setUp()
+        super().setUp()
         loggers = ["odoo.addons.queue_job.utils"]
         for logger in loggers:
             logging.getLogger(logger).addFilter(self)
@@ -62,13 +62,12 @@ class TestSeBackendCaseBase(TransactionCase):
         return 0
 
 
-class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+class TestBindingIndexBase(TestSeBackendCaseBase):
+    def setUp(self):
+        super().setUp()
         # Load fake models ->/
-        cls.loader = FakeModelLoader(cls.env, cls.__module__)
-        cls.loader.backup_registry()
+        self.loader = FakeModelLoader(self.env, self.__module__)
+        self.loader.backup_registry()
         from .models import (
             FakeSeAdapter,
             FakeSerializer,
@@ -78,61 +77,57 @@ class TestBindingIndexBase(TestSeBackendCaseBase, FakeModelLoader):
             SeIndex,
         )
 
-        cls.loader.update_registry((ResPartner, ResUsers, SeBackend, SeIndex))
-        cls.binding_model = cls.env["se.binding"]
-        cls.se_index_model = cls.env["se.index"]
+        self.loader.update_registry((ResPartner, ResUsers, SeBackend, SeIndex))
+        self.binding_model = self.env["se.binding"]
+        self.se_index_model = self.env["se.index"]
 
-        cls.se_adapter = FakeSeAdapter
-        cls.model_serializer = FakeSerializer
+        self.se_adapter = FakeSeAdapter
+        self.model_serializer = FakeSerializer
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.loader.restore_registry()
-        super().tearDownClass()
+    def tearDown(self):
+        self.loader.restore_registry()
+        super().tearDown()
 
-    @classmethod
-    def _prepare_index_values(cls, backend=None):
-        backend = backend or cls.backend
+    def _prepare_index_values(self, backend=None):
+        backend = backend or self.backend
         return {
             "name": "Partner Index",
             "backend_id": backend.id,
-            "model_id": cls.env["ir.model"]
+            "model_id": self.env["ir.model"]
             .search([("model", "=", "res.partner")], limit=1)
             .id,
-            "lang_id": cls.env.ref("base.lang_en").id,
+            "lang_id": self.env.ref("base.lang_en").id,
             "serializer_type": "fake",
         }
 
-    @classmethod
-    def setup_records(cls, backend=None):
-        backend = backend or cls.backend
+    def setup_records(self, backend=None):
+        backend = backend or self.backend
         # create an index for partner model
-        cls.se_index = cls.se_index_model.create(cls._prepare_index_values(backend))
+        self.se_index = self.se_index_model.create(self._prepare_index_values(backend))
         # create a binding + partner alltogether
-        cls.partner = cls.env["res.partner"].create(
+        self.partner = self.env["res.partner"].create(
             {
                 "name": "Marty McFly",
-                "country_id": cls.env.ref("base.us").id,
+                "country_id": self.env.ref("base.us").id,
                 "email": "marty.mcfly@future.com",
                 "child_ids": [
                     (0, 0, {"name": "Doc Brown", "email": "docbrown@future.com"})
                 ],
             }
         )
-        cls.partner_binding = cls.partner._add_to_index(cls.se_index)
+        self.partner_binding = self.partner._add_to_index(self.se_index)
 
-        cls.partner_expected = {"id": cls.partner.id, "name": cls.partner.name}
+        self.partner_expected = {"id": self.partner.id, "name": self.partner.name}
 
 
 class TestBindingIndexBaseFake(TestBindingIndexBase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.backend_model = cls.env["se.backend"]
-        cls.backend = cls.backend_model.create(
+    def setUp(self):
+        super().setUp()
+        self.backend_model = self.env["se.backend"]
+        self.backend = self.backend_model.create(
             {"name": "Fake SE", "tech_name": "fake_se", "backend_type": "fake"}
         )
-        cls.setup_records()
+        self.setup_records()
 
 
 class CommonTestAdapter(VCRMixin):
@@ -145,8 +140,6 @@ class CommonTestAdapter(VCRMixin):
     def setUpClass(cls):
         super().setUpClass()
         cls.backend = cls.env.ref(cls._backend_xml_id)
-        cls.setup_records()
-        cls.adapter = cls.se_index.se_adapter
         cls.data = [
             {"id": 1, "name": "foo"},
             {"id": 2, "name": "bar"},
@@ -165,23 +158,23 @@ class CommonTestAdapter(VCRMixin):
     def _se_index_config(cls):
         return {}
 
-    @classmethod
-    def setup_records(cls):
-        vals = cls._se_index_config()
+    def setup_records(self):
+        vals = self._se_index_config()
         # As body_str have a default value we can not write directly in body
         vals["body_str"] = json.dumps(vals.pop("body"))
-        cls.se_config = cls.env["se.index.config"].create(vals)
+        self.se_config = self.env["se.index.config"].create(vals)
         return super().setup_records()
 
     def setUp(self):
         super().setUp()
+        self.setup_records()
         # Always start with a clean index
+        self.adapter = self.se_index.se_adapter
         self.adapter.clear()
 
-    @classmethod
-    def _prepare_index_values(cls, backend):
+    def _prepare_index_values(self, backend):
         values = super()._prepare_index_values(backend)
-        values.update({"config_id": cls.se_config.id})
+        values.update({"config_id": self.se_config.id})
         return values
 
     def tearDown(self):

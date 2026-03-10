@@ -2,7 +2,6 @@
 <!-- Copyright 2023 ACSONE SA/NV
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-
     <record model="ir.ui.view" id="se_binding_state_updater_form_view">
         <field
             name="name"
@@ -29,5 +28,4 @@
         <field name="target">new</field>
         <field name="binding_model_id" ref="connector_search_engine.model_se_binding" />
     </record>
-
 </odoo>

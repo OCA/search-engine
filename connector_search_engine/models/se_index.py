@@ -3,9 +3,8 @@
 
 import logging
 from collections import defaultdict
-from typing import List
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 from odoo.addons.queue_job.job import identity_exact
 
@@ -62,18 +61,16 @@ class SeIndex(models.Model):
     @api.depends("binding_ids.state")
     def _compute_count_binding(self):
         res = defaultdict(lambda: defaultdict(int))
-        data = self.env["se.binding"].read_group(
+        data = self.env["se.binding"]._read_group(
             [
                 ("index_id", "in", self.ids),
             ],
             ["index_id", "state"],
-            groupby=["index_id", "state"],
-            lazy=False,
+            aggregates=["__count"],
         )
         _all = 0
-        for item in data:
-            count = item["__count"]
-            res[item["index_id"][0]][item["state"]] = count
+        for index_id, state, count in data:
+            res[index_id][state] = count
             _all += count
 
         def get(index_id, states):
@@ -211,14 +208,16 @@ class SeIndex(models.Model):
 
     def _jobify_batch_sync(self, force_export: bool = False) -> None:
         self.ensure_one()
-        description = _("Prepare a batch synchronization of index '%s'") % self.name
+        description = (
+            self.env._("Prepare a batch synchronization of index '%s'") % self.name
+        )
         self.with_delay(
             description=description, identity_key=identity_exact
         ).batch_sync(force_export)
 
     def _jobify_batch_recompute(self, force_export: bool = False) -> None:
         self.ensure_one()
-        description = _("Prepare a batch recompute of index '%s'") % self.name
+        description = self.env._("Prepare a batch recompute of index '%s'") % self.name
         self.with_delay(
             description=description, identity_key=identity_exact
         ).batch_recompute(force_export)
@@ -263,7 +262,7 @@ class SeIndex(models.Model):
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
         for batch in bindings._batch(self.batch_recomputing_size):
-            description = _(
+            description = self.env._(
                 "Recompute %(processing_count)d records of %(total_count)d "
                 "for index '%(index_name)s'"
             ) % {
@@ -288,7 +287,7 @@ class SeIndex(models.Model):
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
         for batch in bindings._batch(self.batch_exporting_size):
-            description = _(
+            description = self.env._(
                 "Export %(processing_count)d records of %(total_count)d "
                 "for index '%(index_name)s'"
             ) % dict(
@@ -313,7 +312,7 @@ class SeIndex(models.Model):
         bindings = self.env["se.binding"].search(domain)
         bindings_count = len(bindings)
         for batch in bindings._batch(self.batch_exporting_size):
-            description = _(
+            description = self.env._(
                 "Delete %(processing_count)d obsolete records of %(total_count)d "
                 "for index '%(index_name)s'",
             ) % dict(
@@ -382,7 +381,7 @@ class SeIndex(models.Model):
                     item_ids.append(_id)
             index.with_delay().delete_obsolete_item(item_ids)
 
-    def delete_obsolete_item(self, item_ids: List[int]):
+    def delete_obsolete_item(self, item_ids: list[int]):
         self.se_adapter.delete(item_ids)
         return f"Deleted ids : {item_ids}"
 

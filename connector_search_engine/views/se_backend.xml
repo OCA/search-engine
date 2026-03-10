@@ -23,16 +23,15 @@
                             icon="fa-list-ul"
                             context="{'search_default_groupby_model': 1}"
                         >
-
                             <div class="o_stat_info">
                                 <field name="binding_count" class="o_stat_value" />
                                 <span
                                     class="o_stat_text"
-                                    attrs="{'invisible': [('binding_count', '&lt;', 2)]}"
+                                    invisible="binding_count &lt; 2"
                                 > Bindings</span>
                                 <span
                                     class="o_stat_text"
-                                    attrs="{'invisible': [('binding_count', '&gt;', 1)]}"
+                                    invisible="binding_count &gt; 1"
                                 > Binding</span>
                             </div>
                         </button>
@@ -59,17 +58,17 @@
         <field name="name">se.backend.tree (in connector_search_engine)</field>
         <field name="model">se.backend</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="tech_name" />
                 <field name="backend_type" />
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.actions.act_window" id="se_backend_act_window">
         <field name="name">Search Engine</field>
         <field name="res_model">se.backend</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>

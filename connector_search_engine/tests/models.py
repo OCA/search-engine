@@ -15,9 +15,9 @@ class FakeSeAdapter(SearchEngineAdapter):
             self._mocked_calls = []
             self._response = {}
 
-    def index(self, data):
+    def index(self, datas):
         self._mocked_calls.append(
-            dict(index=self.index_record, method="index", args=data)
+            dict(index=self.index_record, method="index", args=datas)
         )
 
     def delete(self, binding_ids):

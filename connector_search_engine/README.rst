@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 =======================
 Connector Search Engine
 =======================
@@ -17,24 +13,25 @@ Connector Search Engine
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fsearch--engine-lightgray.png?logo=github
-    :target: https://github.com/OCA/search-engine/tree/16.0/connector_search_engine
+    :target: https://github.com/OCA/search-engine/tree/18.0/connector_search_engine
     :alt: OCA/search-engine
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/search-engine-16-0/search-engine-16-0-connector_search_engine
+    :target: https://translation.odoo-community.org/projects/search-engine-18-0/search-engine-18-0-connector_search_engine
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=16.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/search-engine&target_branch=18.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-Base module for connecting Odoo with external search engines. This addon is
-intended to be used as a base for other addons that implement specific search
-engines. It's designed to be easily extensible and modular.
+Base module for connecting Odoo with external search engines. This addon
+is intended to be used as a base for other addons that implement
+specific search engines. It's designed to be easily extensible and
+modular.
 
 **Table of contents**
 
@@ -45,213 +42,228 @@ Installation
 ============
 
 This addon uses the native json python package provided by python. When
-a json for a record is recomputed, the new value is compared to the original
-one to see if an export to the search engine index is needed.  This is
-done by comparing the md5 of the two json strings. This process when done on
-a large number of records can be slow when the json is large and complex. To speed
-up this process you can install the orjson package.
+a json for a record is recomputed, the new value is compared to the
+original one to see if an export to the search engine index is needed.
+This is done by comparing the md5 of the two json strings. This process
+when done on a large number of records can be slow when the json is
+large and complex. To speed up this process you can install the orjson
+package.
 
-.. code-block:: bash
+.. code:: bash
 
-    pip install orjson
+   pip install orjson
 
 Usage
 =====
 
 Overview
-~~~~~~~~
+--------
 
-A search engine is a system designed to store information in a way that makes
-it easy to find through search and analytics queries. The main difference
-between a search engine and a database is that a search engine is optimized
-for search and analytics queries, while a database is optimized for
-transactional and relational queries.
+A search engine is a system designed to store information in a way that
+makes it easy to find through search and analytics queries. The main
+difference between a search engine and a database is that a search
+engine is optimized for search and analytics queries, while a database
+is optimized for transactional and relational queries.
 
 This addons is designed around 4 main concepts:
 
-* **The search engine backend** is used to define into Odoo the kind
-  of search engine that will be used to index the data. It's main responsibility
-  is to provide an instance of `odoo.addons.search_engine.tools.adapter.SearchEngineAdapter`
-  that will be used to communicate with the search engine.
+- **The search engine backend** is used to define into Odoo the kind of
+  search engine that will be used to index the data. It's main
+  responsibility is to provide an instance of
+  odoo.addons.search_engine.tools.adapter.SearchEngineAdapter that will
+  be used to communicate with the search engine.
 
-* **The search engine index** is used to define into Odoo the index where
-  the data will be indexed. An index is always linked to a search engine backend.
-  The index provides methods to use to manage the lifecycle of the data put into
-  the index for the records of a given model. To do so, it uses:
+- **The search engine index** is used to define into Odoo the index
+  where the data will be indexed. An index is always linked to a search
+  engine backend. The index provides methods to use to manage the
+  lifecycle of the data put into the index for the records of a given
+  model. To do so, it uses:
 
-  * **The SearchEngineAdapter** provided by the backend to communicate with the
-    search engine.
-  * **A ModelSerializer** that is used to transform an odoo record into
+  - **The SearchEngineAdapter** provided by the backend to communicate
+    with the search engine.
+  - **A ModelSerializer** that is used to transform an odoo record into
     a dictionary that can be indexed into the search engine.
-  * **A JsonValidator** that is used to validate the data that is to be
+  - **A JsonValidator** that is used to validate the data that is to be
     indexed into the search engine.
 
-  The RecordSerializer and IndexDataValidator are defined on the index itself.
-  The current addon provides a default implementation only for the IndexDataValidator.
-  You can find into the github repository `search-engine <https://github.com:
-  OCA/search-engine/tree/16.0>`_ An implementation of the RecordSerializer based
-  on the jsonifier addon `connector_search_engine_jsonifier`.
+  The RecordSerializer and IndexDataValidator are defined on the index
+  itself. The current addon provides a default implementation only for
+  the IndexDataValidator. You can find into the github repository
+  `search-engine <https://github.com:OCA/search-engine/tree/16.0>`__ An
+  implementation of the RecordSerializer based on the jsonifier addon
+  connector_search_engine_jsonifier.
 
-* **The search engine indexable record** is a mixin that is used to define
-  the records that can be indexed into a search engine index. The mixin
-  provides methods:
+- **The search engine indexable record** is a mixin that is used to
+  define the records that can be indexed into a search engine index. The
+  mixin provides methods:
 
-  * To add a record to an index.
-  * To remove a record from an index.
-  * To mark the record into an index (*the search engine bindings*) as to be
-    recomputed (This method should be called when modifications are made on
-    the record that could impact the data that are indexed into the search
-    engine. It will instruct the index that the record must be recomputed and
-    re-indexed).
+  - To add a record to an index.
+  - To remove a record from an index.
+  - To mark the record into an index (*the search engine bindings*) as
+    to be recomputed (This method should be called when modifications
+    are made on the record that could impact the data that are indexed
+    into the search engine. It will instruct the index that the record
+    must be recomputed and re-indexed).
 
-  It also ensures that when the record is unlinked, it is removed from the indexes
-  it was indexed into.
+  It also ensures that when the record is unlinked, it is removed from
+  the indexes it was indexed into.
 
-* **The search engine binding** is a model that represents the link between
-  an index and an indexable odoo record. It give you access to the data
-  that are indexed into the search engine for the record. It's also used to
-  manage the lifecycle of the data into the search engine. When a binding is
-  created, it's marked as to be computed. Once the data are computed, the
-  binding is marked as to be indexed. Once the data are indexed, the binding
-  is marked as indexed. If the linked record is unlinked, the binding is
-  marked as to be removed. Once the data are removed from the search engine,
-  the binding is deleted.
+- **The search engine binding** is a model that represents the link
+  between an index and an indexable odoo record. It give you access to
+  the data that are indexed into the search engine for the record. It's
+  also used to manage the lifecycle of the data into the search engine.
+  When a binding is created, it's marked as to be computed. Once the
+  data are computed, the binding is marked as to be indexed. Once the
+  data are indexed, the binding is marked as indexed. If the linked
+  record is unlinked, the binding is marked as to be removed. Once the
+  data are removed from the search engine, the binding is deleted.
 
 Indexing lifecycle
-~~~~~~~~~~~~~~~~~~
+------------------
 
 The indexing lifecycle is based on the following steps:
 
-* When a record is added to an index, a binding is created and marked as to be
-  computed.
-* A cron job scheduled every 5 minutes will look for bindings that are to be
-  computed and for each of them will schedule a job to re compute the json data.
-* When the json data is computed, the binding is marked as to be exported if the
-  json is valid and is different from the one that has been computed last time.
-* A cron job scheduled every 5 minutes will ensure the syncing with the search
-  engine. It will:
+- When a record is added to an index, a binding is created and marked as
+  to be computed.
+- A cron job scheduled every 5 minutes will look for bindings that are
+  to be computed and for each of them will schedule a job to re compute
+  the json data.
+- When the json data is computed, the binding is marked as to be
+  exported if the json is valid and is different from the one that has
+  been computed last time.
+- A cron job scheduled every 5 minutes will ensure the syncing with the
+  search engine. It will:
 
-  * look for bindings that are to be exported and for each of them will schedule
-    a job to export the json data into the search engine. Once exported, the
-    binding is marked as 'done'.
-  * look for bindings that are to be removed and for each of them will schedule
-    a job to remove the data from the search engine. Once removed, the binding
-    is deleted.
+  - look for bindings that are to be exported and for each of them will
+    schedule a job to export the json data into the search engine. Once
+    exported, the binding is marked as 'done'.
+  - look for bindings that are to be removed and for each of them will
+    schedule a job to remove the data from the search engine. Once
+    removed, the binding is deleted.
 
-To keep in sync the data from your model instance and the data that are indexed
-into the search engine, you should call the method `_se_mark_to_update` on the
-mode instance when you make modifications that could impact the data that are
-indexed into the search engine.
+To keep in sync the data from your model instance and the data that are
+indexed into the search engine, you should call the method
+\_se_mark_to_update on the mode instance when you make modifications
+that could impact the data that are indexed into the search engine.
 
-* When the method `_se_mark_to_update` is called, the binding is marked as to be
-  computed.
-* From there, the same process as described above will be used to recompute the
-  data and reindex them into the search engine.
+- When the method \_se_mark_to_update is called, the binding is marked
+  as to be computed.
+- From there, the same process as described above will be used to
+  recompute the data and reindex them into the search engine.
 
-When a model instance is unlinked, the binding is marked as to be removed. From
-there if will be processed by the job syncing the data with the search engine.
+When a model instance is unlinked, the binding is marked as to be
+removed. From there if will be processed by the job syncing the data
+with the search engine.
 
 .. note::
 
-  In previous versions of this addon, there was no method to mark a record as
-  to be recomputed. As a consequence, all the records were re-computed every day
-  to ensure that the data in the search engine were up to date. This was a
-  performance issue and consumed a lot of resources. If despite this, you want
-  to recompute all the records every day, you can activate the cron jon
-  `Search engine: recompute all index` and deactivate the one named
-  `earch engine: Generate job for recompute binding to recompute per index`.
+   In previous versions of this addon, there was no method to mark a
+   record as to be recomputed. As a consequence, all the records were
+   re-computed every day to ensure that the data in the search engine
+   were up to date. This was a performance issue and consumed a lot of
+   resources. If despite this, you want to recompute all the records
+   every day, you can activate the cron jon Search engine: recompute all
+   index and deactivate the one named earch engine: Generate job for
+   recompute binding to recompute per index.
 
 Known issues / Roadmap
 ======================
 
-* Implement generic trigger for binding
-  based on ir.export linked to the index
-  (the aim is to set the binding to be updated
-  if we modify a field configured in the exporter)
+- Implement generic trigger for binding based on ir.export linked to the
+  index (the aim is to set the binding to be updated if we modify a
+  field configured in the exporter)
 
 Changelog
 =========
 
 16.0.0.1.7 (2023-12-15)
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 **Bugfixes**
 
-- Ensure that the record's model is compatible with the index's model before
-  adding a new record to the index.
+- Ensure that the record's model is compatible with the index's model
+  before adding a new record to the index.
 
-  Before this change, the index would silently ignore records that were not
-  compatible with the index's model. This could lead to unexpected behavior and
-  errors when the record was later used to be serialized to JSON and exported to
-  a search engine. (`#177 <https://github.com/OCA/search-engine/issues/177>`_)
-- Lower memory consumption by disabling prefetch for the field 'data' on the binding model.
+  Before this change, the index would silently ignore records that were
+  not compatible with the index's model. This could lead to unexpected
+  behavior and errors when the record was later used to be serialized to
+  JSON and exported to a search engine.
+  (`#177 <https://github.com/OCA/search-engine/issues/177>`__)
 
-  The field 'data' is a json field that is not used in the view or common management
-  operations of the binding model. This json field can be very large. By disabling
-  the prefetch, we avoid to overload the database and Odoo with useless data. (`#179 <https://github.com/OCA/search-engine/issues/179>`_)
+- Lower memory consumption by disabling prefetch for the field 'data' on
+  the binding model.
 
+  The field 'data' is a json field that is not used in the view or
+  common management operations of the binding model. This json field can
+  be very large. By disabling the prefetch, we avoid to overload the
+  database and Odoo with useless data.
+  (`#179 <https://github.com/OCA/search-engine/issues/179>`__)
 
 16.0.0.1.4 (2023-11-29)
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 **Bugfixes**
 
-- Fix error when calling the methods *export_record* or *delete_record* from
-  the *se.binding* model when called on a recordset with items from different
-  *se.backend*.
+- Fix error when calling the methods *export_record* or *delete_record*
+  from the *se.binding* model when called on a recordset with items from
+  different *se.backend*.
 
-  The *export* and *delete* methods involves the use of a *Backend Adapter* to
-  communicate with the target search engine. We then need to process the bindings
-  by backend to call the correct adapter and ensure at same time a batch process
-  of the requested operation for all the records linked to the same backend. (`#173 <https://github.com/OCA/search-engine/issues/173>`_)
-
+  The *export* and *delete* methods involves the use of a *Backend
+  Adapter* to communicate with the target search engine. We then need to
+  process the bindings by backend to call the correct adapter and ensure
+  at same time a batch process of the requested operation for all the
+  records linked to the same backend.
+  (`#173 <https://github.com/OCA/search-engine/issues/173>`__)
 
 16.0.0.1.2 (2023-11-28)
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 **Bugfixes**
 
-- Add missing description on the "se.binding.state.updater" model. As well as
-  ensuring consistency in the model definition, this change removes a
-  warning message from the server logs at registry load time.
+- Add missing description on the "se.binding.state.updater" model. As
+  well as ensuring consistency in the model definition, this change
+  removes a warning message from the server logs at registry load time.
 
-  Prevent warning message in server logs when running tests. (`#172 <https://github.com/OCA/search-engine/issues/172>`_)
-
+  Prevent warning message in server logs when running tests.
+  (`#172 <https://github.com/OCA/search-engine/issues/172>`__)
 
 16.0.0.1.1 (2023-10-13)
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 **Bugfixes**
 
-- Fixes cache issue with the *se_binding_ids* field on the *s.indexable.record*
-  model. When a binding is created or updated or deleted, the cache for the
-  *se_binding_ids* field for referenced records is now invalidated. That way,
-  the next time the field is accessed after such an operation, the value is
-  recomputed to reflect the change. (`#163 <https://github.com/OCA/search-engine/issues/163>`_)
-
+- Fixes cache issue with the *se_binding_ids* field on the
+  *s.indexable.record* model. When a binding is created or updated or
+  deleted, the cache for the *se_binding_ids* field for referenced
+  records is now invalidated. That way, the next time the field is
+  accessed after such an operation, the value is recomputed to reflect
+  the change.
+  (`#163 <https://github.com/OCA/search-engine/issues/163>`__)
 
 16.0.0.1.0 (2023-10-13)
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 **Features**
 
-- A new action **Update state** is now available on *Search Engine Record* objects.
-  This action allows you to update the state of selected records on the tree view.
+- A new action **Update state** is now available on *Search Engine
+  Record* objects. This action allows you to update the state of
+  selected records on the tree view.
 
   Add a smart button to quickly access to the bound records from the
-  *Search Engine Backend* and *Search Engine Record* views. (`#162 <https://github.com/OCA/search-engine/issues/162>`__)
-
+  *Search Engine Backend* and *Search Engine Record* views.
+  (`#162 <https://github.com/OCA/search-engine/issues/162>`__)
 
 **Bugfixes**
 
 - Fix Search Engine Binding form view. The fields data and error are now
   properly displayed and fit the width of the form.
 
-  Makes the Odoo's admin user a member of the *Search Engine Connector Manager* group. (`#162 <https://github.com/OCA/search-engine/issues/162>`__)
-
+  Makes the Odoo's admin user a member of the *Search Engine Connector
+  Manager* group.
+  (`#162 <https://github.com/OCA/search-engine/issues/162>`__)
 
 12.0.x.y.z (YYYY-MM-DD)
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 TODO
 
@@ -261,7 +273,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/search-engine/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/search-engine/issues/new?body=module:%20connector_search_engine%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/search-engine/issues/new?body=module:%20connector_search_engine%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -269,23 +281,23 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Akretion
 * ACSONE SA/NV
 * Camptocamp
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Sébastien BEAU <sebastien.beau@akretion.com>
-* Laurent Mignon <laurent.mignon@acsone.eu>
-* Simone Orsi <simone.orsi@camptocamp.com>
-* Raphaël Reverdy <raphael.reverdy@akretion.com>
-* Mohamed Alkobrosli <malkobrosly@kencove.com>
+- Sébastien BEAU <sebastien.beau@akretion.com>
+- Laurent Mignon <laurent.mignon@acsone.eu>
+- Simone Orsi <simone.orsi@camptocamp.com>
+- Raphaël Reverdy <raphael.reverdy@akretion.com>
+- Mohamed Alkobrosli <malkobrosly@kencove.com>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -297,6 +309,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/search-engine <https://github.com/OCA/search-engine/tree/16.0/connector_search_engine>`_ project on GitHub.
+This module is part of the `OCA/search-engine <https://github.com/OCA/search-engine/tree/18.0/connector_search_engine>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

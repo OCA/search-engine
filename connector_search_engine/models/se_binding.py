@@ -6,12 +6,13 @@ import json
 import logging
 import traceback
 from collections import defaultdict
-from typing import Any, Dict, Iterator
+from collections.abc import Iterator
+from typing import Any
 
 from psycopg2.errors import Error
 from typing_extensions import Self
 
-from odoo import _, api, fields, models, tools
+from odoo import api, fields, models, tools
 from odoo.exceptions import ValidationError
 
 from odoo.addons.queue_job.job import identity_exact
@@ -87,7 +88,7 @@ class SeBinding(models.Model):
         (
             "item_uniq_per_index",
             "unique(res_id, res_model, index_id)",
-            _("A record can only be bind one time per index !"),
+            "A record can only be bind one time per index !",
         ),
     ]
 
@@ -99,7 +100,7 @@ class SeBinding(models.Model):
                 and binding.res_model != binding.index_id.model_id.model
             ):
                 raise ValidationError(
-                    _("Binding model must be equal to the index model")
+                    self.env._("Binding model must be equal to the index model")
                 )
 
     @tools.ormcache()
@@ -137,7 +138,7 @@ class SeBinding(models.Model):
         for rec in self:
             rec.data_display = json.dumps(rec.data, sort_keys=True, indent=4)
 
-    def get_export_data(self) -> Dict[str, Any]:
+    def get_export_data(self) -> dict[str, Any]:
         """Public method to retrieve export data."""
         return self.data
 
@@ -154,7 +155,7 @@ class SeBinding(models.Model):
             return
         size = min(self.index_id.mapped("batch_exporting_size"))
         for binding in self.with_context(tracking_disable=True)._batch(size):
-            description = _(
+            description = self.env._(
                 "Recompute %(name)s json and check if need update", name=self._name
             )
             binding.with_delay(
@@ -227,7 +228,7 @@ class SeBinding(models.Model):
             adapter = bindings[0].index_id.se_adapter
             adapter.index([record.get_export_data() for record in bindings])
         self.state = "done"
-        return "Exported ids : {}".format(self.ids)
+        return f"Exported ids : {self.ids}"
 
     def delete_record(self) -> str:
         record_ids = self.mapped("res_id")
@@ -235,7 +236,7 @@ class SeBinding(models.Model):
             adapter = bindings[0].index_id.se_adapter
             adapter.delete(bindings.mapped("res_id"))
         self.unlink()
-        return "Deleted ids : {}".format(record_ids)
+        return f"Deleted ids : {record_ids}"
 
     def recompute_from_owner(self):
         bindings = self.search(

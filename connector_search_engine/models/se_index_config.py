@@ -8,7 +8,6 @@ from odoo.addons.base_sparse_field.models.fields import Serialized
 
 
 class SeIndexConfig(models.Model):
-
     _name = "se.index.config"
     _inherit = ["mail.thread"]
     _description = "Search engine index configuration"
