@@ -6,47 +6,49 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2026-03-11 12:45+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "8108"
-msgstr ""
+msgstr "8108"
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
 #, python-format
 msgid "Invalid URL - No host supplied"
-msgstr ""
+msgstr "URL non valido - Host non fornito"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
 #, python-format
 msgid "Not Found - The requested resource is not found."
-msgstr ""
+msgstr "Non trovato - La risorsa cercata non è stata trovata."
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "Port"
-msgstr ""
+msgstr "Porta"
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "Protocol"
-msgstr ""
+msgstr "Protcollo"
 
 #. module: connector_typesense
 #. odoo-python
@@ -56,68 +58,71 @@ msgid ""
 "Reindexing is not needed with TypeSense, as schema can be updated. So you "
 "just need to export the setting after changing them"
 msgstr ""
+"Con TypeSense non è necessaria la reindicizzazione, poiché lo schema può "
+"essere aggiornato. Quindi è sufficiente esportare le impostazioni dopo "
+"averle modificate"
 
 #. module: connector_typesense
 #: model:ir.model,name:connector_typesense.model_se_backend
 msgid "Se Backend"
-msgstr ""
+msgstr "Backend SE"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__ts_api_key
 msgid "Ts Api Key"
-msgstr ""
+msgstr "Chiave API TS"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__backend_type
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__backend_type_env_default
 msgid "Type Env Default"
-msgstr ""
+msgstr "Tipo ambiente predefinito"
 
 #. module: connector_typesense
 #: model:ir.model.fields.selection,name:connector_typesense.selection__se_backend__backend_type__typesense
 msgid "Typesense"
-msgstr ""
+msgstr "TypeSense"
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "Typesense API Key"
-msgstr ""
+msgstr "Chiave API TypeSense"
 
 #. module: connector_typesense
 #: model:ir.model.fields,help:connector_typesense.field_se_backend__ts_api_key
 msgid "Typesense Api Key"
-msgstr ""
+msgstr "Chiave API TypeSense"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__ts_server_host
 msgid "Typesense host"
-msgstr ""
+msgstr "Host TypeSense"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__ts_server_port
 msgid "Typesense port"
-msgstr ""
+msgstr "Porta TypeSense"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__ts_server_protocol
 msgid "Typesense protocol"
-msgstr ""
+msgstr "Protocollo TypeSense"
 
 #. module: connector_typesense
 #: model:ir.model.fields,field_description:connector_typesense.field_se_backend__ts_server_timeout
 msgid "Typesense server timeout"
-msgstr ""
+msgstr "Timeout server TypeSense"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
 #, python-format
 msgid "Unable to connect :"
-msgstr ""
+msgstr "Impossibile connettersi:"
 
 #. module: connector_typesense
 #. odoo-python
@@ -127,25 +132,28 @@ msgid ""
 "Unable to index all records. (nbr errors: %(errors)s, total: %(total)s)\n"
 "%(result)s"
 msgstr ""
+"Impossibile elencare tutti i record. (errori nbr: %(errors)s, totale: %"
+"(total)s)\n"
+"%(result)s"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
 #, python-format
 msgid "Unauthorized - Your API key is wrong."
-msgstr ""
+msgstr "Non autorizzato - La chiave API è errata."
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "http"
-msgstr ""
+msgstr "HTTP"
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "localhost"
-msgstr ""
+msgstr "localhost"
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "xyz"
-msgstr ""
+msgstr "xyz"
