@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-05-16 09:24+0000\n"
+"PO-Revision-Date: 2026-03-19 18:45+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
@@ -24,6 +24,10 @@ msgid ""
 "                                <span class=\"o_stat_text\" "
 "invisible=\"binding_count &gt; 1\"> Binding</span>"
 msgstr ""
+"<span class=\"o_stat_text\" invisible=\"binding_count &lt;2\">Associazioni</"
+"span>\n"
+"                                <span class=\"o_stat_text\" "
+"invisible=\"binding_count &gt;1\">Associazione</span>"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -32,6 +36,10 @@ msgid ""
 "                                <span class=\"o_stat_text\" "
 "invisible=\"count_all &gt; 1\"> Binding</span>"
 msgstr ""
+"<span class=\"o_stat_text\" invisible=\"count_all &lt;2\">Associazioni</span>"
+"\n"
+"                                <span class=\"o_stat_text\" "
+"invisible=\"count_all &gt;1\">Associazione</span>"
 
 #. module: connector_search_engine
 #: model:ir.model.constraint,message:connector_search_engine.constraint_se_binding_item_uniq_per_index
@@ -338,12 +346,12 @@ msgstr "Seguito da (partner)"
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
 msgid "Force Export"
-msgstr ""
+msgstr "Forza esportazione"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
 msgid "Force Recompute"
-msgstr ""
+msgstr "Forza ricalcolo"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -726,7 +734,7 @@ msgstr "Prova connessione"
 #. module: connector_search_engine
 #: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_name_uniq
 msgid "The index name must be unique per backend."
-msgstr ""
+msgstr "Il nome dell'indice deve essere univoco nel backend."
 
 #. module: connector_search_engine
 #. odoo-python
@@ -782,12 +790,12 @@ msgstr "Stato aggiornamento dei collegamenti SE"
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_backend_type_env_is_editable
 msgid "X Backend Type Env Is Editable"
-msgstr ""
+msgstr "Tipo backend X ambiente è modificabile"
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_index_prefix_name_env_is_editable
 msgid "X Index Prefix Name Env Is Editable"
-msgstr ""
+msgstr "L'env del nome del prefisso dell'indice X è modificabile"
 
 #~ msgid ""
 #~ "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', "
