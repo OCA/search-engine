@@ -438,11 +438,6 @@ msgid "Lang"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_lang_model_uniq
-msgid "Lang and model of index must be uniq per backend."
-msgstr ""
-
-#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__write_uid
@@ -702,6 +697,11 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid "Test Connection"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_name_uniq
+msgid "The index name must be unique per backend."
 msgstr ""
 
 #. module: connector_search_engine
