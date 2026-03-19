@@ -19,26 +19,22 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
-"2)]}\"> Bindings</span>\n"
+"<span class=\"o_stat_text\" invisible=\"binding_count &lt; 2\"> Bindings</"
+"span>\n"
 "                                <span class=\"o_stat_text\" "
-"attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+"invisible=\"binding_count &gt; 1\"> Binding</span>"
 msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
-"2)]}\"> Bindings</span>\n"
+"<span class=\"o_stat_text\" invisible=\"count_all &lt; 2\"> Bindings</span>\n"
 "                                <span class=\"o_stat_text\" "
-"attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+"invisible=\"count_all &gt; 1\"> Binding</span>"
 msgstr ""
 
 #. module: connector_search_engine
-#. odoo-python
-#: code:addons/connector_search_engine/models/se_binding.py:0
 #: model:ir.model.constraint,message:connector_search_engine.constraint_se_binding_item_uniq_per_index
-#, python-format
 msgid "A record can only be bind one time per index !"
 msgstr ""
 
@@ -55,7 +51,6 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_backend.py:0
-#, python-format
 msgid "Adapter is missing for type %s"
 msgstr ""
 
@@ -69,11 +64,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_search
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_search_view
 msgid "Backend"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type_env_is_editable
-msgid "Backend Type Env Is Editable"
 msgstr ""
 
 #. module: connector_search_engine
@@ -119,7 +109,6 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
 msgid "Binding model must be equal to the index model"
 msgstr ""
 
@@ -171,7 +160,6 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_backend.py:0
-#, python-format
 msgid "Connection Test Succeeded!"
 msgstr ""
 
@@ -262,10 +250,9 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid ""
-"Delete %(processing_count)d obsolete records of %(total_count)d for index "
-"'%(index_name)s'"
+"Delete %(processing_count)d obsolete records of %(total_count)d for index '%"
+"(index_name)s'"
 msgstr ""
 
 #. module: connector_search_engine
@@ -301,17 +288,15 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_backend.py:0
-#, python-format
 msgid "Everything seems properly set up!"
 msgstr ""
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid ""
-"Export %(processing_count)d records of %(total_count)d for index "
-"'%(index_name)s'"
+"Export %(processing_count)d records of %(total_count)d for index '%"
+"(index_name)s'"
 msgstr ""
 
 #. module: connector_search_engine
@@ -344,6 +329,16 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_partner_ids
 msgid "Followers (Partners)"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
+msgid "Force Export"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
+msgid "Force Recompute"
 msgstr ""
 
 #. module: connector_search_engine
@@ -414,13 +409,8 @@ msgid "Index Prefix Name"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_index_prefix_name_env_default
 msgid "Index Prefix Name Env Default"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_is_editable
-msgid "Index Prefix Name Env Is Editable"
 msgstr ""
 
 #. module: connector_search_engine
@@ -454,20 +444,6 @@ msgid "Lang"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_lang_model_uniq
-msgid "Lang and model of index must be uniq per backend."
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__write_uid
@@ -483,11 +459,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index__write_date
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_date
 msgid "Last Updated on"
-msgstr ""
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_main_attachment_id
-msgid "Main Attachment"
 msgstr ""
 
 #. module: connector_search_engine
@@ -551,7 +522,7 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name
-#: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name_env_default
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend__x_index_prefix_name_env_default
 msgid ""
 "Prefix for technical indexes tech name. You could use this to change index "
 "names based on current env."
@@ -560,31 +531,27 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid "Prepare a batch recompute of index '%s'"
 msgstr ""
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid "Prepare a batch synchronization of index '%s'"
 msgstr ""
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
 msgid "Recompute %(name)s json and check if need update"
 msgstr ""
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid ""
-"Recompute %(processing_count)d records of %(total_count)d for index "
-"'%(index_name)s'"
+"Recompute %(processing_count)d records of %(total_count)d for index '%"
+"(index_name)s'"
 msgstr ""
 
 #. module: connector_search_engine
@@ -658,6 +625,7 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.act_window,name:connector_search_engine.se_backend_act_window
+#: model:ir.module.category,name:connector_search_engine.module_category_search_engine
 #: model:ir.ui.menu,name:connector_search_engine.se_root_menu
 msgid "Search Engine"
 msgstr ""
@@ -689,20 +657,17 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_export_binding_ir_actions_server
-#: model:ir.cron,cron_name:connector_search_engine.ir_cron_export_binding
 msgid "Search engine: Generate job for exporting binding per index"
 msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_recompute_binding_ir_actions_server
-#: model:ir.cron,cron_name:connector_search_engine.ir_cron_recompute_binding
 msgid ""
 "Search engine: Generate job for recompute binding to recompute per index"
 msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_recompute_all_index_ir_actions_server
-#: model:ir.cron,cron_name:connector_search_engine.ir_cron_recompute_all_index
 msgid "Search engine: recompute all index"
 msgstr ""
 
@@ -741,9 +706,13 @@ msgid "Test Connection"
 msgstr ""
 
 #. module: connector_search_engine
+#: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_name_uniq
+msgid "The index name must be unique per backend."
+msgstr ""
+
+#. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/tools/validator.py:0
-#, python-format
 msgid "The key 'id' is missing in the data"
 msgstr ""
 
@@ -768,7 +737,7 @@ msgid "Type"
 msgstr ""
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type_env_default
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_backend_type_env_default
 msgid "Type Env Default"
 msgstr ""
 
@@ -790,4 +759,14 @@ msgstr ""
 #. module: connector_search_engine
 #: model:ir.model,name:connector_search_engine.model_se_binding_state_updater
 msgid "Update state of SE bindings"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_backend_type_env_is_editable
+msgid "X Backend Type Env Is Editable"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_index_prefix_name_env_is_editable
+msgid "X Index Prefix Name Env Is Editable"
 msgstr ""

@@ -19,34 +19,22 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_backend_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
-"2)]}\"> Bindings</span>\n"
+"<span class=\"o_stat_text\" invisible=\"binding_count &lt; 2\"> Bindings</"
+"span>\n"
 "                                <span class=\"o_stat_text\" "
-"attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+"invisible=\"binding_count &gt; 1\"> Binding</span>"
 msgstr ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', '&lt;', "
-"2)]}\"> Collegamenti</span>\n"
-"                                <span class=\"o_stat_text\" "
-"attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Collegamento</span>"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
-"2)]}\"> Bindings</span>\n"
+"<span class=\"o_stat_text\" invisible=\"count_all &lt; 2\"> Bindings</span>\n"
 "                                <span class=\"o_stat_text\" "
-"attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+"invisible=\"count_all &gt; 1\"> Binding</span>"
 msgstr ""
-"<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
-"2)]}\"> Collegamenti</span>\n"
-"                                <span class=\"o_stat_text\" "
-"attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Collegamento</span>"
 
 #. module: connector_search_engine
-#. odoo-python
-#: code:addons/connector_search_engine/models/se_binding.py:0
 #: model:ir.model.constraint,message:connector_search_engine.constraint_se_binding_item_uniq_per_index
-#, python-format
 msgid "A record can only be bind one time per index !"
 msgstr "Un record può essere collegato solo una volta per indice!"
 
@@ -63,7 +51,6 @@ msgstr "Azioni"
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_backend.py:0
-#, python-format
 msgid "Adapter is missing for type %s"
 msgstr "Adattatore mancante per il tipo %s"
 
@@ -78,11 +65,6 @@ msgstr "Conteggio allegati"
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_search_view
 msgid "Backend"
 msgstr "Backend"
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type_env_is_editable
-msgid "Backend Type Env Is Editable"
-msgstr "Il tipo backend ambiente è modificabile"
 
 #. module: connector_search_engine
 #: model:ir.ui.menu,name:connector_search_engine.se_backend_menu
@@ -127,7 +109,6 @@ msgstr "Conteggio collegamenti"
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
 msgid "Binding model must be equal to the index model"
 msgstr "Il modello collegamento deve essere uguale al modello indice"
 
@@ -179,7 +160,6 @@ msgstr "Configurazione"
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_backend.py:0
-#, python-format
 msgid "Connection Test Succeeded!"
 msgstr "Test connessione avvenuto con successo!"
 
@@ -270,10 +250,9 @@ msgstr "Data sincronizzata"
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid ""
-"Delete %(processing_count)d obsolete records of %(total_count)d for index "
-"'%(index_name)s'"
+"Delete %(processing_count)d obsolete records of %(total_count)d for index '%"
+"(index_name)s'"
 msgstr ""
 "Cancella record obsoleri %(processing_count)d di %(total_count)d per indice "
 "'%(index_name)s'"
@@ -311,20 +290,18 @@ msgstr "Errore"
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_backend.py:0
-#, python-format
 msgid "Everything seems properly set up!"
 msgstr "Tutto sembra impostato correttamente!"
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid ""
-"Export %(processing_count)d records of %(total_count)d for index "
-"'%(index_name)s'"
+"Export %(processing_count)d records of %(total_count)d for index '%"
+"(index_name)s'"
 msgstr ""
-"Esporta %(processing_count)d record di %(total_count)d per indice "
-"'%(index_name)s'"
+"Esporta %(processing_count)d record di %(total_count)d per indice '%"
+"(index_name)s'"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -357,6 +334,16 @@ msgstr "Seguito da"
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Seguito da (partner)"
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
+msgid "Force Export"
+msgstr ""
+
+#. module: connector_search_engine
+#: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_form
+msgid "Force Recompute"
+msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -429,14 +416,9 @@ msgid "Index Prefix Name"
 msgstr "Nome prefisso indice"
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_default
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_index_prefix_name_env_default
 msgid "Index Prefix Name Env Default"
 msgstr "Ambiente nome prefisso indice predefinito"
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__index_prefix_name_env_is_editable
-msgid "Index Prefix Name Env Is Editable"
-msgstr "Ambiente nome prefisso indice è modificabile"
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_index__config_id
@@ -469,20 +451,6 @@ msgid "Lang"
 msgstr "Lingua"
 
 #. module: connector_search_engine
-#: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_lang_model_uniq
-msgid "Lang and model of index must be uniq per backend."
-msgstr "Lingua e modello dell'indice devono essere univoci per backend."
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index____last_update
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding__write_uid
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_binding_state_updater__write_uid
@@ -499,11 +467,6 @@ msgstr "Ultimo aggiornamento di"
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__write_date
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
-
-#. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_main_attachment_id
-msgid "Main Attachment"
-msgstr "Allegato principale"
 
 #. module: connector_search_engine
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_index_config__message_has_error
@@ -566,7 +529,7 @@ msgstr "OK"
 
 #. module: connector_search_engine
 #: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name
-#: model:ir.model.fields,help:connector_search_engine.field_se_backend__index_prefix_name_env_default
+#: model:ir.model.fields,help:connector_search_engine.field_se_backend__x_index_prefix_name_env_default
 msgid ""
 "Prefix for technical indexes tech name. You could use this to change index "
 "names based on current env."
@@ -577,34 +540,30 @@ msgstr ""
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid "Prepare a batch recompute of index '%s'"
 msgstr "Prepara un ricalcolo batch dell'indice '%s'"
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid "Prepare a batch synchronization of index '%s'"
 msgstr "Prepara un sincronizzazne batch dell'indice '%s'"
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_binding.py:0
-#, python-format
 msgid "Recompute %(name)s json and check if need update"
 msgstr "Ricalcola JSON %(name)s e verifica se rchiede un aggiornamento"
 
 #. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/models/se_index.py:0
-#, python-format
 msgid ""
-"Recompute %(processing_count)d records of %(total_count)d for index "
-"'%(index_name)s'"
+"Recompute %(processing_count)d records of %(total_count)d for index '%"
+"(index_name)s'"
 msgstr ""
-"Ricalcola %(processing_count)d record di %(total_count)d per l'indice "
-"'%(index_name)s'"
+"Ricalcola %(processing_count)d record di %(total_count)d per l'indice '%"
+"(index_name)s'"
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.action_recompute_se_index
@@ -677,6 +636,7 @@ msgstr "Collgamenti motore di ricerca"
 
 #. module: connector_search_engine
 #: model:ir.actions.act_window,name:connector_search_engine.se_backend_act_window
+#: model:ir.module.category,name:connector_search_engine.module_category_search_engine
 #: model:ir.ui.menu,name:connector_search_engine.se_root_menu
 msgid "Search Engine"
 msgstr "Motore di ricerca"
@@ -708,14 +668,12 @@ msgstr "Configurazione indice motore di ricerca"
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_export_binding_ir_actions_server
-#: model:ir.cron,cron_name:connector_search_engine.ir_cron_export_binding
 msgid "Search engine: Generate job for exporting binding per index"
 msgstr ""
 "Motore di ricerca: genera un lavoro per esportare i collegamenti per indice"
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_recompute_binding_ir_actions_server
-#: model:ir.cron,cron_name:connector_search_engine.ir_cron_recompute_binding
 msgid ""
 "Search engine: Generate job for recompute binding to recompute per index"
 msgstr ""
@@ -724,7 +682,6 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.actions.server,name:connector_search_engine.ir_cron_recompute_all_index_ir_actions_server
-#: model:ir.cron,cron_name:connector_search_engine.ir_cron_recompute_all_index
 msgid "Search engine: recompute all index"
 msgstr "Motore di ricerca: ricalcola tutti gli indici"
 
@@ -767,9 +724,13 @@ msgid "Test Connection"
 msgstr "Prova connessione"
 
 #. module: connector_search_engine
+#: model:ir.model.constraint,message:connector_search_engine.constraint_se_index_name_uniq
+msgid "The index name must be unique per backend."
+msgstr ""
+
+#. module: connector_search_engine
 #. odoo-python
 #: code:addons/connector_search_engine/tools/validator.py:0
-#, python-format
 msgid "The key 'id' is missing in the data"
 msgstr "La chiave 'id' non è presente nei dati"
 
@@ -794,7 +755,7 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: connector_search_engine
-#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__backend_type_env_default
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_backend_type_env_default
 msgid "Type Env Default"
 msgstr "Tipo ambiente predefinito"
 
@@ -817,3 +778,51 @@ msgstr "Stato aggiornamento"
 #: model:ir.model,name:connector_search_engine.model_se_binding_state_updater
 msgid "Update state of SE bindings"
 msgstr "Stato aggiornamento dei collegamenti SE"
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_backend_type_env_is_editable
+msgid "X Backend Type Env Is Editable"
+msgstr ""
+
+#. module: connector_search_engine
+#: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_index_prefix_name_env_is_editable
+msgid "X Index Prefix Name Env Is Editable"
+msgstr ""
+
+#~ msgid ""
+#~ "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', "
+#~ "'&lt;', 2)]}\"> Bindings</span>\n"
+#~ "                                <span class=\"o_stat_text\" "
+#~ "attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Binding</span>"
+#~ msgstr ""
+#~ "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', "
+#~ "'&lt;', 2)]}\"> Collegamenti</span>\n"
+#~ "                                <span class=\"o_stat_text\" "
+#~ "attrs=\"{'invisible': [('binding_count', '&gt;', 1)]}\"> Collegamento</"
+#~ "span>"
+
+#~ msgid ""
+#~ "<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
+#~ "2)]}\"> Bindings</span>\n"
+#~ "                                <span class=\"o_stat_text\" "
+#~ "attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Binding</span>"
+#~ msgstr ""
+#~ "<span class=\"o_stat_text\" attrs=\"{'invisible': [('count_all', '&lt;', "
+#~ "2)]}\"> Collegamenti</span>\n"
+#~ "                                <span class=\"o_stat_text\" "
+#~ "attrs=\"{'invisible': [('count_all', '&gt;', 1)]}\"> Collegamento</span>"
+
+#~ msgid "Backend Type Env Is Editable"
+#~ msgstr "Il tipo backend ambiente è modificabile"
+
+#~ msgid "Index Prefix Name Env Is Editable"
+#~ msgstr "Ambiente nome prefisso indice è modificabile"
+
+#~ msgid "Lang and model of index must be uniq per backend."
+#~ msgstr "Lingua e modello dell'indice devono essere univoci per backend."
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
+
+#~ msgid "Main Attachment"
+#~ msgstr "Allegato principale"
