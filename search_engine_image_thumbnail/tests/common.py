@@ -11,16 +11,15 @@ from odoo.addons.fs_image.fields import FSImageValue
 
 
 class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.loader = FakeModelLoader(cls.env, cls.__module__)
-        cls.loader.backup_registry()
+    def setUp(self):
+        super().setUp()
+        self.loader = FakeModelLoader(self.env, self.__module__)
+        self.loader.backup_registry()
         from odoo.addons.connector_search_engine.tests.models import SeBackend, SeIndex
 
         from .models import TestFSImage, TestImage, TestImageRelation, TestMultiImage
 
-        cls.loader.update_registry(
+        self.loader.update_registry(
             (
                 SeIndex,
                 SeBackend,
@@ -30,62 +29,62 @@ class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
                 TestMultiImage,
             )
         )
-        cls.backend = cls.env["se.backend"].create(
+        self.backend = self.env["se.backend"].create(
             {"name": "Fake SE", "tech_name": "fake_se", "backend_type": "fake"}
         )
 
         # models
-        cls.test_multi_image_model = cls.env["test.multi.image"]
-        cls.test_image_model = cls.env["test.image"]
-        cls.test_fsimage_model = cls.env["test.fsimage"]
-        cls.test_image_relation = cls.env["test.image.relation"]
+        self.test_multi_image_model = self.env["test.multi.image"]
+        self.test_image_model = self.env["test.image"]
+        self.test_fsimage_model = self.env["test.fsimage"]
+        self.test_image_relation = self.env["test.image.relation"]
 
         # model ids
-        cls.test_multi_image_model_id = cls.env.ref(
+        self.test_multi_image_model_id = self.env.ref(
             "search_engine_image_thumbnail.model_test_multi_image"
         ).id
-        cls.test_image_model_id = cls.env.ref(
+        self.test_image_model_id = self.env.ref(
             "search_engine_image_thumbnail.model_test_image"
         ).id
-        cls.test_fsimage_model_id = cls.env.ref(
+        self.test_fsimage_model_id = self.env.ref(
             "search_engine_image_thumbnail.model_test_fsimage"
         ).id
 
         # field ids
-        cls.multi_images_field_id = cls.env.ref(
+        self.multi_images_field_id = self.env.ref(
             "search_engine_image_thumbnail.field_test_multi_image__image_ids"
         ).id
-        cls.image_field_id = cls.env.ref(
+        self.image_field_id = self.env.ref(
             "search_engine_image_thumbnail.field_test_image__image"
         ).id
-        cls.fsimage_field_id = cls.env.ref(
+        self.fsimage_field_id = self.env.ref(
             "search_engine_image_thumbnail.field_test_fsimage__image"
         ).id
 
-        cls.index_multi_image = cls.env["se.index"].create(
+        self.index_multi_image = self.env["se.index"].create(
             {
-                "name": "fake_index",
-                "backend_id": cls.backend.id,
-                "model_id": cls.test_multi_image_model_id,
+                "name": "fake_multi_image_index",
+                "backend_id": self.backend.id,
+                "model_id": self.test_multi_image_model_id,
             }
         )
-        cls.index_image = cls.env["se.index"].create(
+        self.index_image = self.env["se.index"].create(
             {
-                "name": "fake_index",
-                "backend_id": cls.backend.id,
-                "model_id": cls.test_image_model_id,
+                "name": "fake_image_index",
+                "backend_id": self.backend.id,
+                "model_id": self.test_image_model_id,
             }
         )
-        cls.index_fsimage = cls.env["se.index"].create(
+        self.index_fsimage = self.env["se.index"].create(
             {
-                "name": "fake_index",
-                "backend_id": cls.backend.id,
-                "model_id": cls.test_fsimage_model_id,
+                "name": "fake_fsimage_index",
+                "backend_id": self.backend.id,
+                "model_id": self.test_fsimage_model_id,
             }
         )
 
         # create some thumbnail sizes (small and medium)
-        cls.size_small = cls.env["se.thumbnail.size"].create(
+        self.size_small = self.env["se.thumbnail.size"].create(
             {
                 "name": "small",
                 "key": "small",
@@ -93,7 +92,7 @@ class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
                 "size_y": 5,
             }
         )
-        cls.size_medium = cls.env["se.thumbnail.size"].create(
+        self.size_medium = self.env["se.thumbnail.size"].create(
             {
                 "name": "medium",
                 "key": "medium",
@@ -103,37 +102,37 @@ class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
         )
 
         # create some thumbnail sizes (small and medium for each models)
-        cls.test_multi_image_size = cls.env["se.image.field.thumbnail.size"].create(
+        self.test_multi_image_size = self.env["se.image.field.thumbnail.size"].create(
             {
-                "model_id": cls.test_multi_image_model_id,
-                "field_id": cls.multi_images_field_id,
-                "backend_id": cls.backend.id,
-                "size_ids": [(6, 0, [cls.size_small.id, cls.size_medium.id])],
+                "model_id": self.test_multi_image_model_id,
+                "field_id": self.multi_images_field_id,
+                "backend_id": self.backend.id,
+                "size_ids": [(6, 0, [self.size_small.id, self.size_medium.id])],
             }
         )
-        cls.test_image_size = cls.env["se.image.field.thumbnail.size"].create(
+        self.test_image_size = self.env["se.image.field.thumbnail.size"].create(
             {
-                "model_id": cls.test_image_model_id,
-                "field_id": cls.image_field_id,
-                "backend_id": cls.backend.id,
-                "size_ids": [(6, 0, [cls.size_small.id, cls.size_medium.id])],
+                "model_id": self.test_image_model_id,
+                "field_id": self.image_field_id,
+                "backend_id": self.backend.id,
+                "size_ids": [(6, 0, [self.size_small.id, self.size_medium.id])],
             }
         )
-        cls.test_fsimage_size = cls.env["se.image.field.thumbnail.size"].create(
+        self.test_fsimage_size = self.env["se.image.field.thumbnail.size"].create(
             {
-                "model_id": cls.test_fsimage_model_id,
-                "field_id": cls.fsimage_field_id,
-                "backend_id": cls.backend.id,
-                "size_ids": [(6, 0, [cls.size_small.id, cls.size_medium.id])],
+                "model_id": self.test_fsimage_model_id,
+                "field_id": self.fsimage_field_id,
+                "backend_id": self.backend.id,
+                "size_ids": [(6, 0, [self.size_small.id, self.size_medium.id])],
             }
         )
 
         # create some PNG images
-        cls.image_blank = cls._create_image(20, 20, color="#FFFFFF")
-        cls.image_black = cls._create_image(20, 20, color="#000000")
+        self.image_blank = self._create_image(20, 20, color="#FFFFFF")
+        self.image_black = self._create_image(20, 20, color="#000000")
 
         # create some records
-        cls.test_multi_image = cls.test_multi_image_model.create(
+        self.test_multi_image = self.test_multi_image_model.create(
             {
                 "name": "test",
                 "image_ids": [
@@ -143,7 +142,7 @@ class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
                         {
                             "specific_image": FSImageValue(
                                 name="blank.png",
-                                value=cls.image_blank,
+                                value=self.image_blank,
                             ),
                             "sequence": 2,
                         },
@@ -154,7 +153,7 @@ class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
                         {
                             "specific_image": FSImageValue(
                                 name="black.png",
-                                value=cls.image_black,
+                                value=self.image_black,
                             ),
                             "sequence": 1,
                         },
@@ -162,26 +161,25 @@ class TestSeMultiImageThumbnailCase(TestSeBackendCaseBase):
                 ],
             }
         )
-        cls.test_image = cls.test_image_model.create(
+        self.test_image = self.test_image_model.create(
             {
                 "name": "test Image",
-                "image": base64.b64encode(cls.image_blank),
+                "image": base64.b64encode(self.image_blank),
             }
         )
-        cls.test_fsimage = cls.test_fsimage_model.create(
+        self.test_fsimage = self.test_fsimage_model.create(
             {
                 "name": "test FSImage",
                 "image": FSImageValue(
                     name="blank.png",
-                    value=cls.image_blank,
+                    value=self.image_blank,
                 ),
             }
         )
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.loader.restore_registry()
-        super().tearDownClass()
+    def tearDown(self):
+        self.loader.restore_registry()
+        super().tearDown()
 
     @classmethod
     def _create_image(cls, width, height, color="#4169E1", img_format="PNG"):

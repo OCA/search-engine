@@ -2,7 +2,6 @@
 <!-- Copyright 2023 ACSONE SA/NV
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-
     <record model="ir.model.access" id="se_image_field_thumbnail_size_access_read">
         <field name="name">se.image.field.thumbnail.size access read</field>
         <field name="model_id" ref="model_se_image_field_thumbnail_size" />
@@ -25,5 +24,4 @@
         <field name="perm_write" eval="1" />
         <field name="perm_unlink" eval="1" />
     </record>
-
 </odoo>

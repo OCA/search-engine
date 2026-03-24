@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from collections import OrderedDict
 
-from odoo import _, fields, models
+from odoo import fields, models
 from odoo.exceptions import UserError
 
 from odoo.addons.connector_search_engine.models.se_index import SeIndex
@@ -32,7 +32,8 @@ class SeIndexableRecord(models.AbstractModel):
         :param field_name: The name of the field
         :return:  a ordered dictionary where the key is the original image
             relation and the value is a list of tuple(se.thumbnail.size, se.thumbnail)
-            (The order of the dict is the order of the images in the original Odoo record)
+            (The order of the dict is the order of the images in the original
+            Odoo record)
 
         """
         self.ensure_one()
@@ -48,7 +49,7 @@ class SeIndexableRecord(models.AbstractModel):
         thumbnails_by_image = se_tumbnail_model.get_or_create_thumbnails(
             *images.mapped("image"),
             sizes=thumbnail_sizes_by_size.keys(),
-            base_name=self._get_image_url_key(index, field_name)
+            base_name=self._get_image_url_key(index, field_name),
         )
         res = OrderedDict[
             FsImageRelationMixin, list[tuple[SeThumbnailSize, FsImageThumbnailMixin]]
@@ -69,7 +70,8 @@ class SeIndexableRecord(models.AbstractModel):
         """Create a thumbnail for an image field.
 
         :param index: The index where the record should be added
-        :param field_name: The name of the field. (should be a fields.Image or FSImage) field
+        :param field_name: The name of the field. (should be a fields.Image or
+            FSImage) field
         :return:  a list of tuple(se.thumbnail.size, fs.image.thumbnail.mixi)
         """
         thumbnail_sizes_by_size = self._get_thumbnail_sizes_by_size_for_field(
@@ -114,7 +116,7 @@ class SeIndexableRecord(models.AbstractModel):
         sizes = index._get_thumbnail_sizes(self, field_name)
         if not sizes and index.backend_id.fails_if_no_thumbail_size:
             raise UserError(
-                _(
+                self.env._(
                     "No thumbnail sizes defined for %(model)s.%(field)s",
                     field=field_name,
                     model=self._name,
