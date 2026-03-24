@@ -3,9 +3,8 @@
 
 {
     "name": "Search Engine Multi Image Thumbnail",
-    "summary": """
-        Generate thumbnails for binded record""",
-    "version": "16.0.1.0.7",
+    "summary": "Generate thumbnails for binded record",
+    "version": "18.0.1.0.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/search-engine",
@@ -29,6 +28,5 @@
         "views/se_thumbnail.xml",
         "views/se_thumbnail_size.xml",
     ],
-    "demo": [],
-    "installable": False,
+    "installable": True,
 }
