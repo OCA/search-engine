@@ -4,12 +4,14 @@
 import logging
 import time
 
-from odoo import _
 from odoo.exceptions import UserError
+from odoo.tools.translate import LazyTranslate
 
 from odoo.addons.connector_search_engine.tools.adapter import SearchEngineAdapter
 
 _logger = logging.getLogger(__name__)
+
+_lt = LazyTranslate(__name__, default_lang="en_US")
 
 
 try:
@@ -80,11 +82,11 @@ class ElasticSearchAdapter(SearchEngineAdapter):
         try:
             es.security.authenticate()
         except elasticsearch.NotFoundError as exc:
-            raise UserError(_("Unable to reach host.")) from exc
+            raise UserError(_lt("Unable to reach host.")) from exc
         except elasticsearch.AuthenticationException as exc:
-            raise UserError(_("Unable to authenticate. Check credentials.")) from exc
+            raise UserError(_lt("Unable to authenticate. Check credentials.")) from exc
         except Exception as exc:
-            raise UserError(_("Unable to connect :") + "\n\n" + repr(exc)) from exc
+            raise UserError(_lt("Unable to connect :") + "\n\n" + repr(exc)) from exc
 
     def index(self, records) -> None:
         es = self._es_client
@@ -100,7 +102,7 @@ class ElasticSearchAdapter(SearchEngineAdapter):
         # checks if number of indexed object and object in records are equal
         if not res[0] == len(records):
             raise SystemError(
-                _(
+                _lt(
                     "Unable to index all records. (indexed: %(indexed)s, "
                     "total: %(total)s)\n%(result)s",
                     indexed=res[0],
@@ -136,7 +138,7 @@ class ElasticSearchAdapter(SearchEngineAdapter):
         self.settings()
         if not res["acknowledged"]:
             raise SystemError(
-                _(
+                _lt(
                     "Unable to clear index %(index_name)s: %(result)",
                     index_name=index_name,
                     result=res,

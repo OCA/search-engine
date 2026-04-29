@@ -3,6 +3,10 @@
 
 import logging
 
+import werkzeug.urls
+
+from odoo.tests.common import _super_send
+
 from odoo.addons.connector_search_engine.tests.common import (
     CommonTestAdapter,
     TestBindingIndexBase,
@@ -24,6 +28,15 @@ except ImportError:
 
 class TestConnectorElasticsearch(CommonTestAdapter, TestBindingIndexBase):
     _backend_xml_id = "connector_elasticsearch.backend_1"
+
+    @classmethod
+    def _request_handler(cls, s, r, /, **kw):
+        url = werkzeug.urls.url_parse(r.url)
+        if url.host == "elastic" and url.port == 9200:
+            # We need to override the request handler to avoid raising on non
+            # localhost host: elastic
+            return _super_send(s, r, **kw)
+        return super()._request_handler(s, r, **kw)
 
     @classmethod
     def _se_index_config(cls):
