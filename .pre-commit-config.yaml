@@ -2,7 +2,6 @@ exclude: |
   (?x)
   # NOT INSTALLABLE ADDONS
   ^connector_algolia/|
-  ^connector_elasticsearch/|
   ^connector_search_engine_serializer_ir_export/|
   ^search_engine_image_thumbnail/|
   # END NOT INSTALLABLE ADDONS
