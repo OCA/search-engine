@@ -156,7 +156,11 @@ class SeIndex(models.Model):
             domain = []
         self.search(domain).recompute_all_binding()
 
-    def force_recompute_all_binding(self) -> None:
+    def recompute_and_export_all_binding(self) -> None:
+        # Note: when we force the binding to recompute,
+        # we cannot be sure that the previously computed value
+        # has been exported (since the record may have been in the 'to_export' state)
+        # and was forced to be recomputed, so we always force the export.
         self.recompute_all_binding(force_export=True)
 
     def recompute_all_binding(self, force_export: bool = False):
