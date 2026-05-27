@@ -1,46 +1,39 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
     <record model="ir.ui.view" id="se_backend_form_view">
         <field name="model">se.backend</field>
         <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
         <field name="arch" type="xml">
             <group name="se-main" position="after">
-                <group
-                    name="elasticsearch"
-                    attrs="{'invisible': [('backend_type', '!=', 'elasticsearch')]}"
-                >
+                <group name="elasticsearch" invisible="backend_type != 'elasticsearch'">
                     <field
                         name="es_server_host"
                         string="Host"
                         placeholder="http://elastic:9200"
-                        attrs="{'required': [('backend_type', '=', 'elasticsearch')]}"
+                        required="backend_type == 'elasticsearch'"
                     />
                     <field name="auth_type" />
                     <field
                         string="User"
                         name="es_user"
-                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                        invisible="auth_type != 'http'"
                     />
                     <field
                         string="Password"
                         name="es_password"
-                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
+                        invisible="auth_type != 'http'"
                         password="1"
                     />
-                    <field
-                        string="SSL"
-                        name="ssl"
-                        attrs="{'invisible': [('auth_type', '!=', 'http')]}"
-                    />
+                    <field string="SSL" name="ssl" invisible="auth_type != 'http'" />
                     <field
                         string="API key ID"
                         name="api_key_id"
-                        attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
+                        invisible="auth_type != 'api_key'"
                     />
                     <field
                         string="API key"
                         name="api_key"
-                        attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"
+                        invisible="auth_type != 'api_key'"
                     />
                 </group>
                 <group name="se-params">
