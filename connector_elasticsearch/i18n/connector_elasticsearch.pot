@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -27,7 +27,6 @@ msgstr ""
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/models/se_index.py:0
-#, python-format
 msgid "An index definition is required for ElasticSearch"
 msgstr ""
 
@@ -172,35 +171,31 @@ msgid "Type"
 msgstr ""
 
 #. module: connector_elasticsearch
-#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__backend_type_env_default
+#: model:ir.model.fields,field_description:connector_elasticsearch.field_se_backend__x_backend_type_env_default
 msgid "Type Env Default"
 msgstr ""
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
-#, python-format
 msgid "Unable to authenticate. Check credentials."
 msgstr ""
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
-#, python-format
 msgid "Unable to clear index %(index_name)s: %(result)"
 msgstr ""
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
-#, python-format
 msgid "Unable to connect :"
 msgstr ""
 
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
-#, python-format
 msgid ""
 "Unable to index all records. (indexed: %(indexed)s, total: %(total)s)\n"
 "%(result)s"
@@ -209,7 +204,6 @@ msgstr ""
 #. module: connector_elasticsearch
 #. odoo-python
 #: code:addons/connector_elasticsearch/tools/adapter.py:0
-#, python-format
 msgid "Unable to reach host."
 msgstr ""
 
