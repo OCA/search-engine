@@ -15,11 +15,6 @@ msgstr ""
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
-msgid "8108"
-msgstr ""
-
-#. module: connector_typesense
-#: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "Host"
 msgstr ""
 
