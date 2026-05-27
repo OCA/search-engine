@@ -296,7 +296,7 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
-msgid "Export all binding"
+msgid "Export all bindings"
 msgstr ""
 
 #. module: connector_search_engine
@@ -338,15 +338,15 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
-msgid "Force the export of all binding"
+msgid "Force the export of all bindings"
 msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid ""
-"Force to recompute all binding of the index and set them to the state 'To "
-"update'"
+"Force to recompute all bindings of the index and reexport all of them, even "
+"if there is no change"
 msgstr ""
 
 #. module: connector_search_engine
@@ -555,8 +555,12 @@ msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
+msgid "Recompute and Export all bindings"
+msgstr ""
+
+#. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
-msgid "Recompute all binding"
+msgid "Recompute and export all bindings"
 msgstr ""
 
 #. module: connector_search_engine
