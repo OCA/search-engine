@@ -69,17 +69,17 @@ class SeIndex(models.Model):
             aggregates=["__count"],
         )
         _all = 0
-        for index_id, state, count in data:
-            res[index_id][state] = count
+        for index, state, count in data:
+            res[index][state] = count
             _all += count
 
-        def get(index_id, states):
-            return sum([res[index_id][state] for state in states])
+        def get(index, states):
+            return sum([res[index][state] for state in states])
 
         for record in self:
-            record.count_done = get(record.id, ["done"])
+            record.count_done = get(record, ["done"])
             record.count_pending = get(
-                record.id,
+                record,
                 [
                     "to_recompute",
                     "recomputing",
@@ -89,7 +89,7 @@ class SeIndex(models.Model):
                     "deleting",
                 ],
             )
-            record.count_error = get(record.id, ["invalid_data", "recompute_error"])
+            record.count_error = get(record, ["invalid_data", "recompute_error"])
             record.count_all = _all
             if record.count_error:
                 record.color = 1
@@ -156,7 +156,11 @@ class SeIndex(models.Model):
             domain = []
         self.search(domain).recompute_all_binding()
 
-    def force_recompute_all_binding(self) -> None:
+    def recompute_and_export_all_binding(self) -> None:
+        # Note: when we force the binding to recompute,
+        # we cannot be sure that the previously computed value
+        # has been exported (since the record may have been in the 'to_export' state)
+        # and was forced to be recomputed, so we always force the export.
         self.recompute_all_binding(force_export=True)
 
     def recompute_all_binding(self, force_export: bool = False):

@@ -9,18 +9,18 @@
             <form>
                 <header>
                     <button
-                        name="force_recompute_all_binding"
+                        name="recompute_and_export_all_binding"
                         type="object"
-                        string="Recompute all binding"
+                        string="Recompute and Export all bindings"
                         icon="fa-gears"
-                        help="Force to recompute all binding of the index and set them to the state 'To update'"
+                        help="Force to recompute all bindings of the index and reexport all of them, even if there is no change"
                     />
                     <button
                         name="force_batch_sync"
                         type="object"
-                        string="Export all binding"
+                        string="Export all bindings"
                         icon="fa-upload"
-                        help="Force the export of all binding"
+                        help="Force the export of all bindings"
                     />
                     <button
                         name="export_settings"
@@ -161,8 +161,11 @@
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
                                         <strong class="o_kanban_record_title">
-                                            <field name="model_id" />
+                                            <field name="name" />
                                         </strong>
+                                        <p>
+                                            <field name="model_id" />
+                                        </p>
                                         <p>
                                             <field name="lang_id" />
                                         </p>
@@ -192,21 +195,21 @@
                                             >Configuration
                                             </a>
                                             <a
-                                                name="force_recompute_all_binding"
+                                                name="recompute_and_export_all_binding"
                                                 role="menuitem"
                                                 class="dropdown-item"
-                                                help="Force to recompute all binding of the index and set them to the state 'To update'"
+                                                help="Force to recompute all bindings of the index and reexport all of them, even if there is no change"
                                                 icon="fa-gears"
                                                 type="object"
-                                            >Recompute all binding</a>
+                                            >Recompute and export all bindings</a>
                                             <a
                                                 name="force_batch_sync"
                                                 role="menuitem"
                                                 class="dropdown-item"
-                                                help="Force the export of all binding"
+                                                help="Force the export of all bindings"
                                                 icon="fa-upload"
                                                 type="object"
-                                            >Export all binding</a>
+                                            >Export all bindings</a>
                                             <a
                                                 name="export_settings"
                                                 role="menuitem"

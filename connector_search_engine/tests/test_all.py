@@ -118,9 +118,9 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(self.partner_binding.state, "to_export")
         self.assertTrue(self.partner_binding.date_recomputed)
 
-    def test_force_recompute_all_binding(self):
+    def test_recompute_and_export_all_binding(self):
         with mock.patch.object(type(self.se_index), "recompute_all_binding") as mocked:
-            self.se_index.force_recompute_all_binding()
+            self.se_index.recompute_and_export_all_binding()
         mocked.assert_called_with(force_export=True)
 
     def test_force_batch_sync_with_not_exportable_binding(self):
