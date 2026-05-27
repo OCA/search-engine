@@ -18,25 +18,18 @@ msgstr ""
 
 #. module: connector_typesense
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
-msgid "8108"
-msgstr "8108"
-
-#. module: connector_typesense
-#: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "Host"
 msgstr "Host"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
-#, python-format
 msgid "Invalid URL - No host supplied"
 msgstr "URL non valido - Host non fornito"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
-#, python-format
 msgid "Not Found - The requested resource is not found."
 msgstr "Non trovato - La risorsa cercata non è stata trovata."
 
@@ -53,7 +46,6 @@ msgstr "Protcollo"
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
-#, python-format
 msgid ""
 "Reindexing is not needed with TypeSense, as schema can be updated. So you "
 "just need to export the setting after changing them"
@@ -78,7 +70,7 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: connector_typesense
-#: model:ir.model.fields,field_description:connector_typesense.field_se_backend__backend_type_env_default
+#: model:ir.model.fields,field_description:connector_typesense.field_se_backend__x_backend_type_env_default
 msgid "Type Env Default"
 msgstr "Tipo ambiente predefinito"
 
@@ -120,14 +112,12 @@ msgstr "Timeout server TypeSense"
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
-#, python-format
 msgid "Unable to connect :"
 msgstr "Impossibile connettersi:"
 
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
-#, python-format
 msgid ""
 "Unable to index all records. (nbr errors: %(errors)s, total: %(total)s)\n"
 "%(result)s"
@@ -139,7 +129,6 @@ msgstr ""
 #. module: connector_typesense
 #. odoo-python
 #: code:addons/connector_typesense/tools/adapter.py:0
-#, python-format
 msgid "Unauthorized - Your API key is wrong."
 msgstr "Non autorizzato - La chiave API è errata."
 
@@ -157,3 +146,6 @@ msgstr "localhost"
 #: model_terms:ir.ui.view,arch_db:connector_typesense.se_backend_form_view
 msgid "xyz"
 msgstr "xyz"
+
+#~ msgid "8108"
+#~ msgstr "8108"
