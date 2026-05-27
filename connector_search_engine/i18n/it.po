@@ -36,8 +36,8 @@ msgid ""
 "                                <span class=\"o_stat_text\" "
 "invisible=\"count_all &gt; 1\"> Binding</span>"
 msgstr ""
-"<span class=\"o_stat_text\" invisible=\"count_all &lt;2\">Associazioni</span>"
-"\n"
+"<span class=\"o_stat_text\" invisible=\"count_all &lt;2\">Associazioni</"
+"span>\n"
 "                                <span class=\"o_stat_text\" "
 "invisible=\"count_all &gt;1\">Associazione</span>"
 
@@ -314,8 +314,8 @@ msgstr ""
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
-msgid "Export all binding"
-msgstr "Esporta tutti i collegamenti"
+msgid "Export all bindings"
+msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -356,18 +356,16 @@ msgstr "Forza ricalcolo"
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
-msgid "Force the export of all binding"
-msgstr "Forza esportazione di tutti i collegamenti"
+msgid "Force the export of all bindings"
+msgstr ""
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid ""
-"Force to recompute all binding of the index and set them to the state 'To "
-"update'"
+"Force to recompute all bindings of the index and reexport all of them, even "
+"if there is no change"
 msgstr ""
-"Forza il ricalcolo di tutti i collegamenti dell'indice e imposta allo stato "
-"'Da aggiornare'"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_search
@@ -580,9 +578,13 @@ msgstr "Ricalcola indice ricerca"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
+msgid "Recompute and Export all bindings"
+msgstr ""
+
+#. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
-msgid "Recompute all binding"
-msgstr "Ricalcola tutti i collegamenti"
+msgid "Recompute and export all bindings"
+msgstr ""
 
 #. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__recomputing
@@ -796,6 +798,22 @@ msgstr "Tipo backend X ambiente è modificabile"
 #: model:ir.model.fields,field_description:connector_search_engine.field_se_backend__x_index_prefix_name_env_is_editable
 msgid "X Index Prefix Name Env Is Editable"
 msgstr "L'env del nome del prefisso dell'indice X è modificabile"
+
+#~ msgid "Export all binding"
+#~ msgstr "Esporta tutti i collegamenti"
+
+#~ msgid "Force the export of all binding"
+#~ msgstr "Forza esportazione di tutti i collegamenti"
+
+#~ msgid ""
+#~ "Force to recompute all binding of the index and set them to the state 'To "
+#~ "update'"
+#~ msgstr ""
+#~ "Forza il ricalcolo di tutti i collegamenti dell'indice e imposta allo "
+#~ "stato 'Da aggiornare'"
+
+#~ msgid "Recompute all binding"
+#~ msgstr "Ricalcola tutti i collegamenti"
 
 #~ msgid ""
 #~ "<span class=\"o_stat_text\" attrs=\"{'invisible': [('binding_count', "
