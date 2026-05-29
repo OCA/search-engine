@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2026-03-19 18:45+0000\n"
+"PO-Revision-Date: 2026-05-29 13:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -315,7 +315,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Export all bindings"
-msgstr ""
+msgstr "Esporta tutti i collegamenti"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -357,7 +357,7 @@ msgstr "Forza ricalcolo"
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Force the export of all bindings"
-msgstr ""
+msgstr "Forza l'esportazione di tutti i collegamenti"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
@@ -366,6 +366,8 @@ msgid ""
 "Force to recompute all bindings of the index and reexport all of them, even "
 "if there is no change"
 msgstr ""
+"Forza il ricalcolo di tutti i collegamenti nell'indice e li riesporta tutti, "
+"anche se non ci sono modifiche"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_binding_view_search
@@ -579,12 +581,12 @@ msgstr "Ricalcola indice ricerca"
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_form_view
 msgid "Recompute and Export all bindings"
-msgstr ""
+msgstr "Ricalcola ed esporta tutti i collegamenti"
 
 #. module: connector_search_engine
 #: model_terms:ir.ui.view,arch_db:connector_search_engine.se_index_kanban_view
 msgid "Recompute and export all bindings"
-msgstr ""
+msgstr "Ricalcola ed esporta tutti i collegamenti"
 
 #. module: connector_search_engine
 #: model:ir.model.fields.selection,name:connector_search_engine.selection__se_binding__state__recomputing
