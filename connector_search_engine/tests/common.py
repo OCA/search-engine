@@ -148,7 +148,7 @@ class CommonTestAdapter(VCRMixin):
 
     def _get_vcr_kwargs(self, **kwargs):
         return {
-            "record_mode": "one",
+            "record_mode": "once",
             "match_on": ["method", "path", "query", "raw_body"],
             "filter_headers": ["Authorization"],
             "decode_compressed_response": True,
