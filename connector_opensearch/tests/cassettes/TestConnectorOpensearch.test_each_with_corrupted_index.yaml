@@ -1,0 +1,214 @@
+interactions:
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: GET
+    uri: http://localhost:9200/_alias/demo_opensearch_backend_contact_en_us
+  response:
+    body:
+      string: '{"error":"alias [demo_opensearch_backend_contact_en_us] missing","status":404}'
+    headers:
+      content-length:
+      - '78'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: DELETE
+    uri: http://localhost:9200/demo_opensearch_backend_contact_en_us
+  response:
+    body:
+      string: '{"error":{"root_cause":[{"type":"index_not_found_exception","reason":"no
+        such index [demo_opensearch_backend_contact_en_us]","index":"demo_opensearch_backend_contact_en_us","resource.id":"demo_opensearch_backend_contact_en_us","resource.type":"index_or_alias","index_uuid":"_na_"}],"type":"index_not_found_exception","reason":"no
+        such index [demo_opensearch_backend_contact_en_us]","index":"demo_opensearch_backend_contact_en_us","resource.id":"demo_opensearch_backend_contact_en_us","resource.type":"index_or_alias","index_uuid":"_na_"},"status":404}'
+    headers:
+      content-length:
+      - '551'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: HEAD
+    uri: http://localhost:9200/demo_opensearch_backend_contact_en_us
+  response:
+    body:
+      string: ''
+    headers:
+      content-length:
+      - '551'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: '{"mappings":{}}'
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: PUT
+    uri: http://localhost:9200/demo_opensearch_backend_contact_en_us-1
+  response:
+    body:
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_opensearch_backend_contact_en_us-1"}'
+    headers:
+      content-length:
+      - '98'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: PUT
+    uri: http://localhost:9200/demo_opensearch_backend_contact_en_us-1/_alias/demo_opensearch_backend_contact_en_us
+  response:
+    body:
+      string: '{"acknowledged":true}'
+    headers:
+      content-length:
+      - '21'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"index":{"_id":"wtf","_index":"demo_opensearch_backend_contact_en_us"}}
+
+      {"name":"I am wrong"}
+
+      {"index":{"_id":42,"_index":"demo_opensearch_backend_contact_en_us"}}
+
+      {"id":3,"name":"Who I am ?"}
+
+      '
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: POST
+    uri: http://localhost:9200/_bulk
+  response:
+    body:
+      string: '{"took":137,"errors":false,"items":[{"index":{"_index":"demo_opensearch_backend_contact_en_us-1","_id":"wtf","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_opensearch_backend_contact_en_us-1","_id":"42","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":201}}]}'
+    headers:
+      content-length:
+      - '432'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"sort":"_doc"}'
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: POST
+    uri: http://localhost:9200/demo_opensearch_backend_contact_en_us/_search?scroll=5m&size=1000
+  response:
+    body:
+      string: '{"_scroll_id":"FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFi1fMTFaMmVQVDFpeGV2T1doZUxkRXcAAAAAAAAACRZiYm1wWVljb1RVV0dLZ2xZaWpfUWp3","took":14,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":null,"hits":[{"_index":"demo_opensearch_backend_contact_en_us-1","_id":"wtf","_score":null,"_source":{"name":"I
+        am wrong"},"sort":[0]},{"_index":"demo_opensearch_backend_contact_en_us-1","_id":"42","_score":null,"_source":{"id":3,"name":"Who
+        I am ?"},"sort":[1]}]}}'
+    headers:
+      content-length:
+      - '546'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"scroll_id":"FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFi1fMTFaMmVQVDFpeGV2T1doZUxkRXcAAAAAAAAACRZiYm1wWVljb1RVV0dLZ2xZaWpfUWp3","scroll":"5m"}'
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: POST
+    uri: http://localhost:9200/_search/scroll
+  response:
+    body:
+      string: '{"_scroll_id":"FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFi1fMTFaMmVQVDFpeGV2T1doZUxkRXcAAAAAAAAACRZiYm1wWVljb1RVV0dLZ2xZaWpfUWp3","took":4,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":null,"hits":[]}}'
+    headers:
+      TASK_RESOURCE_USAGE:
+      - '{"action":"indices:data/read/search[phase/query+fetch/scroll]","taskId":162,"parentTaskId":161,"nodeId":"bbmpYYcoTUWGKglYij_Qjw","taskResourceUsage":{"cpu_time_in_nanos":1321666,"memory_in_bytes":34224}}'
+      content-length:
+      - '296'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"scroll_id":["FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFi1fMTFaMmVQVDFpeGV2T1doZUxkRXcAAAAAAAAACRZiYm1wWVljb1RVV0dLZ2xZaWpfUWp3"]}'
+    headers:
+      connection:
+      - keep-alive
+      content-type:
+      - application/json
+      user-agent:
+      - opensearch-py/3.2.0 (Python 3.13.7)
+    method: DELETE
+    uri: http://localhost:9200/_search/scroll
+  response:
+    body:
+      string: '{"succeeded":true,"num_freed":1}'
+    headers:
+      content-length:
+      - '32'
+      content-type:
+      - application/json; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1

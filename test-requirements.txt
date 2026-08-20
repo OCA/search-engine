@@ -4,4 +4,5 @@ algoliasearch>=2.0,<3.0
 unidecode
 
 # tests
+vcrpy<8.2.0
 vcrpy-unittest
