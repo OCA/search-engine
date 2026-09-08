@@ -5,7 +5,6 @@ from odoo import fields, models
 
 
 class SeIndex(models.Model):
-
     _inherit = "se.index"
 
     image_field_thumbnail_size_ids = fields.One2many(

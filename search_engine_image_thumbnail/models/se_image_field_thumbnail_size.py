@@ -6,7 +6,6 @@ from odoo.osv.expression import FALSE_DOMAIN
 
 
 class SeImageFieldThumbnailSize(models.Model):
-
     _name = "se.image.field.thumbnail.size"
     _description = "Index Thumbnail Size"
 

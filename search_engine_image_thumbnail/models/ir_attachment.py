@@ -5,7 +5,6 @@ from odoo import fields, models
 
 
 class IrAttachment(models.Model):
-
     _inherit = "ir.attachment"
 
     se_thumbnail_ids = fields.One2many(

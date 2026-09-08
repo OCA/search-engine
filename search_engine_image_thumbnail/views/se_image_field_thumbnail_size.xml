@@ -2,8 +2,6 @@
 <!-- Copyright 2023 ACSONE SA/NV
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-
-
     <record model="ir.ui.view" id="se_image_field_thumbnail_size_search_view">
         <field name="name">se.image.field.thumbnail.size.search</field>
         <field name="model">se.image.field.thumbnail.size</field>
@@ -17,7 +15,8 @@
                         name="group_by_backend_id"
                         domain="[]"
                         context="{'group_by':'backend_id'}"
-                    /><filter
+                    />
+                    <filter
                         string="Model"
                         name="group_by_model_id"
                         domain="[]"
@@ -29,23 +28,23 @@
     </record>
 
     <record model="ir.ui.view" id="se_image_field_thumbnail_size_tree_view">
-        <field name="name">se.image.field.thumbnail.size.tree</field>
+        <field name="name">se.image.field.thumbnail.size.list</field>
         <field name="model">se.image.field.thumbnail.size</field>
         <field name="arch" type="xml">
-            <tree editable="top">
+            <list editable="top">
                 <field name="backend_id" invisible="context.get('hide_backend', 0)" />
                 <field name="model_id" />
                 <field name="field_id" domain="field_id_domain" />
                 <field name="field_id_domain" invisible="1" />
                 <field name="size_ids" widget="many2many_tags" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="se_image_field_thumbnail_size_act_window">
         <field name="name">Thumbnail Sizes</field>
         <field name="res_model">se.image.field.thumbnail.size</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
@@ -56,5 +55,4 @@
         <field name="action" ref="se_image_field_thumbnail_size_act_window" />
         <field name="sequence" eval="8" />
     </record>
-
 </odoo>

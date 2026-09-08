@@ -5,7 +5,6 @@ from odoo import fields, models
 
 
 class SeBackend(models.Model):
-
     _inherit = "se.backend"
 
     image_field_thumbnail_size_ids = fields.One2many(
