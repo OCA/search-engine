@@ -2,7 +2,6 @@
 <!-- Copyright 2023 ACSONE SA/NV
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-
     <record model="ir.ui.view" id="se_thumbnail_form_view">
         <field name="name">se.thumbnail.form</field>
         <field name="model">se.thumbnail</field>
@@ -10,7 +9,7 @@
             name="inherit_id"
             ref="fs_image_thumbnail.fs_image_thumbnail_mixin_form_view"
         />
-         <field name="mode">primary</field>
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
             <!-- add a hidden field to be able to extend the base view
                  defined for the mixin
@@ -37,7 +36,7 @@
     </record>
 
     <record model="ir.ui.view" id="se_thumbnail_tree_view">
-        <field name="name">se.thumbnail.tree</field>
+        <field name="name">se.thumbnail.list</field>
         <field name="model">se.thumbnail</field>
         <field
             name="inherit_id"
@@ -55,9 +54,10 @@
     </record>
 
     <record model="ir.actions.act_window" id="se_thumbnail_act_window">
-        <field name="name">Indexed Image Thumbnail</field> <!-- TODO -->
+        <field name="name">Indexed Image Thumbnail</field>
+        <!-- TODO -->
         <field name="res_model">se.thumbnail</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
@@ -68,5 +68,4 @@
         <field name="action" ref="se_thumbnail_act_window" />
         <field name="sequence" eval="16" />
     </record>
-
 </odoo>

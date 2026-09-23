@@ -8,7 +8,6 @@ from odoo.addons.fs_image.fields import FSImage
 
 
 class TestImageRelation(models.Model):
-
     _name = "test.image.relation"
     _inherit = "fs.image.relation.mixin"
     _description = "Test Multi Image Thumbnail Image"
@@ -21,7 +20,6 @@ class TestImageRelation(models.Model):
 
 
 class TestMultiImage(models.Model):
-
     _name = "test.multi.image"
     _inherit = ["se.indexable.record"]
     _description = "Test Image Thumbnail"
@@ -35,7 +33,6 @@ class TestMultiImage(models.Model):
 
 
 class TestImage(models.Model):
-
     _name = "test.image"
     _inherit = ["se.indexable.record"]
     _description = "Test Image"
@@ -45,7 +42,6 @@ class TestImage(models.Model):
 
 
 class TestFSImage(models.Model):
-
     _name = "test.fsimage"
     _inherit = ["se.indexable.record"]
     _description = "Test FSImage"

@@ -369,7 +369,7 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:2b3cfd55ee16e375d602f9abdc8ca8f4c4f705c79e9a75b5878005aa668ad16c
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Alpha" src="https://img.shields.io/badge/maturity-Alpha-red.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/search-engine/tree/16.0/search_engine_image_thumbnail"><img alt="OCA/search-engine" src="https://img.shields.io/badge/github-OCA%2Fsearch--engine-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/search-engine-16-0/search-engine-16-0-search_engine_image_thumbnail"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/search-engine&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Alpha" src="https://img.shields.io/badge/maturity-Alpha-red.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/search-engine/tree/18.0/search_engine_image_thumbnail"><img alt="OCA/search-engine" src="https://img.shields.io/badge/github-OCA%2Fsearch--engine-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/search-engine-18-0/search-engine-18-0-search_engine_image_thumbnail"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/search-engine&amp;target_branch=18.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
 <p>This module is a technical module with the purpose of easing the export
 of image thumbnails to a search engine index.</p>
 <p>It extends the functionality of the <tt class="docutils literal">connector_search_engine</tt> module
@@ -435,10 +435,10 @@ thumbnails from an image you want to index.</p>
 <p>Behind the scenes, this module extend the <tt class="docutils literal">se.indexable.recor</tt> model
 by adding 2 new methods:</p>
 <ul class="simple">
-<li><tt class="docutils literal">_get_or_create_thumbnails_for_multi_images</tt>: This method is used
-to get or create thumbnails for a set of images.</li>
-<li><tt class="docutils literal">_get_or_create_thumbnails_for_image</tt>: This method is used to get
-or create thumbnails for a single image.</li>
+<li><tt class="docutils literal">_get_or_create_thumbnails_for_multi_images</tt>: This method is used to
+get or create thumbnails for a set of images.</li>
+<li><tt class="docutils literal">_get_or_create_thumbnails_for_image</tt>: This method is used to get or
+create thumbnails for a single image.</li>
 </ul>
 <p>Thanks to these methods, you can easily generate thumbnails for images
 stored into odoo through three different ways:</p>
@@ -466,11 +466,11 @@ to ensure a good SEO. To avoid problems with special characters, the
 <tt class="docutils literal">base_name</tt> is normalized before being used.</p>
 <p>Here is an example of how to use these methods:</p>
 <pre class="code python literal-block">
-<span class="kn">from</span> <span class="nn">odoo</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="w">
-</span><span class="kn">from</span> <span class="nn">odoo.addons.fs_imeage.fields</span> <span class="kn">import</span> <span class="n">FSImage</span><span class="w">
+<span class="kn">from</span><span class="w"> </span><span class="nn">odoo</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">odoo.addons.fs_imeage.fields</span><span class="w"> </span><span class="kn">import</span> <span class="n">FSImage</span><span class="w">
 
 
-</span><span class="k">class</span> <span class="nc">ProductImageRelation</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span><span class="w">
+</span><span class="k">class</span><span class="w"> </span><span class="nc">ProductImageRelation</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span><span class="w">
 </span>    <span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;product.image.relation&quot;</span><span class="w">
 </span>    <span class="n">_inherit</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fs.image.relation.mixin&quot;</span><span class="p">]</span><span class="w">
 
@@ -482,7 +482,7 @@ to ensure a good SEO. To avoid problems with special characters, the
 </span>    <span class="p">)</span><span class="w">
 
 
-</span><span class="k">class</span> <span class="nc">ProductProduct</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span><span class="w">
+</span><span class="k">class</span><span class="w"> </span><span class="nc">ProductProduct</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span><span class="w">
 </span>    <span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;product.product&quot;</span><span class="w">
 </span>    <span class="n">_inherit</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;se.indexable.record&quot;</span><span class="p">,</span> <span class="s2">&quot;product.product&quot;</span><span class="p">]</span><span class="w">
 
@@ -544,9 +544,8 @@ to ensure a good SEO. To avoid problems with special characters, the
 <li>Add new config parameter on the search engine backend to allow the
 user to specify if the serialization of a record should fail if
 thumbnails are requested but no thumbnail sizes are defined for the
-model and field for which it’ requested. Defaults to False (i.e.
-don’t fail).
-(<a class="reference external" href="https://github.com/OCA/search-engine/issues/176">#176</a>)</li>
+model and field for which it’ requested. Defaults to False (i.e. don’t
+fail). (<a class="reference external" href="https://github.com/OCA/search-engine/issues/176">#176</a>)</li>
 </ul>
 </div>
 </div>
@@ -559,19 +558,18 @@ don’t fail).
 <p>When serializing a record and generating thumbnails, the thumbnail
 sizes are looked up on the index. Prior to this change, only sizes
 defined for the model associated with the current index were looked
-up. This means that if you tried to serialize a nested record that
-had an image field that was defined on a different model, the
-thumbnail size was not found and an error was thrown. The lookup
-method takes now the record for which the thumbnail is being
-generated as an argument, so that the correct model can be used to
-look up the thumbnail size. You still need to define the thumbnail
-sizes for each model serialized in the index.</p>
+up. This means that if you tried to serialize a nested record that had
+an image field that was defined on a different model, the thumbnail
+size was not found and an error was thrown. The lookup method takes
+now the record for which the thumbnail is being generated as an
+argument, so that the correct model can be used to look up the
+thumbnail size. You still need to define the thumbnail sizes for each
+model serialized in the index.</p>
 <p><em>Fixes UI error when creating a new thumbnail size.</em></p>
-<p>When creating a new record, the UI was throwing an error. This was
-due to the computations of the domain to apply to restrict the
-choices of the possible image fields. When the record is new, no
-model is set, so the domain for the field must be empty. This is now
-handled correctly.
+<p>When creating a new record, the UI was throwing an error. This was due
+to the computations of the domain to apply to restrict the choices of
+the possible image fields. When the record is new, no model is set, so
+the domain for the field must be empty. This is now handled correctly.
 (<a class="reference external" href="https://github.com/OCA/search-engine/issues/174">#174</a>)</p>
 </li>
 </ul>
@@ -583,7 +581,7 @@ handled correctly.
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/search-engine/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/search-engine/issues/new?body=module:%20search_engine_image_thumbnail%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/search-engine/issues/new?body=module:%20search_engine_image_thumbnail%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -618,7 +616,7 @@ mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
 <p>Current <a class="reference external" href="https://odoo-community.org/page/maintainer-role">maintainer</a>:</p>
 <p><a class="reference external image-reference" href="https://github.com/lmignon"><img alt="lmignon" src="https://github.com/lmignon.png?size=40px" /></a></p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/search-engine/tree/16.0/search_engine_image_thumbnail">OCA/search-engine</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/search-engine/tree/18.0/search_engine_image_thumbnail">OCA/search-engine</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>
