@@ -170,12 +170,7 @@ class SeIndexableRecord(models.AbstractModel):
 
     def unlink(self):
         bindings = self.sudo()._get_bindings()
-        bindings.sudo().write(
-            {
-                "state": "to_delete",
-                "res_id": False,
-            }
-        )
+        bindings.sudo().state = "to_delete"
         return super().unlink()
 
     def write(self, vals):

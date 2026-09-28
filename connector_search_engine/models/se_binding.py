@@ -154,8 +154,9 @@ class SeBinding(models.Model):
             # Nothing to do
             return
         size = min(self.index_id.mapped("batch_exporting_size"))
-        self.write({"state": "recomputing"})
-        for binding in self.with_context(tracking_disable=True)._batch(size):
+        to_recompute = self.filtered(lambda b: b.state not in ("to_delete", "deleting"))
+        to_recompute.state = "recomputing"
+        for binding in to_recompute.with_context(tracking_disable=True)._batch(size):
             description = self.env._(
                 "Recompute %(name)s json and check if need update", name=self._name
             )
