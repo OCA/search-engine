@@ -58,15 +58,15 @@ class TestBindingIndex(TestBindingIndexBaseFake):
         self.assertEqual(b3.index_prefix_name, "baz")
 
     def test_index_name(self):
-        self.assertEqual(self.se_index.name, "fake_se_contact_en_US")
+        self.assertEqual(self.se_index.name, "fake_se_res_partner_en_US")
         # control indexes' name via prefix tech name
         self.backend.index_prefix_name = "foo_baz"
         # TODO: not sure why this is needed here
         self.se_index.invalidate_recordset()
-        self.assertEqual(self.se_index.name, "foo_baz_contact_en_US")
+        self.assertEqual(self.se_index.name, "foo_baz_res_partner_en_US")
         self.se_index.lang_id = False
         self.se_index.invalidate_recordset()
-        self.assertEqual(self.se_index.name, "foo_baz_contact")
+        self.assertEqual(self.se_index.name, "foo_baz_res_partner")
 
     def test_index_custom_name(self):
         self.se_index.custom_tech_name = "something meaningful for me"
