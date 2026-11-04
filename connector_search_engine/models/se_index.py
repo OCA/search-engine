@@ -203,7 +203,12 @@ class SeIndex(models.Model):
 
     def _make_tech_name(self) -> str:
         """Compute the main part of the name of the index."""
-        tech_name = self.custom_tech_name or self.model_id.name or ""
+        # model_id.model is self.env[self.model_id.model]._name
+        # we want not translatable name.
+        # self.model_id can be False during record creation
+        tech_name = self.custom_tech_name or (self.model_id.model or "").replace(
+            ".", "_"
+        )
         return self.backend_id._normalize_tech_name(tech_name)
 
     def force_batch_sync(self) -> None:
