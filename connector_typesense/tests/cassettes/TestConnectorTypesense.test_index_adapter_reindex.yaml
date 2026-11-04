@@ -15,10 +15,10 @@ interactions:
       X-TYPESENSE-API-KEY:
       - xyz
     method: DELETE
-    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us
+    uri: http://typesense:8108/collections/demo_typesense_backend_res_partner_en_us
   response:
     body:
-      string: '{"created_at":1771323421,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":1999,"symbols_to_index":[],"token_separators":[]}'
+      string: '{"created_at":1771323421,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"store":true,"type":"string"}],"name":"demo_typesense_backend_res_partner_en_us","num_documents":1999,"symbols_to_index":[],"token_separators":[]}'
     headers:
       Connection:
       - keep-alive
@@ -27,7 +27,7 @@ interactions:
       access-control-allow-origin:
       - '*'
       content-length:
-      - '344'
+      - '348'
       content-type:
       - application/json; charset=utf-8
       transfer-encoding:
@@ -53,7 +53,7 @@ interactions:
       X-TYPESENSE-API-KEY:
       - xyz
     method: GET
-    uri: http://typesense:8108/collections/demo_typesense_backend_contact_en_us
+    uri: http://typesense:8108/collections/demo_typesense_backend_res_partner_en_us
   response:
     body:
       string: '{"message": "Not Found"}'
@@ -70,7 +70,7 @@ interactions:
       code: 404
       message: Not Found
 - request:
-    body: '{"fields": [{"name": "name", "type": "string"}], "name": "demo_typesense_backend_contact_en_us"}'
+    body: '{"fields": [{"name": "name", "type": "string"}], "name": "demo_typesense_backend_res_partner_en_us"}'
     headers:
       Accept:
       - '*/*'
@@ -79,7 +79,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '100'
       Host:
       - typesense:8108
       User-Agent:
@@ -90,7 +90,7 @@ interactions:
     uri: http://typesense:8108/collections
   response:
     body:
-      string: '{"created_at":1771323423,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"store":true,"type":"string"}],"name":"demo_typesense_backend_contact_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
+      string: '{"created_at":1771323423,"default_sorting_field":"","enable_nested_fields":false,"fields":[{"facet":false,"index":true,"infix":false,"locale":"","name":"name","optional":false,"sort":false,"stem":false,"store":true,"type":"string"}],"name":"demo_typesense_backend_res_partner_en_us","num_documents":0,"symbols_to_index":[],"token_separators":[]}'
     headers:
       Connection:
       - keep-alive
