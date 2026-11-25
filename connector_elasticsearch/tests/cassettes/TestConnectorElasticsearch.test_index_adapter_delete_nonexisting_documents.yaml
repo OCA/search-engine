@@ -9,13 +9,13 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: GET
-    uri: http://elastic:9200/_alias/demo_elasticsearch_backend_contact_en_us
+    uri: http://elastic:9200/_alias/demo_elasticsearch_backend_res_partner_en_us
   response:
     body:
-      string: '{"demo_elasticsearch_backend_contact_en_us-1":{"aliases":{"demo_elasticsearch_backend_contact_en_us":{}}}}'
+      string: '{"demo_elasticsearch_backend_res_partner_en_us-1":{"aliases":{"demo_elasticsearch_backend_res_partner_en_us":{}}}}'
     headers:
       content-length:
-      - '106'
+      - '114'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -33,7 +33,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: DELETE
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us-1
   response:
     body:
       string: '{"acknowledged":true}'
@@ -55,7 +55,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: HEAD
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us
   response:
     body:
       string: ''
@@ -79,13 +79,13 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: PUT
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us-1
   response:
     body:
-      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_contact_en_us-1"}'
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_res_partner_en_us-1"}'
     headers:
       content-length:
-      - '101'
+      - '105'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -103,7 +103,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: PUT
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1/_alias/demo_elasticsearch_backend_contact_en_us
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us-1/_alias/demo_elasticsearch_backend_res_partner_en_us
   response:
     body:
       string: '{"acknowledged":true}'
@@ -116,14 +116,14 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"delete":{"_id":"donotexist","_index":"demo_elasticsearch_backend_contact_en_us"}}
+    body: '{"delete":{"_id":"donotexist","_index":"demo_elasticsearch_backend_res_partner_en_us"}}
 
-      {"delete":{"_id":"donotexisteither","_index":"demo_elasticsearch_backend_contact_en_us"}}
+      {"delete":{"_id":"donotexisteither","_index":"demo_elasticsearch_backend_res_partner_en_us"}}
 
       '
     headers:
       Content-Length:
-      - '174'
+      - '182'
       content-type:
       - application/json
       user-agent:
@@ -134,10 +134,10 @@ interactions:
     uri: http://elastic:9200/_bulk
   response:
     body:
-      string: '{"took":8,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":404}}]}'
+      string: '{"took":8,"errors":false,"items":[{"delete":{"_index":"demo_elasticsearch_backend_res_partner_en_us-1","_type":"_doc","_id":"donotexist","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":404}},{"delete":{"_index":"demo_elasticsearch_backend_res_partner_en_us-1","_type":"_doc","_id":"donotexisteither","_version":1,"result":"not_found","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":404}}]}'
     headers:
       content-length:
-      - '493'
+      - '501'
       content-type:
       - application/json; charset=UTF-8
     status:

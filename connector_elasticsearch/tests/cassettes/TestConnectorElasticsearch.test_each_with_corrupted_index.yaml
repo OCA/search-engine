@@ -9,13 +9,13 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: GET
-    uri: http://elastic:9200/_alias/demo_elasticsearch_backend_contact_en_us
+    uri: http://elastic:9200/_alias/demo_elasticsearch_backend_res_partner_en_us
   response:
     body:
-      string: '{"demo_elasticsearch_backend_contact_en_us-1":{"aliases":{"demo_elasticsearch_backend_contact_en_us":{}}}}'
+      string: '{"demo_elasticsearch_backend_res_partner_en_us-1":{"aliases":{"demo_elasticsearch_backend_res_partner_en_us":{}}}}'
     headers:
       content-length:
-      - '106'
+      - '114'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -33,7 +33,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: DELETE
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us-1
   response:
     body:
       string: '{"acknowledged":true}'
@@ -55,7 +55,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: HEAD
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us
   response:
     body:
       string: ''
@@ -79,13 +79,13 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: PUT
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us-1
   response:
     body:
-      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_contact_en_us-1"}'
+      string: '{"acknowledged":true,"shards_acknowledged":true,"index":"demo_elasticsearch_backend_res_partner_en_us-1"}'
     headers:
       content-length:
-      - '101'
+      - '105'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -103,7 +103,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: PUT
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us-1/_alias/demo_elasticsearch_backend_contact_en_us
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us-1/_alias/demo_elasticsearch_backend_res_partner_en_us
   response:
     body:
       string: '{"acknowledged":true}'
@@ -116,18 +116,18 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"index":{"_id":"wtf","_index":"demo_elasticsearch_backend_contact_en_us"}}
+    body: '{"index":{"_id":"wtf","_index":"demo_elasticsearch_backend_res_partner_en_us"}}
 
       {"name":"I am wrong"}
 
-      {"index":{"_id":42,"_index":"demo_elasticsearch_backend_contact_en_us"}}
+      {"index":{"_id":42,"_index":"demo_elasticsearch_backend_res_partner_en_us"}}
 
       {"id":3,"name":"Who I am ?"}
 
       '
     headers:
       Content-Length:
-      - '200'
+      - '208'
       content-type:
       - application/json
       user-agent:
@@ -138,10 +138,10 @@ interactions:
     uri: http://elastic:9200/_bulk
   response:
     body:
-      string: '{"took":42,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"wtf","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_contact_en_us-1","_type":"_doc","_id":"42","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":201}}]}'
+      string: '{"took":42,"errors":false,"items":[{"index":{"_index":"demo_elasticsearch_backend_res_partner_en_us-1","_type":"_doc","_id":"wtf","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1,"status":201}},{"index":{"_index":"demo_elasticsearch_backend_res_partner_en_us-1","_type":"_doc","_id":"42","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1,"status":201}}]}'
     headers:
       content-length:
-      - '467'
+      - '475'
       content-type:
       - application/json; charset=UTF-8
     status:
@@ -159,7 +159,7 @@ interactions:
       x-elastic-client-meta:
       - es=7.13.4,py=3.12.3,t=7.13.4,rq=2.31.0
     method: POST
-    uri: http://elastic:9200/demo_elasticsearch_backend_contact_en_us/_search?scroll=5m&filter_path=hits.hits._source%2C_scroll_id%2Chits.hits._id
+    uri: http://elastic:9200/demo_elasticsearch_backend_res_partner_en_us/_search?scroll=5m&filter_path=hits.hits._source%2C_scroll_id%2Chits.hits._id
   response:
     body:
       string: '{"_scroll_id":"DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAAIWOVZjOE8zR0pRemVSakdWU2xvZmJsQQ==","hits":{"hits":[{"_id":"wtf","_source":{"name":"I
