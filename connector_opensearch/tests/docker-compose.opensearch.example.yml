@@ -1,0 +1,24 @@
+# Example for OpenSearch local setup
+version: "3.5"
+
+services:
+  opensearch:
+    image: opensearchproject/opensearch:2
+    environment:
+      discovery.type: single-node
+      plugins.security.disabled: "true"
+      # Required by the image bootstrap check since 2.12, even though the
+      # security plugin itself is disabled above and this password is
+      # therefore never actually used to authenticate.
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "Str0ng!Passw0rd"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "*"
+    volumes:
+      - osdata:/usr/share/opensearch/data
+    ports:
+      - 9200:9200
+    networks:
+      default:
+
+volumes:
+  osdata:

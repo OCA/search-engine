@@ -1,5 +1,6 @@
 # generated from manifests external_dependencies
 elasticsearch>=7.0.0,<=7.13.4
+opensearch-py>=3.2.0,<4
 pydantic
 requests
 typesense>=1.1.0

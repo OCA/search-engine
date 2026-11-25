@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="se_backend_form_view">
+        <field name="model">se.backend</field>
+        <field name="inherit_id" ref="connector_search_engine.se_backend_form_view" />
+        <field name="arch" type="xml">
+            <group name="se-main" position="after">
+                <group
+                    name="opensearch"
+                    attrs="{'invisible': [('backend_type', '!=', 'opensearch')]}"
+                >
+                    <field
+                        name="os_server_host"
+                        string="Host"
+                        placeholder="https://opensearch:9200"
+                        attrs="{'required': [('backend_type', '=', 'opensearch')]}"
+                    />
+                    <field name="os_auth_type" string="Authentication" />
+                    <field
+                        string="User"
+                        name="os_user"
+                        attrs="{'invisible': [('os_auth_type', '!=', 'http')]}"
+                    />
+                    <field
+                        string="Password"
+                        name="os_password"
+                        attrs="{'invisible': [('os_auth_type', '!=', 'http')]}"
+                        password="1"
+                    />
+                    <field
+                        string="SSL"
+                        name="os_ssl"
+                        attrs="{'invisible': [('os_auth_type', '!=', 'http')]}"
+                    />
+                    <field
+                        string="API key ID"
+                        name="os_api_key_id"
+                        attrs="{'invisible': [('os_auth_type', '!=', 'api_key')]}"
+                    />
+                    <field
+                        string="API key"
+                        name="os_api_key"
+                        attrs="{'invisible': [('os_auth_type', '!=', 'api_key')]}"
+                    />
+                    <field name="os_http_compress" />
+                </group>
+                <group
+                    name="opensearch-params"
+                    attrs="{'invisible': [('backend_type', '!=', 'opensearch')]}"
+                >
+                    <field string="Max retries" name="os_max_retries" />
+                    <field string="Retry on timeout" name="os_retry_on_timeout" />
+                    <field string="Timeout" name="os_timeout" />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>
