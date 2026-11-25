@@ -62,10 +62,18 @@ class SeIndexableRecord(models.AbstractModel):
         compute="_compute_binding_ids",
         compute_sudo=True,
     )
-    count_se_binding_total = fields.Integer(compute="_compute_count_binding")
-    count_se_binding_done = fields.Integer(compute="_compute_count_binding")
-    count_se_binding_pending = fields.Integer(compute="_compute_count_binding")
-    count_se_binding_error = fields.Integer(compute="_compute_count_binding")
+    count_se_binding_total = fields.Integer(
+        compute="_compute_count_binding", compute_sudo=True
+    )
+    count_se_binding_done = fields.Integer(
+        compute="_compute_count_binding", compute_sudo=True
+    )
+    count_se_binding_pending = fields.Integer(
+        compute="_compute_count_binding", compute_sudo=True
+    )
+    count_se_binding_error = fields.Integer(
+        compute="_compute_count_binding", compute_sudo=True
+    )
 
     def _compute_binding_ids(self) -> None:
         binding_model = self.env["se.binding"]
