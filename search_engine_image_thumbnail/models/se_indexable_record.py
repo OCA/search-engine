@@ -39,7 +39,7 @@ class SeIndexableRecord(models.AbstractModel):
         thumbnail_sizes_by_size = self._get_thumbnail_sizes_by_size_for_field(
             index, field_name
         )
-        images: FsImageRelationMixin = self[field_name]
+        images = self._get_images_to_thumbnail(field_name)
         if not isinstance(images, FsImageRelationMixin):
             raise SystemError(
                 "This code is designed to work with FsImageRelationMixin fields"
@@ -62,6 +62,14 @@ class SeIndexableRecord(models.AbstractModel):
                 for thumbnail in thumbnails_by_image.get(image.image, [])
             ]
         return res
+
+    def _get_images_to_thumbnail(self, field_name: str) -> FsImageRelationMixin:
+        """Return the images to thumbnail for a multi-image field.
+
+        Override this method to filter the image relations.
+        """
+        self.ensure_one()
+        return self[field_name]
 
     def _get_or_create_thumbnails_for_image(
         self, index: SeIndex, field_name: str
