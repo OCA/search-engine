@@ -153,7 +153,7 @@ class SeBinding(models.Model):
         if not self:
             # Nothing to do
             return
-        size = min(self.index_id.mapped("batch_exporting_size"))
+        size = min(self.index_id.mapped("batch_recomputing_size"))
         self.write({"state": "recomputing"})
         for binding in self.with_context(tracking_disable=True)._batch(size):
             description = self.env._(
